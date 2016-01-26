@@ -106,10 +106,10 @@ MBD = function( Data )
   P = ncol( Data )
 
   # Compute ranks of matrix-like representation of data with `min' tie-breaking rule
-  rk_min = apply( D, 2, function( v )( rank( v, ties.method = 'min' ) ) )
+  rk_min = apply( Data, 2, function( v )( rank( v, ties.method = 'min' ) ) )
 
   # Compute ranks of matrix-like representation of data with `max' tie-breaking rule
-  rk_max = apply( D, 2, function( v )( rank( v, ties.method = 'max' ) ) )
+  rk_max = apply( Data, 2, function( v )( rank( v, ties.method = 'max' ) ) )
 
   # Times each function value is repeated in the dataset, for each time point
   # ( matrix is N x P)
