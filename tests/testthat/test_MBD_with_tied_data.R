@@ -1,7 +1,4 @@
 
-
-
-
 # TESTING MBDs IN PRESENCE OF TIED DATA -----------------------------------
 
 D = matrix( c( c( 1, 0.5, 0.25, 0.1, 0.05   ),
@@ -42,5 +39,7 @@ for( i in 1 : N )
 depths = depths / ( N * ( N - 1 ) / 2 * P )
 
 
-test_that( "MBD works in presence of partial/heavy tied functional data",
+test_that( "Correct behaviour of MBD in presence if tied-data",
            expect_equal( depths, MBD( D ) ) )
+
+

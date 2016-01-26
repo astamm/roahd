@@ -78,10 +78,10 @@ BD = function( Data )
   P = ncol( Data )
 
   # Compute ranks of matrix-like representation of data with `min' tie-breaking rule
-  rk_min = apply( D, 2, function( v )( rank( v, ties.method = 'min' ) ) )
+  rk_min = apply( Data, 2, function( v )( rank( v, ties.method = 'min' ) ) )
 
   # Compute ranks of matrix-like representation of data with `max' tie-breaking rule
-  rk_max = apply( D, 2, function( v )( rank( v, ties.method = 'max' ) ) )
+  rk_max = apply( Data, 2, function( v )( rank( v, ties.method = 'max' ) ) )
 
   # Actual number of function values strictly above
   N_a = N - apply( rk_max, 1, max )
@@ -89,9 +89,7 @@ BD = function( Data )
   # Actual number of function values strictly below
   N_b = apply( rk_min, 1, min ) - 1
 
-  Depths = apply( N_a * N_b + ( N - 1 ),
-                  1,
-                  sum ) / ( P * N * ( N - 1 ) / 2 )
+  Depths = ( N_a * N_b + ( N - 1 ) ) / ( N * ( N - 1 ) / 2 )
 
   return( Depths )
 }
