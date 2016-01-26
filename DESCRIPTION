@@ -1,10 +1,15 @@
 Package: fdepths
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Robust Analysis of High Dimensional Data 
 Version: 0.1
 Date: 2016-01-25
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
-LazyData: TRUE
+Authors@R: c( 	person( "Nicholas Tarabelloni", "Developer", role = c( "aut", "cre" ), email = nicholas.tarabelloni@gmail.com" ),
+		person( "Ana Arribas-Gil", "Developer", role = c( "aut", "cre" ), email = "COMPLETE ME"),
+		person( "Francesca Ieva", "Developer", role = c( "aut", "cre" ), email = "COMPLETE ME"),
+		person( "Anna Maria Paganoni", "Developer", role = c( "aut", "cre" ), email = "COMPLETE ME"),
+		person( "Juan Romo", "Developer", role = c( "aut", "cre" ), email = "COMPLETE ME") )
+Maintainer: NA
+Description: NA
+License: NA
+LazyData: NA
+Suggests: testthat
