@@ -34,8 +34,6 @@ Data_test_7 = matrix( c( 0.5  + sin( 2 * pi * time_grid ),
 # lines( time_grid, Data_test_1, lty = 2, type = 'l', col = 'darkred' )
 # matplot( time_grid, t( Data_test_7 ), lty = 2, type = 'l', col = 'darkblue', add = T )
 
-MBD_relative( Data_test_1, Data_ref )
-
 test_that( "Correctness of relative MBD (single test function in row matrix form)",
            expect_equal( MBD_relative( Data_test_1, Data_ref ), 2/ 3  ) )
 
