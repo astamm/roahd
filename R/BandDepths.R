@@ -1,74 +1,76 @@
 
 
-# BD_relative = function( Data_target, Data_reference, strict_inclusion = FALSE, ties_method = 'average' )
-# {
-#   # Data_target:       Is the dataset containing signals whose depths are to be computed
-#   #                    with respect to the reference population.
-#   #
-#   # Data_reference:    Is the dataset containing the reference population used to measure
-#   #                    the centrality through depths. In particular, the depths of these
-#   #                    functions will not be computed.
-#   #
-#   # strict_inclusion:  Specifies whether in the computation of the bands one should also
-#   #                    count those bands created by the function itself and all the other
-#   #                    elements of the dataset (i.e. if one wants to adhere to Genton's
-#   #                    formula strictly).
-#   #
-#   # ties_method:        A flag specifying the way you want to break possible ties the value
-#   #                     is just passed to `rank` hence must be an admissible value for that
-#   #                     function.
-#
-#   # Observations
-#   N = nrow( Data_target )
-#
-#   # Manipulation of Data_target to obtain a matrix representation such that,
-#   # in case of just one observation we have a matrix like structure with time
-#   # on the columns and observations on the rows
-#   if( is.null( dim( Data_target ) )|
-#       is.array( Data_target ) &
-#       length( dim( Data_target ) ) == 1 )
-#   {
-#     Data_target = t( as.matrix( Data_target ) )
-#
-#   } else if( is.matrix( Data_target ) ) {
-#
-#     if( ncol( Data_target ) == 1 ){
-#       Data_target = t( Data_target )
-#     }
-#   } else {
-#     stop( 'Error: unsupported value provided to MBD_relative' )
-#   }
-#
-#   if( ncol( Data_target ) != P ) stop( 'Error: you provided a Data_target with not
-#                                        compliant dimensions to MBD_relative')
-#
-#   # Number of target_functions
-#   N_target = nrow( Data_target )
-#
-#   Depths = rep( 0, N_target );
-#
-#   for( iObs in 1 : N_target )
-#   {
-#     rk = t( apply( cbind( Data_reference, Data_target[ iObs, ] ),
-#                    2,
-#                    function( v )( rank( v, ties.method = ties_method ) ) ) );
-#
-#     N_a = N - max( rk[ 1, ] )
-#
-#     N_b = min( rk[ 1, ] ) - 1
-#
-#     if( ! strict_inclusion )
-#     {
-#       Depths[ iObs ] = N_a * N_b
-#     } else {
-#       Depths[ i]
-#     }
-#
-#   }
-#
-#
-# }
+BD_relative = function( Data_target, Data_reference )
+{
+  # Data_target:       Is the dataset containing signals whose depths are to be computed
+  #                    with respect to the reference population.
+  #
+  # Data_reference:    Is the dataset containing the reference population used to measure
+  #                    the centrality through depths. In particular, the depths of these
+  #                    functions will not be computed.
+  #
+  # strict_inclusion:  Specifies whether in the computation of the bands one should also
+  #                    count those bands created by the function itself and all the other
+  #                    elements of the dataset (i.e. if one wants to adhere to Genton's
+  #                    formula strictly).
+  #
+  # ties_method:        A flag specifying the way you want to break possible ties the value
+  #                     is just passed to `rank` hence must be an admissible value for that
+  #                     function.
 
+  # Observations
+  N = nrow( Data_reference )
+
+  # Number of columns
+  P = ncol( Data_reference )
+
+  # Manipulation of Data_target to obtain a matrix representation such that,
+  # in case of just one observation we have a matrix like structure with time
+  # on the columns and observations on the rows
+  if( is.null( dim( Data_target ) )|
+      is.array( Data_target ) &
+      length( dim( Data_target ) ) == 1 )
+  {
+    Data_target = t( as.matrix( Data_target ) )
+
+  } else if( is.matrix( Data_target ) ) {
+
+    if( ncol( Data_target ) == 1 ){
+      Data_target = t( Data_target )
+    }
+  } else {
+    stop( 'Error: unsupported value provided to MBD_relative' )
+  }
+
+  if( ncol( Data_target ) != P ) stop( 'Error: you provided a Data_target with not
+                                       compliant dimensions to MBD_relative')
+
+  # Number of target_functions
+  N_target = nrow( Data_target )
+
+  Depths = rep( 0, N_target );
+
+  for( iObs in 1 : N_target )
+  {
+    rk = apply( rbind( Data_target[ iObs, ], Data_reference ),
+                   2,
+                   function( v )( rank( v, ties.method = 'average' ) ) );
+
+    N_a = N + 1 - max( rk[ 1, ] )
+
+    N_b = min( rk[ 1, ] ) - 1
+
+    Depths[ iObs ] = ( N_a * N_b ) / ( N * ( N - 1 ) / 2 )
+  }
+
+  return( Depths )
+}
+
+#' Computes the Band Depth of functions in a functional dataset
+#'
+#' \code{BD} computes the Band Depth of a functional dataset
+#'
+#' @param Data a matrix-like dataset of functional data, with observations as rows and time points as columns
 BD = function( Data )
 {
   # Number of rows
@@ -78,16 +80,13 @@ BD = function( Data )
   P = ncol( Data )
 
   # Compute ranks of matrix-like representation of data with `min' tie-breaking rule
-  rk_min = apply( Data, 2, function( v )( rank( v, ties.method = 'min' ) ) )
-
-  # Compute ranks of matrix-like representation of data with `max' tie-breaking rule
-  rk_max = apply( Data, 2, function( v )( rank( v, ties.method = 'max' ) ) )
+  rk = apply( Data, 2, function( v )( rank( v, ties.method = 'average' ) ) )
 
   # Actual number of function values strictly above
-  N_a = N - apply( rk_max, 1, max )
+  N_a = N - apply( rk, 1, max )
 
   # Actual number of function values strictly below
-  N_b = apply( rk_min, 1, min ) - 1
+  N_b = apply( rk, 1, min ) - 1
 
   Depths = ( N_a * N_b + ( N - 1 ) ) / ( N * ( N - 1 ) / 2 )
 
