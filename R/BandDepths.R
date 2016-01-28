@@ -121,7 +121,7 @@ MBD = function( Data )
   # Now, owing to repetitions we gain more bands containing each functional observation.
   # In standard cases (no coincident values) we have N - 1, in general we have N - 1 +
   # N - 2 + ... + N - K, where K is the number of repetitions of the function value in the
-  # dataset, time by time. If you split the sum and use Gauss formula twice, you
+  # dataset, time by time. If you split the sum and use Gauss formula, you
   # can get the following expression
   added_bands_function = function( N, K )
   {
