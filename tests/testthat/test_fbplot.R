@@ -27,6 +27,4 @@ D = matrix( c( sin( 2 * pi * time_grid ) + 0,
                sin( 2 * pi * time_grid ) - 10),
             nrow = 21, ncol = length( time_grid ), byrow = T )
 
-
-quartz()
 fbplot( time_grid, Data = D, xlab = 'time [ms]', ylab = 'Data', main = 'Functional boxplot'  )
