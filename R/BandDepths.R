@@ -113,29 +113,23 @@ MBD = function( Data )
   # Actual number of function values strictly below
   N_b = rk_min - 1
 
-  # added_bands_function = function( N, K )
-  # {
-  #   sapply( K, function( k )( 0.5 * N * ( N - 1 ) - 0.5 * ( N - k ) * ( N - k - 1 )  ) )
-  # }
-
-  # Now, owing to repetitions we gain more bands containing each functional observation.
-  # In standard cases (no coincident values) we have N - 1, in general we have N - 1 +
-  # N - 2 + ... + N - K, where K is the number of repetitions of the function value in the
-  # dataset, time by time. If you split the sum and use Gauss formula, you
-  # can get the following expression
-  added_bands_function = function( N, K )
+  if( any( Repetitions > 1 ) )
   {
-    sapply( K,
-            function( k )( N * k - 0.5 * ( k * k + k  )  ) )
+    # Now, owing to repetitions we gain more bands containing each functional observation.
+    # In standard cases (no coincident values) we have N - 1, in general we have N - 1 +
+    # N - 2 + ... + N - K, where K is the number of repetitions of the function value in the
+    # dataset, time by time. If you split the sum and use Gauss formula, you
+    # can get the following expression
+
+    added_bands = N * Repetitions - 0.5 * ( Repetitions * Repetitions + Repetitions )
+
+    Depths = rowSums( N_a * N_b  + added_bands ) / ( P * ( N - 1 ) * N / 2 )
+
+  } else {
+
+    Depths = ( rowSums( N_a * N_b ) / P + N - 1 ) / ( N * ( N - 1 ) / 2 )
+
   }
-
-  added_bands = t( apply( Repetitions,
-                          1,
-                          function( reps )( added_bands_function( N, reps ) ) ) )
-
-  Depths = apply( N_a * N_b + added_bands,
-                  1,
-                  sum ) / ( P * N * ( N - 1 ) / 2 )
 
   return( Depths )
 }
