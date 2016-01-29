@@ -15,7 +15,7 @@ EI = function( Data )
 
   N_a = N - apply( rk, 1, max ) + 1
 
-  EI = 1 - N_a / N
+  EI = N_a / N
 
   return( EI )
 }
@@ -40,7 +40,7 @@ MEI = function( Data )
   # Number of curves equal or above, time by time
   N_a = N - rk + 1
 
-  MEI = 1 - rowSums( N_a ) / ( N * P )
+  MEI = rowSums( N_a ) / ( N * P )
 
   return( MEI )
 }
@@ -103,7 +103,7 @@ HRD = function( Data )
 
   hi = HI( Data )
 
-  return( mapply( min, 1 - ei, hi ) )
+  return( mapply( min, ei, hi ) )
 }
 
 
@@ -118,6 +118,6 @@ MHRD = function( Data )
 
   mhi = MHI( Data )
 
-  return( mapply( min, 1 - mei, mhi ) )
+  return( mapply( min, mei, mhi ) )
 
 }
