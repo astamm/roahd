@@ -15,15 +15,6 @@ for( iObs in 1 : N )
 
 Data[ N, length( time_grid ) ] = 1
 
-# quartz()
-# matplot( time_grid, t( Data ), lty = 1, type = 'l' )
-
-MEI( Data )
-
-EI( Data )
-( N - 1 ) / N
-
-
 test_that( "Correctness of EI",
            expect_equal( EI( Data ), rep( ( N - 1 ) / N, N )  ) )
 

@@ -20,25 +20,6 @@ EI = function( Data )
   return( EI )
 }
 
-#' Hypograph Index of functions in a functional dataset
-#'
-#' \code{EI} computes the Modified Index of a functional dataset
-#'
-#' @param Data a matrix-like dataset of functional data, with observations as rows and time points as columns
-HI = function( Data )
-{
-  # Number of observations
-  N = nrow( Data )
-
-  rk = apply( Data, 2, function( v )( rank( v, ties.method = 'max' ) ) )
-
-  N_b = apply( rk, 1, min )
-
-  HI = N_b / N
-
-  return( HI )
-}
-
 
 #' Modified Epigraph Index of functions in a functional dataset
 #'
@@ -59,9 +40,30 @@ MEI = function( Data )
   # Number of curves equal or above, time by time
   N_a = N - rk + 1
 
-  MEI = 1 - apply( N_a, 1, sum ) / ( N * P )
+  MEI = 1 - rowSums( N_a ) / ( N * P )
 
   return( MEI )
+}
+
+
+
+#' Hypograph Index of functions in a functional dataset
+#'
+#' \code{EI} computes the Modified Index of a functional dataset
+#'
+#' @param Data a matrix-like dataset of functional data, with observations as rows and time points as columns
+HI = function( Data )
+{
+  # Number of observations
+  N = nrow( Data )
+
+  rk = apply( Data, 2, function( v )( rank( v, ties.method = 'max' ) ) )
+
+  N_b = apply( rk, 1, min )
+
+  HI = N_b / N
+
+  return( HI )
 }
 
 
@@ -82,9 +84,40 @@ MHI = function( Data )
   rk = apply( Data, 2, function( v ) ( rank( v, ties.method = 'max' ) ) )
 
   # Number of curves equal or below, time by time
-  N_b = rk - 1
+  # N_b = rk
 
-  MHI = apply( N_b, 1, sum ) / ( N * P )
+  MHI = rowSums( rk ) / ( N * P )
 
   return( MHI )
+}
+
+
+#' Half-region depth
+#'
+#' \code{HRD} computes the Half Region Depth of a functional dataset
+#'
+#' @param Data a matrix-like dataset of functional data, with observations as rows and time points as columns
+HRD = function( Data )
+{
+  ei = EI( Data )
+
+  hi = HI( Data )
+
+  return( mapply( min, 1 - ei, hi ) )
+}
+
+
+#' Modified Half-region depth
+#'
+#' \code{MHRD} computes the Modified Half Region Depth of a functional dataset
+#'
+#' @param Data a matrix-like dataset of functional data, with observations as rows and time points as columns
+MHRD = function( Data )
+{
+  mei = MEI( Data )
+
+  mhi = MHI( Data )
+
+  return( mapply( min, 1 - mei, mhi ) )
+
 }
