@@ -9,4 +9,5 @@ Description: NA
 License: NA
 LazyData: NA
 Suggests: testthat
-Imports: RColorBrewer
+Imports: RColorBrewer,
+    scales
