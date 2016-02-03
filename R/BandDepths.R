@@ -39,23 +39,7 @@ BD_relative = function( Data_target, Data_reference )
   # Number of columns
   P = ncol( Data_reference )
 
-  # Manipulation of Data_target to obtain a matrix representation such that,
-  # in case of just one observation we have a matrix like structure with time
-  # on the columns and observations on the rows
-  if( is.null( dim( Data_target ) )|
-      is.array( Data_target ) &
-      length( dim( Data_target ) ) == 1 )
-  {
-    Data_target = t( as.matrix( Data_target ) )
-
-  } else if( is.matrix( Data_target ) ) {
-
-    if( ncol( Data_target ) == 1 ){
-      Data_target = t( Data_target )
-    }
-  } else {
-    stop( 'Error: unsupported value provided to MBD_relative' )
-  }
+  Data_target = toRowMatrixForm( Data_target )
 
   if( ncol( Data_target ) != P ) stop( 'Error: you provided a Data_target with not
                                        compliant dimensions to MBD_relative')
@@ -147,26 +131,10 @@ MBD_relative = function( Data_target, Data_reference, strict_inclusion = FALSE, 
   # Time points
   P = ncol( Data_reference )
 
-  # Manipulation of Data_target to obtain a matrix representation such that,
-  # in case of just one observation we have a matrix like structure with time
-  # on the columns and observations on the rows
-  if( is.null( dim( Data_target ) )|
-      is.array( Data_target ) &
-      length( dim( Data_target ) ) == 1 )
-  {
-    Data_target = t( as.matrix( Data_target ) )
+  Data_target = toRowMatrixForm( Data_target )
 
-  } else if( is.matrix( Data_target ) ) {
-
-    if( ncol( Data_target ) == 1 ){
-      Data_target = t( Data_target )
-    }
-  } else {
-    stop( 'Error: unsupported value provided to MBD_relative' )
-  }
-
-  if( ncol( Data_target ) != P ) stop( 'Error: you provided a Data_target with not
-                                       compliant dimensions to MBD_relative')
+  if( ncol( Data_target ) != P ) stop( 'Error: you provided a Data_target
+                                       with dimensions not compliant to MBD_relative')
 
   # Number of target_functions
   N_target = nrow( Data_target )
