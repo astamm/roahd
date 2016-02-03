@@ -10,4 +10,6 @@ License: NA
 LazyData: NA
 Suggests: testthat
 Imports: RColorBrewer,
-    scales
+    scales,
+    robustbase,
+    stats

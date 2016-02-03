@@ -2,15 +2,13 @@
 
 # TESTING OUTLIERGRAM -----------------------------------------------------
 
-
-# OUTLIER DETECTION -------------------------------------------------------
 require(mvtnorm)
 
 # Synthetic data
 
 set.seed( 10101 )
 
-N = 100
+N = 200
 P = 200
 time = seq( 0, 1, length.out = P )
 
@@ -49,8 +47,49 @@ S = rbind( S, S.outliers)
 mbd = MBD( S )
 mei = MEI( S )
 
-quartz()
-outliergram( time, S, display = TRUE, main = 'Example data', ylab = 'value', xlab = 'time' )
+#### CORRECTNESS BENCHMARKING
+
+# out_dot = dot_outliergram( time, S )
+#
+# out_my = my_outliergram( time, S )
+#
+# par_my = par_outliergram( time, S )
+
+
+
+#### EFFICIENCY BENCHMARKING
+tic = proc.time()
+invisible( dot_outliergram( time, S ) )
+toc = proc.time()
+
+time_old = toc - tic
+
+tic = proc.time()
+invisible( my_outliergram( time, S ) )
+toc = proc.time()
+
+time_1 = toc - tic
+
+tic = proc.time()
+invisible( par_outliergram( time, S ) )
+toc = proc.time()
+
+time_2 = toc - tic
+
+time_old
+time_1
+time_2
+
+time_old / time_1
+time_old / time_2
+time_1 / time_2
+
+# outliergram( time, S, display = TRUE, main = 'Example data', ylab = 'value', xlab = 'time' )
+# outliergram( time, S, adjust = list( N_trials = 2,
+#                                      trial_size = 500,
+#                                      VERBOSE = 1,
+#                                      tol = 1e-1 ),
+#              display = TRUE, main = 'Example data', ylab = 'value', xlab = 'time' )
 
 # l = lineprof( outliergram( time, S, display = FALSE ) )
 
