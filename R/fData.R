@@ -40,22 +40,60 @@ plot.fData = function( fData, lty = 1, col = NULL, ... )
 
 }
 
-
-# Constructor of the class "EvenTimeStr"
-mfData = function( time_grid, h = NULL, P = NULL )
+#'
+#' \code{mfData} generic class for (multivariate) functional data.
+#'
+#' @param grid the (evenly spaced) grid over which the functional data is defined
+#' @param Data_list a list containing the time-by-time values of functional dataset, where each node of the list (possibly named) represents a particular dimension of the multivariate dataset.
+#'
+mfData = function( grid, Data_list )
 {
-  ! missing( grid ) || stop( ' Error in EvenTimeStr: missing grid in EvenTimeStr' )
-
-  message( ' * * * Handle better the global constant here ' )
   all( abs( diff( unique( diff( grid ) ) ) ) < 1e-14 ) ||
-    stop( ' Error in EvenTimeStr: uneven grid passed in EvenTimeStr')
+    stop( ' Error in mfData: you provided an unevenly spaced grid')
+
+  dimMatrix = sapply( Data_list, dim )
+
+  if( unique( apply( dimMatrix, 1, function( x )( length( unique( x ) ) ) ) ) != 1 )
+  {
+    stop( ' Error in mfData: you provided mismatching datasets as Data_list')
+  }
+
+  L = length( Data_list )
+
+  if( is.null( names( Data_list ) ) )
+  {
+    nms = 1 : L
+  } else {
+    nms = names( Data_list )
+  }
+
+  fDList = NULL
+  message( ' * * * Think about this representation' )
+  for( nmL in nms )
+  {
+    fDList[[ nmL ]] = fData( grid, toRowMatrixForm( Data_list[[ nmL ]] ) )
+  }
+
+  return( structure( list( L = L,
+                           N = fDList[[ 1 ]]$N,
+                           P = fDList[[ 1 ]]$P,
+                           fDList = fDList ),
+                     class = c( 'mfData' ) ) )
+}
 
 
+plot.mfData = function( mfData, lty = 1, col = NULL, ... )
+{
+  if( is.null( col ) )
+  {
+    col = set_alpha( scales::hue_pal( )( mfData$N ),
+                     0.8 )
+  }
 
-  structure( list( grid = grid,
-                   h = h,
-                   P = P,
-                   t0 = grid[ 1 ],
-                   tP = grid[ P ]),
-             class = c( 'EvenTimeStr', 'TimeStr' ) )
+  mfrow_rows = ceiling( mfData$L / 2 )
+  mfrow_cols = 2
+
+  par( mfrow = c( mfrow_rows, mfrow_cols ) )
+
+  invisible( sapply( mfData$fDList, plot, lty, col, ... ) )
 }

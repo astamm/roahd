@@ -26,3 +26,24 @@ toRowMatrixForm = function( D )
 
   return( D )
 }
+
+#' Function to setup alpha value for a set of colors
+#'
+#' \code{set_alpha} manipulates a vector of color representations in order to
+#' setup the alpha value, and get the desired transparency level
+#'
+#' @param col a vector of colors
+#' @param alpha the value(s) of alpha for (each of) the colors
+#'
+set_alpha = function( col, alpha )
+{
+  alpha = alpha * 255
+
+  rgb_colors = rbind( col2rgb( col ), alpha = alpha )
+
+  return( apply( rgb_colors, 2, function( x )( rgb( x[ 1 ],
+                                                    x[ 2 ],
+                                                    x[ 3 ],
+                                                    x[ 4 ],
+                                                    maxColorValue = 255 ) ) ) )
+}
