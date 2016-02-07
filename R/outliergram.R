@@ -1,14 +1,21 @@
 
 
-outliergram = function( time_grid, Data, MBD_data = NULL, MEI_data = NULL, q_low = 0, q_high = 1,
-                        adjust = NULL, display = TRUE, ..., VERBOSE = FALSE )
+outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL, q_low = 0, q_high = 1,
+                        adjust = FALSE, display = TRUE, ... )
 {
   require( scales )
   require( robustbase )
 
   N = nrow( Data )
 
-  if( is.null( adjust ) )
+  if( is.null( time_grid ) )
+  {
+    time_grid = 1 : ncol( Data)
+  }
+
+  stopifnot( length( time_grid ) == ncol( Data ) )
+
+  if( ! is.list( adjust ) )
   {
     # Plain outliergram with default F value: F = 1.5
 
@@ -70,7 +77,7 @@ outliergram = function( time_grid, Data, MBD_data = NULL, MEI_data = NULL, q_low
         cat( ' * * * Iteration ', iTrial, ' / ', N_trials, '\n' )
       }
 
-      Data_gauss = .generate_gauss_fdata( trial_size, centerline, CholCov = CholCov )
+      Data_gauss = generate_gauss_fdata( trial_size, centerline, CholCov = CholCov )
 
       cat( ' * * * * beginning optimisation\n' )
       opt = uniroot( function( F_curr )( length( .outliergram( time_grid,
@@ -166,38 +173,6 @@ outliergram = function( time_grid, Data, MBD_data = NULL, MEI_data = NULL, q_low
   }
 
   return( out$ID_SO )
-}
-
-.generate_gauss_fdata = function( M, center, Cov = NULL, CholCov = NULL )
-{
-   center = as.vector( center )
-
-  if( is.null( Cov ) & is.null( CholCov ) ){
-    stop( 'Error: You have to provide at least either covariance matrix or
-          its cholesky factor to .generate_gauss_fdata\n')
-  } else if( ! is.null( CholCov ) ) {
-
-    P = ncol( CholCov )
-
-    if( length( center ) != nrow( CholCov ) | nrow( CholCov ) != P  ){
-      stop( 'Error: You provided mismatching center and covaraince matrix
-            Cholesky factor to .generate_gauss_fdata\n')
-    }
-    } else if( ! is.null( Cov ) ){
-
-      P = ncol( Cov )
-
-      if( length( center ) != nrow( Cov ) | nrow( Cov ) != P  ){
-        stop( 'Error: You provided mismatching center and covaraince matrix to
-              .generate_gauss_fdata\n')
-      }
-
-      CholCov = chol( Cov )
-    }
-
-  return( matrix( rnorm( M * P ),
-                  nrow = M,
-                  ncol = P ) %*% CholCov + center )
 }
 
 .outliergram = function( time_grid, Data, MBD_data = NULL, MEI_data = NULL, q_low = 0, q_high = 1, Fvalue = NULL )

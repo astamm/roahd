@@ -27,4 +27,26 @@ D = matrix( c( sin( 2 * pi * time_grid ) + 0,
                sin( 2 * pi * time_grid ) - 10),
             nrow = 21, ncol = length( time_grid ), byrow = T )
 
-fbplot( time_grid, Data = D, xlab = 'time [ms]', ylab = 'Data', main = 'Functional boxplot'  )
+fbplot( time_grid, Data = D,  )
+
+
+# TESTING THE ADJUSTED FUNCTIONAL BOXPLOT ---------------------------------
+
+time_grid = seq( 0, 1, length.out = 1e2 )
+
+N = 1e2
+
+# C( s, t ) = \alpha \exp( - beta | s - t | )
+# Amplitude factor
+alpha = 0.3
+
+# Correlation decay factor
+beta = 0.4
+
+Cov = outer( time_grid, time_grid, function( s, t )( alpha * exp( - beta * abs( s - t ) ) ) )
+
+Data = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov )
+
+fbplot( time_grid, Data, adjust = list( N_trials = 10,
+                                        VERBOSE = TRUE ),
+        xlab = 'time [ms]', ylab = 'Data', main = 'Functional boxplot' )
