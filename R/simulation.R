@@ -1,6 +1,6 @@
 #' Functional boxplot
 #'
-#' \code{fbplot} displays the functional boxplot of a dataset of functional data.
+#' \code{generate_gauss_data} displays the functional boxplot of a dataset of functional data.
 #'
 #' @param M the number of functional observations to generate
 #' @param centerline the centerline of the distribution (either mean or median)

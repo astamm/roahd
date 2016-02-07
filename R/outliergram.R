@@ -298,19 +298,6 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
 }
 
 
-set_alpha = function( col, alpha )
-{
-  alpha = alpha * 255
-
-  rgb_colors = rbind( col2rgb( col ), alpha = alpha )
-
-  return( apply( rgb_colors, 2, function( x )( rgb( x[ 1 ],
-                                                    x[ 2 ],
-                                                    x[ 3 ],
-                                                    x[ 4 ],
-                                                    maxColorValue = 255 ) ) ) )
-}
-
 # check_outlier_Low_MEI = function( Data, idObs, q_high = 1  )
 # {
 #   diff_max_vector = Data[ idObs, ] - apply( Data[ - idObs, ],
