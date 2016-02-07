@@ -47,6 +47,11 @@ S = rbind( S, S.outliers)
 mbd = MBD( S )
 mei = MEI( S )
 
+
+quartz()
+outliergram( time, S )
+
+
 #### CORRECTNESS BENCHMARKING
 
 # out_dot = dot_outliergram( time, S )
@@ -55,9 +60,23 @@ mei = MEI( S )
 #
 # par_my = par_outliergram( time, S )
 
+# l = lineprof( outliergram( time, S, display = FALSE ) )
+Rprof( filename =  'prof.out', memory = 'both' )
+invisible( my_outliergram( time, S ) )
+Rprof( NULL )
+
+summ = summaryRprof( 'prof.out' )
+print( summ )
+
+plot( parse_rprof( 'prof.out' ) )
+
+pippo = readProfileData("prof.out")
 
 
 #### EFFICIENCY BENCHMARKING
+library(doParallel)
+library(foreach)
+
 tic = proc.time()
 invisible( dot_outliergram( time, S ) )
 toc = proc.time()
@@ -65,10 +84,11 @@ toc = proc.time()
 time_old = toc - tic
 
 tic = proc.time()
-invisible( my_outliergram( time, S ) )
+invisible( my_outliergram( time, S, p_check = 0.05 ) )
 toc = proc.time()
 
 time_1 = toc - tic
+print( time_1 )
 
 tic = proc.time()
 invisible( par_outliergram( time, S ) )
