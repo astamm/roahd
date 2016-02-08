@@ -28,7 +28,13 @@ fbplot = function( time_grid = NULL, Data, Depths = 'MBD',
     # Nice trick to encapsulate the information on the desired definiton of
     # depth inside the vector that supposedly should contain depth values
     Depths_spec = Depths
-    Depths = eval( parse( text = paste( Depths, '( Data )', sep = '' ) ) )
+
+    if( Depths_spec == 'MBD' )
+    {
+      Depths = MBD( Data, manage_ties = TRUE )
+    } else {
+      Depths = eval( parse( text = paste( Depths, '( Data )', sep = '' ) ) )
+    }
   } else {
     stopifnot( length( Depths ) == N )
   }

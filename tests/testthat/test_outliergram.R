@@ -6,7 +6,7 @@ require(mvtnorm)
 
 # Synthetic data
 
-set.seed( 10101 )
+set.seed( 1618 )
 
 N = 200
 P = 200
@@ -47,8 +47,6 @@ S = rbind( S, S.outliers)
 mbd = MBD( S )
 mei = MEI( S )
 
-
-quartz()
 outliergram( time, S )
 
 
