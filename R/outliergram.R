@@ -38,14 +38,14 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
 
     TPR = ifelse( is.null( adjust$TPR ),
                   2 * pnorm( 4 * qnorm( 0.25 ) ),
-                  adjust$FPR )
+                  adjust$TPR )
 
     F_min = ifelse( is.null( adjust$F_min ),
                     0.5,
                     adjust$F_min )
 
     F_max= ifelse( is.null( adjust$F_max ),
-                    5,
+                    20,
                     adjust$F_max )
 
     tol = ifelse( is.null( adjust$tol ),
@@ -165,14 +165,15 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
     }
 
     # lower parabolic limit
-    if( adjust == FALSE )
+    if( is.list( adjust ) )
     {
+      lines( grid_1D,  a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 - Fvalue * out$Q_d1,
+             lty = 2, lwd = 2, col = 'lightblue' )
+    } else if( adjust == FALSE ){
       lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 - out$Q_d3 - 1.5 * out$IQR_d,
              lty = 2, lwd = 2, col = 'lightblue' )
     } else {
-
-      lines( grid_1D,  a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 - Fvalue * out$Q_d1,
-             lty = 2, lwd = 2, col = 'lightblue' )
+      stop('Error in outliergram: you provided wrong value for adjust')
     }
 
   }

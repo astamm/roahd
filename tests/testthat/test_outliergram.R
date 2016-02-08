@@ -49,6 +49,10 @@ mei = MEI( S )
 
 outliergram( time, S )
 
+outliergram( time, S, adjust = list( N_trials = 5,
+                                     TPR = 0.005,
+                                     VERBOSE = TRUE ) )
+
 
 #### CORRECTNESS BENCHMARKING
 
