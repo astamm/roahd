@@ -47,6 +47,6 @@ Cov = outer( time_grid, time_grid, function( s, t )( alpha * exp( - beta * abs( 
 
 Data = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov )
 
-fbplot( time_grid, Data, adjust = list( N_trials = 10,
+fbplot( time_grid, Data, adjust = list( N_trials = 2,
                                         VERBOSE = TRUE ),
         xlab = 'time [ms]', ylab = 'Data', main = 'Functional boxplot' )

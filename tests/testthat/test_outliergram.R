@@ -74,35 +74,35 @@ outliergram( time, S )
 
 
 #### EFFICIENCY BENCHMARKING
-library(doParallel)
-library(foreach)
-
-tic = proc.time()
-invisible( dot_outliergram( time, S ) )
-toc = proc.time()
-
-time_old = toc - tic
-
-tic = proc.time()
-invisible( my_outliergram( time, S, p_check = 0.05 ) )
-toc = proc.time()
-
-time_1 = toc - tic
-print( time_1 )
-
-tic = proc.time()
-invisible( par_outliergram( time, S ) )
-toc = proc.time()
-
-time_2 = toc - tic
-
-time_old
-time_1
-time_2
-
-time_old / time_1
-time_old / time_2
-time_1 / time_2
+# library(doParallel)
+# library(foreach)
+#
+# tic = proc.time()
+# invisible( dot_outliergram( time, S ) )
+# toc = proc.time()
+#
+# time_old = toc - tic
+#
+# tic = proc.time()
+# invisible( my_outliergram( time, S, p_check = 0.05 ) )
+# toc = proc.time()
+#
+# time_1 = toc - tic
+# print( time_1 )
+#
+# tic = proc.time()
+# invisible( par_outliergram( time, S ) )
+# toc = proc.time()
+#
+# time_2 = toc - tic
+#
+# time_old
+# time_1
+# time_2
+#
+# time_old / time_1
+# time_old / time_2
+# time_1 / time_2
 
 # outliergram( time, S, display = TRUE, main = 'Example data', ylab = 'value', xlab = 'time' )
 # outliergram( time, S, adjust = list( N_trials = 2,

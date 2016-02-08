@@ -6,9 +6,8 @@ time_grid = seq( 0, 1, length.out = 1e2 )
 
 Data_ref = matrix( c( 0  + sin( 2 * pi * time_grid ),
                       1  + sin( 2 * pi * time_grid ),
-                      -1 + sin( 2 * pi * time_grid )
-),
-nrow = 3, ncol = length( time_grid ), byrow = TRUE )
+                      -1 + sin( 2 * pi * time_grid ) ),
+                   nrow = 3, ncol = length( time_grid ), byrow = TRUE )
 
 Data_test_1 = matrix( c( 0.6 + sin( 2 * pi * time_grid ) ),
                       nrow = 1, ncol = length( time_grid ), byrow = TRUE )
@@ -54,3 +53,7 @@ test_that( "Correctness of relative MBD (single test function in column-like 2D 
 
 test_that( "Correctness of relative MBD (multiple test function)",
            expect_equal( MBD_relative( Data_test_7, Data_ref ), c( 2/3, 2/3, 0 ) ))
+
+
+
+

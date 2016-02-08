@@ -68,7 +68,7 @@ mfData = function( grid, Data_list )
   }
 
   fDList = NULL
-  message( ' * * * Think about this representation' )
+
   for( nmL in nms )
   {
     fDList[[ nmL ]] = fData( grid, toRowMatrixForm( Data_list[[ nmL ]] ) )

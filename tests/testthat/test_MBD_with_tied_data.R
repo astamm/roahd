@@ -38,8 +38,25 @@ for( i in 1 : N )
 }
 depths = depths / ( N * ( N - 1 ) / 2 * P )
 
+test_that( "Correct behaviour of MBD in presence of ties",
+           expect_equal( depths, MBD( D, manage_ties = TRUE ) ) )
 
-test_that( "Correct behaviour of MBD in presence if tied-data",
-           expect_equal( depths, MBD( D ) ) )
 
+# TESTING NO MANAEGMENT OF TIES -------------------------------------------
 
+N = 3
+P = 1e2
+
+time_grid = seq( 0, 1, length.out = P )
+
+Data = matrix( c( 0  + sin( 2 * pi * time_grid ),
+                  1  + sin( 2 * pi * time_grid ),
+                  -1 + sin( 2 * pi * time_grid ) ),
+               nrow = 3, ncol = length( time_grid ), byrow = TRUE )
+
+quartz()
+matplot( time_grid, t( Data ), lty = 1, type = 'l' )
+
+test_that( "Correct behaviour of MBD without checking for ties",
+           expect_equal( MBD( Data, manage_ties = TRUE ),
+                         MBD( Data, manage_ties = FALSE ) ) )

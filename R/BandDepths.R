@@ -73,7 +73,9 @@ BD_relative = function( Data_target, Data_reference )
 #' @param Data is the dataset of functional observations whose MBD are to be computed. Its rows
 #' should be the functional observations, while the columns must be time-point evaluations of such
 #' observations
-MBD = function( Data )
+#' @param manage_ties is a flag specifying if the method should accomodate for the presence of ties
+#' in the dataset.
+MBD = function( Data, manage_ties = FALSE )
 {
   # Number of rows
   N = nrow( Data )
@@ -81,39 +83,43 @@ MBD = function( Data )
   # Number of time points in the discrete grid
   P = ncol( Data )
 
-  # Compute ranks of matrix-like representation of data with `min' tie-breaking rule
-  rk_min = apply( Data, 2, function( v )( rank( v, ties.method = 'min' ) ) )
-
-  # Compute ranks of matrix-like representation of data with `max' tie-breaking rule
-  rk_max = apply( Data, 2, function( v )( rank( v, ties.method = 'max' ) ) )
-
-  # Times each function value is repeated in the dataset, for each time point
-  # ( matrix is N x P)
-  Repetitions = rk_max - rk_min + 1
-
-  # Actual number of function values strictly above
-  N_a = N - rk_max
-
-  # Actual number of function values strictly below
-  N_b = rk_min - 1
-
-  if( any( Repetitions > 1 ) )
+  if( manage_ties )
   {
-    # Now, owing to repetitions we gain more bands containing each functional observation.
-    # In standard cases (no coincident values) we have N - 1, in general we have N - 1 +
-    # N - 2 + ... + N - K, where K is the number of repetitions of the function value in the
-    # dataset, time by time. If you split the sum and use Gauss formula, you
-    # can get the following expression
+    # Compute ranks of matrix-like representation of data with `min' tie-breaking rule
+    rk_min = apply( Data, 2, function( v )( rank( v, ties.method = 'min' ) ) )
 
-    added_bands = N * Repetitions - 0.5 * ( Repetitions * Repetitions + Repetitions )
+    # Compute ranks of matrix-like representation of data with `max' tie-breaking rule
+    rk_max = apply( Data, 2, function( v )( rank( v, ties.method = 'max' ) ) )
 
-    Depths = rowSums( N_a * N_b  + added_bands ) / ( P * ( N - 1 ) * N / 2 )
+    # Times each function value is repeated in the dataset, for each time point
+    # ( matrix is N x P)
+    Repetitions = rk_max - rk_min + 1
 
-  } else {
+    # Actual number of function values strictly above
+    N_a = N - rk_max
 
-    Depths = ( rowSums( N_a * N_b ) / P + N - 1 ) / ( N * ( N - 1 ) / 2 )
+    # Actual number of function values strictly below
+    N_b = rk_min - 1
 
-  }
+    # if( any( Repetitions > 1 ) )
+    # {
+      # Now, owing to repetitions we gain more bands containing each functional observation.
+      # In standard cases (no coincident values) we have N - 1, in general we have N - 1 +
+      # N - 2 + ... + N - K, where K is the number of repetitions of the function value in the
+      # dataset, time by time. If you split the sum and use Gauss formula, you
+      # can get the following expression
+
+      added_bands = N * Repetitions - 0.5 * ( Repetitions * Repetitions + Repetitions )
+
+      Depths = rowSums( N_a * N_b  + added_bands ) / ( P * ( N - 1 ) * N / 2 )
+
+    } else {
+
+      rk =  apply( Data, 2, function( v )( rank( v ) )  )
+
+      Depths = ( rowSums( ( N - rk ) * ( rk - 1 ) ) / P + N - 1 ) / ( N * ( N - 1 ) / 2 )
+
+    }
 
   return( Depths )
 }
