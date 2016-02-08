@@ -4,12 +4,15 @@
 \alias{MBD}
 \title{Modified Band Depth of functions in a functional dataset}
 \usage{
-MBD(Data)
+MBD(Data, manage_ties = FALSE)
 }
 \arguments{
 \item{Data}{is the dataset of functional observations whose MBD are to be computed. Its rows
 should be the functional observations, while the columns must be time-point evaluations of such
 observations}
+
+\item{manage_ties}{is a flag specifying if the method should accomodate for the presence of ties
+in the dataset.}
 }
 \description{
 \code{MBD} Computes the Modified Band Depth (MBD) of elements of a functional dataset
