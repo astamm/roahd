@@ -61,16 +61,16 @@ outliergram( time, S )
 # par_my = par_outliergram( time, S )
 
 # l = lineprof( outliergram( time, S, display = FALSE ) )
-Rprof( filename =  'prof.out', memory = 'both' )
-invisible( my_outliergram( time, S ) )
-Rprof( NULL )
-
-summ = summaryRprof( 'prof.out' )
-print( summ )
-
-plot( parse_rprof( 'prof.out' ) )
-
-pippo = readProfileData("prof.out")
+# Rprof( filename =  'prof.out', memory = 'both' )
+# invisible( my_outliergram( time, S ) )
+# Rprof( NULL )
+#
+# summ = summaryRprof( 'prof.out' )
+# print( summ )
+#
+# plot( parse_rprof( 'prof.out' ) )
+#
+# pippo = readProfileData("prof.out")
 
 
 #### EFFICIENCY BENCHMARKING

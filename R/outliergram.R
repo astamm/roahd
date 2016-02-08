@@ -22,6 +22,8 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
     out = .outliergram( time_grid, Data, MBD_data, MEI_data,
                         q_low, q_high)
 
+    Fvalue = 1.5
+
   } else {
 
     N_trials = ifelse( is.null( adjust$N_trials ),

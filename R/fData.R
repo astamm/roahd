@@ -97,3 +97,139 @@ plot.mfData = function( mfData, lty = 1, col = NULL, ... )
 
   invisible( sapply( mfData$fDList, plot, lty, col, ... ) )
 }
+
+
+
+"+.fData" = function( fD, A )
+{
+  if( class( A ) == 'fData' )
+  {
+    if( fD$t0 != A$t0 || fD$tP != A$tP || fD$h != A$h || fD$P != A$P )
+    {
+      stop( 'Error in +.fData: functional data defined over
+            mismatching intervals' )
+    }
+
+    if( A$N == 1 )
+    {
+      fD$values = t( t( fD$values ) + as.vector( A$values ) )
+    } else {
+      fD$values = fD$values + A$values
+    }
+
+  } else if( is.null( dim( A ) ) || nrow( A ) == 1 ){
+
+    A = as.vector( A )
+
+    if( length( A ) != fD$P )
+    {
+      stop( 'Error in +.fData: mismatching arguments')
+    }
+
+    fD$values = t( t( fD$values ) +
+                     as.vector( rep( A, fD$P / length( A ) ) ) )
+
+  } else if( is.matrix( A ) ) {
+
+    if( ncol( A ) != fD$P || nrow( A ) != fD$N )
+    {
+      stop('Error in +.fData: mismatching arguments' )
+    }
+
+    fD$values = fD$values + A
+  }
+
+  return( fD )
+}
+
+"-.fData" = function( fD, A )
+{
+  if( class( A ) == 'fData' )
+  {
+    if( fD$t0 != A$t0 || fD$tP != A$tP || fD$h != A$h || fD$P != A$P )
+    {
+      stop( 'Error in -.fData: functional data defined over
+            mismatching intervals' )
+    }
+
+    if( A$N == 1 )
+    {
+      fD$values = t( t( fD$values ) - as.vector( A$values ) )
+    } else {
+      fD$values = fD$values + A$values
+    }
+
+  } else if( is.null( dim( A ) ) || nrow( A ) == 1 ){
+
+    A = as.vector( A )
+
+    if( length( A ) != fD$P )
+    {
+      stop( 'Error in -.fData: mismatching arguments')
+    }
+
+    fD$values = t( t( fD$values ) -
+                     as.vector( rep( A, fD$P / length( A ) ) ) )
+
+  } else if( is.matrix( A ) ) {
+
+    if( ncol( A ) != fD$P || nrow( A ) != fD$N )
+    {
+      stop('Error in -.fData: mismatching arguments' )
+    }
+
+    fD$values = fD$values - A
+  }
+
+  return( fD )
+}
+
+"*.fData" = function( fD, a )
+{
+  if( ! 1 %in% dim( as.matrix( a ) ) )
+  {
+      stop( 'Error in *.fData: dimensions are not compliant' )
+  }
+
+  fD$values = fD$values * a
+
+  return( fD )
+}
+
+"/.fData" = function( fD, a )
+{
+  if( ! 1 %in% dim( as.matrix( a ) ) )
+  {
+    stop( 'Error in /.fData: dimensions are not compliant' )
+  }
+
+  fD$values = fD$values / a
+
+  return( fD )
+}
+
+#'
+#' \code{mean.fData} method to compute the sample mean of a fData object.
+#'
+#' @param fData the functional data object containing the dataset
+#'
+mean.fData = function( fData )
+{
+  return( fData( seq( fData$t0, fData$tP, length.out = fData$P ),
+                colMeans( fData$values ) ) )
+
+}
+
+#'
+#' \code{median.fData} method to compute the sample median of a fData object.
+#'
+#' @param fData the functional data object containing the dataset
+#' @param type the type of depth definition you want to use to define the sample median (default is MBD)
+#'
+median.fData = function( fData, type = 'MBD' )
+{
+  Depths = eval( parse( text = paste( type, '( fData$values )', sep = '' ) ) )
+
+  return( fData( seq( fData$t0, fData$tP, length.out = fData$P ),
+                 fData$values[ which.max( Depths ), ] ) )
+}

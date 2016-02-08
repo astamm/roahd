@@ -27,6 +27,48 @@ quartz()
 plot( fD, xlab = 'time', ylab = 'values', main = 'A functional dataset' )
 
 
+# TESTING STATISTICS OPERATIONS -------------------------------------------
+
+mfD = mean( fD )
+medfD = median.fData( fD )
+
+
+quartz()
+plot( fD, xlab = 'time', ylab = 'value', main = 'Basic stastics of fData objects')
+plot( mfD, add = T, lwd = 2, lty = 2, col = 'darkblue' )
+plot( medfD, add = T, lwd = 2, lty = 2, col = 'darkred' )
+
+
+# TESTING ALGEBRAIC OPERATIONS --------------------------------------------
+
+fD = fData( seq( 0, 1, length.out = 10 ), values = matrix( seq( 1, 10 ), nrow = 21, ncol = 10, byrow = TRUE ) )
+
+test_that( 'Sum of fData and raw vector',
+           expect_equal( sum( ( fD + 1 : 10 )$values - matrix( 2 * seq( 1, 10 ), nrow = 21, ncol = 10, byrow = TRUE ) ), 0 ) )
+
+test_that( 'Sum of fData and raw vector',
+           expect_equal( sum( ( fD - 1 : 10 )$values ), 0 ) )
+
+test_that( 'Sum of fData and array',
+           expect_equal( sum( ( fD + array( 1, dim = c( 1, 10 ) ) )$values -
+                                matrix( seq( 2, 11 ), nrow = 21, ncol = 10, byrow = TRUE ) ), 0 ) )
+
+fD.2 = fData( seq( 0, 1, length.out = 11 ), values = matrix( seq( 1, 11 ), nrow = 21, ncol = 11, byrow = TRUE ) )
+
+test_that( 'Sum of two compliant fData objects',
+           expect_equal( sum( ( fD + fD -
+                                  matrix( 2 * seq( 1, 10 ), nrow = 21, ncol = 10, byrow = TRUE ) )$values ), 0  ) )
+
+test_that( 'Sum of two noncompliant fData objects',
+           expect_error( fD + fD.2, regexp = 'Error.*') )
+
+test_that( 'Product of fData object with scalar',
+           expect_equal( fD * 2,  fD + fD ) )
+
+test_that( 'Division of fData object by scalar',
+           expect_equal( ( fD * 4 ) / 2, fD + fD ) )
+
+
 # TESTING MFDATA ----------------------------------------------------------
 
 N = 1e2
