@@ -49,8 +49,14 @@ max_ordered = function( fData, gData )
 
 area_under_curve = function( fData)
 {
-  return( rowSums( ( fData$values[ , - 1 ] +
-                       fData$values[ , - fData$P ] ) / 2 * fData$h ) )
+  if( fData$N > 1 )
+  {
+    return( rowSums( ( fData$values[ , - 1 ] +
+                         fData$values[ , - fData$P ] ) / 2 * fData$h ) )
+  } else {
+    return( sum( ( fData$values[ , - 1 ] +
+                         fData$values[ , - fData$P ] ) / 2 * fData$h ) )
+  }
 }
 
 area_ordered = function( fData, gData )
@@ -80,4 +86,28 @@ area_ordered = function( fData, gData )
   }
 }
 
+cor_kendall = function( mfD, ordering = 'area' )
+{
+  if( mfD$L != 2 )
+  {
+    stop( ' Error in cor_kendall: only bivariate data are supported for now.')
+  }
 
+  N = mfD$N
+
+  if( ordering == 'area' )
+  {
+    count_concordances = function( iObs )( sum( area_ordered( mfD$fDList[[ 1 ]][ iObs, ],
+                                                              mfD$fDList[[ 1 ]][ ( iObs + 1 ) : N, ] ) ==
+                                                  area_ordered( mfD$fDList[[ 2 ]][ iObs, ],
+                                                                mfD$fDList[[ 2 ]][ ( iObs + 1 ) : N, ] ) ) )
+  } else if ( ordering == 'max' )
+  {
+    count_concordances = function( iObs )( sum( max_ordered( mfD$fDList[[ 1 ]][ iObs, ],
+                                                             mfD$fDList[[ 1 ]][ ( iObs + 1 ) : N, ] ) ==
+                                                  max_ordered( mfD$fDList[[ 2 ]][ iObs, ],
+                                                               mfD$fDList[[ 2 ]][ ( iObs + 1 ) : N, ] ) ) )
+  }
+
+  return( ( 2 * sum( sapply( 1 : ( N - 1 ), count_concordances ) )  - ( N * ( N - 1 ) / 2 ) ) / ( N * ( N - 1 ) / 2 ) )
+}
