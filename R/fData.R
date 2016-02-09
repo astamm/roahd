@@ -233,3 +233,42 @@ median.fData = function( fData, type = 'MBD' )
   return( fData( seq( fData$t0, fData$tP, length.out = fData$P ),
                  fData$values[ which.max( Depths ), ] ) )
 }
+
+#'
+#' \code{subset.fData} operator access to functional dataset.
+#'
+#' This is provided to grand easy and natural access to users, yet you are welcome to
+#' use fData$values[ i, j], instead.
+#'
+#' @param i a valid expression to subset rows (observations) of the functional dataset
+#' @param j a valid expression to subset columns (measurements) of the functional dataset
+#'
+"[.fData" = function( fD, i, j, as_fData = TRUE )
+{
+  if( as_fData == TRUE )
+  {
+    if( missing( j ) )
+    {
+      return( structure( list( t0 = fD$t0,
+                               tP = fD$tP,
+                               h = fD$h,
+                               P = fD$P,
+                               N = ifelse( missing( i ), fD$N, length( i ) ),
+                               values = toRowMatrixForm( fD$values[ i, ] ) ),
+                         class = c( 'fData' ) ) )
+    } else {
+      return( structure( list( t0 = fD$t0 + ( min( j ) - 1 ) * fD$h,
+                               tP = fD$t0 + ( max( j ) - 1 ) * fD$h,
+                               h = fD$h,
+                               P = length( j ),
+                               N = ifelse( missing( i ), fD$N, length( i ) ),
+                               values = toRowMatrixForm( fD$values[ i, j ] ) ),
+                         class = c( 'fData' ) ) )
+    }
+  } else {
+    return( fD$values[ i, j ] )
+  }
+}
+
+
+

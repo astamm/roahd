@@ -69,6 +69,22 @@ test_that( 'Division of fData object by scalar',
            expect_equal( ( fD * 4 ) / 2, fD + fD ) )
 
 
+# TESTING FUNCTIONAL DATA SUBSETTING --------------------------------------
+
+test_that( 'Functional data subsetting - case 1',
+           expect_identical( fD[ 1, ],
+                             fData( seq( 0, 1, length.out = 10 ), 1 : 10 ) ) )
+
+test_that( 'Functional data subsetting - case 2',
+           expect_identical( fD[ , 1:2 ],
+                             fData( seq( 0, 1, length.out = 10 )[1:2],
+                                    matrix( 1 : 2, nrow = 21, ncol = 2, byrow = T ) ) ) )
+
+test_that( 'Functional data subsetting - case 2',
+           expect_identical( fD[ 1:2, 1:2, as_fData = FALSE ],
+                             matrix( seq(1,2), nrow = 2, ncol = 2, byrow = TRUE ) ) )
+
+
 # TESTING MFDATA ----------------------------------------------------------
 
 N = 1e2
