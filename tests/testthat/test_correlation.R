@@ -140,11 +140,8 @@ Data_2 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov 
 
 mfD = mfData( time_grid, list( Data_1, Data_2 ) )
 
-# test_that( 'Kendall correlation with ',
-#            expect_silent( invisible( cor_kendall( mfD, ordering = 'max' ) ) ) )
+test_that( 'Kendall correlation with ',
+           expect_silent( invisible( cor_kendall( mfD, ordering = 'max' ) ) ) )
 
-cor_kendall( mfD, ordering = 'max' )
-cor_kendall( mfD, ordering = 'area' )
-
-
-
+test_that( 'Kendall correlation with ',
+           expect_silent( invisible( cor_kendall( mfD, ordering = 'area' ) ) ) )
