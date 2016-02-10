@@ -183,3 +183,37 @@ time / time_var
 #
 # cor_kendall__var( mfD, ordering = 'max' )
 # cor_kendall( mfD, ordering = 'max' )
+#
+
+
+# SPEARMAN RANK CORRELATION -----------------------------------------------
+
+N = 2e2
+
+P = 1e3
+
+t0 = 0
+t1 = 1
+
+time_grid = seq( t0, t1, length.out = P )
+
+# C( s, t ) = \alpha \exp( - beta | s - t | )
+# Amplitude factor
+alpha = 0.3
+
+# Correlation decay factor
+beta = 0.4
+
+Cov = outer( time_grid, time_grid, function( s, t )( alpha * exp( - beta * abs( s - t ) ) ) )
+
+Data_1 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov )
+Data_2 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov )
+
+mfD = mfData( time_grid, list( Data_1, Data_2 ) )
+
+test_that( 'Kendall correlation with MEI ordering ',
+           expect_silent( invisible( cor_spearman( mfD, ordering = 'MEI' ) ) ) )
+
+test_that( 'Kendall correlation with MHI ordering',
+           expect_silent( invisible( cor_spearman( mfD, ordering = 'MHI' ) ) ) )
+

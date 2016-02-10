@@ -147,8 +147,25 @@ cor_kendall__var = function( mfD, ordering = 'max' )
                        abs( sum( sign( R[ N,  ] - R[ N - 1, ]  ) ) ) ) / ( N * ( N - 1 ) / 2 )  - 1 )
 }
 
+#' @param ... additional parameters to be passed to rank
+cor_spearman = function( mfD, ordering = 'MEI', ... )
+{
+  if( mfD$L != 2 )
+  {
+    stop( ' Error in cor_spearman: only bivariate data are supported for now')
+  }
 
-
+  if( ordering == 'MEI' )
+  {
+    rk_1 = rank( MEI( mfD$fDList[[ 1 ]]$values ), ... )
+    rk_2 = rank( MEI( mfD$fDList[[ 2 ]]$values ), ... )
+  } else if( ordering == 'MHI' )
+  {
+    rk_1 = rank( MHI( mfD$fDList[[ 1 ]]$values ), ... )
+    rk_2 = rank( MHI( mfD$fDList[[ 2 ]]$values ), ... )
+  }
+  return( cor( rk_1, rk_2, method = 'pearson' ) )
+}
 
 
 
