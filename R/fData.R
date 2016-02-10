@@ -82,7 +82,7 @@ mfData = function( grid, Data_list )
 }
 
 
-plot.mfData = function( mfData, lty = 1, col = NULL, ... )
+plot.mfData = function( mfData, lty = 1, col = NULL, ylab = NULL, main = NULL, ... )
 {
   if( is.null( col ) )
   {
@@ -90,12 +90,43 @@ plot.mfData = function( mfData, lty = 1, col = NULL, ... )
                      0.8 )
   }
 
+  if( ! is.null( ylab ) )
+  {
+    if( length( ylab ) == 1 )
+    {
+      ylab = rep( ylab, mfData$L )
+    } else if( length( ylab ) != mfData$L )
+    {
+      stop( 'Error in plot.mfData: you specified a wrong number of y labels' )
+    }
+  } else {
+    ylab = rep( list( '' ), mfData$L )
+  }
+
+  if( ! is.null( main ) )
+  {
+    if( length( main ) == 1 )
+    {
+      main = rep( main, mfData$L )
+    } else if( length( main ) != mfData$L )
+    {
+      stop( 'Error in plot.mfData: you specified a wrong number of subtitles' )
+    }
+  } else {
+    main = rep( list( '' ), mfData$L )
+  }
+
   mfrow_rows = ceiling( mfData$L / 2 )
   mfrow_cols = 2
 
   par( mfrow = c( mfrow_rows, mfrow_cols ) )
 
-  invisible( sapply( mfData$fDList, plot, lty, col, ... ) )
+  plot_aux = function( i, ... )( plot( mfData$fDList[[ i ]], lty = lty, col = col,
+                                  ylab = ylab[[ i ]],
+                                  main = main[[ i ]],
+                                  ... ))
+
+  invisible( sapply( 1 : mfData$L, plot_aux, ... ) )
 }
 
 
