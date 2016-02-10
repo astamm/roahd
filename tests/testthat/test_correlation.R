@@ -217,3 +217,271 @@ test_that( 'Kendall correlation with MEI ordering ',
 test_that( 'Kendall correlation with MHI ordering',
            expect_silent( invisible( cor_spearman( mfD, ordering = 'MHI' ) ) ) )
 
+
+# CASE STUDIES ------------------------------------------------------------
+
+# ( With reference to the paper by Dalia Valencia, Rosa Lillo e Juan Romo)
+
+N = 50
+P = 50
+
+t0 = 0
+t1 = 1
+time_grid = seq( t0, t1, length.out = P )
+
+# Case 1
+sigma_12 = 0.8
+
+R = matrix( c( 1, sigma_12, sigma_12, 1 ), ncol = 2, nrow = 2 )
+
+Z = matrix( rnorm( N * 2, 0, 1 ), ncol = 2, nrow = N ) %*% chol( R )
+
+# X = t( ( t( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE )  ) + Z[ 1,] ) )^3
+X = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 1 ] )^3 +
+    ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 1 ] )^2 +
+    ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 1 ] ) * 3
+
+Y = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )^2 +
+    ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] ) * 7 / 8 +
+    - 10
+
+mfD = mfData( time_grid, list( X, Y ) )
+
+# quartz()
+# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 1 - X', 'Case 1 - Y' ), lwd = 2 )
+
+cor_kendall( mfD, ordering = 'max' )
+cor_kendall( mfD, ordering = 'area' )
+cor_spearman( mfD, ordering = 'MEI' )
+cor_spearman( mfD, ordering = 'MHI' )
+
+# Case 2
+sigma_12 = - 0.7
+
+R = matrix( c( 1, sigma_12, sigma_12, 1 ), ncol = 2, nrow = 2 )
+
+Z = matrix( rnorm( N * 2, 0, 1 ), ncol = 2, nrow = N ) %*% chol( R )
+
+X = sin( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 1 ] )
+
+Y = cos( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )
+
+mfD = mfData( time_grid, list( X, Y ) )
+
+# quartz()
+# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 2 - X', 'Case 2 - Y' ), lwd = 2 )
+
+cor_kendall( mfD, ordering = 'max' )
+cor_kendall( mfD, ordering = 'area' )
+cor_spearman( mfD, ordering = 'MEI' )
+cor_spearman( mfD, ordering = 'MHI' )
+
+
+# Case 3
+sigma_12 = 1
+
+Z = rnorm( N, 0, 1)
+
+X = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )^2
+
+Y = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )^4
+
+mfD = mfData( time_grid, list( X, Y ) )
+
+# quartz()
+# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 3 - X', 'Case 3 - Y' ), lwd = 2 )
+
+test_that( ' Kendall correlation coeff with max ordering - Case 3',
+           expect_equal( cor_kendall( mfD, ordering = 'max' ), 1 ) )
+test_that( ' Kendall correlation coeff with area ordering - Case 3',
+           expect_equal( cor_kendall( mfD, ordering = 'area' ), 1 ) )
+test_that( ' Spearman correlation coeff with MEI ordering - Case 3',
+           expect_equal( cor_spearman( mfD, ordering = 'MEI' ), 1 ) )
+test_that( ' Spearman correlation coeff with MHI ordering - Case 3',
+           expect_equal( cor_spearman( mfD, ordering = 'MHI' ), 1 ) )
+
+
+# Case 4
+sigma_12 = 1
+
+Z = rnorm( N, 0, 1)
+
+X = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )^2 +
+  ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z ) * 7 +
+  2
+
+Y = ( ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )^2 +
+        ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z ) * 7 +
+        2 )^3
+mfD = mfData( time_grid, list( X, Y ) )
+
+# quartz()
+# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 4 - X', 'Case 4 - Y' ), lwd = 2 )
+
+test_that( ' Kendall correlation coeff with max ordering - Case 4',
+           expect_equal( cor_kendall( mfD, ordering = 'max' ), 1 ) )
+test_that( ' Kendall correlation coeff with area ordering - Case 4',
+           expect_equal( cor_kendall( mfD, ordering = 'area' ), 1 ) )
+test_that( ' Spearman correlation coeff with MEI ordering - Case 4',
+           expect_equal( cor_spearman( mfD, ordering = 'MEI' ), 1 ) )
+test_that( ' Spearman correlation coeff with MHI ordering - Case 4',
+           expect_equal( cor_spearman( mfD, ordering = 'MHI' ), 1 ) )
+
+# Case 5
+sigma_12 = 1
+
+Z = rnorm( N, 0, 1)
+
+X = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )^2 +
+  ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z ) * 7 +
+  2
+
+Y = 1 - ( ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )^2 +
+        ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z ) * 7 +
+        2 )^3
+mfD = mfData( time_grid, list( X, Y ) )
+
+# quartz()
+# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 5 - X', 'Case 5 - Y' ), lwd = 2 )
+
+test_that( ' Kendall correlation coeff with max ordering - Case 5',
+           expect_equal( cor_kendall( mfD, ordering = 'max' ), -1 ) )
+test_that( ' Kendall correlation coeff with area ordering - Case 5',
+           expect_equal( cor_kendall( mfD, ordering = 'area' ), -1 ) )
+test_that( ' Spearman correlation coeff with MEI ordering - Case 5',
+           expect_equal( cor_spearman( mfD, ordering = 'MEI' ), -1 ) )
+test_that( ' Spearman correlation coeff with MHI ordering - Case 5',
+           expect_equal( cor_spearman( mfD, ordering = 'MHI' ), -1 ) )
+
+
+# Case 6
+sigma_12 = 0.6
+
+R = matrix( c( 1, sigma_12, sigma_12, 1 ), ncol = 2, nrow = 2 )
+
+Z = matrix( rnorm( N * 2, 0, 1 ), ncol = 2, nrow = N ) %*% chol( R )
+
+X = exp( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 1 ] )
+
+Y = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )^3 +
+    ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )^2 +
+    ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] ) * 3
+
+mfD = mfData( time_grid, list( X, Y ) )
+
+# quartz()
+# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 6 - X', 'Case 6 - Y' ), lwd = 2 )
+
+cor_kendall( mfD, ordering = 'max' )
+cor_kendall( mfD, ordering = 'area' )
+cor_spearman( mfD, ordering = 'MEI' )
+cor_spearman( mfD, ordering = 'MHI' )
+
+
+# Case 7
+sigma_12 = -0.8
+
+R = matrix( c( 1, sigma_12, sigma_12, 1 ), ncol = 2, nrow = 2 )
+
+Z = matrix( rnorm( N * 2, 0, 1 ), ncol = 2, nrow = N ) %*% chol( R )
+
+X = exp( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 1 ] )^2
+
+Y = cos( ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] ) )
+
+mfD = mfData( time_grid, list( X, Y ) )
+
+# quartz()
+# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 7 - X', 'Case 7 - Y' ), lwd = 2 )
+
+cor_kendall( mfD, ordering = 'max' )
+cor_kendall( mfD, ordering = 'area' )
+cor_spearman( mfD, ordering = 'MEI' )
+cor_spearman( mfD, ordering = 'MHI' )
+
+
+# Case 8
+sigma_12 = 0.4
+
+R = matrix( c( 1, sigma_12, sigma_12, 1 ), ncol = 2, nrow = 2 )
+
+Z = matrix( rnorm( N * 2, 0, 1 ), ncol = 2, nrow = N ) %*% chol( R )
+
+X = sin( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 1 ] )
+
+Y = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )^2
+
+mfD = mfData( time_grid, list( X, Y ) )
+
+# quartz()
+# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 8 - X', 'Case 8 - Y' ), lwd = 2 )
+
+cor_kendall( mfD, ordering = 'max' )
+cor_kendall( mfD, ordering = 'area' )
+cor_spearman( mfD, ordering = 'MEI' )
+cor_spearman( mfD, ordering = 'MHI' )
+
+# Case 9
+sigma_12 = 1
+
+Z = rnorm( N, 0, 1 )
+
+X = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )^2 +
+    ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z ) * 9 +
+    - 5
+
+Y = cos( matrix( 3 * time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )
+
+mfD = mfData( time_grid, list( X, Y ) )
+
+# quartz()
+# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 9 - X', 'Case 9 - Y' ), lwd = 2 )
+
+cor_kendall( mfD, ordering = 'max' )
+cor_kendall( mfD, ordering = 'area' )
+cor_spearman( mfD, ordering = 'MEI' )
+cor_spearman( mfD, ordering = 'MHI' )
+
+# Case 10
+sigma_12 = 0.9
+
+R = matrix( c( 1, sigma_12, sigma_12, 1 ), ncol = 2, nrow = 2 )
+
+Z = matrix( rnorm( N * 2, 0, 1 ), ncol = 2, nrow = N ) %*% chol( R )
+
+X = exp( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE )^2 + Z[ , 1 ] )
+
+Y = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )^2 +
+      matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) * ( - 8 ) +
+    ( matrix( 0, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )
+
+mfD = mfData( time_grid, list( X, Y ) )
+
+# quartz()
+# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 10 - X', 'Case 10 - Y' ), lwd = 2 )
+
+cor_kendall( mfD, ordering = 'max' )
+cor_kendall( mfD, ordering = 'area' )
+cor_spearman( mfD, ordering = 'MEI' )
+cor_spearman( mfD, ordering = 'MHI' )
+
+# Case 11
+sigma_12 = 0.
+
+R = matrix( c( 1, sigma_12, sigma_12, 1 ), ncol = 2, nrow = 2 )
+
+Z = matrix( rnorm( N * 2, 0, 1 ), ncol = 2, nrow = N ) %*% chol( R )
+
+X = exp( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE )+ Z[ , 1 ] )
+
+Y = sin( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )
+
+mfD = mfData( time_grid, list( X, Y ) )
+
+# quartz()
+# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 11 - X', 'Case 11 - Y' ), lwd = 2 )
+
+cor_kendall( mfD, ordering = 'max' )
+cor_kendall( mfD, ordering = 'area' )
+cor_spearman( mfD, ordering = 'MEI' )
+cor_spearman( mfD, ordering = 'MHI' )
