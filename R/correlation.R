@@ -86,7 +86,7 @@ area_ordered = function( fData, gData )
   }
 }
 
-cor_kendall = function( mfD, ordering = 'area' )
+cor_kendall = function( mfD, ordering = 'max' )
 {
   if( mfD$L != 2 )
   {
@@ -107,7 +107,49 @@ cor_kendall = function( mfD, ordering = 'area' )
                                                              mfD$fDList[[ 1 ]][ ( iObs + 1 ) : N, ] ) ==
                                                   max_ordered( mfD$fDList[[ 2 ]][ iObs, ],
                                                                mfD$fDList[[ 2 ]][ ( iObs + 1 ) : N, ] ) ) )
+  }else
+  {
+    stop( ' Error in cor_kendall: unsupported ordering relation')
   }
 
   return( ( 2 * sum( sapply( 1 : ( N - 1 ), count_concordances ) )  - ( N * ( N - 1 ) / 2 ) ) / ( N * ( N - 1 ) / 2 ) )
 }
+
+
+cor_kendall__var = function( mfD, ordering = 'max' )
+{
+    if( mfD$L != 2 )
+    {
+      stop( 'Error in cor_kendall__var: only bivariate data are supported for now' )
+    }
+
+  N = mfD$N
+
+  if( ordering == 'max' )
+  {
+    R = matrix( c( max( mfD$fDList[[ 1 ]] ),
+                   max( mfD$fDList[[ 2 ]] ) ),
+                ncol = 2, nrow = N, byrow = FALSE )
+
+  } else if( ordering == 'area' )
+  {
+    R = matrix( c( area_under_curve( mfD$fDList[[ 1 ]] ),
+                   area_under_curve( mfD$fDList[[ 2 ]] ) ),
+                ncol = 2, nrow = N, byrow = FALSE )
+
+  } else{
+    stop( ' Error in cor_kendall__var: unsupported ordering relation')
+  }
+
+  aux_function = function( iRow )( sum( abs( rowSums( sign( t( t( R[ ( iRow + 1 ) : N,  ] ) - R[ iRow, ] ) ) ) ) ) )
+
+  return( ( sum( sapply( 1 : ( N - 2 ), aux_function ) ) +
+                       abs( sum( sign( R[ N,  ] - R[ N - 1, ]  ) ) ) ) / ( N * ( N - 1 ) / 2 )  - 1 )
+}
+
+
+
+
+
+
+

@@ -117,7 +117,7 @@ test_that( 'Max_ordering - case 6',
 
 # KENDALL CORRELATION -----------------------------------------------------
 
-N = 1e2
+N = 2e2
 
 P = 1e3
 
@@ -140,8 +140,46 @@ Data_2 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov 
 
 mfD = mfData( time_grid, list( Data_1, Data_2 ) )
 
-test_that( 'Kendall correlation with ',
+test_that( 'Kendall correlation with max ordering ',
            expect_silent( invisible( cor_kendall( mfD, ordering = 'max' ) ) ) )
 
-test_that( 'Kendall correlation with ',
+test_that( 'Kendall correlation with area ordering',
            expect_silent( invisible( cor_kendall( mfD, ordering = 'area' ) ) ) )
+
+test_that( 'Kendall correlation and var method',
+           expect_equal( cor_kendall( mfD, ordering = 'max' ),
+                         cor_kendall__var( mfD, ordering = 'max' ) ) )
+
+test_that( 'Kendall correlation and var method',
+           expect_equal( cor_kendall( mfD, ordering = 'area' ),
+                         cor_kendall__var( mfD, ordering = 'area' ) ) )
+
+time = system.time( cor_kendall( mfD, ordering = 'max' ) )
+time_var = system.time( cor_kendall__var( mfD, ordering = 'max' ) )
+
+time / time_var
+
+time = system.time( cor_kendall( mfD, ordering = 'area' ) )
+time_var = system.time( cor_kendall__var( mfD, ordering = 'area' ) )
+
+time / time_var
+
+# P = 10
+#
+# Data_1 = matrix( c( rep( 3, P ),
+#                     rep( 2, P ),
+#                     rep( 1, P ) ),
+#                  nrow = 3, ncol = P, byrow = TRUE )
+#
+# Data_2 = matrix( c( rep( 1, P ),
+#                     rep( 3, P ),
+#                     rep( 2, P ) ),
+#                  nrow = 3, ncol = P, byrow = TRUE )
+#
+# mfD = mfData( 1:10, list( Data_1, Data_2 ) )
+#
+# cor_kendall( mfD, ordering = 'max' )
+# cor_kendall( mfD, ordering = 'area' )
+#
+# cor_kendall__var( mfD, ordering = 'max' )
+# cor_kendall( mfD, ordering = 'max' )
