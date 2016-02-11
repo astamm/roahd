@@ -1,5 +1,17 @@
 
 
+#'
+#' \code{max.fData} maximum of an univariate functional dataset
+#'
+#'  It computes the maximum value of each element of the functional dataset,
+#'  and optionally returns also the value of the grid where they are fulfilled
+#'
+#' @param fData the functional dataset containing elements whose maxima have to
+#' be computed
+#' @param ... additional parameters to pass to max
+#' @param which logical flag specifying whether the grid values where maxima are
+#' fulfilled have to be returned too
+#'
 max.fData = function( fData, ..., which = FALSE )
 {
 
@@ -14,6 +26,18 @@ max.fData = function( fData, ..., which = FALSE )
 }
 
 
+#'
+#' \code{min.fData} minimum of an univariate functional dataset
+#'
+#'  It computes the minimum value of each element of the functional dataset,
+#'  and optionally returns also the value of the grid where they are fulfilled
+#'
+#' @param fData the functional dataset containing elements whose minima have to
+#' be computed
+#' @param ... additional parameters to pass to max
+#' @param which logical flag specifying whether the grid values where minima are
+#' fulfilled have to be returned too
+#'
 min.fData = function( fData, ..., which = FALSE )
 {
   if( which )
@@ -26,6 +50,24 @@ min.fData = function( fData, ..., which = FALSE )
 
 }
 
+
+#'  Maximum order relation among univariate functional data
+#'
+#'  It implements the maximum order relation among univariate functional data,
+#'  that is the pre-order relation obtained by comparing the maxima of two
+#'  different functional data.
+#'
+#'  It accepts two fData objects, that can have either same sample size (number
+#'  of elemnets), or just one element. In the former case the comparison is made
+#'  element-wise between corresponding observations of the two datasets; in the
+#'  latter case, the dataset with just one observation is used cyclically
+#'  against the other one (if need be).
+#'
+#' @param fData the first univariate functional dataset containing elements to
+#' be compared
+#' @param gData the second univariate functional dataset containing elements to
+#' be compared
+#'
 max_ordered = function( fData, gData )
 {
   if( fData$P != gData$P ||
@@ -46,7 +88,15 @@ max_ordered = function( fData, gData )
   return( max( fData ) - max( gData ) <= 0 )
 }
 
-
+#'
+#' Area under curve of elements of a univariate functional dataset
+#'
+#'  It computes the area under the curve of elements of a univariate functional
+#'  dataset. A plain trapezoidal rule is employed to compute the integral.
+#'
+#' @param fData the functional dataset containing elements whose areas under the
+#' curve have to be computed
+#'
 area_under_curve = function( fData)
 {
   if( fData$N > 1 )
@@ -59,6 +109,23 @@ area_under_curve = function( fData)
   }
 }
 
+#'  Area under curve order relation among univariate functional data
+#'
+#'  It implements the area under curve order relation among univariate f
+#'  unctional data, that is the pre-order relation obtained by comparing the
+#'  area under curve maxima of two different functional data.
+#'
+#'  It accepts two fData objects, that can have either same sample size (number
+#'  of elemnets), or just one element. In the former case the comparison is made
+#'  element-wise between corresponding observations of the two datasets; in the
+#'  latter case, the dataset with just one observation is used cyclically
+#'  against the other one (if need be).
+#'
+#' @param fData the first univariate functional dataset containing elements to
+#' be compared
+#' @param gData the second univariate functional dataset containing elements to
+#' be compared
+#'
 area_ordered = function( fData, gData )
 {
   if( fData$P != gData$P ||
@@ -86,6 +153,18 @@ area_ordered = function( fData, gData )
   }
 }
 
+#'  Kendall's tau correlation coefficient for a bivariate functional dataset
+#'
+#'  It implements the computation of the Kendall's tau correlation coefficient
+#'  for bivariate functional data, with the prescribed order relation (either
+#'  max or area-under-curve)
+#'
+#' @param mfD the bivariate functional dataset whose Kendall's tau
+#' coefficient must be computed
+#' @param ordering the ordering relation to use on functional observations,
+#' either "max" for the maximum relation or "area" for the area under the curve
+#' relation
+#'
 cor_kendall = function( mfD, ordering = 'max' )
 {
   if( mfD$L != 2 )
@@ -147,7 +226,18 @@ cor_kendall__var = function( mfD, ordering = 'max' )
                        abs( sum( sign( R[ N,  ] - R[ N - 1, ]  ) ) ) ) / ( N * ( N - 1 ) / 2 )  - 1 )
 }
 
-#' @param ... additional parameters to be passed to rank
+#'  Spearman's correlation coefficient for a bivariate functional dataset
+#'
+#'  It implements the computation of the Spearmans's correlation coefficient
+#'  for bivariate functional data, with the prescribed order relation (either
+#'  MEI or MHI)
+#'
+#' @param mfD the bivariate functional dataset whose Kendall's tau
+#' coefficient must be computed
+#' @param ordering the ordering relation to use on functional observations,
+#' either "MEI" or "MHI"
+#' @param ... additional parameters to be passed to rank function
+#'
 cor_spearman = function( mfD, ordering = 'MEI', ... )
 {
   if( mfD$L != 2 )

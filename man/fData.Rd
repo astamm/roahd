@@ -2,16 +2,18 @@
 % Please edit documentation in R/fData.R
 \name{fData}
 \alias{fData}
-\title{\code{fData} generic class for (univariate) functional data.}
+\title{\code{fData} generic class for univariate functional data.}
 \usage{
 fData(grid, values)
 }
 \arguments{
-\item{grid}{the (evenly spaced) grid over which the functional data is defined}
+\item{grid}{the evenly spaced grid over which the functional data is defined}
 
-\item{values}{the time-by-time values of the functional dataset, provided either in a vector or matrix-like representation, with N rows (observations) and P columns (time points)}
+\item{values}{the time-by-time values of the functional dataset, provided
+either in a vector or matrix-like representation, with N rows (observations)
+and P columns (time points)}
 }
 \description{
-\code{fData} generic class for (univariate) functional data.
+\code{fData} generic class for univariate functional data.
 }
 

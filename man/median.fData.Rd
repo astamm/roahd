@@ -9,9 +9,12 @@
 \arguments{
 \item{fData}{the functional data object containing the dataset}
 
-\item{type}{the type of depth definition you want to use to define the sample median (default is MBD)}
+\item{type}{depth definition to use in order to find the sample median
+(default is MBD)}
 }
 \description{
-\code{median.fData} method to compute the sample median of a fData object.
+It computes the depth-based median of a univariate functional dataset, i.e.
+it finds the deepest element of the functional dataset according to a
+specified definition of depth.
 }
 

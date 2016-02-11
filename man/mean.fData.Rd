@@ -7,9 +7,10 @@
 \method{mean}{fData}(fData)
 }
 \arguments{
-\item{fData}{the functional data object containing the dataset}
+\item{fData}{the functional data object representing the dataset}
 }
 \description{
-\code{mean.fData} method to compute the sample mean of a fData object.
+It computes the \bold{cross-sectional} mean of a univariate functional
+dataset, i.e., its time-by-time sample mean.
 }
 

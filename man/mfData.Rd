@@ -9,7 +9,9 @@ mfData(grid, Data_list)
 \arguments{
 \item{grid}{the (evenly spaced) grid over which the functional data is defined}
 
-\item{Data_list}{a list containing the time-by-time values of functional dataset, where each node of the list (possibly named) represents a particular dimension of the multivariate dataset.}
+\item{Data_list}{a list containing the time-by-time values of functional
+dataset, where each node of the list (possibly named) represents a particular
+dimension of the multivariate dataset.}
 }
 \description{
 \code{mfData} generic class for (multivariate) functional data.
