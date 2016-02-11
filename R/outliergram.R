@@ -37,9 +37,6 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
                         q_low = 0, q_high = 1, p_check = 0.05,
                         adjust = FALSE, display = TRUE, ... )
 {
-  require( scales )
-  require( robustbase )
-
   N = nrow( Data )
 
   if( is.null( time_grid ) )

@@ -46,8 +46,6 @@ fbplot = function( fData, Depths = 'MBD',
 
   } else {
 
-    library( robustbase )
-
     N_trials = ifelse( is.null( adjust$N_trials ),
                        20,
                        adjust$N_trials )
@@ -138,8 +136,6 @@ fbplot = function( fData, Depths = 'MBD',
 
   if( ! display == FALSE )
   {
-    library(scales)
-
     # Creating color palettes
     col_non_outlying = scales::hue_pal( h = c( 180, 270 ),
                                         l = 60 )( fData$N - length( ID_out ) )
