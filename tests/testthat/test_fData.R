@@ -28,15 +28,15 @@ test_that( 'Plot of fData object',
 # TESTING STATISTICS OPERATIONS -------------------------------------------
 
 test_that( 'Mean of fData object',
-           expect_equal( as.numeric( mean( fD )$values ),
+           expect_equal( as.numeric( mean_fData( fD )$values ),
                          colMeans( fD$values ) ) )
 
 test_that( 'Median of fData obejct - MBD',
-           expect_equal( as.numeric( median.fData( fD )$value ),
+           expect_equal( as.numeric( median_fData( fD )$value ),
                          fD$values[ which.max( MBD( fD$values ) ), ]) )
 
 test_that( 'Median of fData obejct - MHRD',
-           expect_equal( as.numeric( median.fData( fD, type = 'MHRD' )$value ),
+           expect_equal( as.numeric( median_fData( fD, type = 'MHRD' )$value ),
                          fD$values[ which.max( MHRD( fD$values ) ), ]) )
 
 

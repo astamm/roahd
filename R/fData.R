@@ -311,14 +311,14 @@ plot.mfData = function( mfData, lty = 1, col = NULL, ylab = NULL, main = NULL, .
 }
 
 #'
-#' \code{mean.fData} method to compute the sample mean of a fData object.
+#' \code{mean_fData} method to compute the sample mean of a fData object.
 #'
 #' It computes the \bold{cross-sectional} mean of a univariate functional
 #' dataset, i.e., its time-by-time sample mean.
 #'
 #' @param fData the functional data object representing the dataset
 #'
-mean.fData = function( fData )
+mean_fData = function( fData )
 {
   return( fData( seq( fData$t0, fData$tP, length.out = fData$P ),
                 colMeans( fData$values ) ) )
@@ -326,7 +326,7 @@ mean.fData = function( fData )
 }
 
 #'
-#' \code{median.fData} method to compute the sample median of a fData object.
+#' \code{median_fData} method to compute the sample median of a fData object.
 #'
 #' It computes the depth-based median of a univariate functional dataset, i.e.
 #' it finds the deepest element of the functional dataset according to a
@@ -336,7 +336,7 @@ mean.fData = function( fData )
 #' @param type depth definition to use in order to find the sample median
 #' (default is MBD)
 #'
-median.fData = function( fData, type = 'MBD' )
+median_fData = function( fData, type = 'MBD' )
 {
   Depths = eval( parse( text = paste( type, '( fData$values )', sep = '' ) ) )
 

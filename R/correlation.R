@@ -1,7 +1,7 @@
 
 
 #'
-#' \code{max.fData} maximum of an univariate functional dataset
+#' \code{max_fData} maximum of an univariate functional dataset
 #'
 #'  It computes the maximum value of each element of the functional dataset,
 #'  and optionally returns also the value of the grid where they are fulfilled
@@ -12,7 +12,7 @@
 #' @param which logical flag specifying whether the grid values where maxima are
 #' fulfilled have to be returned too
 #'
-max.fData = function( fData, ..., which = FALSE )
+max_fData = function( fData, ..., which = FALSE )
 {
 
   if( which )
@@ -27,7 +27,7 @@ max.fData = function( fData, ..., which = FALSE )
 
 
 #'
-#' \code{min.fData} minimum of an univariate functional dataset
+#' \code{min_fData} minimum of an univariate functional dataset
 #'
 #'  It computes the minimum value of each element of the functional dataset,
 #'  and optionally returns also the value of the grid where they are fulfilled
@@ -38,7 +38,7 @@ max.fData = function( fData, ..., which = FALSE )
 #' @param which logical flag specifying whether the grid values where minima are
 #' fulfilled have to be returned too
 #'
-min.fData = function( fData, ..., which = FALSE )
+min_fData = function( fData, ..., which = FALSE )
 {
   if( which )
   {
@@ -85,7 +85,7 @@ max_ordered = function( fData, gData )
             objects or at least one of them with 1 observation.')
   }
 
-  return( max( fData ) - max( gData ) <= 0 )
+  return( max_fData( fData ) - max_fData( gData ) <= 0 )
 }
 
 #'
@@ -205,8 +205,8 @@ cor_kendall = function( mfD, ordering = 'max' )
 
   if( ordering == 'max' )
   {
-    R = matrix( c( max( mfD$fDList[[ 1 ]] ),
-                   max( mfD$fDList[[ 2 ]] ) ),
+    R = matrix( c( max_fData( mfD$fDList[[ 1 ]] ),
+                   max_fData( mfD$fDList[[ 2 ]] ) ),
                 ncol = 2, nrow = N, byrow = FALSE )
 
   } else if( ordering == 'area' )

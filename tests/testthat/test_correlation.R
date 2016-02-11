@@ -18,27 +18,27 @@ fD = fData( time_grid, Data )
 # plot( fD, lwd = 2 )
 
 test_that( 'Max function for functional data, which = TRUE, grid',
-           expect_equal( max( fD, which = TRUE )$grid,
+           expect_equal( max_fData( fD, which = TRUE )$grid,
                              c( 1, 1, 0 + 4999 * h ) ) )
 
 test_that( 'Max function for functional data, which = TRUE, value',
-           expect_equal( max( fD, which = TRUE )$value,
+           expect_equal( max_fData( fD, which = TRUE )$value,
                              c( 1, 2, 3 * ( 0.5 - abs( 0.5 - 4999 * h) ) ) ) )
 
 test_that( 'Min function for functional data, which = TRUE, grid',
-           expect_equal( min( fD, which = TRUE )$grid,
+           expect_equal( min_fData( fD, which = TRUE )$grid,
                          c( 0, 0, 0 ) ) )
 
 test_that( 'Min function for functional data, which = TRUE, value',
-           expect_equal( min( fD, which = TRUE )$value,
+           expect_equal( min_fData( fD, which = TRUE )$value,
                          c( 0, 0, 0 ) ) )
 
 test_that( 'Max function for functional data, which = FALSE',
-           expect_equal( max( fD, which = FALSE ),
+           expect_equal( max_fData( fD, which = FALSE ),
                          c( 1, 2, 3 * ( 0.5 - abs( 0.5 - 4999 * h) ) ) ) )
 
 test_that( 'Min function for functional data, which = FALSE',
-           expect_equal( min( fD, which = FALSE ),
+           expect_equal( min_fData( fD, which = FALSE ),
                          c( 0, 0, 0 ) ) )
 
 test_that( 'Area under the curve',
