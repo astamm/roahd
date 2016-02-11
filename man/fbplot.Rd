@@ -4,20 +4,25 @@
 \alias{fbplot}
 \title{Functional boxplot}
 \usage{
-fbplot(time_grid = NULL, Data, Depths = "MBD", adjust = FALSE,
-  display = TRUE, ..., verbose = FALSE)
+fbplot(fData, Depths = "MBD", adjust = FALSE, display = TRUE, ...,
+  verbose = FALSE)
 }
 \arguments{
-\item{time_grid}{optional, a vector corresponding to the time grid over which the functions are evaluated (it must be
-evenly spaced)}
+\item{fData}{the univariate functional dataset whose functional boxplot is
+desired}
 
-\item{Data}{the dataset of functional data, having observations on the rows and time points on columns}
+\item{Depths}{either a vector containing the depths for each element of the
+dataset, or a string containing the name of the method you want to use to
+compute it. In this case the name of the method must be included in the
+caller's environment}
 
-\item{Depths}{either a vector containing the depths for each element of the dataset, or a string containing the name of the method you want to use to compute it. In this case the name of the method must be included in the caller's environment}
+\item{adjust}{either FALSE if you would like the default value for the
+inflation factor, F = 1.5, to be used, or a list specifying the parameters
+required by the adjustment.}
 
-\item{adjust}{either FALSE if you would like the default value for the inflation factor, F = 1.5, to be used, or a list specifying the parameters required by the adjustment.}
-
-\item{display}{either a logical value indicating wether you want the functional boxplot to be displayed, or the number of the graphical devices where you want the boxplot to be plotted.}
+\item{display}{either a logical value indicating wether you want the
+functional boxplot to be displayed, or the number of the graphical devices
+where you want the boxplot to be plotted.}
 }
 \description{
 \code{fbplot} displays the functional boxplot of a dataset of functional data.

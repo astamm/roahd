@@ -31,7 +31,8 @@
 #' outliergram to be displayed, or the number of the graphical devices
 #' where you want the boxplot to be plotted.
 #'
-outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL, q_low = 0, q_high = 1, p_check = 0.05,
+outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL,
+                        q_low = 0, q_high = 1, p_check = 0.05,
                         adjust = FALSE, display = TRUE, ... )
 {
   require( scales )
@@ -91,7 +92,7 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
                       FALSE,
                       adjust$VERBOSE )
 
-    Cov = covOGK( Data, sigmamu = s_Qn )$cov
+    Cov = robustbase::covOGK( Data, sigmamu = robustbase::s_Qn )$cov
 
     CholCov <- chol( Cov )
 
@@ -134,7 +135,8 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
 
     Fvalue = mean( Fvalues )
 
-    out = .outliergram( time_grid, Data, MBD_data, MEI_data, p_check, q_low, q_high, Fvalue = Fvalue, shift = TRUE  )
+    out = .outliergram( time_grid, Data, MBD_data, MEI_data, p_check, q_low,
+                        q_high, Fvalue = Fvalue, shift = TRUE  )
   }
 
   a_0_2 = -2 / ( N * ( N - 1 ) )
@@ -145,20 +147,24 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
   if( display )
   {
     # Setting up palettes
-    col_non_outlying = scales::hue_pal( h = c( 180, 270 ), l = 60 )( length( out$ID_NO ) )
+    col_non_outlying = scales::hue_pal( h = c( 180, 270 ),
+                                        l = 60 )( length( out$ID_NO ) )
 
     col_non_outlying = set_alpha( col_non_outlying, 0.5 )
 
-    col_outlying = scales::hue_pal( h = c( - 90, 180  ), c = 150 )( length( out$ID_SO ) )
-    # col_labels_outlying = scales::hue_pal( h = c( -10, 10 ), c = 1000, l = 20 )( length( out$ID_SO ) )
+    col_outlying = scales::hue_pal( h = c( - 90, 180  ),
+                                    c = 150 )( length( out$ID_SO ) )
 
     dev.cur()
     par( mfrow = c( 1, 2 ) )
 
     # Plotting functional data
-    matplot( time_grid, t( Data[ - out$ID_SO, ] ), type = 'l', lty = 1, ylim = range( Data ),
+    matplot( time_grid, t( Data[ - out$ID_SO, ] ), type = 'l', lty = 1,
+             ylim = range( Data ),
              col = col_non_outlying, ... )
-    matplot( time_grid, t( toRowMatrixForm( Data[   out$ID_SO, ] ) ), type = 'l', lty = 1, lwd = 3, ylim = range( Data ),
+
+    matplot( time_grid, t( toRowMatrixForm( Data[   out$ID_SO, ] ) ), type = 'l',
+             lty = 1, lwd = 3, ylim = range( Data ),
              col = col_outlying, add = TRUE )
 
     # Adding text labels with curve ID
@@ -168,7 +174,8 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
     {
       text( time_grid[ 1 ] + ( 2 * iOut - 1 ) * w_spacing,
             Data[ out$ID_SO[ iOut ],
-                  which.min( abs( time_grid - time_grid[ 1 ] - ( 2 * iOut - 1 ) * w_spacing ) ) ] +
+                  which.min( abs( time_grid - time_grid[ 1 ] -
+                                    ( 2 * iOut - 1 ) * w_spacing ) ) ] +
               diff( range( Data[ out$ID_SO[ iOut ]  ] ) ) / 30,
             out$ID_SO[ iOut ],
             col = col_outlying[ iOut ] )
@@ -178,7 +185,7 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
 
     # Upper parabolic limit
     grid_1D = seq( 0, 1, length.out = 100 )
-    # plot( sort( out$MEI_data ), a_0_2 + a_1 * sort( out$MEI_data ) + a_0_2 * N^2 * sort( out$MEI_data )^2,
+
     plot( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2,
           lty = 2, type = 'l', col = 'darkblue', lwd = 2, ylim = c( 0, a_0_2 + a_1 / 2 + a_0_2 * N^2/4 ),
           main = 'Outliergram', xlab = 'MEI', ylab = 'MBD' )

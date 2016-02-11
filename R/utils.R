@@ -47,3 +47,15 @@ set_alpha = function( col, alpha )
                                                     x[ 4 ],
                                                     maxColorValue = 255 ) ) ) )
 }
+
+#' Function to obtain an exponential covariance function over a grid
+#'
+#'  \eqn{C( s, t ) = \alpha e^{ - \beta | s - t | }}
+#'
+#' @param time_grid a vector of time points
+#' @param alpha the
+#'
+exp_cov_function = function( time_grid, alpha, beta )
+{
+  return(  outer( time_grid, time_grid, function( s, t )( alpha * exp( - beta * abs( s - t ) ) ) ) )
+}
