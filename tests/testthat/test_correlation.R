@@ -126,14 +126,7 @@ t1 = 1
 
 time_grid = seq( t0, t1, length.out = P )
 
-# C( s, t ) = \alpha \exp( - beta | s - t | )
-# Amplitude factor
-alpha = 0.3
-
-# Correlation decay factor
-beta = 0.4
-
-Cov = outer( time_grid, time_grid, function( s, t )( alpha * exp( - beta * abs( s - t ) ) ) )
+Cov = exp_cov_function( time_grid, alpha = 0.3, beta = 0.4 )
 
 Data_1 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov )
 Data_2 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov )
@@ -146,23 +139,23 @@ test_that( 'Kendall correlation with max ordering ',
 test_that( 'Kendall correlation with area ordering',
            expect_silent( invisible( cor_kendall( mfD, ordering = 'area' ) ) ) )
 
-test_that( 'Kendall correlation and var method',
-           expect_equal( cor_kendall( mfD, ordering = 'max' ),
-                         cor_kendall__var( mfD, ordering = 'max' ) ) )
-
-test_that( 'Kendall correlation and var method',
-           expect_equal( cor_kendall( mfD, ordering = 'area' ),
-                         cor_kendall__var( mfD, ordering = 'area' ) ) )
-
-time = system.time( cor_kendall( mfD, ordering = 'max' ) )
-time_var = system.time( cor_kendall__var( mfD, ordering = 'max' ) )
-
-time / time_var
-
-time = system.time( cor_kendall( mfD, ordering = 'area' ) )
-time_var = system.time( cor_kendall__var( mfD, ordering = 'area' ) )
-
-time / time_var
+# test_that( 'Kendall correlation and var method',
+#            expect_equal( cor_kendall( mfD, ordering = 'max' ),
+#                          cor_kendall__var( mfD, ordering = 'max' ) ) )
+#
+# test_that( 'Kendall correlation and var method',
+#            expect_equal( cor_kendall( mfD, ordering = 'area' ),
+#                          cor_kendall__var( mfD, ordering = 'area' ) ) )
+#
+# time = system.time( cor_kendall( mfD, ordering = 'max' ) )
+# time_var = system.time( cor_kendall__var( mfD, ordering = 'max' ) )
+#
+# time / time_var
+#
+# time = system.time( cor_kendall( mfD, ordering = 'area' ) )
+# time_var = system.time( cor_kendall__var( mfD, ordering = 'area' ) )
+#
+# time / time_var
 
 # P = 10
 #
@@ -197,14 +190,7 @@ t1 = 1
 
 time_grid = seq( t0, t1, length.out = P )
 
-# C( s, t ) = \alpha \exp( - beta | s - t | )
-# Amplitude factor
-alpha = 0.3
-
-# Correlation decay factor
-beta = 0.4
-
-Cov = outer( time_grid, time_grid, function( s, t )( alpha * exp( - beta * abs( s - t ) ) ) )
+Cov = exp_cov_function( time_grid, alpha = 0.3, beta = 0.4 )
 
 Data_1 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov )
 Data_2 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov )

@@ -23,6 +23,10 @@ required by the adjustment.}
 \item{display}{either a logical value indicating wether you want the
 functional boxplot to be displayed, or the number of the graphical devices
 where you want the boxplot to be plotted.}
+
+\item{...}{additional graphical parameters to be used in plotting functions}
+
+\item{verbose}{logical flag to enable verbosity in the adjustment process}
 }
 \description{
 \code{fbplot} displays the functional boxplot of a dataset of functional data.

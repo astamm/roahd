@@ -9,7 +9,6 @@ Description: NA
 License: NA
 LazyData: NA
 Suggests: testthat
-Imports: RColorBrewer,
-    scales,
-    robustbase,
-    stats
+Imports: scales,
+	 robustbase,
+    	 stats

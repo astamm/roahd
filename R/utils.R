@@ -53,9 +53,11 @@ set_alpha = function( col, alpha )
 #'  \eqn{C( s, t ) = \alpha e^{ - \beta | s - t | }}
 #'
 #' @param time_grid a vector of time points
-#' @param alpha the
+#' @param alpha the alpha parameter in the exponential covariance formula
+#' @param beta the beta parameter in the exponential covariance formula
 #'
 exp_cov_function = function( time_grid, alpha, beta )
 {
-  return(  outer( time_grid, time_grid, function( s, t )( alpha * exp( - beta * abs( s - t ) ) ) ) )
+  return(  outer( time_grid, time_grid,
+                  function( s, t )( alpha * exp( - beta * abs( s - t ) ) ) ) )
 }

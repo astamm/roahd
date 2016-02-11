@@ -7,6 +7,8 @@
 \method{[}{fData}(fD, i, j, as_fData = TRUE)
 }
 \arguments{
+\item{fD}{the univariate functional dataset}
+
 \item{i}{a valid expression to subset rows (observations) of the univariate
 functional dataset}
 

@@ -351,6 +351,7 @@ median.fData = function( fData, type = 'MBD' )
 #' without having to deal with the inner representation of functional datasets
 #' of fData
 #'
+#' @param fD the univariate functional dataset
 #' @param i a valid expression to subset rows (observations) of the univariate
 #' functional dataset
 #' @param j a valid expression to subset columns (measurements) of the univariate

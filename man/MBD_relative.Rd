@@ -5,8 +5,7 @@
 \title{Relative Modified Band Depth of functions in a functional dataset
 \code{MBD_relative} computes the Modified Band Depth (MBD) of a functional dataset (Data_target) with respect to another (Data_reference)}
 \usage{
-MBD_relative(Data_target, Data_reference, strict_inclusion = FALSE,
-  ties_method = "average")
+MBD_relative(Data_target, Data_reference)
 }
 \arguments{
 \item{Data_target}{is the dataset containing signals whose depths are to be computed with respect to the reference population.}

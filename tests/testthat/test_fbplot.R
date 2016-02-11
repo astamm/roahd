@@ -33,7 +33,6 @@ test_that( 'Functional boxplot - simple',
            expect_silent( fbplot( fD, xlab = 'time', ylab = 'value',
                                   main = 'My Functional Boxplot' ) ) )
 
-
 # TESTING THE ADJUSTED FUNCTIONAL BOXPLOT ---------------------------------
 
 time_grid = seq( 0, 1, length.out = 1e2 )

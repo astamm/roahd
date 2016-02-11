@@ -14,6 +14,8 @@
 #' @param display either a logical value indicating wether you want the
 #' functional boxplot to be displayed, or the number of the graphical devices
 #' where you want the boxplot to be plotted.
+#' @param ... additional graphical parameters to be used in plotting functions
+#' @param verbose logical flag to enable verbosity in the adjustment process
 #'
 fbplot = function( fData, Depths = 'MBD',
                    adjust = FALSE, display = TRUE, ..., verbose = FALSE )
@@ -92,7 +94,8 @@ fbplot = function( fData, Depths = 'MBD',
     cost_functional = function( F_curr )( length( .fbplot( time_grid,
                                                            Data_gauss,
                                                            Depths = Depths_spec,
-                                                           Fvalue = F_curr )$ID_out ) / trial_size - TPR )
+                                                           Fvalue = F_curr )$ID_out ) /
+                                            trial_size - TPR )
 
     for( iTrial in 1 : N_trials )
     {
@@ -149,9 +152,11 @@ fbplot = function( fData, Depths = 'MBD',
     col_center = set_alpha( 'blue', alpha = 1 )
     col_fence_structure = 'darkblue'
 
+    time_grid = seq( fData$t0, fData$tP, length.out = fData$P )
 
     # Plotting non-outlying data
-    matplot( time_grid, t( fData$values[ - ID_out, ] ), lty = 1, type = 'l',
+    matplot( time_grid,
+             t( fData$values[ - ID_out, ] ), lty = 1, type = 'l',
              col = col_non_outlying, ylim = range( rbind( fData$values,
                                                           out$fence_upper,
                                                           out$fence_lower ) ), ... )
@@ -163,7 +168,8 @@ fbplot = function( fData, Depths = 'MBD',
 
     # Filling in the central envelope
 
-    polygon( c(time_grid, rev( time_grid) ), c( out$min_envelope_central, rev( out$max_envelope_central ) ),
+    polygon( c(time_grid, rev( time_grid) ),
+             c( out$min_envelope_central, rev( out$max_envelope_central ) ),
              col = col_envelope, border = NA)
     lines( time_grid, out$max_envelope_central, lty = 1, col = col_envelope, lwd = 3 )
     lines( time_grid, out$min_envelope_central, lty = 1, col = col_envelope, lwd = 3 )
@@ -177,8 +183,10 @@ fbplot = function( fData, Depths = 'MBD',
     # lines( time_grid, out$fence_lower, lty = 2, col = 'red', lwd = 2 )
 
     # Plotting closest data to fences
-    id_uppermost = which.min( apply( - t( t( fData$values[ - ID_out, ]) + out$fence_upper ), 1, min )  )
-    id_lowermost = which.min( apply(   t( t( fData$values[ - ID_out, ]) - out$fence_lower ), 1, min )  )
+    id_uppermost = which.min( apply( - t( t( fData$values[ - ID_out, ]) +
+                                            out$fence_upper ), 1, min )  )
+    id_lowermost = which.min( apply(   t( t( fData$values[ - ID_out, ]) -
+                                            out$fence_lower ), 1, min )  )
 
     lines( time_grid, fData$values[ -ID_out, ][ id_uppermost, ], lty = 1,
            col = col_fence_structure, lwd = 3 )
@@ -228,7 +236,8 @@ fbplot = function( fData, Depths = 'MBD',
   fence_upper = ( max_envelope_central - Data_center ) * Fvalue + Data_center
   fence_lower = ( min_envelope_central - Data_center ) * Fvalue + Data_center
 
-  ID_outlying = which( apply( Data, 1, function(x)( any( x > fence_upper  ) | any ( x < fence_lower ) ) ) )
+  ID_outlying = which( apply( Data, 1, function(x)( any( x > fence_upper  ) |
+                                                      any ( x < fence_lower ) ) ) )
 
   return( list( ID_out = ID_outlying,
                 min_envelope_central = min_envelope_central,

@@ -30,6 +30,8 @@
 #' @param display either a logical value indicating wether you want the
 #' outliergram to be displayed, or the number of the graphical devices
 #' where you want the boxplot to be plotted.
+#' @param ... additional graphical parameters to be used only in the plot of the
+#' functional dataset
 #'
 outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL,
                         q_low = 0, q_high = 1, p_check = 0.05,
@@ -187,12 +189,14 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
     grid_1D = seq( 0, 1, length.out = 100 )
 
     plot( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2,
-          lty = 2, type = 'l', col = 'darkblue', lwd = 2, ylim = c( 0, a_0_2 + a_1 / 2 + a_0_2 * N^2/4 ),
+          lty = 2, type = 'l', col = 'darkblue', lwd = 2,
+          ylim = c( 0, a_0_2 + a_1 / 2 + a_0_2 * N^2/4 ),
           main = 'Outliergram', xlab = 'MEI', ylab = 'MBD' )
 
     points( out$MEI_data[ - out$ID_SO ], out$MBD_data[ - out$ID_SO ],
             pch = 16, col = col_non_outlying )
-    points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ], pch = 16, cex = 1.5, col = col_outlying )
+    points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ],
+            pch = 16, cex = 1.5, col = col_outlying )
 
     for( idOut in out$ID_SO )
     {
@@ -205,10 +209,12 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
     # lower parabolic limit
     if( is.list( adjust ) )
     {
-      lines( grid_1D,  a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 - Fvalue * out$Q_d1,
+      lines( grid_1D,  a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
+               Fvalue * out$Q_d1,
              lty = 2, lwd = 2, col = 'lightblue' )
     } else if( adjust == FALSE ){
-      lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 - out$Q_d3 - 1.5 * out$IQR_d,
+      lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
+               out$Q_d3 - 1.5 * out$IQR_d,
              lty = 2, lwd = 2, col = 'lightblue' )
     } else {
       stop('Error in outliergram: you provided wrong value for adjust')
@@ -220,7 +226,8 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
 }
 
 .outliergram = function( time_grid, Data, MBD_data = NULL, MEI_data = NULL,
-                         p_check = 0.05, q_low = 0, q_high = 1, Fvalue = NULL, shift = TRUE )
+                         p_check = 0.05, q_low = 0, q_high = 1,
+                         Fvalue = NULL, shift = TRUE )
 {
   N = nrow( Data )
 
@@ -267,7 +274,8 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
   {
     # Low MEI curves will be checked for upward shift
     ID_non_outlying_Low_MEI = ID_non_outlying[ which( MEI_data[ - ID_shape_outlier ] >=
-                                                        quantile( MEI_data, probs = 1 - p_check ) ) ]
+                                                        quantile( MEI_data,
+                                                                  probs = 1 - p_check ) ) ]
 
     # High MEI curves will be checked for downward shift
     ID_non_outlying_High_MEI = ID_non_outlying[ which( MEI_data[ - ID_shape_outlier ] <=

@@ -54,8 +54,8 @@ Data = matrix( c( 0  + sin( 2 * pi * time_grid ),
                   -1 + sin( 2 * pi * time_grid ) ),
                nrow = 3, ncol = length( time_grid ), byrow = TRUE )
 
-quartz()
-matplot( time_grid, t( Data ), lty = 1, type = 'l' )
+# quartz()
+# matplot( time_grid, t( Data ), lty = 1, type = 'l' )
 
 test_that( "Correct behaviour of MBD without checking for ties",
            expect_equal( MBD( Data, manage_ties = TRUE ),

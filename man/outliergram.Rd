@@ -44,6 +44,9 @@ required by the adjustment.}
 \item{display}{either a logical value indicating wether you want the
 outliergram to be displayed, or the number of the graphical devices
 where you want the boxplot to be plotted.}
+
+\item{...}{additional graphical parameters to be used only in the plot of the
+functional dataset}
 }
 \description{
 \code{fbplot} displays the functional boxplot of a dataset of functional data.

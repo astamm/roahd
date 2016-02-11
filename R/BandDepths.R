@@ -8,9 +8,6 @@ BD = function( Data )
   # Number of rows
   N = nrow( Data )
 
-  # Number of columns
-  P = ncol( Data )
-
   # Compute ranks of matrix-like representation of data with `min' tie-breaking rule
   rk = apply( Data, 2, function( v )( rank( v, ties.method = 'average' ) ) )
 
@@ -42,7 +39,7 @@ BD_relative = function( Data_target, Data_reference )
   Data_target = toRowMatrixForm( Data_target )
 
   if( ncol( Data_target ) != P ) stop( 'Error: you provided a Data_target with not
-                                       compliant dimensions to MBD_relative')
+                                       compliant dimensions to BD_relative')
 
   # Number of target_functions
   N_target = nrow( Data_target )
@@ -52,8 +49,7 @@ BD_relative = function( Data_target, Data_reference )
   for( iObs in 1 : N_target )
   {
     rk = apply( rbind( Data_target[ iObs, ], Data_reference ),
-                2,
-                function( v )( rank( v, ties.method = 'average' ) ) );
+                2, rank, ties.method = 'average' )
 
     N_a = N + 1 - max( rk[ 1, ] )
 
@@ -129,52 +125,34 @@ MBD = function( Data, manage_ties = FALSE )
 #'
 #' @param Data_target is the dataset containing signals whose depths are to be computed with respect to the reference population.
 #' @param Data_reference is the dataset containing the reference population used to measure the centrality through depths. In particular, the depths of these functions will not be computed.
-MBD_relative = function( Data_target, Data_reference, strict_inclusion = FALSE, ties_method = 'average' )
+MBD_relative = function( Data_target, Data_reference )
 {
   # Observations
   N = nrow( Data_reference )
 
-  # Time points
+  # Number of columns
   P = ncol( Data_reference )
 
   Data_target = toRowMatrixForm( Data_target )
 
-  if( ncol( Data_target ) != P ) stop( 'Error: you provided a Data_target
-                                       with dimensions not compliant to MBD_relative')
+  if( ncol( Data_target ) != P ) stop( 'Error: you provided a Data_target with not
+                                       compliant dimensions to MBD_relative')
 
   # Number of target_functions
   N_target = nrow( Data_target )
 
-  Depths = rep( 0, N_target )
+  Depths = rep( 0, N_target );
 
   for( iObs in 1 : N_target )
   {
-    Data_curr = rbind( Data_target[ iObs, ], Data_reference )
+    rk = apply( rbind( Data_target[ iObs, ], Data_reference ),
+                2, rank, ties.method = 'average' );
 
-    # Compute ranks of matrix-like representation of data with `min' tie-breaking rule
-    rk_min = apply( Data_curr, 2, function( v )( rank( v, ties.method = 'min' ) ) )
+    N_a = N + 1 - rk[ 1, ]
 
-    # Compute ranks of matrix-like representation of data with `max' tie-breaking rule
-    rk_max = apply( Data_curr, 2, function( v )( rank( v, ties.method = 'max' ) ) )
+    N_b = rk[ 1, ] - 1
 
-    # Times each function value is repeated in the dataset, for each time point
-    # ( matrix is N x P)
-    Repetitions = rk_max[ 1, ] - rk_min[ 1, ] + 1
-
-    # Actual number of function values strictly above
-    N_a = N + 1 - rk_max[ 1, ]
-
-    # Actual number of function values strictly below
-    N_b = rk_min[ 1, ] - 1
-
-    added_bands_function = function( N, K )
-    {
-      sapply( K, function( k ) ( N * k - 0.5 * ( k * k + k ) ) )
-    }
-
-    added_bands = added_bands_function( N, Repetitions - 1 )
-
-    Depths[ iObs ] = sum( N_a * N_b + added_bands ) / ( P * N * ( N - 1 ) / 2 )
+    Depths[ iObs ] = sum( N_a * N_b ) / (  P *  N * ( N - 1 ) / 2 )
   }
 
   return( Depths )

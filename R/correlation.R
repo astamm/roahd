@@ -153,6 +153,35 @@ area_ordered = function( fData, gData )
   }
 }
 
+# cor_kendall = function( mfD, ordering = 'max' )
+# {
+#   if( mfD$L != 2 )
+#   {
+#     stop( ' Error in cor_kendall: only bivariate data are supported for now.')
+#   }
+#
+#   N = mfD$N
+#
+#   if( ordering == 'area' )
+#   {
+#     count_concordances = function( iObs )( sum( area_ordered( mfD$fDList[[ 1 ]][ iObs, ],
+#                                                               mfD$fDList[[ 1 ]][ ( iObs + 1 ) : N, ] ) ==
+#                                                   area_ordered( mfD$fDList[[ 2 ]][ iObs, ],
+#                                                                 mfD$fDList[[ 2 ]][ ( iObs + 1 ) : N, ] ) ) )
+#   } else if ( ordering == 'max' )
+#   {
+#     count_concordances = function( iObs )( sum( max_ordered( mfD$fDList[[ 1 ]][ iObs, ],
+#                                                              mfD$fDList[[ 1 ]][ ( iObs + 1 ) : N, ] ) ==
+#                                                   max_ordered( mfD$fDList[[ 2 ]][ iObs, ],
+#                                                                mfD$fDList[[ 2 ]][ ( iObs + 1 ) : N, ] ) ) )
+#   }else
+#   {
+#     stop( ' Error in cor_kendall: unsupported ordering relation')
+#   }
+#
+#   return( ( 2 * sum( sapply( 1 : ( N - 1 ), count_concordances ) )  - ( N * ( N - 1 ) / 2 ) ) / ( N * ( N - 1 ) / 2 ) )
+# }
+
 #'  Kendall's tau correlation coefficient for a bivariate functional dataset
 #'
 #'  It implements the computation of the Kendall's tau correlation coefficient
@@ -166,36 +195,6 @@ area_ordered = function( fData, gData )
 #' relation
 #'
 cor_kendall = function( mfD, ordering = 'max' )
-{
-  if( mfD$L != 2 )
-  {
-    stop( ' Error in cor_kendall: only bivariate data are supported for now.')
-  }
-
-  N = mfD$N
-
-  if( ordering == 'area' )
-  {
-    count_concordances = function( iObs )( sum( area_ordered( mfD$fDList[[ 1 ]][ iObs, ],
-                                                              mfD$fDList[[ 1 ]][ ( iObs + 1 ) : N, ] ) ==
-                                                  area_ordered( mfD$fDList[[ 2 ]][ iObs, ],
-                                                                mfD$fDList[[ 2 ]][ ( iObs + 1 ) : N, ] ) ) )
-  } else if ( ordering == 'max' )
-  {
-    count_concordances = function( iObs )( sum( max_ordered( mfD$fDList[[ 1 ]][ iObs, ],
-                                                             mfD$fDList[[ 1 ]][ ( iObs + 1 ) : N, ] ) ==
-                                                  max_ordered( mfD$fDList[[ 2 ]][ iObs, ],
-                                                               mfD$fDList[[ 2 ]][ ( iObs + 1 ) : N, ] ) ) )
-  }else
-  {
-    stop( ' Error in cor_kendall: unsupported ordering relation')
-  }
-
-  return( ( 2 * sum( sapply( 1 : ( N - 1 ), count_concordances ) )  - ( N * ( N - 1 ) / 2 ) ) / ( N * ( N - 1 ) / 2 ) )
-}
-
-
-cor_kendall__var = function( mfD, ordering = 'max' )
 {
     if( mfD$L != 2 )
     {

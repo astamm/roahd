@@ -1,4 +1,4 @@
 library(testthat)
-library(fdepths)
+library(roahd)
 
-test_check("fdepths")
+test_check("roahd")

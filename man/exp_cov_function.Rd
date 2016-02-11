@@ -9,7 +9,9 @@ exp_cov_function(time_grid, alpha, beta)
 \arguments{
 \item{time_grid}{a vector of time points}
 
-\item{alpha}{the}
+\item{alpha}{the alpha parameter in the exponential covariance formula}
+
+\item{beta}{the beta parameter in the exponential covariance formula}
 }
 \description{
 \eqn{C( s, t ) = \alpha e^{ - \beta | s - t | }}
