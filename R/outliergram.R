@@ -1,5 +1,36 @@
 
-
+#' Outliergram for univariate functional datasets
+#'
+#' \code{fbplot} displays the functional boxplot of a dataset of functional data.
+#'
+#' @param time_grid optional, a vector corresponding to the time grid over which
+#' the functions are evaluated (it must be
+#' evenly spaced)
+#' @param Data the dataset of functional data, having observations on the rows
+#' and time points on columns
+#' @param MBD_data a vector containing the MBD for each element of the dataset,
+#' if it is not provided, they are computed.
+#' @param MEI_data a vector containing the MEI for each element of the dataset,
+#' if it is not provided, they are computed.
+#' @param q_low parameter indicating the quantile to be used to compute the
+#' target to compare functions in the secondary check for outliers (shifting
+#' step towards the bulk of data). Defult is 0, i.e. High MEI functions (lying
+#' at the bottom of the dataset) are compared to the minimum of all the remaining
+#' functions
+#' @param q_high parameter indicating the quantile to be used to compute the
+#' target to compare functions in the secondary check for outliers (shifting
+#' step towards the bulk of data). Defult is 1, i.e. Low MEI functions (lying
+#' at the top of the dataset) are compared to the maximum of all the remaining
+#' functions
+#' @param p_check percentage of observations with either low or high MEI to be
+#' checked for outliers in the secondary step (shift towards the bulk of data)
+#' @param adjust either FALSE if you would like the default value for the
+#' inflation factor, F = 1.5, to be used, or a list specifying the parameters
+#' required by the adjustment.
+#' @param display either a logical value indicating wether you want the
+#' outliergram to be displayed, or the number of the graphical devices
+#' where you want the boxplot to be plotted.
+#'
 outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL, q_low = 0, q_high = 1, p_check = 0.05,
                         adjust = FALSE, display = TRUE, ... )
 {
