@@ -123,7 +123,11 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
 
       Data_gauss = generate_gauss_fdata( trial_size, centerline, CholCov = CholCov )
 
-      cat( ' * * * * beginning optimisation\n' )
+      if( VERBOSE > 0 )
+      {
+        cat( ' * * * * beginning optimisation\n' )
+      }
+
       opt = uniroot( obj_function,
                      interval = c( F_min, F_max ),
                      tol = tol,
