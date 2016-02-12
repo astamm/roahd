@@ -20,9 +20,9 @@ test_that( 'Creation of fData object',
 fD = fData( time_grid, Data )
 
 test_that( 'Plot of fData object',
-           expect_silent( plot( fData( time_grid, Data ),
-                                xlab = 'time', ylab = 'values',
-                                main = 'A functional dataset' ) ) )
+           expect_silent( plot_fData( fData( time_grid, Data ),
+                                      xlab = 'time', ylab = 'values',
+                                      main = 'A functional dataset' ) ) )
 
 
 # TESTING STATISTICS OPERATIONS -------------------------------------------
@@ -129,8 +129,8 @@ test_that( 'Creation of mfData object',
            expect_silent( mfData( time_grid, list( Data_1, Data_2 ) ) ) )
 
 test_that( 'Plot of mfData object',
-           expect_silent( plot( mfData( time_grid, list( Data_1, Data_2 ) ),
-                                xlab = 'time', ylab = list( 'values',
-                                                            'values' ),
-                                main = list( 'First Component',
-                                             'Second Component' ) ) ) )
+           expect_silent( plot_mfData( mfData( time_grid, list( Data_1, Data_2 ) ),
+                                       xlab = 'time', ylab = list( 'values',
+                                                                   'values' ),
+                                       main = list( 'First Component',
+                                                    'Second Component' ) ) ) )

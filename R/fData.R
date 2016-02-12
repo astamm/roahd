@@ -27,25 +27,23 @@ fData = function( grid, values )
                      class = c( 'fData' ) ) )
 }
 
-#'
-#' \code{plot.fData} specialised method to plot univariate functional data..
+#' Specialised method to plot univariate functional data..
 #'
 #' @param fData the univariate functional data object
-#' @param lty lty graphical parameter to be used in plotting functions
 #' @param col colors to be used in plotting functions
+#' @param lty lty graphical parameter to be used in plotting functions
 #' @param ... additional graphical parameters to be used in plotting functions
 #'
-plot.fData = function( fData, lty = 1, col = NULL, ... )
+plot_fData = function( fData, col = NULL, lty = 1, ... )
 {
   if( is.null( col ) )
   {
-    col = set_alpha( scales::hue_pal( )( fData$N ),
-                     0.8 )
+    col = fDColorPalette( fData$N )
   }
 
   matplot( seq( fData$t0, fData$tP, length.out = fData$P ),
-           t( fData$values ), lty = lty, type = 'l',
-           col =  col, ...  )
+           t( fData$values ), type = 'l', lty = lty,
+           col = col, ...  )
 
 }
 
@@ -92,8 +90,7 @@ mfData = function( grid, Data_list )
                      class = c( 'mfData' ) ) )
 }
 
-#'
-#' \code{plot.mfData} specialised method to plot multivariate functional data.
+#' Specialised method to plot multivariate functional data.
 #'
 #' @param mfData the multivariate functional data object
 #' @param lty lty graphical parameter to be used in plotting functions
@@ -103,14 +100,9 @@ mfData = function( grid, Data_list )
 #' @param main either a string or a list of stirngs to be used as main title for
 #' each window in the plot panel, default is null
 #' @param ... additional graphical parameters to be used in plotting functions
-plot.mfData = function( mfData, lty = 1, col = NULL, ylab = NULL, main = NULL, ... )
+plot_mfData = function( mfData,
+                        ylab = NULL, main = NULL, col = NULL, lty = 1, ... )
 {
-  if( is.null( col ) )
-  {
-    col = set_alpha( scales::hue_pal( )( mfData$N ),
-                     0.8 )
-  }
-
   if( ! is.null( ylab ) )
   {
     if( length( ylab ) == 1 )
@@ -137,15 +129,22 @@ plot.mfData = function( mfData, lty = 1, col = NULL, ylab = NULL, main = NULL, .
     main = rep( list( '' ), mfData$L )
   }
 
+  if( is.null( col ) )
+  {
+    col = fDColorPalette( mfData$N )
+  }
+
   mfrow_rows = ceiling( mfData$L / 2 )
   mfrow_cols = 2
 
   par( mfrow = c( mfrow_rows, mfrow_cols ) )
 
-  plot_aux = function( i, ... )( plot( mfData$fDList[[ i ]], lty = lty, col = col,
-                                  ylab = ylab[[ i ]],
-                                  main = main[[ i ]],
-                                  ... ))
+  plot_aux = function( i, ... )( plot_fData( mfData$fDList[[ i ]],
+                                             ylab = ylab[[ i ]],
+                                             main = main[[ i ]],
+                                             col = col,
+                                             lty = lty,
+                                             ... ) )
 
   invisible( sapply( 1 : mfData$L, plot_aux, ... ) )
 }

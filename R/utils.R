@@ -48,7 +48,7 @@ set_alpha = function( col, alpha )
                                                     maxColorValue = 255 ) ) ) )
 }
 
-#' Function to obtain an exponential covariance function over a grid
+#' Exponential covariance function over a grid for univariate functional data
 #'
 #'  \eqn{C( s, t ) = \alpha e^{ - \beta | s - t | }}
 #'
@@ -60,4 +60,17 @@ exp_cov_function = function( time_grid, alpha, beta )
 {
   return(  outer( time_grid, time_grid,
                   function( s, t )( alpha * exp( - beta * abs( s - t ) ) ) ) )
+}
+
+#' A set of fancy color to plot fData objects
+#'
+#' @param N number of different colors (ideally, functional observations)
+#' @param range the range of hues to be used
+#' @param alpha the alpha channel parameter of the colors (transparency)
+#' @param ... additional parameters to be passed to \code{scales::hue_pal}
+#'
+fDColorPalette = function( N, range = c( 0, 360 ), alpha = 0.8, ... )
+{
+  return( set_alpha( scales::hue_pal( h = range, ... )( N ),
+                     0.8 ) )
 }

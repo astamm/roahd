@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{exp_cov_function}
 \alias{exp_cov_function}
-\title{Function to obtain an exponential covariance function over a grid}
+\title{Exponential covariance function over a grid for univariate functional data}
 \usage{
 exp_cov_function(time_grid, alpha, beta)
 }
