@@ -2,7 +2,32 @@
 #'
 #' \code{fbplot} displays the functional boxplot of a dataset of functional data.
 #'
-#' @param fData the univariate functional dataset whose functional boxplot is
+#' @param Data the univariate or multivariate functional dataset whose functional
+#' boxplot is desired
+#' @param Depths either a vector containing the depths for each element of the
+#' dataset, or a string containing the name of the method you want to use to
+#' compute it. In this case the name of the method must be included in the
+#' caller's environment
+#' @param adjust either FALSE if you would like the default value for the
+#' inflation factor, F = 1.5, to be used, or a list specifying the parameters
+#' required by the adjustment.
+#' @param display either a logical value indicating wether you want the
+#' functional boxplot to be displayed, or the number of the graphical devices
+#' where you want the boxplot to be plotted.
+#' @param ... additional graphical parameters to be used in plotting functions
+#' @param verbose logical flag to enable verbosity in the adjustment process
+#'
+fbplot = function( Data, Depths = 'MBD',
+                   adjust = FALSE, display = TRUE, ..., verbose = FALSE )
+{
+  UseMethod( 'fbplot')
+}
+
+#' Functional boxplot for univariate functional data
+#'
+#' \code{fbplot.fData} displays the functional boxplot of a dataset of functional data.
+#'
+#' @param Data the univariate functional dataset whose functional boxplot is
 #' desired
 #' @param Depths either a vector containing the depths for each element of the
 #' dataset, or a string containing the name of the method you want to use to
@@ -17,7 +42,7 @@
 #' @param ... additional graphical parameters to be used in plotting functions
 #' @param verbose logical flag to enable verbosity in the adjustment process
 #'
-fbplot = function( fData, Depths = 'MBD',
+fbplot.fData = function( Data, Depths = 'MBD',
                    adjust = FALSE, display = TRUE, ..., verbose = FALSE )
 {
   # Checking if depths have already been provided or must be computed
@@ -29,20 +54,20 @@ fbplot = function( fData, Depths = 'MBD',
 
     if( Depths_spec == 'MBD' )
     {
-      Depths = MBD( fData$values, manage_ties = TRUE )
+      Depths = MBD( Data$values, manage_ties = TRUE )
     } else {
-      Depths = eval( parse( text = paste( Depths, '( fData$values )',
+      Depths = eval( parse( text = paste( Depths, '( Data$values )',
                                           sep = '' ) ) )
     }
   } else {
-    stopifnot( length( Depths ) == fData$N )
+    stopifnot( length( Depths ) == Data$N )
   }
 
   if( ! is.list( adjust ) )
   {
     # Plain functional boxplot with default F value: F = 1.5
 
-    out = .fbplot( time_grid, fData$values, Depths, Fvalue = 1.5 )
+    out = .fbplot( time_grid, Data$values, Depths, Fvalue = 1.5 )
 
   } else {
 
@@ -51,7 +76,7 @@ fbplot = function( fData, Depths = 'MBD',
                        adjust$N_trials )
 
     trial_size = ifelse( is.null( adjust$trial_size ),
-                         5 * fData$N,
+                         5 * Data$N,
                          adjust$trial_size )
 
     TPR = ifelse( is.null( adjust$TPR ),
@@ -79,13 +104,13 @@ fbplot = function( fData, Depths = 'MBD',
                       adjust$VERBOSE )
 
     # Estimation of robust covaraince matrix
-    Cov = robustbase::covOGK( fData$values, sigmamu = robustbase::s_Qn )$cov
+    Cov = robustbase::covOGK( Data$values, sigmamu = robustbase::s_Qn )$cov
 
     # Cholesky factor
     CholCov <- chol( Cov )
 
     # Centerline of the dataset
-    centerline = fData$values[ which.max( Depths ), ]
+    centerline = Data$values[ which.max( Depths ), ]
 
     Fvalues = rep( 0, N_trials )
 
@@ -123,7 +148,7 @@ fbplot = function( fData, Depths = 'MBD',
 
     Fvalue = mean( Fvalues )
 
-    out = .fbplot( time_grid, fData$values, Depths, Fvalue = Fvalue  )
+    out = .fbplot( time_grid, Data$values, Depths, Fvalue = Fvalue  )
   }
 
   ID_out = out$ID_out
@@ -138,7 +163,7 @@ fbplot = function( fData, Depths = 'MBD',
   {
     # Creating color palettes
     col_non_outlying = scales::hue_pal( h = c( 180, 270 ),
-                                        l = 60 )( fData$N - length( ID_out ) )
+                                        l = 60 )( Data$N - length( ID_out ) )
 
     col_non_outlying = set_alpha( col_non_outlying, 0.5 )
 
@@ -148,17 +173,17 @@ fbplot = function( fData, Depths = 'MBD',
     col_center = set_alpha( 'blue', alpha = 1 )
     col_fence_structure = 'darkblue'
 
-    time_grid = seq( fData$t0, fData$tP, length.out = fData$P )
+    time_grid = seq( Data$t0, Data$tP, length.out = Data$P )
 
     # Plotting non-outlying data
     matplot( time_grid,
-             t( fData$values[ - ID_out, ] ), lty = 1, type = 'l',
-             col = col_non_outlying, ylim = range( rbind( fData$values,
+             t( Data$values[ - ID_out, ] ), lty = 1, type = 'l',
+             col = col_non_outlying, ylim = range( rbind( Data$values,
                                                           out$fence_upper,
                                                           out$fence_lower ) ), ... )
 
     # Plotting outlying data
-    matplot( time_grid, t( fData$values[ ID_out, ] ), lty = 1, type = 'l',
+    matplot( time_grid, t( Data$values[ ID_out, ] ), lty = 1, type = 'l',
              col = col_outlying, lwd = 3, add = T )
 
 
@@ -171,7 +196,7 @@ fbplot = function( fData, Depths = 'MBD',
     lines( time_grid, out$min_envelope_central, lty = 1, col = col_envelope, lwd = 3 )
 
     # Plotting the sample median
-    lines( time_grid, fData$values[ which.max( Depths ), ], lty = 1, type = 'l',
+    lines( time_grid, Data$values[ which.max( Depths ), ], lty = 1, type = 'l',
            col = col_center, lwd = 3)
 
     # Plotting fences ( F * envelope)
@@ -179,26 +204,26 @@ fbplot = function( fData, Depths = 'MBD',
     # lines( time_grid, out$fence_lower, lty = 2, col = 'red', lwd = 2 )
 
     # Plotting closest data to fences
-    id_uppermost = which.min( apply( - t( t( fData$values[ - ID_out, ]) +
+    id_uppermost = which.min( apply( - t( t( Data$values[ - ID_out, ]) +
                                             out$fence_upper ), 1, min )  )
-    id_lowermost = which.min( apply(   t( t( fData$values[ - ID_out, ]) -
+    id_lowermost = which.min( apply(   t( t( Data$values[ - ID_out, ]) -
                                             out$fence_lower ), 1, min )  )
 
-    lines( time_grid, fData$values[ -ID_out, ][ id_uppermost, ], lty = 1,
+    lines( time_grid, Data$values[ -ID_out, ][ id_uppermost, ], lty = 1,
            col = col_fence_structure, lwd = 3 )
-    lines( time_grid, fData$values[ -ID_out, ][ id_lowermost, ], lty = 1,
+    lines( time_grid, Data$values[ -ID_out, ][ id_lowermost, ], lty = 1,
            col = col_fence_structure, lwd = 3 )
 
     # Plotting vertical whiskers
     half.time_grid = which.min( abs( time_grid - 0.5 ) )
     lines( c( time_grid[ half.time_grid ], time_grid[ half.time_grid ] ),
            c( out$max_envelope_central[ half.time_grid ],
-              fData$values[ -ID_out, half.time_grid ][ id_uppermost ] ),
+              Data$values[ -ID_out, half.time_grid ][ id_uppermost ] ),
            lty = 1, col = col_fence_structure, lwd = 3 )
 
     lines( c( time_grid[ half.time_grid ], time_grid[ half.time_grid ] ),
            c( out$min_envelope_central[ half.time_grid ],
-              fData$values[ -ID_out, half.time_grid ][ id_lowermost ] ),
+              Data$values[ -ID_out, half.time_grid ][ id_lowermost ] ),
            lty = 1, col = col_fence_structure, lwd = 3 )
   }
 
