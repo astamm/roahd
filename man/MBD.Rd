@@ -2,7 +2,7 @@
 % Please edit documentation in R/BandDepths.R
 \name{MBD}
 \alias{MBD}
-\title{Modified Band Depth of functions in a functional dataset}
+\title{Modified Band Depth for univariate funcitonal data}
 \usage{
 MBD(Data, manage_ties = FALSE)
 }

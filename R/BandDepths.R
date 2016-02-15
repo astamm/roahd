@@ -1,4 +1,4 @@
-#' Band Depth of functions in a functional dataset
+#' Band Depth for univariate functional data
 #'
 #' \code{BD} computes the Band Depth of a functional dataset
 #'
@@ -62,7 +62,7 @@ BD_relative = function( Data_target, Data_reference )
 }
 
 
-#' Modified Band Depth of functions in a functional dataset
+#' Modified Band Depth for univariate funcitonal data
 #'
 #' \code{MBD} Computes the Modified Band Depth (MBD) of elements of a functional dataset
 #'

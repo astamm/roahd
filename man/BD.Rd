@@ -2,7 +2,7 @@
 % Please edit documentation in R/BandDepths.R
 \name{BD}
 \alias{BD}
-\title{Band Depth of functions in a functional dataset}
+\title{Band Depth for univariate functional data}
 \usage{
 BD(Data)
 }
