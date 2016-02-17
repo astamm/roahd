@@ -48,7 +48,7 @@ time_grid = seq( 0, 1, length.out = 1e2 )
 
 N = 5e2
 
-Data = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ),
+Data = generate_gauss_fdata( N, centerline = sin( 2 * pi * time_grid ),
                              Cov = exp_cov_function( time_grid,
                                                      alpha = 0.3,
                                                      beta  = 0.4 ) )
@@ -103,24 +103,26 @@ test_that( 'Functional boxplot for multivariate data - simple - 2',
 
 # 2 )
 
+set.seed( 1618033 )
 
 time_grid = seq( 0, 1, length.out = 1e2 )
 
-N = 5e2
+N = 1e2
+L = 3
 
-Data_1 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ),
-                             Cov = exp_cov_function( time_grid,
-                                                     alpha = 0.3,
-                                                     beta  = 0.4 ) )
-Data_2 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ),
-                             Cov = exp_cov_function( time_grid,
-                                                     alpha = 0.3,
-                                                     beta = 0.4 ) )
+C1 = exp_cov_function( time_grid, alpha = 0.3, beta = 0.4 )
+C2 = exp_cov_function( time_grid, alpha = 0.3, beta = 0.4 )
+C3 = exp_cov_function( time_grid, alpha = 0.3, beta = 0.4 )
 
-mfD = mfData( time_grid, list( Data_1, Data_2 ) )
+Data = generate_gauss_mfdata( N, L,
+                              centerline = matrix( sin( 2 * pi * time_grid ),
+                                                   nrow = 3, ncol = P,
+                                                   byrow = TRUE ),
+                              correlations = rep( 0.5, 3 ),
+                              listCov = list( C1, C2, C3 ) )
 
-# test_that( 'Functional boxplot for multivariate data - simple - 3',
-           # expect_silent(
-             fbplot( mfD, Fvalue = 3 )
-             # ) )
+mfD = mfData( time_grid, Data )
+
+test_that( 'Functional boxplot for multivariate data - simple - 3',
+           expect_silent( fbplot( mfD, Fvalue = 2.5 ) ) )
 

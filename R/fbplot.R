@@ -210,15 +210,8 @@ fbplot.fData = function( Data,
       matplot( time_grid,
                t( Data$values[ - ID_out, ] ), lty = 1, type = 'l',
                col = col_non_outlying,
-               # ylim = range( rbind( Data$values,
-               #                      out$fence_upper,
-               #                      out$fence_lower ) ),
                ylim = range( Data$values ),
                xlab = xlab, ylab = ylab, main = main, ... )
-
-      # Plotting outlying data
-      matplot( time_grid, t( Data$values[ ID_out, ] ), lty = 1, type = 'l',
-               col = col_outlying, lwd = 3, add = T )
 
       # Computing maximum and minimum envelope
       max_envelope_limit = apply( Data$values[ - ID_out, ], 2, max )
@@ -228,9 +221,6 @@ fbplot.fData = function( Data,
       matplot( time_grid,
                t( Data$values ), lty = 1, type = 'l',
                col = col_non_outlying,
-               # ylim = range( rbind( Data$values,
-               #                      out$fence_upper,
-               #                      out$fence_lower ) ),
                ylim = range( Data$values ),
                xlab = xlab, ylab = ylab, main = main, ... )
 
@@ -268,6 +258,13 @@ fbplot.fData = function( Data,
            c( out$min_envelope_central[ half.time_grid ],
               min_envelope_limit[ half.time_grid ] ),
            lty = 1, col = col_fence_structure, lwd = 3 )
+
+    # Plotting outlying data
+    if( length( ID_out ) > 0 )
+    {
+      matplot( time_grid, t( Data$values[ ID_out, ] ), lty = 1, type = 'l',
+               col = col_outlying, lwd = 3, add = T )
+    }
   }
 
   return( list( Depth = Depths,
@@ -404,15 +401,8 @@ provided in the multivariate version of the functional boxplot' )
         matplot( time_grid,
                  t( Data_curr[ - ID_out, ] ), lty = 1, type = 'l',
                  col = col_non_outlying,
-                 # ylim = range( rbind( Data_curr,
-                 #                      out$fence_upper,
-                 #                      out$fence_lower ) ),
                  ylim = range( Data_curr ),
                  xlab = xlab, ylab = ylab, main = main, ... )
-
-        # Plotting outlying data
-        matplot( time_grid, t( Data_curr[ ID_out, ] ), lty = 1, type = 'l',
-                 col = col_outlying, lwd = 3, add = T )
 
         # Computing maximum and minimum envelope
         max_envelope_limit = apply( Data_curr[ - ID_out, ], 2, max )
@@ -422,9 +412,6 @@ provided in the multivariate version of the functional boxplot' )
         matplot( time_grid,
                  t( Data_curr ), lty = 1, type = 'l',
                  col = col_non_outlying,
-                 # ylim = range( rbind( Data_curr,
-                 #                      out$fence_upper,
-                 #                      out$fence_lower ) ),
                  ylim = range( Data_curr ),
                  xlab = xlab, ylab = ylab, main = main, ... )
 
@@ -464,6 +451,14 @@ provided in the multivariate version of the functional boxplot' )
              c( out$min_envelope_central[ iL, half.time_grid ],
                 min_envelope_limit[ half.time_grid ] ),
              lty = 1, col = col_fence_structure, lwd = 3 )
+
+
+      # Plotting outlying data
+      if( length( ID_out ) > 0 )
+      {
+        matplot( time_grid, t( Data_curr[ ID_out, ] ), lty = 1, type = 'l',
+                 col = col_outlying, lwd = 3, add = T )
+      }
     }
   }
 

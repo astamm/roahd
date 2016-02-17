@@ -128,8 +128,8 @@ time_grid = seq( t0, t1, length.out = P )
 
 Cov = exp_cov_function( time_grid, alpha = 0.3, beta = 0.4 )
 
-Data_1 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov )
-Data_2 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov )
+Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * time_grid ), Cov = Cov )
+Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * time_grid ), Cov = Cov )
 
 mfD = mfData( time_grid, list( Data_1, Data_2 ) )
 
@@ -192,8 +192,8 @@ time_grid = seq( t0, t1, length.out = P )
 
 Cov = exp_cov_function( time_grid, alpha = 0.3, beta = 0.4 )
 
-Data_1 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov )
-Data_2 = generate_gauss_fdata( N, center = sin( 2 * pi * time_grid ), Cov = Cov )
+Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * time_grid ), Cov = Cov )
+Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * time_grid ), Cov = Cov )
 
 mfD = mfData( time_grid, list( Data_1, Data_2 ) )
 
