@@ -5,7 +5,8 @@
 \title{Functional boxplot for univariate functional data}
 \usage{
 \method{fbplot}{fData}(Data, Depths = "MBD", adjust = FALSE,
-  display = TRUE, ..., verbose = FALSE)
+  display = TRUE, xlab = NULL, ylab = NULL, main = NULL, ...,
+  verbose = FALSE)
 }
 \arguments{
 \item{Data}{the univariate functional dataset whose functional boxplot is
@@ -29,6 +30,7 @@ where you want the boxplot to be plotted.}
 \item{verbose}{logical flag to enable verbosity in the adjustment process}
 }
 \description{
-\code{fbplot.fData} displays the functional boxplot of a dataset of functional data.
+\code{fbplot.fData} displays the functional boxplot of a dataset of
+functional data.
 }
 

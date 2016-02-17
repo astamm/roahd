@@ -20,10 +20,9 @@ test_that( 'Creation of fData object',
 fD = fData( time_grid, Data )
 
 test_that( 'Plot of fData object',
-           expect_silent( plot_fData( fData( time_grid, Data ),
+           expect_silent( plot.fData( fData( time_grid, Data ),
                                       xlab = 'time', ylab = 'values',
                                       main = 'A functional dataset' ) ) )
-
 
 # TESTING STATISTICS OPERATIONS -------------------------------------------
 
@@ -38,16 +37,6 @@ test_that( 'Median of fData obejct - MBD',
 test_that( 'Median of fData obejct - MHRD',
            expect_equal( as.numeric( median_fData( fD, type = 'MHRD' )$value ),
                          fD$values[ which.max( MHRD( fD$values ) ), ]) )
-
-
-# meanfD = mean( fD )
-# medfD = median.fData( fD )
-
-# quartz()
-# plot( fD, xlab = 'time', ylab = 'value', main = 'Basic stastics of fData objects')
-# plot( meanfD, add = T, lwd = 2, lty = 2, col = 'darkblue' )
-# plot( medfD, add = T, lwd = 2, lty = 2, col = 'darkred' )
-
 
 # TESTING ALGEBRAIC OPERATIONS --------------------------------------------
 
@@ -129,8 +118,14 @@ test_that( 'Creation of mfData object',
            expect_silent( mfData( time_grid, list( Data_1, Data_2 ) ) ) )
 
 test_that( 'Plot of mfData object',
-           expect_silent( plot_mfData( mfData( time_grid, list( Data_1, Data_2 ) ),
+           expect_silent( plot.mfData( mfData( time_grid,
+                                               list( Data_1, Data_2 ) ),
                                        xlab = 'time', ylab = list( 'values',
                                                                    'values' ),
                                        main = list( 'First Component',
                                                     'Second Component' ) ) ) )
+
+test_that( 'Extracting list of values from multivariate functional dataset',
+           expect_identical( toListOfValues( mfData( time_grid,
+                                                     list( Data_1, Data_2 ) ) ),
+                             list( Data_1, Data_2 ) ) )

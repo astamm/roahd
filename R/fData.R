@@ -29,23 +29,37 @@ fData = function( grid, values )
 
 #' Specialised method to plot univariate functional data..
 #'
-#' @param fData the univariate functional data object
-#' @param col colors to be used in plotting functions
-#' @param lty lty graphical parameter to be used in plotting functions
+#' @param x the univariate functional data object
 #' @param ... additional graphical parameters to be used in plotting functions
 #'
-plot_fData = function( fData, col = NULL, lty = 1, ... )
+plot.fData = function( x, ... )
 {
-  if( is.null( col ) )
-  {
-    col = fDColorPalette( fData$N )
-  }
-
-  matplot( seq( fData$t0, fData$tP, length.out = fData$P ),
-           t( fData$values ), type = 'l', lty = lty,
-           col = col, ...  )
-
+  plot_fData_default( x, ...  )
 }
+
+#' Default method to plot univariate functional data.
+#'
+#' @param x the univariate functional data object
+#' @param lty lty graphical parameter to be used in plotting functions
+#' @param col colors to be used in plotting functions
+#' @param xlab the x label to add to each plot window
+#' @param ylab either a string or a list of stirngs to be used as y labels for
+#' each window in the plot panel, default is null
+#' @param main either a string or a list of stirngs to be used as main title for
+#' each window in the plot panel, default is null
+#' @param ... additional graphical parameters to be used in plotting functions
+plot_fData_default = function( x,
+                               type = 'l', lty = 1,
+                               col = fDColorPalette( x$N ),
+                               xlab = '', ylab = '', main = '',
+                               ... )
+{
+  matplot( seq( x$t0, x$tP, length.out = x$P ),
+           t( x$values ), type = type, lty = lty,
+           col = col, xlab = xlab, ylab = ylab, main = main, ... )
+}
+
+
 
 #'
 #' \code{mfData} generic class for (multivariate) functional data.
@@ -83,71 +97,87 @@ mfData = function( grid, Data_list )
     fDList[[ nmL ]] = fData( grid, toRowMatrixForm( Data_list[[ nmL ]] ) )
   }
 
-  return( structure( list( L = L,
-                           N = fDList[[ 1 ]]$N,
+  return( structure( list( N = fDList[[ 1 ]]$N,
                            P = fDList[[ 1 ]]$P,
+                           L = L,
+                           t0 = fDList[[ 1 ]]$t0,
+                           tP = fDList[[ 1 ]]$tP,
                            fDList = fDList ),
                      class = c( 'mfData' ) ) )
 }
 
 #' Specialised method to plot multivariate functional data.
 #'
-#' @param mfData the multivariate functional data object
+#' @param x the multivariate functional data object
+#' @param ... additional graphical parameters to be used in plotting functions
+#'
+plot.mfData = function( x, ... )
+{
+  mfrow_rows = floor( sqrt( x$L ) )
+  mfrow_cols = ceiling( x$L / floor( sqrt( x$L ) ) )
+
+  par( mfrow = c( mfrow_rows, mfrow_cols ) )
+
+  plot_mfData_default( x, ... )
+
+}
+
+#' Default method to plot multivariate functional data.
+#'
+#' @param x the multivariate functional data object
 #' @param lty lty graphical parameter to be used in plotting functions
 #' @param col colors to be used in plotting functions
+#' @param xlab the x label to add to each plot window
 #' @param ylab either a string or a list of stirngs to be used as y labels for
 #' each window in the plot panel, default is null
 #' @param main either a string or a list of stirngs to be used as main title for
 #' each window in the plot panel, default is null
 #' @param ... additional graphical parameters to be used in plotting functions
-plot_mfData = function( mfData,
-                        ylab = NULL, main = NULL, col = NULL, lty = 1, ... )
+plot_mfData_default = function( x,
+                                type = 'l',lty = 1,
+                                col = fDColorPalette( min( c( x$N,
+                                                              30 + x$N %% 30 )
+                                                          ) ),
+                                xlab = NULL, ylab = NULL, main = NULL,
+                                ... )
 {
   if( ! is.null( ylab ) )
   {
     if( length( ylab ) == 1 )
     {
-      ylab = rep( ylab, mfData$L )
-    } else if( length( ylab ) != mfData$L )
+      ylab = rep( ylab, x$L )
+    } else if( length( ylab ) != x$L )
     {
-      stop( 'Error in plot.mfData: you specified a wrong number of y labels' )
+      stop( 'Error in plot_mfData_default: you specified a wrong number of y labels' )
     }
   } else {
-    ylab = rep( list( '' ), mfData$L )
+    ylab = rep( list( '' ), x$L )
   }
 
   if( ! is.null( main ) )
   {
     if( length( main ) == 1 )
     {
-      main = rep( main, mfData$L )
-    } else if( length( main ) != mfData$L )
+      main = rep( main, x$L )
+    } else if( length( main ) != x$L )
     {
-      stop( 'Error in plot.mfData: you specified a wrong number of subtitles' )
+      stop( 'Error in plot_mfData_default: you specified a wrong number of subtitles' )
     }
   } else {
-    main = rep( list( '' ), mfData$L )
+    main = rep( list( '' ), x$L )
   }
 
-  if( is.null( col ) )
-  {
-    col = fDColorPalette( mfData$N )
-  }
-
-  mfrow_rows = ceiling( mfData$L / 2 )
-  mfrow_cols = 2
-
-  par( mfrow = c( mfrow_rows, mfrow_cols ) )
-
-  plot_aux = function( i, ... )( plot_fData( mfData$fDList[[ i ]],
+  plot_aux = function( i, ... )( plot.fData( x$fDList[[ i ]],
                                              ylab = ylab[[ i ]],
                                              main = main[[ i ]],
                                              col = col,
                                              lty = lty,
                                              ... ) )
 
-  invisible( sapply( 1 : mfData$L, plot_aux, ... ) )
+  invisible( sapply( 1 : x$L, plot_aux, ... ) )
+
 }
+
 
 
 #'
@@ -383,4 +413,21 @@ median_fData = function( fData, type = 'MBD' )
   } else {
     return( fD$values[ i, j ] )
   }
+}
+
+
+#'
+#' Extracting list of components values from multivariate functional dataset
+#'
+#' It provides an easy way to extract from a multivariate functional dataset
+#' with arbitrary dimensions a list of its time-by-time values stored each into
+#' the corresponding matrix.
+#'
+#' @param mfData the multivariate functional dataset
+#'
+toListOfValues = function( mfData )
+{
+  eval( parse( text = paste( 'list(', paste( 'mfData$fDList[[ ',
+                                             1 : mfData$L, ' ]]$values',
+                         sep = '', collapse = ', ' ), ')' ) ) )
 }

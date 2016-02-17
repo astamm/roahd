@@ -4,8 +4,8 @@
 \alias{fbplot}
 \title{Functional boxplot}
 \usage{
-fbplot(Data, Depths = "MBD", adjust = FALSE, display = TRUE, ...,
-  verbose = FALSE)
+fbplot(Data, Depths = "MBD", adjust = FALSE, display = TRUE,
+  xlab = NULL, ylab = NULL, main = NULL, ..., verbose = FALSE)
 }
 \arguments{
 \item{Data}{the univariate or multivariate functional dataset whose functional
@@ -23,6 +23,14 @@ required by the adjustment.}
 \item{display}{either a logical value indicating wether you want the
 functional boxplot to be displayed, or the number of the graphical devices
 where you want the boxplot to be plotted.}
+
+\item{xlab}{the label to use on the x axis when displaying the functional
+boxplot}
+
+\item{ylab}{the label(s) to use on the y axis when displaying the functional
+boxplot}
+
+\item{main}{the main title(s) to used when displaying the functional boxplot}
 
 \item{...}{additional graphical parameters to be used in plotting functions}
 
