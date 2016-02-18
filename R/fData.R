@@ -50,7 +50,8 @@ plot.fData = function( x, ... )
 #' @param ... additional graphical parameters to be used in plotting functions
 plot_fData_default = function( x,
                                type = 'l', lty = 1,
-                               col = fDColorPalette( x$N ),
+                               col = fDColorPalette( min( c( x$N,
+                                                             30 + x$N %% 30 ) ) ),
                                xlab = '', ylab = '', main = '',
                                ... )
 {
@@ -76,7 +77,8 @@ mfData = function( grid, Data_list )
 
   dimMatrix = sapply( Data_list, dim )
 
-  if( unique( apply( dimMatrix, 1, function( x )( length( unique( x ) ) ) ) ) != 1 )
+  if( unique( apply( dimMatrix, 1,
+                     function( x )( length( unique( x ) ) ) ) ) != 1 )
   {
     stop( ' Error in mfData: you provided mismatching datasets as Data_list')
   }
@@ -136,8 +138,7 @@ plot.mfData = function( x, ... )
 plot_mfData_default = function( x,
                                 type = 'l',lty = 1,
                                 col = fDColorPalette( min( c( x$N,
-                                                              30 + x$N %% 30 )
-                                                          ) ),
+                                                              30 + x$N %% 30 ) ) ),
                                 xlab = NULL, ylab = NULL, main = NULL,
                                 ... )
 {
@@ -148,7 +149,8 @@ plot_mfData_default = function( x,
       ylab = rep( ylab, x$L )
     } else if( length( ylab ) != x$L )
     {
-      stop( 'Error in plot_mfData_default: you specified a wrong number of y labels' )
+      stop( 'Error in plot_mfData_default: you specified a wrong number of y
+            labels' )
     }
   } else {
     ylab = rep( list( '' ), x$L )
@@ -161,7 +163,8 @@ plot_mfData_default = function( x,
       main = rep( main, x$L )
     } else if( length( main ) != x$L )
     {
-      stop( 'Error in plot_mfData_default: you specified a wrong number of subtitles' )
+      stop( 'Error in plot_mfData_default: you specified a wrong number of
+            subtitles' )
     }
   } else {
     main = rep( list( '' ), x$L )
@@ -431,3 +434,54 @@ toListOfValues = function( mfData )
                                              1 : mfData$L, ' ]]$values',
                          sep = '', collapse = ', ' ), ')' ) ) )
 }
+
+
+unfold = function( fData )
+{
+  return( fData( seq( fData$t0, fData$tP, length.out = fData$P ),
+                 t( apply( fData$values,
+                           1,
+                           function( x )( c( x[ 1 ],
+                                             x[ 1 ] +
+                                               cumsum( abs( diff( x ) ) ) ) ) )
+                 ) ) )
+}
+
+
+warp = function( fData, warpings )
+{
+  if( fData$t0 != warpings$t0 |
+      fData$tP != warpings$tP |
+      fData$P != warpings$P |
+      fData$h != fData$h |
+      fData$N != fData$N )
+  {
+    stop( ' Error in warp: you have to provide a warping for each functional
+observations, and they need to be defined over the same grid' )
+  }
+
+  if( any( diff( warpings$values[ , 1 ] ) > .Machine$double.eps ) |
+      any( diff( warpings$values[ , fData$P ] ) > .Machine$double.eps ) )
+  {
+    stop( ' Error in warp: you have to prescribe warpings with same starting
+          point and ending point (at least up to .Machine$double.eps = ',
+          .Machine$double.eps, ')' )
+  }
+
+  time_grid = seq( fData$t0,
+                   fData$tP,
+                   length.out = fData$P )
+
+  return( fData( seq( warpings$t0,
+                      warpings$tP,
+                      length.out = warpings$P ),
+                 t( sapply( 1 : fData$N,
+                            function( i )(
+                              approx( time_grid,
+                                      fData$values[ i, ],
+                                      xout = warpings$values[ i, ],
+                                      yright = fData$values[ i, fData$P ],
+                                      yleft = fData$values[ i, 1 ] )$y ) ) ) ) )
+}
+
+

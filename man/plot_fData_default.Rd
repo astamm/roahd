@@ -4,9 +4,8 @@
 \alias{plot_fData_default}
 \title{Default method to plot univariate functional data.}
 \usage{
-plot_fData_default(x, type = "l", lty = 1,
-  col = fDColorPalette(nrow(values)), xlab = "", ylab = "", main = "",
-  ...)
+plot_fData_default(x, type = "l", lty = 1, col = fDColorPalette(min(c(x$N,
+  30 + x$N\%\%30))), xlab = "", ylab = "", main = "", ...)
 }
 \arguments{
 \item{x}{the univariate functional data object}

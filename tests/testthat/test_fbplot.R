@@ -105,10 +105,11 @@ test_that( 'Functional boxplot for multivariate data - simple - 2',
 
 set.seed( 1618033 )
 
-time_grid = seq( 0, 1, length.out = 1e2 )
-
+P = 1e2
 N = 1e2
 L = 3
+
+time_grid = seq( 0, 1, length.out = 1e2 )
 
 C1 = exp_cov_function( time_grid, alpha = 0.3, beta = 0.4 )
 C2 = exp_cov_function( time_grid, alpha = 0.3, beta = 0.4 )

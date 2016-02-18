@@ -22,13 +22,15 @@ CholC3 = chol( C3 )
 centerline = matrix( c( sin( 2 * pi * time_grid ),
                         sqrt( time_grid ),
                         10 * ( time_grid - 0.5 ) * time_grid ),
-                     ncol = P, nrow = 3, byrow = TRUE )
+                     nrow = 3, byrow = TRUE )
 
 test_that( 'Generation of gaussian multivarite functional data - 1',
            expect_silent( generate_gauss_mfdata( N, L = 3,
                                                  centerline,
-                                                 correlations = c( 0.5, 0.5, 0.5 ),
-                                                 listCov = list( C1, C2, C3 ) ) ) )
+                                                 correlations = c( 0.5, 0.5,
+                                                                   0.5 ),
+                                                 listCov = list( C1, C2, C3 ) )
+                          ) )
 
 # plot( mfData( time_grid, generate_gauss_mfdata( N, L = 3,
 #                                                 centerline,
@@ -39,10 +41,12 @@ test_that( 'Generation of gaussian multivarite functional data - 1',
 test_that( 'Generation of gaussian multivarite functional data - 2',
            expect_silent( generate_gauss_mfdata( N, L = 3,
                                                  centerline,
-                                                 correlations = c( 0.5, 0.5, 0.5 ),
+                                                 correlations = c( 0.5, 0.5,
+                                                                   0.5 ),
                                                  listCholCov = list( CholC1,
                                                                      CholC2,
-                                                                     CholC3 ) ) ) )
+                                                                     CholC3 ) )
+                          ) )
 
 # plot( mfData( time_grid, generate_gauss_mfdata( N, L = 3,
 #                                                 centerline,
@@ -54,19 +58,23 @@ test_that( 'Generation of gaussian multivarite functional data - 2',
 test_that( 'Generation of gaussian multivarite functional data - 3',
            expect_error( generate_gauss_mfdata( N, L = 3,
                                                  centerline,
-                                                 correlations = c( 0.5, 0.5, 0.5 ),
+                                                 correlations = c( 0.5, 0.5,
+                                                                   0.5 ),
                                                  listCholCov = list( CholC1[-1,],
                                                                      CholC2[-1,],
-                                                                     CholC3[-1,] ) ) ) )
+                                                                     CholC3[-1,]
+                                                                     ) ) ) )
 
 test_that( 'Generation of gaussian multivarite functional data - 4',
            expect_error( generate_gauss_mfdata( N, L = 3,
                                                 centerline[-1,],
-                                                correlations = c( 0.5, 0.5, 0.5 ),
+                                                correlations = c( 0.5, 0.5,
+                                                                  0.5 ),
                                                 listCov = c( C1, C2, C3 ),
                                                 listCholCov = list( CholC1[-1,],
                                                                     CholC2[-1,],
-                                                                    CholC3[-1,] ) ) ) )
+                                                                    CholC3[-1,]
+                                                                    ) ) ) )
 
 test_that( 'Generation of gaussian multivarite functional data - 5',
            expect_error( generate_gauss_mfdata( N, L = 3,
@@ -75,4 +83,5 @@ test_that( 'Generation of gaussian multivarite functional data - 5',
                                                 listCov = c( C1, C2, C3 ),
                                                 listCholCov = list( CholC1,
                                                                     CholC2,
-                                                                    CholC3 ) ) ) )
+                                                                    CholC3 ) )
+                         ) )

@@ -4,8 +4,9 @@
 \alias{fbplot}
 \title{Functional boxplot}
 \usage{
-fbplot(Data, Depths = "MBD", adjust = FALSE, display = TRUE,
-  xlab = NULL, ylab = NULL, main = NULL, ..., verbose = FALSE)
+fbplot(Data, Depths = "MBD", Fvalue = 1.5, adjust = FALSE,
+  display = TRUE, xlab = NULL, ylab = NULL, main = NULL, ...,
+  verbose = FALSE)
 }
 \arguments{
 \item{Data}{the univariate or multivariate functional dataset whose functional
@@ -15,6 +16,8 @@ boxplot is desired}
 dataset, or a string containing the name of the method you want to use to
 compute it. In this case the name of the method must be included in the
 caller's environment}
+
+\item{Fvalue}{the value of the inflation factor F, default is F = 1.5}
 
 \item{adjust}{either FALSE if you would like the default value for the
 inflation factor, F = 1.5, to be used, or a list specifying the parameters

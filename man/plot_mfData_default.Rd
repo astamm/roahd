@@ -4,8 +4,9 @@
 \alias{plot_mfData_default}
 \title{Default method to plot multivariate functional data.}
 \usage{
-plot_mfData_default(x, type = "l", lty = 1, col = fDColorPalette(x$N),
-  xlab = NULL, ylab = NULL, main = NULL, ...)
+plot_mfData_default(x, type = "l", lty = 1,
+  col = fDColorPalette(min(c(x$N, 30 + x$N\%\%30))), xlab = NULL,
+  ylab = NULL, main = NULL, ...)
 }
 \arguments{
 \item{x}{the multivariate functional data object}

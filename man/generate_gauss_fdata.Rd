@@ -4,18 +4,21 @@
 \alias{generate_gauss_fdata}
 \title{Functional boxplot}
 \usage{
-generate_gauss_fdata(M, centerline, Cov = NULL, CholCov = NULL)
+generate_gauss_fdata(M, centerline = NULL, Cov = NULL, CholCov = NULL)
 }
 \arguments{
 \item{M}{the number of functional observations to generate}
 
 \item{centerline}{the centerline of the distribution (either mean or median)}
 
-\item{Cov}{covairance operator, in form of a P x P matrix (where P is the number of time points of the discrete grid over which functional data are observed)}
+\item{Cov}{covairance operator, in form of a P x P matrix (where P is the
+number of time points of the discrete grid over which functional data are
+observed)}
 
 \item{CholCov}{the Cholesky factor of the P x P Covariance matrix}
 }
 \description{
-\code{generate_gauss_data} displays the functional boxplot of a dataset of functional data.
+\code{generate_gauss_data} displays the functional boxplot of a dataset of
+functional data.
 }
 

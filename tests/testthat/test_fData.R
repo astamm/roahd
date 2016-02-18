@@ -129,3 +129,119 @@ test_that( 'Extracting list of values from multivariate functional dataset',
            expect_identical( toListOfValues( mfData( time_grid,
                                                      list( Data_1, Data_2 ) ) ),
                              list( Data_1, Data_2 ) ) )
+
+
+# TESTING FUNCTIONAL DATA UNFOLDING ---------------------------------------
+
+P = 1e3
+
+t0 = 0
+t1 = 1
+
+time_grid = seq( t0, t1, length.out = P )
+
+D = matrix( c( sin( 2 * pi * time_grid ),
+               cos( 2 * pi * time_grid ),
+               sin( 10 * pi * time_grid ) * time_grid + 2 ),
+            ncol = P, nrow = 3, byrow = TRUE )
+
+fD = fData( time_grid, D )
+
+fD_unfold = unfold( fD )
+
+# Ana's implementation
+mon_func = function( x )
+{
+  x = as.matrix(x)
+
+  if ( ncol( x ) == 1 )
+  {
+    x = t( x )
+  }
+  P = ncol( x )
+
+  x_mon = x
+
+  diff_x = t( abs( apply( x_mon, 1, diff ) ) )
+
+  for ( j in 2 : P )
+  {
+    x_mon[ , j ] = x_mon[ , j - 1 ] + diff_x[ , j - 1 ]
+  }
+  return( x_mon )
+}
+
+
+
+test_that( ' Unfolding of univariate functional dataset',
+           expect_true( all( apply( fD_unfold$values,
+                                    1,
+                                    function( x ) ( all( diff( x ) >= 0 ) ) )
+           ) ) )
+
+test_that( ' Unfolding of univariate functional dataset -
+           consistency with Ana\'s',
+           expect_equal( fD_unfold$values,
+                             mon_func( fD$values ) ) )
+
+
+# dev.new()
+# par( mfrow = c( 1, 2 ) )
+# plot( fD, lwd = 2 )
+# plot( fD_unfold, lwd = 2 )
+#
+
+# TESTING WARPING ---------------------------------------------------------
+
+N = 30
+
+t0 = 0
+t1 = 1
+P = 1e3 + 1
+
+time_grid = seq( t0, t1, length.out = P )
+
+means = round( runif( N,
+               t0 + (t1 - t0) / 8,
+               t1 - (t1 - t0) / 8  ), 3 )
+
+Data = matrix( sapply( means,
+                       function( m )( dnorm( time_grid, mean = m, sd = 0.05 ) ) ),
+               ncol = P, nrow = N, byrow = TRUE )
+
+fD = fData( time_grid, Data )
+
+# Piecewise linear warpings
+template_warping = function( m )( c( time_grid[ time_grid <= 0.5 ] * m / 0.5,
+                                     ( time_grid[ time_grid > 0.5 ]
+                                       - 0.5 ) * (1 - m ) / 0.5 + m ) )
+
+
+warpings = matrix( sapply( means, template_warping ),
+                   ncol = P,
+                   nrow = N, byrow = T )
+
+wfD = fData( time_grid, warpings )
+
+fD_warped = warp( fD, wfD )
+
+test_that( ' Warping - max',
+           expect_true( all( max_fData( fD_warped ) -
+                               dnorm( 0.5, 0.5, 0.05 ) <= .Machine$double.eps )
+                        ) )
+
+test_that( ' Warping - which.max',
+           expect_true( all( max_fData( fD_warped, which = TRUE )$grid -
+                               0.5 <= .Machine$double.eps )
+           ) )
+
+# dev.new()
+# par( mfrow = c( 1, 3 ) )
+# plot( fD,
+#       main = 'Unregistered functions', xlab = 'time', ylab = 'values'  )
+# plot( wfD,
+#       main = 'Warping functions', xlab = 'registered time',
+#       ylab = 'actual time' )
+# plot( fD_warped,
+#       main = 'Warped functions', xlab = 'registered time',
+#       ylab = 'values' )

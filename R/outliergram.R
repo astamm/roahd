@@ -199,12 +199,15 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
     points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ],
             pch = 16, cex = 1.5, col = col_outlying )
 
-    for( idOut in out$ID_SO )
+    if( length( out$ID_SO ) > 0 )
     {
-      text( out$MEI_data[ idOut ],
-            out$MBD_data[ idOut ] + 0.5 / 30,
-            idOut,
-            col = col_outlying[ match( idOut, out$ID_SO ) ] )
+      for( idOut in out$ID_SO )
+      {
+        text( out$MEI_data[ idOut ],
+              out$MBD_data[ idOut ] + 0.5 / 30,
+              idOut,
+              col = col_outlying[ match( idOut, out$ID_SO ) ] )
+      }
     }
 
     # lower parabolic limit
@@ -274,25 +277,33 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
   if( shift )
   {
     # Low MEI curves will be checked for upward shift
-    ID_non_outlying_Low_MEI = ID_non_outlying[ which( MEI_data[ - ID_shape_outlier ] >=
-                                                        quantile( MEI_data,
-                                                                  probs = 1 - p_check ) ) ]
+    ID_non_outlying_Low_MEI = ID_non_outlying[
+      which( MEI_data[ - ID_shape_outlier ] >=
+               quantile( MEI_data,
+                         probs = 1 - p_check ) ) ]
 
     # High MEI curves will be checked for downward shift
-    ID_non_outlying_High_MEI = ID_non_outlying[ which( MEI_data[ - ID_shape_outlier ] <=
-                                                         quantile( MEI_data, probs = p_check ) ) ]
+    ID_non_outlying_High_MEI = ID_non_outlying[
+      which( MEI_data[ - ID_shape_outlier ] <=
+               quantile( MEI_data, probs = p_check ) ) ]
 
-    aux_function = function( ID )( min( Data[ ID, ] - apply( Data[ - ID, ], 2, quantile, probs = q_low ) ) )
+    aux_function = function( ID )( min( Data[ ID, ] -
+                                          apply( Data[ - ID, ], 2,
+                                                 quantile,
+                                                 probs = q_low ) ) )
 
     # Managing High MEI data
     min_diff_min = sapply( ID_non_outlying_High_MEI, aux_function )
 
     ID_to_check = ID_non_outlying_High_MEI[ min_diff_min < 0 ]
 
-    aux_function_MBD = function( ID, fun )( MBD( rbind( Data[ - ID, ],
-                                                        Data_tilde[ grep( ID, ID_to_check ), ] ) )[ N ] )
-    aux_function_MEI = function( ID, fun )( MEI( rbind( Data[ - ID, ],
-                                                        Data_tilde[ grep( ID, ID_to_check ), ] ) )[ N ] )
+    aux_function_MBD = function( ID, fun )(
+      MBD( rbind( Data[ - ID, ],
+                  Data_tilde[ grep( ID, ID_to_check ), ] ) )[ N ] )
+
+    aux_function_MEI = function( ID, fun )(
+      MEI( rbind( Data[ - ID, ],
+                  Data_tilde[ grep( ID, ID_to_check ), ] ) )[ N ] )
 
     if( length( ID_to_check ) > 0 )
     {
@@ -320,7 +331,9 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
 
     # Managing Low MEI data
 
-    aux_function = function( ID )( max( Data[ ID, ] - apply( Data[ - ID, ], 2, quantile, probs = q_high ) ) )
+    aux_function = function( ID )( max( Data[ ID, ] - apply( Data[ - ID, ], 2,
+                                                             quantile,
+                                                             probs = q_high ) ) )
 
     max_diff_max = sapply( ID_non_outlying_Low_MEI, aux_function )
 

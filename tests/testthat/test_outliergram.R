@@ -39,7 +39,7 @@ Data = rbind( Data, Data_out )
 
 test_that( 'Outliergram - no adjustment',
            expect_equal( outliergram( time_grid, Data, display = FALSE ),
-                         c( 3, 20, 30, 31, 101, 112, 175, 199, 201, 202, 203, 204 ) ) )
+                         c( 31,  78, 117, 122, 152, 183, 201, 202, 203, 204 ) ) )
 
 test_that( 'Outliergram - with adjustment',
            expect_equal( outliergram( time_grid, Data,
@@ -47,6 +47,6 @@ test_that( 'Outliergram - with adjustment',
                                                      trial_size = 5 * nrow( Data ),
                                                      TPR = 0.01,
                                                      VERBOSE = FALSE ),
-                                      display = FALSE ),
-                         c( 30,  31, 101, 175, 201, 202, 203, 204 ) ) )
+                                      display = TRUE ),
+                         c( 78, 117, 183, 201, 202, 203, 204 ) ) )
 
