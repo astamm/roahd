@@ -1,5 +1,37 @@
 
 
+
+# TESTING THE SIMULATION OF UNIVARIATE FUNCTIONAL DATA --------------------
+
+N = 30
+P = 1e2
+
+t0 = 0
+tP = 1
+
+time_grid = seq( t0, tP, length.out = P )
+
+C = exp_cov_function( time_grid, alpha = 0.1, beta = 0.2 )
+
+CholC = chol( C )
+
+centerline = sin( 2 * pi * time_grid )
+
+test_that( 'Generation of gaussian univariate functional data - 1',
+           expect_silent( generate_gauss_fdata( N,
+                                                 centerline,
+                                                 Cov = C )
+           ) )
+
+
+test_that( 'Generation of gaussian univariate functional data - 1',
+           expect_silent( generate_gauss_fdata( N,
+                                                centerline,
+                                                CholCov = CholC )
+           ) )
+
+
+
 # TESTING THE SIMULATION OF MULTIVARIATE FUNCTIONAL DATA ------------------
 
 N = 30

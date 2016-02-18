@@ -14,9 +14,9 @@ generate_gauss_mfdata(M, L, centerline, correlations, listCov = NULL,
 2-dimensional data structure with L rows (one for each dimension) having the
 measurements along the grid as columns.}
 
-\item{correlations}{is the vector containing the correlation coefficients
-\eqn{\rho_{ij}} in the model generating data. They have to be provided
-in the following order:
+\item{correlations}{is the vector containing the \eqn{1/2 L (L-1)}
+correlation coefficients \eqn{\rho_{ij}} in the model generating data.
+They have to be provided in the following order:
 \deqn{(\rho_{1,2},\ldots,\rho_{1,L},\rho_{2,3},\ldots,\rho_{2,L},\ldots,
 \rho_{L,L-1}),}
 that is to say, the row-wise, upper triangular part of the correlation matrix
@@ -36,8 +36,14 @@ generation of the processes \eqn{\epsilon_1(t), \ldots, \epsilon_L(t)}.
 At least one argument between \code{listCov} and \code{listCholCov} must be
 different from \code{NULL}.}
 }
+\value{
+The function returns a list of L matrices, one for each component of
+the multivariate functional random variable, containing the discretized
+values of the generated observations (in form of \eqn{M \times P}{N x P}
+matrices).
+}
 \description{
-\code{generate_gauss_data} generates a dataset of multivariate functional
+\code{generate_gauss_mfdata} generates a dataset of multivariate functional
 data with a desired mean and covariance function in each dimension and a
 desired correlation structure among components.
 }
@@ -45,18 +51,29 @@ desired correlation structure among components.
 In particular, the following model is considered for the generation of data:
 
 \deqn{X(t) = ( m_1( t ) + \epsilon_1( t ), \ldots, m_L(t) +
- \epsilon_L(t)), \quad t \in I = [t_0, t_1]}{ X(t) = ( m_1( t ) + eps_1(t),
- ..., m_L(t) + eps_L(t) ), for all  t in I = [t0, t1] }
+ \epsilon_L(t)), \quad t \in I = [a, b]}{ X(t) = ( m_1( t ) +
+ \epsilon_1(t), ..., m_L(t) + \epsilon_L(t) ), for all  t in I = [a, b] }
 
 where \eqn{L} is the number of components of the multivariate functional
 random variable, \eqn{m_i(t)} is the \eqn{i-}th component of the center and
-\eqn{\epsilon_i(t)} is a gaussian process with covariance matrix \eqn{C_i}.
+\eqn{\epsilon_i(t)} is a centered gaussian process with covariance function
+\eqn{C_i}. That is to say:
+
+\deqn{Cov( \epsilon_{i}(s), \epsilon_{i}(t) ) = C( s, t ), \quad \forall i =
+ 1, \ldots, L, \quad \forall s, t \in I}{Cov( \epsilon_i(s),
+  \epsilon_i(t) ) = C( s, t ),  with  i =
+ 1, \ldots, L, and with s, t in I}
+
 A correlation structure among \eqn{\epsilon_1(t),\ldots,\epsilon_L(t)} is
 allowed in the following way:
 
 \deqn{ Cor( \epsilon_i(t), \epsilon_j(t)) = \rho_{i,j}, \quad \forall
 i \neq j, \quad \forall t \in I.}{ Cor( \epsilon_i(t), \epsilon_j(t)  ) =
 \rho_ij, for all i != j and for all t in I.}
+
+All the functions are supposed to be observed on an evenly-spaced, one-
+dimensional grid of P points: \eqn{[ a = t_0, t_1, \ldots, t_{P-1} = b]
+\subset I }.
 }
 \examples{
 M = 30
@@ -86,5 +103,9 @@ CholC3 = chol( C3 )
 generate_gauss_mfdata( M, L, centerline,
                        correlations = c( 0.5, 0.5, 0.5 ),
                       listCholCov = list( CholC1, CholC2, CholC3 ) )
+}
+\seealso{
+\code{\link{exp_cov_function}}, \code{\link{mfData}},
+\code{\link{generate_gauss_fdata}}
 }
 

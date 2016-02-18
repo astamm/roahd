@@ -4,21 +4,73 @@
 \alias{generate_gauss_fdata}
 \title{Generation of gaussian univariate functional data}
 \usage{
-generate_gauss_fdata(M, centerline = NULL, Cov = NULL, CholCov = NULL)
+generate_gauss_fdata(M, centerline, Cov = NULL, CholCov = NULL)
 }
 \arguments{
-\item{M}{the number of functional observations to generate}
+\item{M}{the number of distinct functional observations to generate.}
 
-\item{centerline}{the centerline of the distribution}
+\item{centerline}{the centerline of the distribution, represented as a one-
+dimensional data structure  of length \eqn{P} containing the measurement of
+the centerline on grid points.}
 
-\item{Cov}{covariance operator, in form of a P x P matrix (where P is the
-number of time points of the discrete grid over which functional data are
-observed)}
+\item{Cov}{the covariance operator (provided in form of a \eqn{P \times P}{
+P x P} matrix) that has to be used in the generation of \eqn{\epsilon(t)}. At
+least one argument between \code{Cov} and \code{CholCov} should be different
+from \code{NULL}.}
 
-\item{CholCov}{the Cholesky factor of the P x P Covariance matrix}
+\item{CholCov}{the Cholesky factor of the covariance operator (provided in
+form of a \eqn{P \times P}{P x P} matrix) that has to be used in the
+generation of observations from the process \eqn{\epsilon(t)}. At least one
+argument between \code{Cov} and \code{CholCov} should be different from
+\code{NULL}.}
+}
+\value{
+The function returns a matrix containing the discretized
+values of the generated observations (in form of an \eqn{M \times P}{M x P}
+matrix).
 }
 \description{
-\code{generate_gauss_data} generates a dataset of univariate functional data
-with a desired mean and covariance function
+\code{generate_gauss_fdata} generates a dataset of univariate functional data
+with a desired mean and covariance function.
+}
+\details{
+In particular, the following model is considered for the generation of data:
+
+\deqn{X(t) = m( t ) + \epsilon( t ), \quad t \in I = [a, b]}{ X(t) =
+ m( t ) + \epsilon(t), for all  t in I = [a, b] }
+
+where \eqn{m(t)} is the center and \eqn{\epsilon(t)} is a centered gaussian
+process with covariance function \eqn{C_i}.
+That is to say:
+
+\deqn{Cov( \epsilon(s), \epsilon(t) ) = C( s, t ), \quad \forall s, t \in
+  I}{Cov( \epsilon(s), \epsilon(t) ) = C( s, t ), with s, t in I}
+
+All the functions are supposed to be observed on an evenly-spaced, one-
+dimensional grid of P points: \eqn{[a = t_0, t_1, \ldots, t_{P-1} = b]
+\subset I }.
+}
+\examples{
+M = 30
+P = 1e2
+
+t0 = 0
+tP = 1
+
+time_grid = seq( t0, tP, length.out = P )
+
+C = exp_cov_function( time_grid, alpha = 0.1, beta = 0.2 )
+
+CholC = chol( C )
+
+centerline = sin( 2 * pi * time_grid )
+
+generate_gauss_fdata( N, centerline, Cov = C )
+
+generate_gauss_fdata( N, centerline, CholCov = CholC )
+}
+\seealso{
+\code{\link{exp_cov_function}}, \code{\link{fData}},
+\code{\link{generate_gauss_mfdata}}
 }
 

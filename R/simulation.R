@@ -1,18 +1,74 @@
 #' Generation of gaussian univariate functional data
 #'
-#' \code{generate_gauss_data} generates a dataset of univariate functional data
-#' with a desired mean and covariance function
+#' \code{generate_gauss_fdata} generates a dataset of univariate functional data
+#' with a desired mean and covariance function.
 #'
-#' @param M the number of functional observations to generate
-#' @param centerline the centerline of the distribution
-#' @param Cov covariance operator, in form of a P x P matrix (where P is the
-#' number of time points of the discrete grid over which functional data are
-#' observed)
-#' @param CholCov the Cholesky factor of the P x P Covariance matrix
+#' In particular, the following model is considered for the generation of data:
 #'
-generate_gauss_fdata = function( M, centerline = NULL,
+#'  \deqn{X(t) = m( t ) + \epsilon( t ), \quad t \in I = [a, b]}{ X(t) =
+#'  m( t ) + \epsilon(t), for all  t in I = [a, b] }
+#'
+#' where \eqn{m(t)} is the center and \eqn{\epsilon(t)} is a centered gaussian
+#' process with covariance function \eqn{C_i}.
+#' That is to say:
+#'
+#'  \deqn{Cov( \epsilon(s), \epsilon(t) ) = C( s, t ), \quad \forall s, t \in
+#'   I}{Cov( \epsilon(s), \epsilon(t) ) = C( s, t ), with s, t in I}
+#'
+#' All the functions are supposed to be observed on an evenly-spaced, one-
+#' dimensional grid of P points: \eqn{[a = t_0, t_1, \ldots, t_{P-1} = b]
+#' \subset I }.
+#'
+#'
+#' @param M the number of distinct functional observations to generate.
+#' @param centerline the centerline of the distribution, represented as a one-
+#' dimensional data structure  of length \eqn{P} containing the measurement of
+#' the centerline on grid points.
+#' @param Cov the covariance operator (provided in form of a \eqn{P \times P}{
+#' P x P} matrix) that has to be used in the generation of \eqn{\epsilon(t)}. At
+#' least one argument between \code{Cov} and \code{CholCov} should be different
+#' from \code{NULL}.
+#' @param CholCov the Cholesky factor of the covariance operator (provided in
+#' form of a \eqn{P \times P}{P x P} matrix) that has to be used in the
+#' generation of observations from the process \eqn{\epsilon(t)}. At least one
+#' argument between \code{Cov} and \code{CholCov} should be different from
+#' \code{NULL}.
+#'
+#'
+#' @return The function returns a matrix containing the discretized
+#' values of the generated observations (in form of an \eqn{M \times P}{M x P}
+#' matrix).
+#'
+#' @seealso \code{\link{exp_cov_function}}, \code{\link{fData}},
+#' \code{\link{generate_gauss_mfdata}}
+#'
+#'
+#' @examples
+#'
+#' M = 30
+#' P = 1e2
+#'
+#' t0 = 0
+#' tP = 1
+#'
+#' time_grid = seq( t0, tP, length.out = P )
+#'
+#' C = exp_cov_function( time_grid, alpha = 0.1, beta = 0.2 )
+#'
+#' CholC = chol( C )
+#'
+#' centerline = sin( 2 * pi * time_grid )
+#'
+#' generate_gauss_fdata( N, centerline, Cov = C )
+#'
+#' generate_gauss_fdata( N, centerline, CholCov = CholC )
+#'
+generate_gauss_fdata = function( M, centerline,
                                  Cov = NULL, CholCov = NULL )
 {
+
+  centerline = as.numeric( centerline )
+
   if( is.null( Cov ) & is.null( CholCov ) ){
     stop( 'Error: You have to provide at least either covariance matrix or
           its cholesky factor to .generate_gauss_fdata\n')
@@ -44,19 +100,26 @@ to generate_gauss_fdata\n')
 
 #' Generation of gaussian multivariate functional data
 #'
-#' \code{generate_gauss_data} generates a dataset of multivariate functional
+#' \code{generate_gauss_mfdata} generates a dataset of multivariate functional
 #' data with a desired mean and covariance function in each dimension and a
 #' desired correlation structure among components.
 #'
 #' In particular, the following model is considered for the generation of data:
 #'
 #'  \deqn{X(t) = ( m_1( t ) + \epsilon_1( t ), \ldots, m_L(t) +
-#'  \epsilon_L(t)), \quad t \in I = [t_0, t_1]}{ X(t) = ( m_1( t ) + eps_1(t),
-#'  ..., m_L(t) + eps_L(t) ), for all  t in I = [t0, t1] }
+#'  \epsilon_L(t)), \quad t \in I = [a, b]}{ X(t) = ( m_1( t ) +
+#'  \epsilon_1(t), ..., m_L(t) + \epsilon_L(t) ), for all  t in I = [a, b] }
 #'
 #' where \eqn{L} is the number of components of the multivariate functional
 #' random variable, \eqn{m_i(t)} is the \eqn{i-}th component of the center and
-#' \eqn{\epsilon_i(t)} is a gaussian process with covariance matrix \eqn{C_i}.
+#' \eqn{\epsilon_i(t)} is a centered gaussian process with covariance function
+#' \eqn{C_i}. That is to say:
+#'
+#'  \deqn{Cov( \epsilon_{i}(s), \epsilon_{i}(t) ) = C( s, t ), \quad \forall i =
+#'  1, \ldots, L, \quad \forall s, t \in I}{Cov( \epsilon_i(s),
+#'   \epsilon_i(t) ) = C( s, t ),  with  i =
+#'  1, \ldots, L, and with s, t in I}
+#'
 #' A correlation structure among \eqn{\epsilon_1(t),\ldots,\epsilon_L(t)} is
 #' allowed in the following way:
 #'
@@ -64,13 +127,18 @@ to generate_gauss_fdata\n')
 #' i \neq j, \quad \forall t \in I.}{ Cor( \epsilon_i(t), \epsilon_j(t)  ) =
 #' \rho_ij, for all i != j and for all t in I.}
 #'
+#' All the functions are supposed to be observed on an evenly-spaced, one-
+#' dimensional grid of P points: \eqn{[ a = t_0, t_1, \ldots, t_{P-1} = b]
+#' \subset I }.
+#'
+#'
 #' @param M the number of distinct functional observations to generate.
 #' @param centerline the centerline of the distribution, represented as a
 #' 2-dimensional data structure with L rows (one for each dimension) having the
 #' measurements along the grid as columns.
-#' @param correlations is the vector containing the correlation coefficients
-#' \eqn{\rho_{ij}} in the model generating data. They have to be provided
-#' in the following order:
+#' @param correlations is the vector containing the \eqn{1/2 L (L-1)}
+#' correlation coefficients \eqn{\rho_{ij}} in the model generating data.
+#' They have to be provided in the following order:
 #' \deqn{(\rho_{1,2},\ldots,\rho_{1,L},\rho_{2,3},\ldots,\rho_{2,L},\ldots,
 #' \rho_{L,L-1}),}
 #' that is to say, the row-wise, upper triangular part of the correlation matrix
@@ -87,6 +155,14 @@ to generate_gauss_fdata\n')
 #' generation of the processes \eqn{\epsilon_1(t), \ldots, \epsilon_L(t)}.
 #' At least one argument between \code{listCov} and \code{listCholCov} must be
 #' different from \code{NULL}.
+#'
+#' @return The function returns a list of L matrices, one for each component of
+#' the multivariate functional random variable, containing the discretized
+#' values of the generated observations (in form of \eqn{M \times P}{N x P}
+#' matrices).
+#'
+#' @seealso \code{\link{exp_cov_function}}, \code{\link{mfData}},
+#' \code{\link{generate_gauss_fdata}}
 #'
 #' @examples
 #'
@@ -181,12 +257,13 @@ matrices to generate_gauss_mfdata')
 
   Data = Data %*% R_chol
 
-  return( eval( parse( text =
-                         paste( 'list( ',
-                                paste( 't( t( matrix( Data[ , ', 1 : L,
-                                       ' ], nrow = M, ncol = P ) %*% listCholCov[[ ',
-                                       1 : L, ' ]] ) + as.numeric( centerline[ ',
-                                       1 : L, ', ] ) )',
-                                       sep = '', collapse  = ', ' ),
-                                ' )', sep = '' ) ) ) )
+  return( values = eval(
+    parse( text =
+             paste( 'list( ',
+                    paste( 't( t( matrix( Data[ , ', 1 : L,
+                           ' ], nrow = M, ncol = P ) %*% listCholCov[[ ',
+                           1 : L, ' ]] ) + as.numeric( centerline[ ',
+                           1 : L, ', ] ) )',
+                           sep = '', collapse  = ', ' ),
+                    ' )', sep = '' ) ) ) )
 }
