@@ -25,21 +25,21 @@ centerline = matrix( c( sin( 2 * pi * time_grid ),
                      nrow = 3, byrow = TRUE )
 
 test_that( 'Generation of gaussian multivarite functional data - 1',
-           expect_silent( generate_gauss_mfdata( N, L = 3,
+           expect_silent( generate_gauss_mfdata( N, L,
                                                  centerline,
                                                  correlations = c( 0.5, 0.5,
                                                                    0.5 ),
                                                  listCov = list( C1, C2, C3 ) )
                           ) )
 
-# plot( mfData( time_grid, generate_gauss_mfdata( N, L = 3,
+# plot( mfData( time_grid, generate_gauss_mfdata( N, L,
 #                                                 centerline,
 #                                                 correlations = c( 0.5, 0.5, 0.5 ),
 #                                                 listCov = list( C1, C2, C3 ) ) ) )
 
 
 test_that( 'Generation of gaussian multivarite functional data - 2',
-           expect_silent( generate_gauss_mfdata( N, L = 3,
+           expect_silent( generate_gauss_mfdata( N, L,
                                                  centerline,
                                                  correlations = c( 0.5, 0.5,
                                                                    0.5 ),
@@ -48,7 +48,7 @@ test_that( 'Generation of gaussian multivarite functional data - 2',
                                                                      CholC3 ) )
                           ) )
 
-# plot( mfData( time_grid, generate_gauss_mfdata( N, L = 3,
+# plot( mfData( time_grid, generate_gauss_mfdata( N, L,
 #                                                 centerline,
 #                                                 correlations = c( 0.5, 0.5, 0.5 ),
 #                                                 listCholCov = list( CholC1,
@@ -56,7 +56,7 @@ test_that( 'Generation of gaussian multivarite functional data - 2',
 #                                                                     CholC3 ) ) ) )
 
 test_that( 'Generation of gaussian multivarite functional data - 3',
-           expect_error( generate_gauss_mfdata( N, L = 3,
+           expect_error( generate_gauss_mfdata( N, L,
                                                  centerline,
                                                  correlations = c( 0.5, 0.5,
                                                                    0.5 ),
@@ -66,7 +66,7 @@ test_that( 'Generation of gaussian multivarite functional data - 3',
                                                                      ) ) ) )
 
 test_that( 'Generation of gaussian multivarite functional data - 4',
-           expect_error( generate_gauss_mfdata( N, L = 3,
+           expect_error( generate_gauss_mfdata( N, L,
                                                 centerline[-1,],
                                                 correlations = c( 0.5, 0.5,
                                                                   0.5 ),
@@ -77,7 +77,7 @@ test_that( 'Generation of gaussian multivarite functional data - 4',
                                                                     ) ) ) )
 
 test_that( 'Generation of gaussian multivarite functional data - 5',
-           expect_error( generate_gauss_mfdata( N, L = 3,
+           expect_error( generate_gauss_mfdata( N, L,
                                                 centerline[,-1],
                                                 correlations = c( 0.5, 0.5 ),
                                                 listCov = c( C1, C2, C3 ),

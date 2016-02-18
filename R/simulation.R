@@ -1,11 +1,11 @@
-#' Functional boxplot
+#' Generation of gaussian univariate functional data
 #'
-#' \code{generate_gauss_data} displays the functional boxplot of a dataset of
-#' functional data.
+#' \code{generate_gauss_data} generates a dataset of univariate functional data
+#' with a desired mean and covariance function
 #'
 #' @param M the number of functional observations to generate
-#' @param centerline the centerline of the distribution (either mean or median)
-#' @param Cov covairance operator, in form of a P x P matrix (where P is the
+#' @param centerline the centerline of the distribution
+#' @param Cov covariance operator, in form of a P x P matrix (where P is the
 #' number of time points of the discrete grid over which functional data are
 #' observed)
 #' @param CholCov the Cholesky factor of the P x P Covariance matrix
@@ -42,6 +42,83 @@ to generate_gauss_fdata\n')
                   ncol = P ) %*% CholCov ) + centerline ) )
 }
 
+#' Generation of gaussian multivariate functional data
+#'
+#' \code{generate_gauss_data} generates a dataset of multivariate functional
+#' data with a desired mean and covariance function in each dimension and a
+#' desired correlation structure among components.
+#'
+#' In particular, the following model is considered for the generation of data:
+#'
+#'  \deqn{X(t) = ( m_1( t ) + \epsilon_1( t ), \ldots, m_L(t) +
+#'  \epsilon_L(t)), \quad t \in I = [t_0, t_1]}{ X(t) = ( m_1( t ) + eps_1(t),
+#'  ..., m_L(t) + eps_L(t) ), for all  t in I = [t0, t1] }
+#'
+#' where \eqn{L} is the number of components of the multivariate functional
+#' random variable, \eqn{m_i(t)} is the \eqn{i-}th component of the center and
+#' \eqn{\epsilon_i(t)} is a gaussian process with covariance matrix \eqn{C_i}.
+#' A correlation structure among \eqn{\epsilon_1(t),\ldots,\epsilon_L(t)} is
+#' allowed in the following way:
+#'
+#' \deqn{ Cor( \epsilon_i(t), \epsilon_j(t)) = \rho_{i,j}, \quad \forall
+#' i \neq j, \quad \forall t \in I.}{ Cor( \epsilon_i(t), \epsilon_j(t)  ) =
+#' \rho_ij, for all i != j and for all t in I.}
+#'
+#' @param M the number of distinct functional observations to generate.
+#' @param centerline the centerline of the distribution, represented as a
+#' 2-dimensional data structure with L rows (one for each dimension) having the
+#' measurements along the grid as columns.
+#' @param correlations is the vector containing the correlation coefficients
+#' \eqn{\rho_{ij}} in the model generating data. They have to be provided
+#' in the following order:
+#' \deqn{(\rho_{1,2},\ldots,\rho_{1,L},\rho_{2,3},\ldots,\rho_{2,L},\ldots,
+#' \rho_{L,L-1}),}
+#' that is to say, the row-wise, upper triangular part of the correlation matrix
+#' without the diagonal.
+#' @param listCov a list containing the \eqn{L} covariance operators (provided
+#' in form of a \eqn{P \times P}{P x P} matrix), one for each component of the
+#' multivariate functional random vairable, that have to be used in the
+#' generation of the processes \eqn{\epsilon_1(t), \ldots, \epsilon_L(t)}.
+#' At least one argument between \code{listCov} and \code{listCholCov} must be
+#' different from \code{NULL}.
+#' @param listCholCov the Cholesky factor of the \eqn{L} covariance operators
+#' (in \eqn{P \times P}{P x P} matrix form), one for each component of the
+#' multivariate functional random vairable, that have to be used in the
+#' generation of the processes \eqn{\epsilon_1(t), \ldots, \epsilon_L(t)}.
+#' At least one argument between \code{listCov} and \code{listCholCov} must be
+#' different from \code{NULL}.
+#'
+#' @examples
+#'
+#' M = 30
+#' P = 1e2
+#' L = 3
+#'
+#' time_grid = seq( 0, 1, length.out = P )
+#'
+#' C1 = exp_cov_function( time_grid, alpha = 0.1, beta = 0.2 )
+#' C2 = exp_cov_function( time_grid, alpha = 0.2, beta = 0.5 )
+#' C3 = exp_cov_function( time_grid, alpha = 0.3, beta = 1 )
+#'
+#'
+#' centerline = matrix( c( sin( 2 * pi * time_grid ),
+#'                         sqrt( time_grid ),
+#'                         10 * ( time_grid - 0.5 ) * time_grid ),
+#'                      nrow = 3, byrow = TRUE )
+#'
+#' generate_gauss_mfdata( M, L, centerline,
+#'                        correlations = c( 0.5, 0.5, 0.5 ),
+#'                        listCov = list( C1, C2, C3 ) )
+#'
+#' CholC1 = chol( C1 )
+#' CholC2 = chol( C2 )
+#' CholC3 = chol( C3 )
+#'
+#' generate_gauss_mfdata( M, L, centerline,
+#'                        correlations = c( 0.5, 0.5, 0.5 ),
+#'                       listCholCov = list( CholC1, CholC2, CholC3 ) )
+#'
+#'
 generate_gauss_mfdata = function( M, L, centerline, correlations,
                                   listCov = NULL, listCholCov = NULL )
 {

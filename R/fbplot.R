@@ -55,6 +55,11 @@ fbplot = function( Data,
 #' @param display either a logical value indicating wether you want the
 #' functional boxplot to be displayed, or the number of the graphical devices
 #' where you want the boxplot to be plotted.
+#' @param xlab the label to use on the x axis when displaying the functional
+#' boxplot
+#' @param ylab the label to use on the y axis when displaying the functional
+#' boxplot
+#' @param main the main title to used when displaying the functional boxplot
 #' @param ... additional graphical parameters to be used in plotting functions
 #' @param verbose logical flag to enable verbosity in the adjustment process
 #'
@@ -307,7 +312,32 @@ fbplot.fData = function( Data,
                 fence_upper = fence_upper ) )
 }
 
-
+#' Functional boxplot for multivariate functional data
+#'
+#' \code{fbplot.fData} displays the functional boxplot of a dataset of
+#' functional data.
+#'
+#' @param Data the univariate functional dataset whose functional boxplot is
+#' desired
+#' @param Depths either a vector containing the depths for each element of the
+#' dataset, or a string containing the name of the method you want to use to
+#' compute it. In this case the name of the method must be included in the
+#' caller's environment
+#' @param Fvalue the value of the inflation factor F, default is F = 1.5,
+#' @param adjust either FALSE if you would like the default value for the
+#' inflation factor, F = 1.5, to be used, or a list specifying the parameters
+#' required by the adjustment.
+#' @param display either a logical value indicating wether you want the
+#' functional boxplot to be displayed, or the number of the graphical devices
+#' where you want the boxplot to be plotted.
+#' @param xlab the label to use on the x axis when displaying the functional
+#' boxplot
+#' @param ylab the label to use on the y axis when displaying the functional
+#' boxplot
+#' @param main the main title to used when displaying the functional boxplot
+#' @param ... additional graphical parameters to be used in plotting functions
+#' @param verbose logical flag to enable verbosity in the adjustment process
+#'
 fbplot.mfData = function( Data,
                           Depths = list( def = 'MBD',
                                          weights = 'uniform' ),
@@ -366,6 +396,33 @@ provided in the multivariate version of the functional boxplot' )
 
   if( ! display == FALSE )
   {
+    if( ! is.null( ylab ) )
+    {
+      if( length( ylab ) == 1 )
+      {
+        ylab = rep( ylab, Data$L )
+      } else if( length( ylab ) != Data$L )
+      {
+        stop( 'Error in fbplot.mfData: you specified a wrong number of y
+              labels' )
+      }
+      } else {
+        ylab = rep( list( '' ), Data$L )
+    }
+
+    if( ! is.null( main ) )
+    {
+      if( length( main ) == 1 )
+      {
+        main = rep( main, Data$L )
+      } else if( length( main ) != Data$L )
+      {
+        stop( 'Error in fbplot.mfData: you specified a wrong number of
+              subtitles' )
+      }
+      } else {
+        main = rep( list( '' ), Data$L )
+    }
 
     # Subdividing the graphical window
     mfrow_rows = ceiling( Data$L / 2 )
@@ -388,8 +445,6 @@ provided in the multivariate version of the functional boxplot' )
     time_grid = seq( Data$t0, Data$tP, length.out = Data$P )
 
     xlab = ifelse( is.null( xlab ), '', xlab )
-    ylab = ifelse( is.null( ylab ), '', ylab )
-    main = ifelse( is.null( main ), '', main )
 
     for( iL in 1 : Data$L )
     {
@@ -402,7 +457,9 @@ provided in the multivariate version of the functional boxplot' )
                  t( Data_curr[ - ID_out, ] ), lty = 1, type = 'l',
                  col = col_non_outlying,
                  ylim = range( Data_curr ),
-                 xlab = xlab, ylab = ylab, main = main, ... )
+                 xlab = xlab,
+                 ylab = ylab[[ iL ]],
+                 main = main[[ iL ]], ... )
 
         # Computing maximum and minimum envelope
         max_envelope_limit = apply( Data_curr[ - ID_out, ], 2, max )
