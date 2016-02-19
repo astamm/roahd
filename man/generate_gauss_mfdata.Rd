@@ -10,6 +10,8 @@ generate_gauss_mfdata(M, L, centerline, correlations, listCov = NULL,
 \arguments{
 \item{M}{the number of distinct functional observations to generate.}
 
+\item{L}{the number of components of the multivariate functional data.}
+
 \item{centerline}{the centerline of the distribution, represented as a
 2-dimensional data structure with L rows (one for each dimension) having the
 measurements along the grid as columns.}

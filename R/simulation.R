@@ -133,6 +133,7 @@ to generate_gauss_fdata\n')
 #'
 #'
 #' @param M the number of distinct functional observations to generate.
+#' @param L the number of components of the multivariate functional data.
 #' @param centerline the centerline of the distribution, represented as a
 #' 2-dimensional data structure with L rows (one for each dimension) having the
 #' measurements along the grid as columns.

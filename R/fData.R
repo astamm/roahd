@@ -182,24 +182,51 @@ plot_mfData_default = function( x,
 }
 
 
-
+#' Operator \code{+} and \code{-} for \code{fData} objects
 #'
-#' Overload of + operator for fData objects.
+#' These methods provide operators \code{+} and \code{-} to perform sums
+#' or differences between an \code{fData} object and either another
+#' \code{fData} object or other compliant data structures, like matrices or
+#' vectors or arrays, representing the pointwise measurements of the second
+#' term of the  sum.
 #'
-#'  It allows to perform sum between functional data objects or between a
-#'  functional data and other compliant containers, like matrices or vectors,
-#'  representing the pointwise measurements of the second term of the sum.
+#' If the second term of the operation is an \code{fData} object, it must be
+#' defined over the same grid as the first.
 #'
-#' @param fD the univariate functional data object
-#' @param A either a functional data object, whose time_grid must be the same as
-#' fD's, or a one-dimensional data structure (like 1D-array or raw numeric
-#' vector), or a two-dimensional data structure (like 2D-array or raw numeric
+#' @param fD the univariate \code{fData} object.
+#' @param A either an \code{fData} object, defined on the very same grid of
+#' \code{fD}, or a 1D data structure (such as 1D array or raw
+#' numeric vector), or a 2D data structure (such as 2D array or raw numeric
 #' matrix ), that specifies the second term of the sum.
-#' In case of a one-dimensional data structure, the sum is performed element-wise
-#' between each element of the functional dataset fD and A.
-#' In case of a two-dimensional data structure, the sum is performet element-wise
-#' between corresponding elements of fD and A's rows.
+#' In case of a 1D data structure, the sum is performed element-wise between
+#' each element of  \code{fD} and \code{A}, and \code{A} must have length
+#' \code{P}, size of \code{fD}'s grid.
+#' In case of a 2D data structure, the sum is performed element-wise between
+#' corresponding elements of \code{fD} and \code{A}'s rows. In this case,
+#' \code{A} must have \code{P} columns, as the size of \code{fD}'s grid.
 #'
+#' @name Operator + and -
+#'
+#' @return The function returns an \code{fData} object, whose function values
+#' have undergone the sum/difference.
+#'
+#' @examples
+#' fD = fData( seq( 0, 1, length.out = 10 ),
+#'             values = matrix( seq( 1, 10 ),
+#'                              nrow = 21, ncol = 10, byrow = TRUE ) )
+#' fD + 1 : 10
+#' fD - 2 : 11
+#'
+#' fD + array( 1, dim = c( 1, 10 ) )
+#' fD - array( 1, dim = c( 2, 11 ) )
+#'
+#' fD + fD
+#' fD - fD
+#'
+NULL
+
+
+#' @rdname Operator + and -
 "+.fData" = function( fD, A )
 {
   if( class( A ) == 'fData' )
@@ -242,22 +269,7 @@ plot_mfData_default = function( x,
   return( fD )
 }
 
-#' Overload of - operator for fData objects.
-#'
-#'  It allows to perform subtractions between functional data objects or between
-#'  a functional data and other compliant containers, like matrices or vectors,
-#'  representing the pointwise measurements of the second term of the sum.
-#'
-#' @param fD the univariate functional data object
-#' @param A either a functional data object, whose time_grid must be the same as
-#' fD's, or a one-dimensional data structure (like 1D-array or raw numeric
-#' vector), or a two-dimensional data structure (like 2D-array or raw numeric
-#' matrix ), that specifies the second term of the subtraction.
-#' In case of a one-dimensional data structure, the sum is performed element-wise
-#' between each element of the functional dataset fD and A.
-#' In case of a two-dimensional data structure, the sum is performet element-wise
-#' between corresponding elements of fD and A's rows.
-#'
+#' @rdname Operator + and -
 "-.fData" = function( fD, A )
 {
   if( class( A ) == 'fData' )
@@ -272,7 +284,7 @@ plot_mfData_default = function( x,
     {
       fD$values = t( t( fD$values ) - as.vector( A$values ) )
     } else {
-      fD$values = fD$values + A$values
+      fD$values = fD$values - A$values
     }
 
   } else if( is.null( dim( A ) ) || nrow( A ) == 1 ){
@@ -300,15 +312,48 @@ plot_mfData_default = function( x,
   return( fD )
 }
 
-#' Overload of * operator for fData objects.
+#' Operator \code{*} and \code{/} for \code{fData} objects
 #'
-#'  It allows to perform multiplications between a functional data object and a
-#'  either a numeric variable or numeric one-dimensional data structure.
+#' These methods provide operators \code{*} and \code{/} to perform products
+#' or divisions between an \code{fData} object and either a number or a
+#' compliant 1D data structure, like numeric vector, array or
+#' matrix. The operation is computed by performing the element-wise product
+#' or division between \code{fD}'s observations and the provided value(s).
 #'
-#' @param fD the univariate functional data object
-#' @param a either a number or a numeric one-dimensional data strcture (array,
-#' matrix or raw vector)
+#' If the second argument is a 1D data structure, it must have length \code{N}
+#' equal to the number of observations in \code{fD}.
 #'
+#'
+#' @param fD the univariate \code{fData} object.
+#' @param a either a single number or a 1D data structure (such as numeric
+#' raw vector, matrix or array) specifying the factor(s) to use in the
+#' multiplication/division of \code{fD} elements' values.
+#' In the latter case, each factor is used with the corresponding element in
+#' \code{fD}, hence a must have length \code{N}, number of observations in
+#' \code{fD}.
+#'
+#' @name Operator * and /
+#'
+#' @return The function returns an \code{fData} object, whose function values
+#' have undergone the product/division.
+#'
+#' @examples
+#'
+#' N = 11
+#' fD = fData( seq( 0, 1, length.out = 10 ),
+#'             values = matrix( seq( 1, 10 ),
+#'                              nrow = N, ncol = 10, byrow = TRUE ) )
+#' fD * 2
+#'
+#' ( fD * 4 ) / 2
+#'
+#' fD / rep( 10, N )
+#'
+#' fD * seq( 1, N )
+#'
+NULL
+
+#' @rdname Operator * and /
 "*.fData" = function( fD, a )
 {
   if( ! 1 %in% dim( as.matrix( a ) ) )
@@ -316,28 +361,21 @@ plot_mfData_default = function( x,
       stop( 'Error in *.fData: dimensions are not compliant' )
   }
 
-  fD$values = fD$values * a
+  fD$values = fD$values * as.numeric( a )
 
   return( fD )
 }
 
-#' Overload of / operator for fData objects.
-#'
-#'  It allows to perform divisions between a functional data object and a
-#'  either a numeric variable or numeric one-dimensional data structure.
-#'
-#' @param fD the univariate functional data object
-#' @param a either a number or a numeric one-dimensional data strcture ( array,
-#' matrix or raw vector)
-#'
+#' @rdname Operator * and /
 "/.fData" = function( fD, a )
 {
   if( ! 1 %in% dim( as.matrix( a ) ) )
   {
-    stop( 'Error in /.fData: dimensions are not compliant' )
+    stop( 'Error in *.fData: dimensions are not compliant' )
   }
 
-  fD$values = fD$values / a
+  fD$values = fD$values / as.numeric( a )
+
 
   return( fD )
 }
