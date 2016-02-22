@@ -7,6 +7,7 @@
 #' either in a vector or matrix-like representation, with N rows (observations)
 #' and P columns (time points)
 #'
+#' @export
 fData = function( grid, values )
 {
   all( abs( diff( unique( diff( grid ) ) ) ) < 1e-14 ) ||
@@ -205,28 +206,28 @@ plot_mfData_default = function( x,
 #' corresponding elements of \code{fD} and \code{A}'s rows. In this case,
 #' \code{A} must have \code{P} columns, as the size of \code{fD}'s grid.
 #'
-#' @name Operator + and -
+#' @name plus-.fData
 #'
 #' @return The function returns an \code{fData} object, whose function values
 #' have undergone the sum/difference.
+#'
+#'
+NULL
+
+
+#' @rdname plus-.fData
 #'
 #' @examples
 #' fD = fData( seq( 0, 1, length.out = 10 ),
 #'             values = matrix( seq( 1, 10 ),
 #'                              nrow = 21, ncol = 10, byrow = TRUE ) )
 #' fD + 1 : 10
-#' fD - 2 : 11
 #'
 #' fD + array( 1, dim = c( 1, 10 ) )
-#' fD - array( 1, dim = c( 2, 11 ) )
 #'
 #' fD + fD
-#' fD - fD
 #'
-NULL
-
-
-#' @rdname Operator + and -
+#' @export
 "+.fData" = function( fD, A )
 {
   if( class( A ) == 'fData' )
@@ -269,7 +270,20 @@ NULL
   return( fD )
 }
 
-#' @rdname Operator + and -
+#' @rdname plus-.fData
+#'
+#' @examples
+#' fD = fData( seq( 0, 1, length.out = 10 ),
+#'             values = matrix( seq( 1, 10 ),
+#'                              nrow = 21, ncol = 10, byrow = TRUE ) )
+#' fD - 2 : 11
+#'
+#' fD - array( 1, dim = c( 1, 10 ) )
+#'
+#' fD - fD
+#'
+#' @export
+#'
 "-.fData" = function( fD, A )
 {
   if( class( A ) == 'fData' )
@@ -332,10 +346,14 @@ NULL
 #' \code{fD}, hence a must have length \code{N}, number of observations in
 #' \code{fD}.
 #'
-#' @name Operator * and /
+#' @name times-.fData
 #'
 #' @return The function returns an \code{fData} object, whose function values
 #' have undergone the product/division.
+#'
+NULL
+
+#' @rdname times-.fData
 #'
 #' @examples
 #'
@@ -345,15 +363,10 @@ NULL
 #'                              nrow = N, ncol = 10, byrow = TRUE ) )
 #' fD * 2
 #'
-#' ( fD * 4 ) / 2
-#'
-#' fD / rep( 10, N )
-#'
 #' fD * seq( 1, N )
 #'
-NULL
-
-#' @rdname Operator * and /
+#' @export
+#'
 "*.fData" = function( fD, a )
 {
   if( ! 1 %in% dim( as.matrix( a ) ) )
@@ -366,7 +379,19 @@ NULL
   return( fD )
 }
 
-#' @rdname Operator * and /
+#' @rdname times-.fData
+#'
+#' @examples
+#'
+#' N = 11
+#' fD = fData( seq( 0, 1, length.out = 10 ),
+#'             values = matrix( seq( 1, 10 ),
+#'                              nrow = N, ncol = 10, byrow = TRUE ) )
+#' fD / 2
+#'
+#' fD / rep( 10, N )
+#'
+#' @export
 "/.fData" = function( fD, a )
 {
   if( ! 1 %in% dim( as.matrix( a ) ) )

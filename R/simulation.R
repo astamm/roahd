@@ -59,10 +59,11 @@
 #'
 #' centerline = sin( 2 * pi * time_grid )
 #'
-#' generate_gauss_fdata( N, centerline, Cov = C )
+#' generate_gauss_fdata( M, centerline, Cov = C )
 #'
-#' generate_gauss_fdata( N, centerline, CholCov = CholC )
+#' generate_gauss_fdata( M, centerline, CholCov = CholC )
 #'
+#' @export
 generate_gauss_fdata = function( M, centerline,
                                  Cov = NULL, CholCov = NULL )
 {
@@ -195,7 +196,7 @@ to generate_gauss_fdata\n')
 #'                        correlations = c( 0.5, 0.5, 0.5 ),
 #'                       listCholCov = list( CholC1, CholC2, CholC3 ) )
 #'
-#'
+#' @export
 generate_gauss_mfdata = function( M, L, centerline, correlations,
                                   listCov = NULL, listCholCov = NULL )
 {

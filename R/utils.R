@@ -7,6 +7,8 @@
 #' we have a consistent output with matrix-structure
 #'
 #' @param D a generic array or atomic vecor to be converted in row-matrix format.
+#'
+#' @export
 toRowMatrixForm = function( D )
 {
   if( is.null( dim( D ) ) |
@@ -56,6 +58,7 @@ set_alpha = function( col, alpha )
 #' @param alpha the alpha parameter in the exponential covariance formula
 #' @param beta the beta parameter in the exponential covariance formula
 #'
+#' @export
 exp_cov_function = function( time_grid, alpha, beta )
 {
   return(  outer( time_grid, time_grid,
