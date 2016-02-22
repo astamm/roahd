@@ -2,16 +2,62 @@
 % Please edit documentation in R/fData.R
 \name{plot.mfData}
 \alias{plot.mfData}
-\title{Specialised method to plot multivariate functional data.}
+\title{Specialised method to plot \code{mfData} objects}
 \usage{
 \method{plot}{mfData}(x, ...)
 }
 \arguments{
-\item{x}{the multivariate functional data object}
+\item{x}{the multivariate functional dataset of \code{mfData} class.}
 
-\item{...}{additional graphical parameters to be used in plotting functions}
+\item{...}{additional graphical parameters to be used in plotting functions
+(see \code{Details} for the use of \code{ylab} and \code{main}).}
 }
 \description{
-Specialised method to plot multivariate functional data.
+This function performs the plot of a functional multivariate dataset stored
+in an object of class \code{mfData}. It is able to accept all the usual
+customisable graphical parameters, otherwise it will use the default ones.
+}
+\details{
+The current active graphical device is split into a number of sub-figures,
+each one meant to contain the plot of the corresponding dimension of the
+\code{mfData} object. In particular, they are arranged in a rectangular
+lattice with a number of rows equal to \eqn{ \lfloor \sqrt{ L } \rfloor }
+and a number of columns equal to \eqn{ \lceil L / \lfloor \sqrt{L} \rfloor
+\rceil }.
+
+A special use of the graphical parameters allows to set up y-labels and
+titles for all the sub-figures in the graphical window. In particular,
+parameters \code{ylab} and \code{main} can take as argument either a single
+string, that are repeatedly used for all the sub-graphics, or a list of
+different strings (one for each of the \code{L} dimensions) that have to be
+used in the corresponding graphic.
+}
+\examples{
+N = 1e2
+
+P = 1e3
+
+t0 = 0
+t1 = 1
+
+# Defining the measurement grid
+grid = seq( t0, t1, length.out = P )
+
+# Generating an exponential covariance matrix to be used in the simulation of
+# the functional datasets (see the related help for details)
+C = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+
+# Simulating the measurements of two univariate functional datasets with
+# required center and covariance function
+Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = C )
+Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = C )
+
+# Building the mfData object and plotting tt
+plot( mfData( grid, list( Data_1, Data_2 ) ),
+      xlab = 'time', ylab = list( '1st dim.', '2nd dim.' ),
+      main = list( 'An important plot here', 'And another one here' ) )
+}
+\seealso{
+\code{\link{mfData}}, \code{\link{fData}}, \code{\link{plot.fData}}
 }
 

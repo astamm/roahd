@@ -2,16 +2,42 @@
 % Please edit documentation in R/fData.R
 \name{plot.fData}
 \alias{plot.fData}
-\title{Specialised method to plot univariate functional data..}
+\title{Specialised method to plot \code{fData} objects}
 \usage{
 \method{plot}{fData}(x, ...)
 }
 \arguments{
-\item{x}{the univariate functional data object}
+\item{x}{the univariate functional dataset of \code{fData} class.}
 
 \item{...}{additional graphical parameters to be used in plotting functions}
 }
 \description{
-Specialised method to plot univariate functional data..
+This function performs the plot of a functional univariate dataset stored in
+an object of class \code{fData}. It is able to accept all the usual
+customisable graphical parameters, otherwise it will use the default ones.
+}
+\examples{
+N = 20
+P = 1e2
+
+# One dimensional grid
+grid = seq( 0, 1, length.out = P )
+
+# Generating an exponential covariance function (see related help for more
+# information )
+C = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+
+# Generating a synthetic dataset with a gaussian distribution and
+# required mean and covariance function:
+values = generate_gauss_fdata( N,
+                               centerline = sin( 2 * pi * grid ),
+                               Cov = C )
+
+fD = fData( grid, values )
+
+plot( fD )
+}
+\seealso{
+\code{\link{fData}}
 }
 

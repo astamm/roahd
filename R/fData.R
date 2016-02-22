@@ -1,5 +1,5 @@
 
-#' \code{fData} class for univariate functional data.
+#' \code{S3} class for univariate functional datasets.
 #'
 #'  This function implements a constructor for elements of \code{S3} class
 #'  \code{fData}, aimed at implementing a representation of a functional
@@ -7,7 +7,12 @@
 #'
 #'  The functional dataset is represented as a collection of measurement of the
 #'  observations on an evenly spaced, 1D grid of discrete points (representing,
-#'  e.g. time).
+#'  e.g. time), namely, for functional data defined over a grid \eqn{[t_0,
+#'  t_1, \ldots, t_P]}:
+#'
+#'  \deqn{ f_{i,j} = f_i( t_0 + j h ), \quad h =  \frac{t_P - t_0}{N},
+#'  \quad \forall j = 1, \ldots, P, \quad \forall i = 1, \ldots
+#'  N.}
 #'
 #' @param grid the evenly spaced grid over which the functional observations are
 #' measured. It must be a numeric vector of length \code{P}.
@@ -15,6 +20,40 @@
 #' prodived in form of a 2D data structure (e.g. matrix or array) having as
 #' rows the observations and as columns their measurements over the 1D grid of
 #' length \code{P} specified in \code{grid}.
+#'
+#' @return The function returns a \code{S3} object of class \code{fData}, containing
+#' the following elements:
+#' \itemize{
+#'  \item{"\code{N}"}{: the number of elements in the dataset;}
+#'  \item{"\code{P}"}{: the number of points in the 1D grid over which elements
+#'  are measured;}
+#'  \item{"\code{t0}"}{: the starting point of the 1D grid;}
+#'  \item{"\code{tP}"}{: the ending point of the 1D grid;}
+#'  \item{"\code{values}"}{: the matrix of measurements of the functional
+#'  observations on the 1D grid provided with \code{grid}.}
+#' }
+#'
+#' @seealso \code{\link{generate_gauss_fdata}}
+#'
+#' @examples
+#' # Defining parameters
+#' N = 20
+#' P = 1e2
+#'
+#' # One dimensional grid
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' # Generating an exponential covariance function (see related help for more
+#' # information )
+#' C = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+#'
+#' # Generating a synthetic dataset with a gaussian distribution and
+#' # required mean and covariance function:
+#' values = generate_gauss_fdata( N,
+#'                                centerline = sin( 2 * pi * grid ),
+#'                                Cov = C )
+#'
+#' fD = fData( grid, values )
 #'
 #' @export
 #'
@@ -38,33 +77,52 @@ fData = function( grid, values )
                      class = c( 'fData' ) ) )
 }
 
-#' Specialised method to plot univariate functional data..
+#' Specialised method to plot \code{fData} objects
 #'
-#' @param x the univariate functional data object
+#' This function performs the plot of a functional univariate dataset stored in
+#' an object of class \code{fData}. It is able to accept all the usual
+#' customisable graphical parameters, otherwise it will use the default ones.
+#'
+#' @param x the univariate functional dataset of \code{fData} class.
 #' @param ... additional graphical parameters to be used in plotting functions
+#'
+#' @seealso \code{\link{fData}}
+#'
+#' @examples
+#'
+#' N = 20
+#' P = 1e2
+#'
+#' # One dimensional grid
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' # Generating an exponential covariance function (see related help for more
+#' # information )
+#' C = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+#'
+#' # Generating a synthetic dataset with a gaussian distribution and
+#' # required mean and covariance function:
+#' values = generate_gauss_fdata( N,
+#'                                centerline = sin( 2 * pi * grid ),
+#'                                Cov = C )
+#'
+#' fD = fData( grid, values )
+#'
+#' plot( fD )
+#'
+#' @export
 #'
 plot.fData = function( x, ... )
 {
-  plot_fData_default( x, ...  )
+  .plot_fData( x, ...  )
 }
 
-#' Default method to plot univariate functional data.
-#'
-#' @param x the univariate functional data object
-#' @param lty lty graphical parameter to be used in plotting functions
-#' @param col colors to be used in plotting functions
-#' @param xlab the x label to add to each plot window
-#' @param ylab either a string or a list of stirngs to be used as y labels for
-#' each window in the plot panel, default is null
-#' @param main either a string or a list of stirngs to be used as main title for
-#' each window in the plot panel, default is null
-#' @param ... additional graphical parameters to be used in plotting functions
-plot_fData_default = function( x,
-                               type = 'l', lty = 1,
-                               col = fDColorPalette( min( c( x$N,
-                                                             30 + x$N %% 30 ) ) ),
-                               xlab = '', ylab = '', main = '',
-                               ... )
+.plot_fData = function( x,
+                        type = 'l', lty = 1,
+                        col = fDColorPalette( min( c( x$N,
+                                                      30 + x$N %% 30 ) ) ),
+                        xlab = '', ylab = '', main = '',
+                        ... )
 {
   matplot( seq( x$t0, x$tP, length.out = x$P ),
            t( x$values ), type = type, lty = lty,
@@ -73,13 +131,66 @@ plot_fData_default = function( x,
 
 
 
+#' \code{S3} class for multivariate functional datasets
 #'
-#' \code{mfData} generic class for (multivariate) functional data.
+#' This function implements a constructor for elements of \code{S3} class
+#' \code{mfData}, aimed at implementing a representation of a multivariate
+#' functional dataset.
 #'
-#' @param grid the (evenly spaced) grid over which the functional data is defined
-#' @param Data_list a list containing the time-by-time values of functional
-#' dataset, where each node of the list (possibly named) represents a particular
-#' dimension of the multivariate dataset.
+#' The functional dataset is represented as a collection of \code{L} components,
+#' each one an object of class \code{fData}. Each component must contain elements
+#' defined on the same grid as the others, and must contain the same number of
+#' elements (\code{N}).
+#'
+#' @param grid the (evenly spaced) grid over which the functional dataset is
+#' defined.
+#' @param Data_list a \code{list} containing the \code{L} components of the
+#' multivariate functional dataset, defined as 2D data structures (e.g. matrix
+#' or array) having as rows the \code{N} observations and as columns the
+#' \code{P} measurements on the grid provided by \code{grid}.
+#'
+#' @return
+#' The function returns a \code{S3} object of class \code{mfData}, containing
+#' the following elements:
+#' \itemize{
+#'  \item{"\code{N}"}{: the number of elements in the dataset;}
+#'  \item{"\code{L}"}{: the number of components of the functional dataset;}
+#'  \item{"\code{P}"}{: the number of points in the 1D grid over which elements
+#'  are measured;}
+#'  \item{"\code{t0}"}{: the starting point of the 1D grid;}
+#'  \item{"\code{tP}"}{: the ending point of the 1D grid;}
+#'  \item{"\code{fDList}"}{: the list of \code{fData} objects representing the
+#'  \code{L} components as corresponding unviariate functional datasets.}
+#' }
+#'
+#' @seealso \code{\link{fData}}, \code{\link{generate_gauss_fdata}},
+#' \code{\link{generate_gauss_mfdata}}
+#'
+#' @examples
+#' # Defining parameters
+#' N = 1e2
+#'
+#' P = 1e3
+#'
+#' t0 = 0
+#' t1 = 1
+#'
+#' # Defining the measurement grid
+#' grid = seq( t0, t1, length.out = P )
+#'
+#' # Generating an exponential covariance matrix to be used in the simulation of
+#' # the functional datasets (see the related help for details)
+#' C = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+#'
+#' # Simulating the measurements of two univariate functional datasets with
+#' # required center and covariance function
+#' Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = C )
+#' Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = C )
+#'
+#' # Building the mfData object
+#' mfData( grid, list( Data_1, Data_2 ) )
+#'
+#' @export
 #'
 mfData = function( grid, Data_list )
 {
@@ -111,18 +222,67 @@ mfData = function( grid, Data_list )
   }
 
   return( structure( list( N = fDList[[ 1 ]]$N,
-                           P = fDList[[ 1 ]]$P,
                            L = L,
+                           P = fDList[[ 1 ]]$P,
                            t0 = fDList[[ 1 ]]$t0,
                            tP = fDList[[ 1 ]]$tP,
                            fDList = fDList ),
                      class = c( 'mfData' ) ) )
 }
 
-#' Specialised method to plot multivariate functional data.
+#' Specialised method to plot \code{mfData} objects
 #'
-#' @param x the multivariate functional data object
+#' This function performs the plot of a functional multivariate dataset stored
+#' in an object of class \code{mfData}. It is able to accept all the usual
+#' customisable graphical parameters, otherwise it will use the default ones.
+#'
+#' The current active graphical device is split into a number of sub-figures,
+#' each one meant to contain the plot of the corresponding dimension of the
+#' \code{mfData} object. In particular, they are arranged in a rectangular
+#' lattice with a number of rows equal to \eqn{ \lfloor \sqrt{ L } \rfloor }
+#' and a number of columns equal to \eqn{ \lceil L / \lfloor \sqrt{L} \rfloor
+#' \rceil }.
+#'
+#' A special use of the graphical parameters allows to set up y-labels and
+#' titles for all the sub-figures in the graphical window. In particular,
+#' parameters \code{ylab} and \code{main} can take as argument either a single
+#' string, that are repeatedly used for all the sub-graphics, or a list of
+#' different strings (one for each of the \code{L} dimensions) that have to be
+#' used in the corresponding graphic.
+#'
+#' @param x the multivariate functional dataset of \code{mfData} class.
 #' @param ... additional graphical parameters to be used in plotting functions
+#' (see \code{Details} for the use of \code{ylab} and \code{main}).
+#'
+#' @seealso \code{\link{mfData}}, \code{\link{fData}}, \code{\link{plot.fData}}
+#'
+#' @examples
+# Defining parameters
+#' N = 1e2
+#'
+#' P = 1e3
+#'
+#' t0 = 0
+#' t1 = 1
+#'
+#' # Defining the measurement grid
+#' grid = seq( t0, t1, length.out = P )
+#'
+#' # Generating an exponential covariance matrix to be used in the simulation of
+#' # the functional datasets (see the related help for details)
+#' C = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+#'
+#' # Simulating the measurements of two univariate functional datasets with
+#' # required center and covariance function
+#' Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = C )
+#' Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = C )
+#'
+#' # Building the mfData object and plotting tt
+#' plot( mfData( grid, list( Data_1, Data_2 ) ),
+#'       xlab = 'time', ylab = list( '1st dim.', '2nd dim.' ),
+#'       main = list( 'An important plot here', 'And another one here' ) )
+#'
+#' @export
 #'
 plot.mfData = function( x, ... )
 {
@@ -131,27 +291,16 @@ plot.mfData = function( x, ... )
 
   par( mfrow = c( mfrow_rows, mfrow_cols ) )
 
-  plot_mfData_default( x, ... )
+  .plot_mfData( x, ... )
 
 }
 
-#' Default method to plot multivariate functional data.
-#'
-#' @param x the multivariate functional data object
-#' @param lty lty graphical parameter to be used in plotting functions
-#' @param col colors to be used in plotting functions
-#' @param xlab the x label to add to each plot window
-#' @param ylab either a string or a list of stirngs to be used as y labels for
-#' each window in the plot panel, default is null
-#' @param main either a string or a list of stirngs to be used as main title for
-#' each window in the plot panel, default is null
-#' @param ... additional graphical parameters to be used in plotting functions
-plot_mfData_default = function( x,
-                                type = 'l',lty = 1,
-                                col = fDColorPalette( min( c( x$N,
-                                                              30 + x$N %% 30 ) ) ),
-                                xlab = NULL, ylab = NULL, main = NULL,
-                                ... )
+.plot_mfData = function( x,
+                         type = 'l',lty = 1,
+                         col = fDColorPalette( min( c( x$N,
+                                                       30 + x$N %% 30 ) ) ),
+                         xlab = NULL, ylab = NULL, main = NULL,
+                         ... )
 {
   if( ! is.null( ylab ) )
   {

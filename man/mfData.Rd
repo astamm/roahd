@@ -2,18 +2,70 @@
 % Please edit documentation in R/fData.R
 \name{mfData}
 \alias{mfData}
-\title{\code{mfData} generic class for (multivariate) functional data.}
+\title{\code{S3} class for multivariate functional datasets}
 \usage{
 mfData(grid, Data_list)
 }
 \arguments{
-\item{grid}{the (evenly spaced) grid over which the functional data is defined}
+\item{grid}{the (evenly spaced) grid over which the functional dataset is
+defined.}
 
-\item{Data_list}{a list containing the time-by-time values of functional
-dataset, where each node of the list (possibly named) represents a particular
-dimension of the multivariate dataset.}
+\item{Data_list}{a \code{list} containing the \code{L} components of the
+multivariate functional dataset, defined as 2D data structures (e.g. matrix
+or array) having as rows the \code{N} observations and as columns the
+\code{P} measurements on the grid provided by \code{grid}.}
+}
+\value{
+The function returns a \code{S3} object of class \code{mfData}, containing
+the following elements:
+\itemize{
+ \item{"\code{N}"}{: the number of elements in the dataset;}
+ \item{"\code{L}"}{: the number of components of the functional dataset;}
+ \item{"\code{P}"}{: the number of points in the 1D grid over which elements
+ are measured;}
+ \item{"\code{t0}"}{: the starting point of the 1D grid;}
+ \item{"\code{tP}"}{: the ending point of the 1D grid;}
+ \item{"\code{fDList}"}{: the list of \code{fData} objects representing the
+ \code{L} components as corresponding unviariate functional datasets.}
+}
 }
 \description{
-\code{mfData} generic class for (multivariate) functional data.
+This function implements a constructor for elements of \code{S3} class
+\code{mfData}, aimed at implementing a representation of a multivariate
+functional dataset.
+}
+\details{
+The functional dataset is represented as a collection of \code{L} components,
+each one an object of class \code{fData}. Each component must contain elements
+defined on the same grid as the others, and must contain the same number of
+elements (\code{N}).
+}
+\examples{
+# Defining parameters
+N = 1e2
+
+P = 1e3
+
+t0 = 0
+t1 = 1
+
+# Defining the measurement grid
+grid = seq( t0, t1, length.out = P )
+
+# Generating an exponential covariance matrix to be used in the simulation of
+# the functional datasets (see the related help for details)
+C = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+
+# Simulating the measurements of two univariate functional datasets with
+# required center and covariance function
+Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = C )
+Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = C )
+
+# Building the mfData object
+mfData( grid, list( Data_1, Data_2 ) )
+}
+\seealso{
+\code{\link{fData}}, \code{\link{generate_gauss_fdata}},
+\code{\link{generate_gauss_mfdata}}
 }
 
