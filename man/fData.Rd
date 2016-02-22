@@ -2,18 +2,27 @@
 % Please edit documentation in R/fData.R
 \name{fData}
 \alias{fData}
-\title{\code{fData} generic class for univariate functional data.}
+\title{\code{fData} class for univariate functional data.}
 \usage{
 fData(grid, values)
 }
 \arguments{
-\item{grid}{the evenly spaced grid over which the functional data is defined}
+\item{grid}{the evenly spaced grid over which the functional observations are
+measured. It must be a numeric vector of length \code{P}.}
 
-\item{values}{the time-by-time values of the functional dataset, provided
-either in a vector or matrix-like representation, with N rows (observations)
-and P columns (time points)}
+\item{values}{the values of the observations in the functional dataset,
+prodived in form of a 2D data structure (e.g. matrix or array) having as
+rows the observations and as columns their measurements over the 1D grid of
+length \code{P} specified in \code{grid}.}
 }
 \description{
-\code{fData} generic class for univariate functional data.
+This function implements a constructor for elements of \code{S3} class
+ \code{fData}, aimed at implementing a representation of a functional
+ dataset.
+}
+\details{
+The functional dataset is represented as a collection of measurement of the
+ observations on an evenly spaced, 1D grid of discrete points (representing,
+ e.g. time).
 }
 

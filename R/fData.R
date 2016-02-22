@@ -1,13 +1,23 @@
 
+#' \code{fData} class for univariate functional data.
 #'
-#' \code{fData} generic class for univariate functional data.
+#'  This function implements a constructor for elements of \code{S3} class
+#'  \code{fData}, aimed at implementing a representation of a functional
+#'  dataset.
 #'
-#' @param grid the evenly spaced grid over which the functional data is defined
-#' @param values the time-by-time values of the functional dataset, provided
-#' either in a vector or matrix-like representation, with N rows (observations)
-#' and P columns (time points)
+#'  The functional dataset is represented as a collection of measurement of the
+#'  observations on an evenly spaced, 1D grid of discrete points (representing,
+#'  e.g. time).
+#'
+#' @param grid the evenly spaced grid over which the functional observations are
+#' measured. It must be a numeric vector of length \code{P}.
+#' @param values the values of the observations in the functional dataset,
+#' prodived in form of a 2D data structure (e.g. matrix or array) having as
+#' rows the observations and as columns their measurements over the 1D grid of
+#' length \code{P} specified in \code{grid}.
 #'
 #' @export
+#'
 fData = function( grid, values )
 {
   all( abs( diff( unique( diff( grid ) ) ) ) < 1e-14 ) ||
