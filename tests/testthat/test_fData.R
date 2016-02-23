@@ -27,7 +27,7 @@ test_that( 'Plot of fData object',
 # TESTING STATISTICS OPERATIONS -------------------------------------------
 
 test_that( 'Mean of fData object',
-           expect_equal( as.numeric( mean_fData( fD )$values ),
+           expect_equal( as.numeric( mean( fD )$values ),
                          colMeans( fD$values ) ) )
 
 test_that( 'Median of fData obejct - MBD',

@@ -286,11 +286,6 @@ mfData = function( grid, Data_list )
 #'
 plot.mfData = function( x, ... )
 {
-  mfrow_rows = floor( sqrt( x$L ) )
-  mfrow_cols = ceiling( x$L / floor( sqrt( x$L ) ) )
-
-  par( mfrow = c( mfrow_rows, mfrow_cols ) )
-
   .plot_mfData( x, ... )
 
 }
@@ -300,8 +295,17 @@ plot.mfData = function( x, ... )
                          col = fDColorPalette( min( c( x$N,
                                                        30 + x$N %% 30 ) ) ),
                          xlab = NULL, ylab = NULL, main = NULL,
-                         ... )
+                         add = FALSE, ... )
 {
+
+  if( add == FALSE )
+  {
+    mfrow_rows = floor( sqrt( x$L ) )
+    mfrow_cols = ceiling( x$L / floor( sqrt( x$L ) ) )
+
+    par( mfrow = c( mfrow_rows, mfrow_cols ) )
+  }
+
   if( ! is.null( ylab ) )
   {
     if( length( ylab ) == 1 )
@@ -330,15 +334,31 @@ plot.mfData = function( x, ... )
     main = rep( list( '' ), x$L )
   }
 
+  # for( iL in 1 : x$L )
+  # {
+  #   plot.fData( x$fDList[[ iL ]],
+  #               ylab = ylab[[ iL ]],
+  #               main = main[[ iL ]],
+  #               col = col,
+  #               lty = lty,
+  #               add = add,
+  #               ... )
+  #
+  #   if( iL < x$L )
+  #   {
+  #     dev.set( dev.next() )
+  #   }
+  # }
+
   plot_aux = function( i, ... )( plot.fData( x$fDList[[ i ]],
                                              ylab = ylab[[ i ]],
                                              main = main[[ i ]],
                                              col = col,
                                              lty = lty,
+                                             add = add,
                                              ... ) )
 
   invisible( sapply( 1 : x$L, plot_aux, ... ) )
-
 }
 
 
@@ -564,19 +584,103 @@ NULL
   return( fD )
 }
 
+#' Cross-sectional mean of of a fData object.
 #'
-#' \code{mean_fData} method to compute the sample mean of a fData object.
+#' This \code{S3} method implements the \bold{cross-sectional} mean of a
+#' univariate functional dataset stored in a \code{fData} object, i.e. the
+#' mean computed point-by-point along the grid over which the dataset is
+#' defined.
 #'
-#' It computes the \bold{cross-sectional} mean of a univariate functional
-#' dataset, i.e., its time-by-time sample mean.
+#' @param x the functional dataset whose cross-sectional mean must be
+#' computed.
+#' @param ... possible additional parameters. This argument is kept for
+#' compatibility with the \code{S3} definition of \code{mean}, but it is not
+#' actually used.
 #'
-#' @param fData the functional data object representing the dataset
+#' @return The function returns a \code{fData} object with one observation
+#' defined on the same grid as the argument \code{x}'s representing the
+#' desired cross-sectional mean.
 #'
-mean_fData = function( fData )
+#' @seealso \code{\link{fData}}
+#'
+#' @examples
+#'
+#' N = 1e2
+#' P = 1e2
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' # Generating a gaussian functional sample with desired mean
+#' target_mean = sin( 2 * pi * grid )
+#' C = exp_cov_function( grid, alpha = 0.2, beta = 0.2 )
+#' fD = fData( grid, generate_gauss_fdata( N,
+#'                                       centerline = target_mean,
+#'                                        Cov = C ) )
+#'
+#' # Graphical representation of the mean
+#' plot( fD )
+#' plot( mean( fD ), col = 'black', lwd = 2, lty = 2, add = TRUE )
+#'
+#'
+#' @export
+mean.fData = function( x, ... )
 {
-  return( fData( seq( fData$t0, fData$tP, length.out = fData$P ),
-                colMeans( fData$values ) ) )
+  return( fData( seq( x$t0, x$tP, length.out = x$P ),
+                colMeans( x$values ) ) )
+}
 
+#' Cross-sectional mean of of a mfData object.
+#'
+#' This \code{S3} method implements the \bold{cross-sectional} mean of a
+#' multivariate functional dataset stored in a \code{mfData} object, i.e. the
+#' mean computed point-by-point along the grid over which the dataset is
+#' defined.
+#'
+#' @param x the functional dataset whose cross-sectional mean must be
+#' computed.
+#' @param ... possible additional parameters. This argument is kept for
+#' compatibility with the \code{S3} definition of \code{mean}, but it is not
+#' actually used.
+#'
+#' @return The function returns a \code{mfData} object with one observation
+#' defined on the same grid as the argument \code{x}'s representing the
+#' desired cross-sectional mean.
+#'
+#' @seealso \code{\link{mfData}}
+#'
+#' @examples
+#'
+#' N = 1e2
+#' L = 3
+#' P = 1e2
+#' grid = seq( 0, 1, length.out = P )
+#' # Generating a gaussian functional sample with desired mean
+#' target_mean = sin( 2 * pi * grid )
+#' C = exp_cov_function( grid, alpha = 0.2, beta = 0.2 )
+#' # Independent component
+#' correlations = c( 0, 0, 0 )
+#' mfD = mfData( grid,
+#'               generate_gauss_mfdata( N, L,
+#'                                      correlations = correlations,
+#'                                      centerline = matrix( target_mean,
+#'                                                           nrow = 3,
+#'                                                           ncol = P,
+#'                                                           byrow = TRUE ),
+#'                                      listCov = list( C, C, C ) )
+#' )
+#' # Graphical representation of the mean
+#' par( mfrow = c( 1, 3 ) )
+#'
+#' for( iL in 1 : L )
+#' {
+#'   plot( mfD$fDList[[ 1 ]] )
+#'   plot( mean( mfD )$fDList[[ 1 ]], col = 'black',
+#'         lwd = 2, lty = 2, add = TRUE )
+#' }
+#' @export
+mean.mfData = function( x, ... )
+{
+  return( mfData( seq( x$t0, x$tP, length.out = x$P ),
+                  lapply( x$fDList, function( y )( mean( y )$values ) ) ) )
 }
 
 #'
