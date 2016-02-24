@@ -199,7 +199,15 @@ mfData = function( grid, Data_list )
 
   dimMatrix = sapply( Data_list, dim )
 
-  if( unique( apply( dimMatrix, 1,
+  if( any( sapply( dimMatrix, is.null ) ) )
+  {
+    if( ! all( sapply( dimMatrix, is.null ) ) )
+    {
+      stop( ' Error in mfData: you provided mismatching datasets as Data_list')
+    }
+
+    Data_list = lapply( Data_list, toRowMatrixForm )
+  } else if( unique( apply( dimMatrix, 1,
                      function( x )( length( unique( x ) ) ) ) ) != 1 )
   {
     stop( ' Error in mfData: you provided mismatching datasets as Data_list')
@@ -653,10 +661,11 @@ mean.fData = function( x, ... )
 #' L = 3
 #' P = 1e2
 #' grid = seq( 0, 1, length.out = P )
+#'
 #' # Generating a gaussian functional sample with desired mean
 #' target_mean = sin( 2 * pi * grid )
 #' C = exp_cov_function( grid, alpha = 0.2, beta = 0.2 )
-#' # Independent component
+#' # Independent components
 #' correlations = c( 0, 0, 0 )
 #' mfD = mfData( grid,
 #'               generate_gauss_mfdata( N, L,
@@ -667,6 +676,7 @@ mean.fData = function( x, ... )
 #'                                                           byrow = TRUE ),
 #'                                      listCov = list( C, C, C ) )
 #' )
+#'
 #' # Graphical representation of the mean
 #' par( mfrow = c( 1, 3 ) )
 #'
@@ -684,22 +694,128 @@ mean.mfData = function( x, ... )
 }
 
 #'
-#' \code{median_fData} method to compute the sample median of a fData object.
+#' Median of a univariate functional dataset
 #'
-#' It computes the depth-based median of a univariate functional dataset, i.e.
-#' it finds the deepest element of the functional dataset according to a
-#' specified definition of depth.
+#' This method computes the sample median of a univariate functional dataset
+#' based on a definition of depth for univariate functional data.
 #'
-#' @param fData the functional data object containing the dataset
-#' @param type depth definition to use in order to find the sample median
-#' (default is MBD)
+#' Provided a definition of functional depth for univariate data,
+#' the corresponding median (i.e. the deepest element of the sample) is returned as the desired median.
+#' This method does \bold{not} coincide with the computation of the
+#' cross-sectional median of the sample of the point-by-point measurements on
+#' the grid. Hence, the sample median is a member of the dataset provided.
 #'
-median_fData = function( fData, type = 'MBD' )
+#' @param fData the object containing the univariate functional dataset whose
+#' median is required.
+#' @param type a string specifying the name of the function defining the depth
+#' for univariate data to be used. It must be a valid name of a function defined
+#' in the current environment, default is \code{MBD}.
+#' @param ... additional parameters to be used in the function specified by
+#' argument \code{type}.
+#'
+#' @return The function returns a \code{fData} object containing the desired
+#' sample median.
+#'
+#' @seealso \code{\link{fData}}, \code{\link{mean.fData}}
+#'
+#' @examples
+#'
+#' N = 1e2
+#' P = 1e2
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' # Generating a gaussian functional sample with desired mean
+#' # Being the distribution symmetric, the sample mean and median are coincident
+#' target_median = sin( 2 * pi * grid )
+#' C = exp_cov_function( grid, alpha = 0.2, beta = 0.2 )
+#' fD = fData( grid, generate_gauss_fdata( N,
+#'                                       centerline = target_median,
+#'                                        Cov = C ) )
+#'
+#' # Graphical representation of the mean
+#' plot( fD )
+#' plot( median_fData( fD ), col = 'black', lwd = 2, lty = 2, add = TRUE )
+#'
+#' @export
+median_fData = function( fData, type = 'MBD', ... )
 {
-  Depths = eval( parse( text = paste( type, '( fData$values )', sep = '' ) ) )
+  Depths = eval( parse( text = paste( type, '( fData$values, ... )', sep = '' ) ) )
 
   return( fData( seq( fData$t0, fData$tP, length.out = fData$P ),
                  fData$values[ which.max( Depths ), ] ) )
+}
+
+
+#'
+#' Median of a multivariate functional dataset
+#'
+#' This method computes the sample median of a multivariate functional dataset
+#' based on a definition of depth for multivariate functional data.
+#'
+#' Provided a definition of functional depth for multivariate data,
+#' the corresponding median (i.e. the deepest element of the sample) is returned
+#' as the desired median.
+#' This method does \bold{not} coincide with the computation of the
+#' cross-sectional median of the sample of the point-by-point measurements on
+#' the grid. Hence, the sample median is a member of the dataset provided.
+#'
+#' @param mfData the object containing the multivariate functional dataset whose
+#' median is required.
+#' @param type a string specifying the name of the function defining the depth
+#' for multivariate data to be used. It must be a valid name of a function
+#' defined in the current environment, default is \code{multiMBD}.
+#' @param ... additional parameters to be used in the function specified by
+#' argument \code{type}.
+#'
+#' @return The function returns a \code{mfData} object containing the desired
+#' sample median.
+#'
+#' @seealso \code{\link{mfData}}, \code{\link{mean.mfData}}
+#'
+#' @examples
+#'
+#' N = 1e2
+#' L = 3
+#' P = 1e2
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' # Generating a gaussian functional sample with desired mean
+#' # Being the distribution symmetric, the sample mean and median are coincident
+#' target_median = sin( 2 * pi * grid )
+#' C = exp_cov_function( grid, alpha = 0.2, beta = 0.2 )
+#'
+#' # Strongly dependent components
+#' correlations = c( 0.9, 0.9, 0.9 )
+#' mfD = mfData( grid,
+#'               generate_gauss_mfdata( N, L,
+#'                                      correlations = correlations,
+#'                                      centerline = matrix( target_median,
+#'                                                           nrow = 3,
+#'                                                           ncol = P,
+#'                                                           byrow = TRUE ),
+#'                                      listCov = list( C, C, C ) )
+#' )
+#'
+#' med_mfD = median_mfData( mfD, type = 'multiMBD', weights = 'uniform' )
+#'
+#' # Graphical representation of the mean
+#' par( mfrow = c( 1, 3 ) )
+#'
+#' for( iL in 1 : L )
+#' {
+#'   plot( mfD$fDList[[ 1 ]] )
+#'   plot( med_mfD$fDList[[ 1 ]], col = 'black',
+#'         lwd = 2, lty = 2, add = TRUE )
+#' }
+#' @export
+median_mfData = function( mfData, type = 'multiMBD', ... )
+{
+  Depths = eval( parse( text = paste( type, '( toListOfValues( mfData ), ... )',
+                                      sep = '' ) ) )
+
+  return( mfData( seq( mfData$t0, mfData$tP, length.out = mfData$P ),
+                  lapply( toListOfValues( mfData ), `[`,
+                          which.max( Depths ), ) ) )
 }
 
 #'

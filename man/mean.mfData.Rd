@@ -30,10 +30,11 @@ N = 1e2
 L = 3
 P = 1e2
 grid = seq( 0, 1, length.out = P )
+
 # Generating a gaussian functional sample with desired mean
 target_mean = sin( 2 * pi * grid )
 C = exp_cov_function( grid, alpha = 0.2, beta = 0.2 )
-# Independent component
+# Independent components
 correlations = c( 0, 0, 0 )
 mfD = mfData( grid,
               generate_gauss_mfdata( N, L,
@@ -44,6 +45,7 @@ mfD = mfData( grid,
                                                           byrow = TRUE ),
                                      listCov = list( C, C, C ) )
 )
+
 # Graphical representation of the mean
 par( mfrow = c( 1, 3 ) )
 

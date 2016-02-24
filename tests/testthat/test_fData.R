@@ -24,6 +24,10 @@ test_that( 'Plot of fData object',
                                       xlab = 'time', ylab = 'values',
                                       main = 'A functional dataset' ) ) )
 
+test_that( 'Creation of 1-element fData object',
+           expect_silent( fData( time_grid, 1 : P ) ) )
+
+
 # TESTING STATISTICS OPERATIONS -------------------------------------------
 
 test_that( 'Mean of fData object',
@@ -33,6 +37,12 @@ test_that( 'Mean of fData object',
 test_that( 'Median of fData obejct - MBD',
            expect_equal( as.numeric( median_fData( fD )$value ),
                          fD$values[ which.max( MBD( fD$values ) ), ]) )
+
+test_that( 'Median of fData object - MBD with ties',
+           expect_equal( as.numeric( median_fData( fD, type = 'MBD',
+                                             manage_ties = TRUE )$values ),
+                         fD$values[ which.max( MBD( fD$values,
+                                                    manage_ties = TRUE ) ), ] ) )
 
 test_that( 'Median of fData obejct - MHRD',
            expect_equal( as.numeric( median_fData( fD, type = 'MHRD' )$value ),
@@ -116,6 +126,10 @@ Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * time_grid ), Cov = 
 
 test_that( 'Creation of mfData object',
            expect_silent( mfData( time_grid, list( Data_1, Data_2 ) ) ) )
+
+test_that( 'Creation of 1-element mfData object',
+           expect_silent( mfData( time_grid, list( 1 : P,
+                                                  1 : P ) ) ) )
 
 test_that( 'Plot of mfData object',
            expect_silent( plot.mfData( mfData( time_grid,

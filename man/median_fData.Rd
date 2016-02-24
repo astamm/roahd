@@ -2,19 +2,54 @@
 % Please edit documentation in R/fData.R
 \name{median_fData}
 \alias{median_fData}
-\title{\code{median_fData} method to compute the sample median of a fData object.}
+\title{Median of a univariate functional dataset}
 \usage{
-median_fData(fData, type = "MBD")
+median_fData(fData, type = "MBD", ...)
 }
 \arguments{
-\item{fData}{the functional data object containing the dataset}
+\item{fData}{the object containing the univariate functional dataset whose
+median is required.}
 
-\item{type}{depth definition to use in order to find the sample median
-(default is MBD)}
+\item{type}{a string specifying the name of the function defining the depth
+for univariate data to be used. It must be a valid name of a function defined
+in the current environment, default is \code{MBD}.}
+
+\item{...}{additional parameters to be used in the function specified by
+argument \code{type}.}
+}
+\value{
+The function returns a \code{fData} object containing the desired
+sample median.
 }
 \description{
-It computes the depth-based median of a univariate functional dataset, i.e.
-it finds the deepest element of the functional dataset according to a
-specified definition of depth.
+This method computes the sample median of a univariate functional dataset
+based on a definition of depth for univariate functional data.
+}
+\details{
+Provided a definition of functional depth for univariate data,
+the corresponding median (i.e. the deepest element of the sample) is returned as the desired median.
+This method does \bold{not} coincide with the computation of the
+cross-sectional median of the sample of the point-by-point measurements on
+the grid. Hence, the sample median is a member of the dataset provided.
+}
+\examples{
+N = 1e2
+P = 1e2
+grid = seq( 0, 1, length.out = P )
+
+# Generating a gaussian functional sample with desired mean
+# Being the distribution symmetric, the sample mean and median are coincident
+target_median = sin( 2 * pi * grid )
+C = exp_cov_function( grid, alpha = 0.2, beta = 0.2 )
+fD = fData( grid, generate_gauss_fdata( N,
+                                      centerline = target_median,
+                                       Cov = C ) )
+
+# Graphical representation of the mean
+plot( fD )
+plot( median_fData( fD ), col = 'black', lwd = 2, lty = 2, add = TRUE )
+}
+\seealso{
+\code{\link{fData}}, \code{\link{mean.fData}}
 }
 
