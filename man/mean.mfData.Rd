@@ -7,8 +7,8 @@
 \method{mean}{mfData}(x, ...)
 }
 \arguments{
-\item{x}{the functional dataset whose cross-sectional mean must be
-computed.}
+\item{x}{the multivariate functional dataset whose cross-sectional mean must
+be computed, in form of \code{mfData} object.}
 
 \item{...}{possible additional parameters. This argument is kept for
 compatibility with the \code{S3} definition of \code{mean}, but it is not

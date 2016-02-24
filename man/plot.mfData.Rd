@@ -7,7 +7,7 @@
 \method{plot}{mfData}(x, ...)
 }
 \arguments{
-\item{x}{the multivariate functional dataset of \code{mfData} class.}
+\item{x}{the multivariate functional dataset in form of \code{mfData} object.}
 
 \item{...}{additional graphical parameters to be used in plotting functions
 (see \code{Details} for the use of \code{ylab} and \code{main}).}

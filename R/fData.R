@@ -33,7 +33,7 @@
 #'  observations on the 1D grid provided with \code{grid}.}
 #' }
 #'
-#' @seealso \code{\link{generate_gauss_fdata}}
+#' @seealso \code{\link{generate_gauss_fdata}}, \code{\link{sub-.fData}}
 #'
 #' @examples
 #' # Defining parameters
@@ -83,7 +83,7 @@ fData = function( grid, values )
 #' an object of class \code{fData}. It is able to accept all the usual
 #' customisable graphical parameters, otherwise it will use the default ones.
 #'
-#' @param x the univariate functional dataset of \code{fData} class.
+#' @param x the univariate functional dataset in form of \code{fData} object.
 #' @param ... additional graphical parameters to be used in plotting functions
 #'
 #' @seealso \code{\link{fData}}
@@ -258,7 +258,7 @@ mfData = function( grid, Data_list )
 #' different strings (one for each of the \code{L} dimensions) that have to be
 #' used in the corresponding graphic.
 #'
-#' @param x the multivariate functional dataset of \code{mfData} class.
+#' @param x the multivariate functional dataset in form of \code{mfData} object.
 #' @param ... additional graphical parameters to be used in plotting functions
 #' (see \code{Details} for the use of \code{ylab} and \code{main}).
 #'
@@ -381,7 +381,7 @@ plot.mfData = function( x, ... )
 #' If the second term of the operation is an \code{fData} object, it must be
 #' defined over the same grid as the first.
 #'
-#' @param fD the univariate \code{fData} object.
+#' @param fD the univariate functional dataset in form of \code{fData} object.
 #' @param A either an \code{fData} object, defined on the very same grid of
 #' \code{fD}, or a 1D data structure (such as 1D array or raw
 #' numeric vector), or a 2D data structure (such as 2D array or raw numeric
@@ -525,7 +525,7 @@ NULL
 #' equal to the number of observations in \code{fD}.
 #'
 #'
-#' @param fD the univariate \code{fData} object.
+#' @param fD the univariate functional dataset in form of \code{fData} object.
 #' @param a either a single number or a 1D data structure (such as numeric
 #' raw vector, matrix or array) specifying the factor(s) to use in the
 #' multiplication/division of \code{fD} elements' values.
@@ -599,8 +599,8 @@ NULL
 #' mean computed point-by-point along the grid over which the dataset is
 #' defined.
 #'
-#' @param x the functional dataset whose cross-sectional mean must be
-#' computed.
+#' @param x the univariate functional dataset whose cross-sectional mean must be
+#' computed, in form of \code{fData} object.
 #' @param ... possible additional parameters. This argument is kept for
 #' compatibility with the \code{S3} definition of \code{mean}, but it is not
 #' actually used.
@@ -643,8 +643,8 @@ mean.fData = function( x, ... )
 #' mean computed point-by-point along the grid over which the dataset is
 #' defined.
 #'
-#' @param x the functional dataset whose cross-sectional mean must be
-#' computed.
+#' @param x the multivariate functional dataset whose cross-sectional mean must
+#' be computed, in form of \code{mfData} object.
 #' @param ... possible additional parameters. This argument is kept for
 #' compatibility with the \code{S3} definition of \code{mean}, but it is not
 #' actually used.
@@ -705,8 +705,8 @@ mean.mfData = function( x, ... )
 #' cross-sectional median of the sample of the point-by-point measurements on
 #' the grid. Hence, the sample median is a member of the dataset provided.
 #'
-#' @param fData the object containing the univariate functional dataset whose
-#' median is required.
+#' @param fData the univariate functional dataset whose
+#' median is required, in form of \code{fData} object.
 #' @param type a string specifying the name of the function defining the depth
 #' for univariate data to be used. It must be a valid name of a function defined
 #' in the current environment, default is \code{MBD}.
@@ -759,8 +759,8 @@ median_fData = function( fData, type = 'MBD', ... )
 #' cross-sectional median of the sample of the point-by-point measurements on
 #' the grid. Hence, the sample median is a member of the dataset provided.
 #'
-#' @param mfData the object containing the multivariate functional dataset whose
-#' median is required.
+#' @param mfData the multivariate functional dataset whose
+#' median is required, in form of \code{mfData} object.
 #' @param type a string specifying the name of the function defining the depth
 #' for multivariate data to be used. It must be a valid name of a function
 #' defined in the current environment, default is \code{multiMBD}.
@@ -818,21 +818,68 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
                           which.max( Depths ), ) ) )
 }
 
+#' Operator \code{sub-.fData} to subset \code{fData} obejcts
 #'
-#' Overload of [] access operator for univariate functional dataset.
+#' This method provides an easy and natural way to subset a functional dataset
+#' stored in a \code{fData} object, without having to deal with the inner
+#' representation of \code{fData} class.
 #'
-#' It provides an easy and natural access to subsets of a functional dataset
-#' without having to deal with the inner representation of functional datasets
-#' of fData
-#'
-#' @param fD the univariate functional dataset
-#' @param i a valid expression to subset rows (observations) of the univariate
+#' @param fD the univariate functional dataset in form of \code{fData} object.
+#' @param i a valid expression to subset rows ( observations ) of the univariate
 #' functional dataset
-#' @param j a valid expression to subset columns (measurements) of the univariate
-#' functional dataset
-#' @param as_fData logical flag to specify if output should be returned as a fData
-#' object containing the request subset, default is TRUE.
+#' @param j a valid expression to subset columns ( measurements over the grid )
+#' of the univariate functional dataset.
+#' @param as_fData logical flag to specify whether the output should be returned
+#' as an \code{fData} object containing the required subset or as a matrix of
+#' values, default is \code{TRUE}.
 #'
+#' @return The method returns either an \code{fData} object ( if \code{as_fData
+#' = TRUE } ) or a \code{matrix} ( if \code{as_fData = FALSE } ) containing the
+#' required subset ( both in terms  of observations and measurement points ) of
+#' the univariate functional dataset.
+#'
+#' @name sub-.fData
+#'
+#' @seealso \code{\link{fData}}
+#'
+#' @examples
+#'
+#' N = 20
+#' P = 1e2
+#'
+#' # One dimensional grid
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' # Generating an exponential covariance function (see related help for more
+#' # information )
+#' C = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+#'
+#' # Generating a synthetic dataset with a gaussian distribution and
+#' # required mean and covariance function:
+#' fD = fData( grid,
+#'             generate_gauss_fdata( N,
+#'                                   centerline = sin( 2 * pi * grid ),
+#'                                   Cov = C ) )
+#'
+#' dev.new()
+#' par( mfrow = c( 2, 2 ) )
+#'
+#' # Original data
+#' plot( fD )
+#'
+#' # Subsetting observations
+#' plot( fD[ c(1,2,3), , as_fData = TRUE ] )
+#'
+#' # Subsetting measurements
+#' plot( fD[ , 1 : 30 ] )
+#'
+#' # Subsetting both observations and measurements
+#' plot( fD[ 1 : 10, 50 : P ] )
+#'
+#' # Subsetting both observations and measurements but returning a matrix
+#' fD[ 1 : 10, 50 : P, as_fData = FALSE ]
+#'
+#' @export
 "[.fData" = function( fD, i, j, as_fData = TRUE )
 {
   if( as_fData == TRUE )
@@ -861,14 +908,38 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
 }
 
 
+#' Manipulation of \code{mfData} list of values
 #'
-#' Extracting list of components values from multivariate functional dataset
+#' This utility function manipulates a \code{mfData} object in order to extract
+#' from the list of its \code{fData} objects ( namely, \code{mfData$fDList} )
+#' the measurement values of each component and stores them into a list.
 #'
-#' It provides an easy way to extract from a multivariate functional dataset
-#' with arbitrary dimensions a list of its time-by-time values stored each into
-#' the corresponding matrix.
+#' Given a \code{mfData} of \code{L} components, the function is equivalent to
+#' \code{ list( mfData$fDList[[ 1 ]]$values,} \code{..., }
+#' \code{ mfData$fDList[[ L ]]$values ) }.
 #'
-#' @param mfData the multivariate functional dataset
+#' @param mfData the multivariate functional dataset in form of \code{mfData}
+#' object.
+#'
+#' @return  The function returns the list of values of each \code{fData} object
+#' representing the components of \code{mfData}.
+#'
+#' @seealso \code{\link{mfData}}
+#'
+#' @examples
+#'
+#' grid = seq( 0, 1, length.out = 5 )
+#'
+#' D_1 = matrix( 1 : 5, nrow = 10, ncol = 5, byrow = TRUE )
+#' D_2 = 2 * D_1
+#' D_3 = 3 * D_1
+#'
+#' mfD = mfData( grid, list( D_1, D_2, D_3 ) )
+#' mfD
+#'
+#' toListOfValues( mfD )
+#'
+#' @export
 #'
 toListOfValues = function( mfData )
 {
@@ -877,7 +948,48 @@ toListOfValues = function( mfData )
                          sep = '', collapse = ', ' ), ')' ) ) )
 }
 
-
+#' Unfolding a univariate functional dataset
+#'
+#' This function operates on a univariate functional dataset and transforms its
+#' observations unfolding their values and turning them into monotone functions.
+#'
+#' Each function of the \code{fData} object is transformed into a nonmonotone
+#' function into a monotone function by ``unfolding'' it at any of its maxima.
+#' For more details about the definition of the transform, see the reference.
+#'
+#' @param fData the unvariate functional dataset in form of \code{fData} object.
+#'
+#' @return The function returns an \code{fData} object whose observations are
+#' the unfolded version of the corresponding observations in the argument
+#' \code{fData}.
+#'
+#' @references Arribas-Gil, A. and Romo, J. (2012) Robust depth-based estimation
+#' in the time warping model, \emph{Biostatistics}, 13 (3), 398--414.
+#'
+#' @seealso \code{\link{fData}}, \code{\link{warp}}
+#'
+#' @examples
+#' P = 1e3
+#'
+#' time_grid = seq( 0, 1, length.out = P )
+#'
+#' D = matrix( c( sin( 2 * pi * time_grid ),
+#'                cos( 2 * pi * time_grid ),
+#'                sin( 10 * pi * time_grid ) * time_grid + 2 ),
+#'             ncol = P, nrow = 3, byrow = TRUE )
+#'
+#' # Functional dataset
+#' fD = fData( time_grid, D )
+#'
+#' # Unfolded version
+#' fD_unfold = unfold( fD )
+#'
+#' dev.new()
+#' par( mfrow = c( 1, 2 ) )
+#' plot( fD, main = 'Original data' )
+#' plot( fD_unfold, main = 'Unfolded data' )
+#'
+#' @export
 unfold = function( fData )
 {
   return( fData( seq( fData$t0, fData$tP, length.out = fData$P ),
@@ -889,17 +1001,85 @@ unfold = function( fData )
                  ) ) )
 }
 
-
+#' Warp elements of a univariate functional dataset
+#'
+#' This function carries out the warping of elements of a univariate functional
+#' dataset by using a set of pre-computed warping functions.
+#'
+#' Given a univariate functional dataset \eqn{X_1(t), \ldots, X_N(t)} and a set
+#' of warping functions \eqn{H_1(t), \ldots, H_N(t)}, such that:
+#' \deqn{ H_i : s \longrightarrow t = H_i(s), \quad \forall i = 1, \ldots, N,}
+#' where \eqn{s} spans the warped (or registered) grid and \eqn{t} spans the
+#' original grid, the function computes the warping given by the following
+#' composition:
+#' \deqn{ X_1 \circ H_1(t), \ldots, X_N \circ H_N(t).}
+#'
+#' @param fData the functional dataset whose observations must be warped in
+#' form of \code{fData} object.
+#' @param warpings the warping functions \eqn{H_1, \ldots, H_N}, in form of
+#' \code{fData} object, defined over the registered/warped grid.
+#'
+#' @return The function returns the univariate functional dataset of warped
+#' functions, in form of \code{fData} object.
+#'
+#' @seealso \code{\link{fData}}
+#'
+#' @examples
+#'
+#' set.seed( 1618033 )
+#'
+#' N = 30
+#'
+#' t0 = 0
+#' t1 = 1
+#' P = 1e3 + 1
+#'
+#' time_grid = seq( t0, t1, length.out = P )
+#'
+#' means = round( runif( N,
+#'                       t0 + (t1 - t0) / 8,
+#'                       t1 - (t1 - t0) / 8  ), 3 )
+#'
+#' Data = matrix( sapply( means,
+#'                        function( m )( dnorm( time_grid, mean = m, sd = 0.05 ) ) ),
+#'                ncol = P, nrow = N, byrow = TRUE )
+#'
+#' fD = fData( time_grid, Data )
+#'
+#' # Piecewise linear warpings
+#' template_warping = function( m )( c( time_grid[ time_grid <= 0.5 ] * m / 0.5,
+#'                                      ( time_grid[ time_grid > 0.5 ]
+#'                                        - 0.5 ) * (1 - m ) / 0.5 + m ) )
+#'
+#'
+#' warpings = matrix( sapply( means, template_warping ),
+#'                    ncol = P,
+#'                    nrow = N, byrow = TRUE )
+#'
+#' wfD = fData( time_grid, warpings )
+#'
+#' fD_warped = warp( fD, wfD )
+#'
+#' dev.new()
+#' par( mfrow = c( 1, 3 ) )
+#' plot( fD,
+#'      main = 'Unregistered functions', xlab = 'actual grid', ylab = 'values'  )
+#' plot( wfD,
+#'      main = 'Warping functions', xlab = 'registered grid',
+#'      ylab = 'actual grid' )
+#' plot( fD_warped,
+#'      main = 'Warped functions', xlab = 'registered grid',
+#'      ylab = 'values' )
+#'
+#' @export
 warp = function( fData, warpings )
 {
-  if( fData$t0 != warpings$t0 |
-      fData$tP != warpings$tP |
-      fData$P != warpings$P |
-      fData$h != fData$h |
-      fData$N != fData$N )
+  if(
+    fData$N != warpings$N
+    )
   {
     stop( ' Error in warp: you have to provide a warping for each functional
-observations, and they need to be defined over the same grid' )
+observations' )
   }
 
   if( any( diff( warpings$values[ , 1 ] ) > .Machine$double.eps ) |
@@ -927,3 +1107,67 @@ observations, and they need to be defined over the same grid' )
 }
 
 
+
+#' Converting object to \code{mfData} class
+#'
+#' This S3 method provides a way to convert some objects to the class
+#' \code{mfData}, thus obtaining a multivariate functional dataset.
+#'
+#' @param ... additional parameters.
+#'
+#' @return The function returns a \code{mfData} object, obtained starting from
+#' argument \code{x}.
+#'
+#' @export
+#'
+as.mfData = function( x, ... )
+{
+  UseMethod( 'as.mfData', x )
+}
+
+#'@rdname as.mfData
+#'
+#' @param x a list of univariate functional datasets, provided in form of
+#' \code{fData} objects.
+#'
+#' @examples
+#'
+#' grid = seq( 0, 1, length.out = 100 )
+#'
+#' fD_1 = fData( grid, sin( 2 * pi * grid ) )
+#' fD_2 = fData( grid, cos( 2 * pi * grid ) )
+#'
+#' plot( as.mfData( list( fD_1, fD_2 ) ) )
+#'
+#' @export
+as.mfData.list = function( x, ... )
+{
+  if( any( sapply( x, class ) != 'fData' ) )
+  {
+    stop( ' Error in as.mfData.list: you have to provide a list of fData
+          objects')
+  }
+
+  if( any( diff( sapply( x,
+                         function( y ) ( y$t0 ) ) ) >= .Machine$double.eps ) |
+      any( diff( sapply( x,
+                         function( y ) ( y$tP ) ) ) >= .Machine$double.eps ) |
+      any( diff( sapply( x,
+                         function( y ) ( y$P ) ) ) >= .Machine$double.eps )  |
+      any( diff( sapply( x,
+                         function( y ) ( y$N ) ) ) >= .Machine$double.eps )  )
+  {
+    stop( ' Error in as.mfData.list: you have provided fData list elements with
+          different parameters')
+  }
+
+  return( mfData( seq( x[[ 1 ]]$t0,
+                       x[[ 1 ]]$tP,
+                       length.out = x[[ 1 ]]$P ),
+                  eval( parse( text = paste( 'list(',
+                                             paste( 'x[[ ',
+                                                    1 : length( x ),
+                                                    ' ]]$values',
+                                                    sep = '', collapse = ', ' ),
+                                             ')' ) ) ) ) )
+}

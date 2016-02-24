@@ -7,8 +7,8 @@
 median_mfData(mfData, type = "multiMBD", ...)
 }
 \arguments{
-\item{mfData}{the object containing the multivariate functional dataset whose
-median is required.}
+\item{mfData}{the multivariate functional dataset whose
+median is required, in form of \code{mfData} object.}
 
 \item{type}{a string specifying the name of the function defining the depth
 for multivariate data to be used. It must be a valid name of a function

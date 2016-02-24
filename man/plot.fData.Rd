@@ -7,7 +7,7 @@
 \method{plot}{fData}(x, ...)
 }
 \arguments{
-\item{x}{the univariate functional dataset of \code{fData} class.}
+\item{x}{the univariate functional dataset in form of \code{fData} object.}
 
 \item{...}{additional graphical parameters to be used in plotting functions}
 }

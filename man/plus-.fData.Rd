@@ -11,7 +11,7 @@
 \method{-}{fData}(fD, A)
 }
 \arguments{
-\item{fD}{the univariate \code{fData} object.}
+\item{fD}{the univariate functional dataset in form of \code{fData} object.}
 
 \item{A}{either an \code{fData} object, defined on the very same grid of
 \code{fD}, or a 1D data structure (such as 1D array or raw

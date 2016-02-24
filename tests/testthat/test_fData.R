@@ -139,6 +139,14 @@ test_that( 'Plot of mfData object',
                                        main = list( 'First Component',
                                                     'Second Component' ) ) ) )
 
+test_that( 'As.mfdata.list',
+           expect_silent( as.mfData( list( fData( time_grid,
+                                                  Data_1 ),
+                                           fData( time_grid,
+                                                  Data_2 )
+           ) ) )  )
+
+
 test_that( 'Extracting list of values from multivariate functional dataset',
            expect_identical( toListOfValues( mfData( time_grid,
                                                      list( Data_1, Data_2 ) ) ),

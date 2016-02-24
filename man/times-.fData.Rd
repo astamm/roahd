@@ -11,7 +11,7 @@
 \method{/}{fData}(fD, a)
 }
 \arguments{
-\item{fD}{the univariate \code{fData} object.}
+\item{fD}{the univariate functional dataset in form of \code{fData} object.}
 
 \item{a}{either a single number or a 1D data structure (such as numeric
 raw vector, matrix or array) specifying the factor(s) to use in the

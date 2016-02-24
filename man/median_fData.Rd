@@ -7,8 +7,8 @@
 median_fData(fData, type = "MBD", ...)
 }
 \arguments{
-\item{fData}{the object containing the univariate functional dataset whose
-median is required.}
+\item{fData}{the univariate functional dataset whose
+median is required, in form of \code{fData} object.}
 
 \item{type}{a string specifying the name of the function defining the depth
 for univariate data to be used. It must be a valid name of a function defined
