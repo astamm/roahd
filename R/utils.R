@@ -1,12 +1,36 @@
 
 
-#' Conversion to row-matrix form of generic vectors/arrays/matrices
+#' Conversion of vector/array/matrix to row-matrix form
 #'
-#' \code{toRowMatrixForm} manipulates D to obtain a matrix representation such that,
-#' in case of just one observation we have a row vector representation, and in general
-#' we have a consistent output with matrix-structure
+#' This function manipulates a numeric data structure of vector/array/matrix
+#' type in order to obtain a matrix representation.
+#' For 1D data structures and column/row arrays and matrices the output is
+#' turned in a matrix format with just one row.
+#' If the input structure is rectangualar, instead, it is only converted in
+#' matrix format.
 #'
-#' @param D a generic array or atomic vecor to be converted in row-matrix format.
+#' @section Warning:
+#' The function is \bold{not} supposed to work with arbitrary N-dimensional
+#' arrays.
+#'
+#' @param D a generic array, matrix or vector to be converted in
+#' row-matrix format.
+#'
+#' @examples
+#'
+#' toRowMatrixForm( 1 : 10 )
+#'
+#' toRowMatrixForm( array( 1 : 10, dim = c(1,10 ) ) )
+#'
+#' toRowMatrixForm( array( 1 : 10, dim = c( 10, 1 ) ) )
+#'
+#' toRowMatrixForm( matrix( 1 : 10, ncol = 10, nrow = 1 ) )
+#'
+#' toRowMatrixForm( matrix( 1 : 10, ncol = 1, nrow = 10 ) )
+#'
+#' toRowMatrixForm( matrix( 1 : 12, ncol = 3, nrow = 4 ) )
+#'
+#' toRowMatrixForm( matrix( 1 : 12, ncol = 4, nrow = 3 ) )
 #'
 #' @export
 toRowMatrixForm = function( D )
@@ -29,14 +53,42 @@ toRowMatrixForm = function( D )
   return( D )
 }
 
-#' Function to setup alpha value for a set of colors
+#' Function to setup alpha value for a set of colours
 #'
-#' \code{set_alpha} manipulates a vector of color representations in order to
-#' setup the alpha value, and get the desired transparency level
+#' \code{set_alpha} manipulates a vector of colour representations in order
+#' to setup the alpha value, and get the desired transparency level.
 #'
-#' @param col a vector of colors
-#' @param alpha the value(s) of alpha for (each of) the colors
+#' @param col a vector of colours
+#' @param alpha the value(s) of alpha for (each of) the colors.
 #'
+#' @seealso \code{\link{fDColorPalette}}
+#'
+#' @examples
+#'
+#' original_col = c( 'blue', 'red', 'green', 'yellow' )
+#'
+#' alpha_col = set_alpha( original_col, 0.5 )
+#'
+#' alpha_col = set_alpha( original_col, c(0.5, 0.5, 0.2, 0.1 ) )
+#'
+#' dev.new()
+#' par( mfrow = c( 1, 2 ) )
+#'
+#' plot( seq_along( original_col ),
+#'       seq_along( original_col ),
+#'       col = original_col,
+#'       pch = 16,
+#'       cex = 2,
+#'       main = 'Original colours' )
+#'
+#' plot( seq_along( alpha_col ),
+#'       seq_along( alpha_col ),
+#'       col = alpha_col,
+#'       pch = 16,
+#'       cex = 2,
+#'       main = 'Alpha colours' )
+#'
+#' @export
 set_alpha = function( col, alpha )
 {
   alpha = alpha * 255
@@ -50,30 +102,35 @@ set_alpha = function( col, alpha )
                                                     maxColorValue = 255 ) ) ) )
 }
 
-#' Exponential covariance function over a grid for univariate functional data
+#' A set of fancy color to plot functional datasets
 #'
-#'  \eqn{C( s, t ) = \alpha e^{ - \beta | s - t | }}
+#' This function can be used to generate a palette of colors useful to plot
+#' functional datasets with the \code{plot} methods.
 #'
-#' @param time_grid a vector of time points
-#' @param alpha the alpha parameter in the exponential covariance formula
-#' @param beta the beta parameter in the exponential covariance formula
+#' The function, built around \code{scales::hue_pal}, allows to set up the
+#' HCL parameters of the set of colors desired, and besides to set up the
+#' alpha channel value.
 #'
-#' @export
-exp_cov_function = function( time_grid, alpha, beta )
-{
-  return(  outer( time_grid, time_grid,
-                  function( s, t )( alpha * exp( - beta * abs( s - t ) ) ) ) )
-}
-
-#' A set of fancy color to plot fData objects
-#'
-#' @param N number of different colors (ideally, functional observations)
-#' @param range the range of hues to be used
-#' @param alpha the alpha channel parameter of the colors (transparency)
+#' @param N number of different colors (ideally, functional observations).
+#' @param hue_range the range of hues in the HCL scheme.
+#' @param alpha the alpha channel parameter(s) of the colors (transparency).
 #' @param ... additional parameters to be passed to \code{scales::hue_pal}
 #'
-fDColorPalette = function( N, range = c( 0, 360 ), alpha = 0.8, ... )
+#' @seealso \code{\link{plot.fData}}, \code{\link{plot.mfData}}
+#'
+#' @examples
+#'
+#' N = 1e2
+#' angular_grid = seq( 0, 359, length.out = N )
+#'
+#' dev.new()
+#' plot( angular_grid, angular_grid,
+#'       col = fDColorPalette( N, hue_range = c( 0, 359 ), alpha = 1 ),
+#'       pch = 16, cex = 3 )
+#'
+#' @export
+fDColorPalette = function( N, hue_range = c( 0, 360 ), alpha = 0.8, ... )
 {
-  return( set_alpha( scales::hue_pal( h = range, ... )( N ),
-                     0.8 ) )
+  return( set_alpha( scales::hue_pal( h = hue_range, ... )( N ),
+                     alpha ) )
 }

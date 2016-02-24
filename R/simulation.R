@@ -1,3 +1,41 @@
+#' Exponential covariance function over a grid
+#'
+#' This function computes the discretisation of an exponential
+#' covariance function of the form:
+#'  \deqn{C( s, t ) = \alpha e^{ - \beta | s - t | }}
+#' over a 1D grid \eqn{[t_0, t_1, \ldots, t_{P-1}]}, thus obtaining the
+#' \eqn{P \times P} matrix
+#' of values:
+#'  \deqn{ C_{i,j} = C( t_i, t_j ) = \alpha e^{ - \beta | t_i - t_j | } .}
+#'
+#' @param time_grid a vector of time points.
+#' @param alpha the alpha parameter in the exponential covariance formula.
+#' @param beta the beta parameter in the exponential covariance formula.
+#'
+#' @seealso \code{\link{generate_gauss_fdata}},
+#' \code{\link{generate_gauss_mfdata}}
+#'
+#' @examples
+#'
+#' grid = seq( 0, 1, length.out = 5e2 )
+#'
+#' alpha = 0.2
+#' beta = 0.3
+#'
+#' dev.new()
+#' image( exp_cov_function( grid, alpha, beta ),
+#'        main = 'Exponential covariance function',
+#'        xlab = 'grid', ylab = 'grid')
+#'
+#'
+#' @export
+exp_cov_function = function( time_grid, alpha, beta )
+{
+  return(  outer( time_grid, time_grid,
+                  function( s, t )( alpha * exp( - beta * abs( s - t ) ) ) ) )
+}
+
+
 #' Generation of gaussian univariate functional data
 #'
 #' \code{generate_gauss_fdata} generates a dataset of univariate functional data

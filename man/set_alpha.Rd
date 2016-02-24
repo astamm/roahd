@@ -2,17 +2,44 @@
 % Please edit documentation in R/utils.R
 \name{set_alpha}
 \alias{set_alpha}
-\title{Function to setup alpha value for a set of colors}
+\title{Function to setup alpha value for a set of colours}
 \usage{
 set_alpha(col, alpha)
 }
 \arguments{
-\item{col}{a vector of colors}
+\item{col}{a vector of colours}
 
-\item{alpha}{the value(s) of alpha for (each of) the colors}
+\item{alpha}{the value(s) of alpha for (each of) the colors.}
 }
 \description{
-\code{set_alpha} manipulates a vector of color representations in order to
-setup the alpha value, and get the desired transparency level
+\code{set_alpha} manipulates a vector of colour representations in order
+to setup the alpha value, and get the desired transparency level.
+}
+\examples{
+original_col = c( 'blue', 'red', 'green', 'yellow' )
+
+alpha_col = set_alpha( original_col, 0.5 )
+
+alpha_col = set_alpha( original_col, c(0.5, 0.5, 0.2, 0.1 ) )
+
+dev.new()
+par( mfrow = c( 1, 2 ) )
+
+plot( seq_along( original_col ),
+      seq_along( original_col ),
+      col = original_col,
+      pch = 16,
+      cex = 2,
+      main = 'Original colours' )
+
+plot( seq_along( alpha_col ),
+      seq_along( alpha_col ),
+      col = alpha_col,
+      pch = 16,
+      cex = 2,
+      main = 'Alpha colours' )
+}
+\seealso{
+\code{\link{fDColorPalette}}
 }
 

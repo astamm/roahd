@@ -2,16 +2,40 @@
 % Please edit documentation in R/utils.R
 \name{toRowMatrixForm}
 \alias{toRowMatrixForm}
-\title{Conversion to row-matrix form of generic vectors/arrays/matrices}
+\title{Conversion of vector/array/matrix to row-matrix form}
 \usage{
 toRowMatrixForm(D)
 }
 \arguments{
-\item{D}{a generic array or atomic vecor to be converted in row-matrix format.}
+\item{D}{a generic array, matrix or vector to be converted in
+row-matrix format.}
 }
 \description{
-\code{toRowMatrixForm} manipulates D to obtain a matrix representation such that,
-in case of just one observation we have a row vector representation, and in general
-we have a consistent output with matrix-structure
+This function manipulates a numeric data structure of vector/array/matrix
+type in order to obtain a matrix representation.
+For 1D data structures and column/row arrays and matrices the output is
+turned in a matrix format with just one row.
+If the input structure is rectangualar, instead, it is only converted in
+matrix format.
+}
+\section{Warning}{
+
+The function is \bold{not} supposed to work with arbitrary N-dimensional
+arrays.
+}
+\examples{
+toRowMatrixForm( 1 : 10 )
+
+toRowMatrixForm( array( 1 : 10, dim = c(1,10 ) ) )
+
+toRowMatrixForm( array( 1 : 10, dim = c( 10, 1 ) ) )
+
+toRowMatrixForm( matrix( 1 : 10, ncol = 10, nrow = 1 ) )
+
+toRowMatrixForm( matrix( 1 : 10, ncol = 1, nrow = 10 ) )
+
+toRowMatrixForm( matrix( 1 : 12, ncol = 3, nrow = 4 ) )
+
+toRowMatrixForm( matrix( 1 : 12, ncol = 4, nrow = 3 ) )
 }
 
