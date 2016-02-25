@@ -1,56 +1,68 @@
 
 #' Outliergram for univariate functional datasets
 #'
-#' \code{fbplot} displays the functional boxplot of a dataset of functional data.
+#' This function performs the outliergram of a univariate functional dataset,
+#' possibly with an adjustment of the true positive rate of outliers discovered
+#' under assumption of gaussianity.
 #'
-#' @param time_grid optional, a vector corresponding to the time grid over which
-#' the functions are evaluated (it must be
-#' evenly spaced)
-#' @param Data the dataset of functional data, having observations on the rows
-#' and time points on columns
-#' @param MBD_data a vector containing the MBD for each element of the dataset,
-#' if it is not provided, they are computed.
-#' @param MEI_data a vector containing the MEI for each element of the dataset,
-#' if it is not provided, they are computed.
-#' @param q_low parameter indicating the quantile to be used to compute the
-#' target to compare functions in the secondary check for outliers (shifting
-#' step towards the bulk of data). Defult is 0, i.e. High MEI functions (lying
-#' at the bottom of the dataset) are compared to the minimum of all the remaining
-#' functions
-#' @param q_high parameter indicating the quantile to be used to compute the
-#' target to compare functions in the secondary check for outliers (shifting
-#' step towards the bulk of data). Defult is 1, i.e. Low MEI functions (lying
-#' at the top of the dataset) are compared to the maximum of all the remaining
-#' functions
+#' @param fData the univariate functional dataset whose outliergram has to be
+#' determined.
+#' @param MBD_data a vector containing the MBD for each element of the dataset.
+#' If missing, MBDs are computed.
+#' @param MEI_data a vector containing the MEI for each element of the dataset.
+#' If not not provided, MEIs are computed.
+#' @param q_low parameter used in the part where data are shifted toward the
+#' center of the dataset. It indicates the quantile to be used to compute the
+#' target to compare functions in the secondary check for outliers. Defult is 0,
+#' i.e. High MEI functions (lying at the bottom of the dataset) are compared
+#' to the minimum of all the remaining functions.
+#' @param q_high parameter used in the part where data are shifted toward the
+#' center of the dataset. It indicates the quantile to be used to compute the
+#' target to compare functions in the secondary check for outliers.
+#' Defult is 1, i.e. Low MEI functions (lying at the top of the dataset) are
+#' compared to the maximum of all the remaining functions.
 #' @param p_check percentage of observations with either low or high MEI to be
-#' checked for outliers in the secondary step (shift towards the bulk of data)
-#' @param adjust either FALSE if you would like the default value for the
-#' inflation factor, F = 1.5, to be used, or a list specifying the parameters
-#' required by the adjustment.
+#' checked for outliers in the secondary step (shift towards the center of the
+#' dataset).
+#' @param adjust either \code{FALSE} if you would like the default value for the
+#' inflation factor, \eqn{F = 1.5}, to be used, or a list specifying the
+#' parameters required by the adjustment.
 #' @param display either a logical value indicating wether you want the
-#' outliergram to be displayed, or the number of the graphical devices
-#' where you want the boxplot to be plotted.
-#' @param ... additional graphical parameters to be used only in the plot of the
-#' functional dataset
+#' outliergram to be displayed, or the number of the graphical device
+#' where you want the outliergram to be displayed.
+#' @param ... additional graphical parameters to be used \emph{only} in the plot
+#' of the functional dataset
 #'
-outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL,
+#' @return
+#'
+#' Even when used graphically to plot the outliergram, the function returns a
+#' numeric vector containing the IDs of observations in \code{fData} that are
+#' considered as shape outliers.
+#'
+#' @references
+#'
+#' Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and visualization
+#' for functional data: the outliergram, \emph{Biostatistics}, 15(4), 603-619.
+#'
+#' @seealso \code{\link{fData}}, \code{\link{MEI}}, \code{\link{MBD}},
+#' \code{\link{fbplot}}
+#'
+#' @export
+outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
                         q_low = 0, q_high = 1, p_check = 0.05,
                         adjust = FALSE, display = TRUE, ... )
 {
-  N = nrow( Data )
+  N = fData$N
 
-  if( is.null( time_grid ) )
-  {
-    time_grid = 1 : ncol( Data)
-  }
-
-  stopifnot( length( time_grid ) == ncol( Data ) )
+  grid = seq( fData$t0,
+              fData$tP,
+              length.out = fData$P )
 
   if( ! is.list( adjust ) )
   {
     # Plain outliergram with default F value: F = 1.5
 
-    out = .outliergram( time_grid, Data,
+    out = .outliergram( fData,
                         MBD_data = MBD_data, MEI_data = MEI_data,
                         p_check = p_check, q_low = q_low, q_high = q_high,
                         shift = TRUE )
@@ -64,7 +76,7 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
                        adjust$N_trials )
 
     trial_size = ifelse( is.null( adjust$trial_size ),
-                         5 * N,
+                         5 * fData$N,
                          adjust$trial_size )
 
     TPR = ifelse( is.null( adjust$TPR ),
@@ -91,28 +103,27 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
                       FALSE,
                       adjust$VERBOSE )
 
-    Cov = robustbase::covOGK( Data, sigmamu = robustbase::s_Qn )$cov
+    Cov = robustbase::covOGK( fData$values, sigmamu = robustbase::s_Qn )$cov
 
     CholCov <- chol( Cov )
 
     if( is.null ( MBD_data ) )
     {
-      MBD_data = MBD( Data, manage_ties = TRUE )
+      MBD_data = MBD( fData$values, manage_ties = TRUE )
     }
 
-    centerline = Data[ which.max( MBD_data ), ]
+    centerline = fData$values[ which.max( MBD_data ), ]
 
     Fvalues = rep( 0, N_trials )
 
-
-    obj_function = function( F_curr )( length( .outliergram( time_grid,
-                                                             Data_gauss,
-                                                             MBD_data = NULL,
-                                                             MEI_data = NULL,
-                                                             q_low = q_low,
-                                                             q_high = q_high,
-                                                             Fvalue = F_curr,
-                                                             shift = FALSE )$ID_SO ) / trial_size - TPR )
+    obj_function = function( F_curr )( length(
+      .outliergram( fData_gauss,
+                    MBD_data = NULL,
+                    MEI_data = NULL,
+                    q_low = q_low,
+                    q_high = q_high,
+                    Fvalue = F_curr,
+                    shift = FALSE )$ID_SO ) / trial_size - TPR )
 
     for( iTrial in 1 : N_trials )
     {
@@ -121,7 +132,10 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
         cat( ' * * * Iteration ', iTrial, ' / ', N_trials, '\n' )
       }
 
-      Data_gauss = generate_gauss_fdata( trial_size, centerline, CholCov = CholCov )
+      fData_gauss = fData( grid,
+                           generate_gauss_fdata( M = trial_size,
+                                                 centerline = centerline,
+                                                 CholCov = CholCov ) )
 
       if( VERBOSE > 0 )
       {
@@ -138,7 +152,7 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
 
     Fvalue = mean( Fvalues )
 
-    out = .outliergram( time_grid, Data, MBD_data, MEI_data, p_check, q_low,
+    out = .outliergram( fData, MBD_data, MEI_data, p_check, q_low,
                         q_high, Fvalue = Fvalue, shift = TRUE  )
   }
 
@@ -162,24 +176,31 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
     par( mfrow = c( 1, 2 ) )
 
     # Plotting functional data
-    matplot( time_grid, t( Data[ - out$ID_SO, ] ), type = 'l', lty = 1,
-             ylim = range( Data ),
-             col = col_non_outlying, ... )
+    if( length( out$ID_SO ) > 0 )
+    {
+      matplot( grid, t( fData$values[ - out$ID_SO, ] ), type = 'l', lty = 1,
+               ylim = range( fData$values ),
+               col = col_non_outlying, ... )
+      matplot( grid, t( toRowMatrixForm( fData$values[   out$ID_SO, ] ) ),
+               type = 'l', lty = 1, lwd = 3, ylim = range( fData$values ),
+               col = col_outlying, add = TRUE )
+    } else {
+      matplot( grid, t( fData$values ), type = 'l', lty = 1,
+               ylim = range( fData$values ),
+               col = col_non_outlying, ... )
+    }
 
-    matplot( time_grid, t( toRowMatrixForm( Data[   out$ID_SO, ] ) ), type = 'l',
-             lty = 1, lwd = 3, ylim = range( Data ),
-             col = col_outlying, add = TRUE )
 
     # Adding text labels with curve ID
-    w_spacing = diff( range( time_grid ) ) / ( 2 * length( out$ID_SO ) )
+    w_spacing = diff( range( grid ) ) / ( 2 * length( out$ID_SO ) )
 
     for( iOut in seq_along( out$ID_SO ) )
     {
-      text( time_grid[ 1 ] + ( 2 * iOut - 1 ) * w_spacing,
-            Data[ out$ID_SO[ iOut ],
-                  which.min( abs( time_grid - time_grid[ 1 ] -
+      text( grid[ 1 ] + ( 2 * iOut - 1 ) * w_spacing,
+            fData$values[ out$ID_SO[ iOut ],
+                  which.min( abs( grid - grid[ 1 ] -
                                     ( 2 * iOut - 1 ) * w_spacing ) ) ] +
-              diff( range( Data[ out$ID_SO[ iOut ]  ] ) ) / 30,
+              diff( range( fData$values[ out$ID_SO[ iOut ]  ] ) ) / 30,
             out$ID_SO[ iOut ],
             col = col_outlying[ iOut ] )
     }
@@ -194,13 +215,12 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
           ylim = c( 0, a_0_2 + a_1 / 2 + a_0_2 * N^2/4 ),
           main = 'Outliergram', xlab = 'MEI', ylab = 'MBD' )
 
-    points( out$MEI_data[ - out$ID_SO ], out$MBD_data[ - out$ID_SO ],
-            pch = 16, col = col_non_outlying )
-    points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ],
-            pch = 16, cex = 1.5, col = col_outlying )
-
     if( length( out$ID_SO ) > 0 )
     {
+      points( out$MEI_data[ - out$ID_SO ], out$MBD_data[ - out$ID_SO ],
+              pch = 16, col = col_non_outlying )
+      points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ],
+              pch = 16, cex = 1.5, col = col_outlying )
       for( idOut in out$ID_SO )
       {
         text( out$MEI_data[ idOut ],
@@ -208,6 +228,9 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
               idOut,
               col = col_outlying[ match( idOut, out$ID_SO ) ] )
       }
+    } else {
+      points( out$MEI_data, out$MBD_data,
+              pch = 16, col = col_non_outlying )
     }
 
     # lower parabolic limit
@@ -229,11 +252,11 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
   return( out$ID_SO )
 }
 
-.outliergram = function( time_grid, Data, MBD_data = NULL, MEI_data = NULL,
+.outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
                          p_check = 0.05, q_low = 0, q_high = 1,
                          Fvalue = NULL, shift = TRUE )
 {
-  N = nrow( Data )
+  N = fData$N
 
   a_0_2 = -2 / ( N * ( N - 1 ) )
 
@@ -242,13 +265,13 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
   # Computing MBD
   if( is.null( MBD_data ) ){
 
-    MBD_data = MBD( Data )
+    MBD_data = MBD( fData$values )
   }
 
   # Computing MEI
   if( is.null( MEI_data ) )
   {
-    MEI_data = MEI( Data )
+    MEI_data = MEI( fData$values )
   }
 
   d = a_0_2 + a_1 * MEI_data + N^2 * a_0_2 * MEI_data^2 - MBD_data
@@ -272,7 +295,7 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
   }
 
   # Computing non outlying curves ids
-  ID_non_outlying = setdiff( 1 : nrow( Data ), ID_shape_outlier )
+  ID_non_outlying = setdiff( 1 : nrow( fData$values ), ID_shape_outlier )
 
   if( shift )
   {
@@ -287,8 +310,8 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
       which( MEI_data[ - ID_shape_outlier ] <=
                quantile( MEI_data, probs = p_check ) ) ]
 
-    aux_function = function( ID )( min( Data[ ID, ] -
-                                          apply( Data[ - ID, ], 2,
+    aux_function = function( ID )( min( fData$values[ ID, ] -
+                                          apply( fData$values[ - ID, ], 2,
                                                  quantile,
                                                  probs = q_low ) ) )
 
@@ -298,16 +321,17 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
     ID_to_check = ID_non_outlying_High_MEI[ min_diff_min < 0 ]
 
     aux_function_MBD = function( ID, fun )(
-      MBD( rbind( Data[ - ID, ],
+      MBD( rbind( fData$values[ - ID, ],
                   Data_tilde[ grep( ID, ID_to_check ), ] ) )[ N ] )
 
     aux_function_MEI = function( ID, fun )(
-      MEI( rbind( Data[ - ID, ],
+      MEI( rbind( fData$values[ - ID, ],
                   Data_tilde[ grep( ID, ID_to_check ), ] ) )[ N ] )
 
     if( length( ID_to_check ) > 0 )
     {
-      Data_tilde = t( t( Data[ ID_to_check, ] ) - min_diff_min[ ID_to_check ] )
+      Data_tilde = t( t( fData$values[ ID_to_check, ] ) -
+                        min_diff_min[ ID_to_check ] )
 
 
       MBD_curr = sapply( ID_to_check, aux_function )
@@ -322,7 +346,7 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
         ID_out_extra = ID_to_check[ which( d_curr >= Q_d3 + 1.5 * IQR_d ) ]
 
       } else {
-        ID_out_extra = ID_to_heck[ which( d_curr >= Q_d1 * Fvalue ) ]
+        ID_out_extra = ID_to_check[ which( d_curr >= Q_d1 * Fvalue ) ]
       }
 
       ID_shape_outlier = c( ID_shape_outlier, ID_out_extra )
@@ -331,9 +355,11 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
 
     # Managing Low MEI data
 
-    aux_function = function( ID )( max( Data[ ID, ] - apply( Data[ - ID, ], 2,
-                                                             quantile,
-                                                             probs = q_high ) ) )
+    aux_function = function( ID )( max( fData$values[ ID, ] -
+                                          apply( fData$values[ - ID, ],
+                                                 2,
+                                                 quantile,
+                                                 probs = q_high ) ) )
 
     max_diff_max = sapply( ID_non_outlying_Low_MEI, aux_function )
 
@@ -341,7 +367,7 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
 
     if( length( ID_to_check ) > 0 )
     {
-      Data_tilde = t( t( Data[ ID_to_check, ] ) - max_diff_max[ ID_to_check ] )
+      Data_tilde = t( t( fData$values[ ID_to_check, ] ) - max_diff_max[ ID_to_check ] )
 
       MBD_curr = sapply( ID_to_check, aux_function_MBD )
 
@@ -416,7 +442,7 @@ outliergram = function( time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL
 # }
 
 
-# par_outliergram = function( time_grid, Data, MBD_data = NULL, MEI_data = NULL, q_low = 0, q_high = 1, Fvalue = NULL )
+# par_outliergram = function( grid, Data, MBD_data = NULL, MEI_data = NULL, q_low = 0, q_high = 1, Fvalue = NULL )
 # {
 #   N = nrow( Data )
 #

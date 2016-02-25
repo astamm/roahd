@@ -62,11 +62,17 @@ fData = function( grid, values )
   all( abs( diff( unique( diff( grid ) ) ) ) < 1e-14 ) ||
     stop( ' Error in fData: you provided an unevenly spaced grid')
 
-  h = grid[ 2 ] - grid[ 1 ]
-
   P = length( grid )
 
   values = toRowMatrixForm( values )
+
+  if( P != ncol( values ) )
+  {
+    stop( ' Error in fData: you provided mismatching grid and data structure
+          of values\n')
+  }
+
+  h = grid[ 2 ] - grid[ 1 ]
 
   return( structure( list( t0 = grid[ 1 ],
                            tP = grid[ P ],

@@ -4,51 +4,62 @@
 \alias{outliergram}
 \title{Outliergram for univariate functional datasets}
 \usage{
-outliergram(time_grid = NULL, Data, MBD_data = NULL, MEI_data = NULL,
-  q_low = 0, q_high = 1, p_check = 0.05, adjust = FALSE,
-  display = TRUE, ...)
+outliergram(fData, MBD_data = NULL, MEI_data = NULL, q_low = 0,
+  q_high = 1, p_check = 0.05, adjust = FALSE, display = TRUE, ...)
 }
 \arguments{
-\item{time_grid}{optional, a vector corresponding to the time grid over which
-the functions are evaluated (it must be
-evenly spaced)}
+\item{fData}{the univariate functional dataset whose outliergram has to be
+determined.}
 
-\item{Data}{the dataset of functional data, having observations on the rows
-and time points on columns}
+\item{MBD_data}{a vector containing the MBD for each element of the dataset.
+If missing, MBDs are computed.}
 
-\item{MBD_data}{a vector containing the MBD for each element of the dataset,
-if it is not provided, they are computed.}
+\item{MEI_data}{a vector containing the MEI for each element of the dataset.
+If not not provided, MEIs are computed.}
 
-\item{MEI_data}{a vector containing the MEI for each element of the dataset,
-if it is not provided, they are computed.}
+\item{q_low}{parameter used in the part where data are shifted toward the
+center of the dataset. It indicates the quantile to be used to compute the
+target to compare functions in the secondary check for outliers. Defult is 0,
+i.e. High MEI functions (lying at the bottom of the dataset) are compared
+to the minimum of all the remaining functions.}
 
-\item{q_low}{parameter indicating the quantile to be used to compute the
-target to compare functions in the secondary check for outliers (shifting
-step towards the bulk of data). Defult is 0, i.e. High MEI functions (lying
-at the bottom of the dataset) are compared to the minimum of all the remaining
-functions}
-
-\item{q_high}{parameter indicating the quantile to be used to compute the
-target to compare functions in the secondary check for outliers (shifting
-step towards the bulk of data). Defult is 1, i.e. Low MEI functions (lying
-at the top of the dataset) are compared to the maximum of all the remaining
-functions}
+\item{q_high}{parameter used in the part where data are shifted toward the
+center of the dataset. It indicates the quantile to be used to compute the
+target to compare functions in the secondary check for outliers.
+Defult is 1, i.e. Low MEI functions (lying at the top of the dataset) are
+compared to the maximum of all the remaining functions.}
 
 \item{p_check}{percentage of observations with either low or high MEI to be
-checked for outliers in the secondary step (shift towards the bulk of data)}
+checked for outliers in the secondary step (shift towards the center of the
+dataset).}
 
-\item{adjust}{either FALSE if you would like the default value for the
-inflation factor, F = 1.5, to be used, or a list specifying the parameters
-required by the adjustment.}
+\item{adjust}{either \code{FALSE} if you would like the default value for the
+inflation factor, \eqn{F = 1.5}, to be used, or a list specifying the
+parameters required by the adjustment.}
 
 \item{display}{either a logical value indicating wether you want the
-outliergram to be displayed, or the number of the graphical devices
-where you want the boxplot to be plotted.}
+outliergram to be displayed, or the number of the graphical device
+where you want the outliergram to be displayed.}
 
-\item{...}{additional graphical parameters to be used only in the plot of the
-functional dataset}
+\item{...}{additional graphical parameters to be used \emph{only} in the plot
+of the functional dataset}
+}
+\value{
+Even when used graphically to plot the outliergram, the function returns a
+numeric vector containing the IDs of observations in \code{fData} that are
+considered as shape outliers.
 }
 \description{
-\code{fbplot} displays the functional boxplot of a dataset of functional data.
+This function performs the outliergram of a univariate functional dataset,
+possibly with an adjustment of the true positive rate of outliers discovered
+under assumption of gaussianity.
+}
+\references{
+Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and visualization
+for functional data: the outliergram, \emph{Biostatistics}, 15(4), 603-619.
+}
+\seealso{
+\code{\link{fData}}, \code{\link{MEI}}, \code{\link{MBD}},
+\code{\link{fbplot}}
 }
 
