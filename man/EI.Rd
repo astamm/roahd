@@ -2,14 +2,56 @@
 % Please edit documentation in R/Indexes.R
 \name{EI}
 \alias{EI}
-\title{Epigraph Index of functions in a functional dataset}
+\title{Epigraph Index of univariate functional dataset}
 \usage{
 EI(Data)
 }
 \arguments{
-\item{Data}{a matrix-like dataset of functional data, with observations as rows and time points as columns}
+\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
+with observations as rows and measurements over grid points as columns.}
+}
+\value{
+The function returns a vector containing the values of EI for each
+element of the functional dataset provided in \code{Data}.
 }
 \description{
-\code{EI} computes the Epigraph Index of a functional dataset
+This function computes the Epigraphic Index (EI) of elements of a univariate
+functional dataste.
+}
+\details{
+Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+defined over a compact interval \eqn{I=[a,b]}, this function computes the
+EI, i.e.:
+
+\deqn{EI( X(t) ) = \frac{1}{N} \sum_{i=1}^N I( G( X(t) ) \subset
+epi( X_i(t) ) ) = \frac{1}{N} \sum_{i=1}^N I( X(t) \geq X_i(t), \ \
+\forall t \in I), }
+
+where \eqn{G(X(t))} indicates the graph of \eqn{X(t)}, \eqn{epi( X_i(t))}
+indicates the epigraph of \eqn{X_i(t)}.
+}
+\examples{
+N = 20
+P = 1e2
+
+grid = seq( 0, 1, length.out = P )
+
+C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+
+Data = generate_gauss_fdata( N,
+                             centerline = sin( 2 * pi * grid ),
+                             C )
+EI( Data )
+}
+\references{
+Lopez-Pintado, S. and Romo, J. (2012). A half-region depth for functional
+data, \emph{Computational Statistics and Data Analysis}, 55, 1679-1695.
+
+Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and
+visualization for functional data: the outliergram, \emph{Biostatistics},
+15(4), 603-619.
+}
+\seealso{
+\code{\link{MEI}}, \code{\link{HI}}, \code{\link{MHI}}
 }
 

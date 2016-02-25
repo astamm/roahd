@@ -2,14 +2,55 @@
 % Please edit documentation in R/Indexes.R
 \name{MHI}
 \alias{MHI}
-\title{Modified Hypograph Index of functions in a functional dataset}
+\title{Modified Hypograph Index of univariate functional dataset}
 \usage{
 MHI(Data)
 }
 \arguments{
-\item{Data}{a matrix-like dataset of functional data, with observations as rows and time points as columns}
+\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
+with observations as rows and measurements over grid points as columns.}
+}
+\value{
+The function returns a vector containing the values of MHI for each
+element of the functional dataset provided in \code{Data}.
 }
 \description{
-\code{MEI} computes the Modified Hypograph Index of a functional dataset
+This function computes the Modified Hypograph Index (MEI) of elements of a
+univariate functional dataste.
+}
+\details{
+Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+defined over a compact interval \eqn{I=[a,b]}, this function computes the
+MHI, i.e.:
+
+\deqn{MHI( X(t) ) = \frac{1}{N} \sum_{i=1}^N \tilde{\lambda}( X(t) \geq
+X_i(t) ), }
+
+where \eqn{\tilde{\lambda}(\cdot)} is the normalised Lebesgue measure over
+\eqn{I=[a,b]}, that is \eqn{\tilde{\lambda(A)} = \lambda( A ) / ( b - a )}.
+}
+\examples{
+N = 20
+P = 1e2
+
+grid = seq( 0, 1, length.out = P )
+
+C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+
+Data = generate_gauss_fdata( N,
+                             centerline = sin( 2 * pi * grid ),
+                             C )
+MHI( Data )
+}
+\references{
+Lopez-Pintado, S. and Romo, J. (2012). A half-region depth for functional
+data, \emph{Computational Statistics and Data Analysis}, 55, 1679-1695.
+
+Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and
+visualization for functional data: the outliergram, \emph{Biostatistics},
+15(4), 603-619.
+}
+\seealso{
+\code{\link{HI}}, \code{\link{MEI}}, \code{\link{EI}}
 }
 

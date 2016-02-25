@@ -2,14 +2,55 @@
 % Please edit documentation in R/Indexes.R
 \name{HRD}
 \alias{HRD}
-\title{Half-region depth}
+\title{Half-Region Depth for univariate functional data}
 \usage{
 HRD(Data)
 }
 \arguments{
-\item{Data}{a matrix-like dataset of functional data, with observations as rows and time points as columns}
+\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
+with observations as rows and measurements over grid points as columns.}
+}
+\value{
+The function returns a vector containing the values of HRD for each
+element of the functional dataset provided in \code{Data}.
 }
 \description{
-\code{HRD} computes the Half Region Depth of a functional dataset
+This function computes the Half-Region Depth (HRD) of elements of a univariate
+functional dataset.
+}
+\details{
+Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+defined over a compact interval \eqn{I=[a,b]}, this function computes the HRD
+of its elements, i.e.:
+
+\deqn{HRD(X(t)) = \min( EI( X(t) ), HI(X(t)) ),}
+
+where \eqn{EI(X(t))} indicates the Epigraph Index (EI) of \eqn{X(t)} with
+respect to the dataset, and \eqn{HI(X(t))} indicates the Hypograph Index of
+\eqn{X(t)} with respect to the dataset.
+}
+\examples{
+N = 20
+P = 1e2
+
+grid = seq( 0, 1, length.out = P )
+
+C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+
+Data = generate_gauss_fdata( N,
+                             centerline = sin( 2 * pi * grid ),
+                             C )
+HRD( Data )
+}
+\references{
+Lopez-Pintado, S. and Romo, J. (2012). A half-region depth for functional
+data, \emph{Computational Statistics and Data Analysis}, 55, 1679-1695.
+
+Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and
+visualization for functional data: the outliergram, \emph{Biostatistics},
+15(4), 603-619.
+}
+\seealso{
+\code{\link{MHRD}}, \code{\link{EI}}, \code{\link{HI}}
 }
 

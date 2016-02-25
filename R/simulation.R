@@ -8,7 +8,7 @@
 #' of values:
 #'  \deqn{ C_{i,j} = C( t_i, t_j ) = \alpha e^{ - \beta | t_i - t_j | } .}
 #'
-#' @param time_grid a vector of time points.
+#' @param grid a vector of time points.
 #' @param alpha the alpha parameter in the exponential covariance formula.
 #' @param beta the beta parameter in the exponential covariance formula.
 #'
@@ -29,9 +29,9 @@
 #'
 #'
 #' @export
-exp_cov_function = function( time_grid, alpha, beta )
+exp_cov_function = function( grid, alpha, beta )
 {
-  return(  outer( time_grid, time_grid,
+  return(  outer( grid, grid,
                   function( s, t )( alpha * exp( - beta * abs( s - t ) ) ) ) )
 }
 

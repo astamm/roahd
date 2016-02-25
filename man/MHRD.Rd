@@ -2,14 +2,55 @@
 % Please edit documentation in R/Indexes.R
 \name{MHRD}
 \alias{MHRD}
-\title{Modified Half-region depth}
+\title{Modified Half-Region Depth for univariate functional data}
 \usage{
 MHRD(Data)
 }
 \arguments{
-\item{Data}{a matrix-like dataset of functional data, with observations as rows and time points as columns}
+\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
+with observations as rows and measurements over grid points as columns.}
+}
+\value{
+The function returns a vector containing the values of MHRD for each
+element of the functional dataset provided in \code{Data}.
 }
 \description{
-\code{MHRD} computes the Modified Half Region Depth of a functional dataset
+This function computes the Modified Half-Region Depth (MHRD) of elements of
+a univariate functional dataset.
+}
+\details{
+Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+defined over a compact interval \eqn{I=[a,b]}, this function computes the MHRD
+of its elements, i.e.:
+
+\deqn{MHRD(X(t)) = \min( MEI( X(t) ), MHI(X(t)) ),}
+
+where \eqn{MEI(X(t))} indicates the Modified Epigraph Index (MEI) of
+\eqn{X(t)} with respect to the dataset, and \eqn{MHI(X(t))} indicates the
+Modified Hypograph Index of \eqn{X(t)} with respect to the dataset.
+}
+\examples{
+N = 20
+P = 1e2
+
+grid = seq( 0, 1, length.out = P )
+
+C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+
+Data = generate_gauss_fdata( N,
+                             centerline = sin( 2 * pi * grid ),
+                             C )
+MHRD( Data )
+}
+\references{
+Lopez-Pintado, S. and Romo, J. (2012). A half-region depth for functional
+data, \emph{Computational Statistics and Data Analysis}, 55, 1679-1695.
+
+Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and
+visualization for functional data: the outliergram, \emph{Biostatistics},
+15(4), 603-619.
+}
+\seealso{
+\code{\link{HRD}}, \code{\link{MEI}}, \code{\link{MHI}}
 }
 

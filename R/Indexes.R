@@ -1,8 +1,52 @@
-#' Epigraph Index of functions in a functional dataset
+#' Epigraph Index of univariate functional dataset
 #'
-#' \code{EI} computes the Epigraph Index of a functional dataset
+#' This function computes the Epigraphic Index (EI) of elements of a univariate
+#' functional dataste.
 #'
-#' @param Data a matrix-like dataset of functional data, with observations as rows and time points as columns
+#' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+#' defined over a compact interval \eqn{I=[a,b]}, this function computes the
+#' EI, i.e.:
+#'
+#' \deqn{EI( X(t) ) = \frac{1}{N} \sum_{i=1}^N I( G( X(t) ) \subset
+#' epi( X_i(t) ) ) = \frac{1}{N} \sum_{i=1}^N I( X(t) \geq X_i(t), \ \
+#' \forall t \in I), }
+#'
+#' where \eqn{G(X(t))} indicates the graph of \eqn{X(t)}, \eqn{epi( X_i(t))}
+#' indicates the epigraph of \eqn{X_i(t)}.
+#'
+#' @param Data a matrix-like dataset of functional data (e.g. \code{fData$values}),
+#' with observations as rows and measurements over grid points as columns.
+#'
+#' @return The function returns a vector containing the values of EI for each
+#' element of the functional dataset provided in \code{Data}.
+#'
+#' @references
+#'
+#' Lopez-Pintado, S. and Romo, J. (2012). A half-region depth for functional
+#' data, \emph{Computational Statistics and Data Analysis}, 55, 1679-1695.
+#'
+#' Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and
+#' visualization for functional data: the outliergram, \emph{Biostatistics},
+#' 15(4), 603-619.
+#'
+#' @examples
+#'
+#' N = 20
+#' P = 1e2
+#'
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+#'
+#' Data = generate_gauss_fdata( N,
+#'                              centerline = sin( 2 * pi * grid ),
+#'                              C )
+#' EI( Data )
+#'
+#' @seealso \code{\link{MEI}}, \code{\link{HI}}, \code{\link{MHI}}
+#'
+#' @export
+#'
 EI = function( Data )
 {
   # Number of observations
@@ -21,11 +65,54 @@ EI = function( Data )
 }
 
 
-#' Modified Epigraph Index of functions in a functional dataset
+#' Modified Epigraph Index of univariate functional dataset
 #'
-#' \code{MEI} computes the Modified Epigraph Index of a functional dataset
+#' This function computes the Modified Epigraphic Index (MEI) of elements of a
+#' univariate functional dataste.
 #'
-#' @param Data a matrix-like dataset of functional data, with observations as rows and time points as columns
+#' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+#' defined over a compact interval \eqn{I=[a,b]}, this function computes the
+#' MEI, i.e.:
+#'
+#' \deqn{MEI( X(t) ) = \frac{1}{N} \sum_{i=1}^N \tilde{\lambda}( X(t) \geq
+#' X_i(t) ), }
+#'
+#' where \eqn{\tilde{\lambda}(\cdot)} is the normalised Lebesgue measure over
+#' \eqn{I=[a,b]}, that is \eqn{\tilde{\lambda(A)} = \lambda( A ) / ( b - a )}.
+#'
+#' @param Data a matrix-like dataset of functional data (e.g. \code{fData$values}),
+#' with observations as rows and measurements over grid points as columns.
+#'
+#' @return The function returns a vector containing the values of MEI for each
+#' element of the functional dataset provided in \code{Data}.
+#'
+#' @references
+#'
+#' Lopez-Pintado, S. and Romo, J. (2012). A half-region depth for functional
+#' data, \emph{Computational Statistics and Data Analysis}, 55, 1679-1695.
+#'
+#' Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and
+#' visualization for functional data: the outliergram, \emph{Biostatistics},
+#' 15(4), 603-619.
+#'
+#' @examples
+#'
+#' N = 20
+#' P = 1e2
+#'
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+#'
+#' Data = generate_gauss_fdata( N,
+#'                              centerline = sin( 2 * pi * grid ),
+#'                              C )
+#' MEI( Data )
+#'
+#' @seealso \code{\link{EI}}, \code{\link{MHI}}, \code{\link{HI}}
+#'
+#' @export
+#'
 MEI = function( Data )
 {
   # Number of observations
@@ -47,11 +134,55 @@ MEI = function( Data )
 
 
 
-#' Hypograph Index of functions in a functional dataset
+#' Hypograph Index of univariate functional dataset
 #'
-#' \code{EI} computes the Modified Index of a functional dataset
+#' This function computes the Hypograph Index (HI) of elements of a univariate
+#' functional dataste.
 #'
-#' @param Data a matrix-like dataset of functional data, with observations as rows and time points as columns
+#' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+#' defined over a compact interval \eqn{I=[a,b]}, this function computes the
+#' HI, i.e.:
+#'
+#' \deqn{EI( X(t) ) = \frac{1}{N} \sum_{i=1}^N I( G( X(t) ) \subset
+#' hypo( X_i(t) ) ) = \frac{1}{N} \sum_{i=1}^N I( X(t) \leq X_i(t), \ \
+#' \forall t \in I), }
+#'
+#' where \eqn{G(X(t))} indicates the graph of \eqn{X(t)}, \eqn{epi( X_i(t))}
+#' indicates the hypograph of \eqn{X_i(t)}.
+#'
+#' @param Data a matrix-like dataset of functional data (e.g. \code{fData$values}),
+#' with observations as rows and measurements over grid points as columns.
+#'
+#' @return The function returns a vector containing the values of HI for each
+#' element of the functional dataset provided in \code{Data}.
+#'
+#' @references
+#'
+#' Lopez-Pintado, S. and Romo, J. (2012). A half-region depth for functional
+#' data, \emph{Computational Statistics and Data Analysis}, 55, 1679-1695.
+#'
+#' Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and
+#' visualization for functional data: the outliergram, \emph{Biostatistics},
+#' 15(4), 603-619.
+#'
+#' @examples
+#'
+#' N = 20
+#' P = 1e2
+#'
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+#'
+#' Data = generate_gauss_fdata( N,
+#'                              centerline = sin( 2 * pi * grid ),
+#'                              C )
+#' HI( Data )
+#'
+#' @seealso \code{\link{MHI}}, \code{\link{EI}}, \code{\link{MEI}}
+#'
+#' @export
+#'
 HI = function( Data )
 {
   # Number of observations
@@ -67,11 +198,54 @@ HI = function( Data )
 }
 
 
-#' Modified Hypograph Index of functions in a functional dataset
+#' Modified Hypograph Index of univariate functional dataset
 #'
-#' \code{MEI} computes the Modified Hypograph Index of a functional dataset
+#' This function computes the Modified Hypograph Index (MEI) of elements of a
+#' univariate functional dataste.
 #'
-#' @param Data a matrix-like dataset of functional data, with observations as rows and time points as columns
+#' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+#' defined over a compact interval \eqn{I=[a,b]}, this function computes the
+#' MHI, i.e.:
+#'
+#' \deqn{MHI( X(t) ) = \frac{1}{N} \sum_{i=1}^N \tilde{\lambda}( X(t) \geq
+#' X_i(t) ), }
+#'
+#' where \eqn{\tilde{\lambda}(\cdot)} is the normalised Lebesgue measure over
+#' \eqn{I=[a,b]}, that is \eqn{\tilde{\lambda(A)} = \lambda( A ) / ( b - a )}.
+#'
+#' @param Data a matrix-like dataset of functional data (e.g. \code{fData$values}),
+#' with observations as rows and measurements over grid points as columns.
+#'
+#' @return The function returns a vector containing the values of MHI for each
+#' element of the functional dataset provided in \code{Data}.
+#'
+#' @references
+#'
+#' Lopez-Pintado, S. and Romo, J. (2012). A half-region depth for functional
+#' data, \emph{Computational Statistics and Data Analysis}, 55, 1679-1695.
+#'
+#' Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and
+#' visualization for functional data: the outliergram, \emph{Biostatistics},
+#' 15(4), 603-619.
+#'
+#' @examples
+#'
+#' N = 20
+#' P = 1e2
+#'
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+#'
+#' Data = generate_gauss_fdata( N,
+#'                              centerline = sin( 2 * pi * grid ),
+#'                              C )
+#' MHI( Data )
+#'
+#' @seealso \code{\link{HI}}, \code{\link{MEI}}, \code{\link{EI}}
+#'
+#' @export
+#'
 MHI = function( Data )
 {
   # Number of observations
@@ -92,11 +266,54 @@ MHI = function( Data )
 }
 
 
-#' Half-region depth
+#' Half-Region Depth for univariate functional data
 #'
-#' \code{HRD} computes the Half Region Depth of a functional dataset
+#' This function computes the Half-Region Depth (HRD) of elements of a univariate
+#' functional dataset.
 #'
-#' @param Data a matrix-like dataset of functional data, with observations as rows and time points as columns
+#' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+#' defined over a compact interval \eqn{I=[a,b]}, this function computes the HRD
+#' of its elements, i.e.:
+#'
+#' \deqn{HRD(X(t)) = \min( EI( X(t) ), HI(X(t)) ),}
+#'
+#' where \eqn{EI(X(t))} indicates the Epigraph Index (EI) of \eqn{X(t)} with
+#' respect to the dataset, and \eqn{HI(X(t))} indicates the Hypograph Index of
+#' \eqn{X(t)} with respect to the dataset.
+#'
+#' @param Data a matrix-like dataset of functional data (e.g. \code{fData$values}),
+#' with observations as rows and measurements over grid points as columns.
+#'
+#' @return The function returns a vector containing the values of HRD for each
+#' element of the functional dataset provided in \code{Data}.
+#'
+#' @references
+#'
+#' Lopez-Pintado, S. and Romo, J. (2012). A half-region depth for functional
+#' data, \emph{Computational Statistics and Data Analysis}, 55, 1679-1695.
+#'
+#' Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and
+#' visualization for functional data: the outliergram, \emph{Biostatistics},
+#' 15(4), 603-619.
+#'
+#' @examples
+#'
+#' N = 20
+#' P = 1e2
+#'
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+#'
+#' Data = generate_gauss_fdata( N,
+#'                              centerline = sin( 2 * pi * grid ),
+#'                              C )
+#' HRD( Data )
+#'
+#' @seealso \code{\link{MHRD}}, \code{\link{EI}}, \code{\link{HI}}
+#'
+#' @export
+#'
 HRD = function( Data )
 {
   ei = EI( Data )
@@ -107,11 +324,54 @@ HRD = function( Data )
 }
 
 
-#' Modified Half-region depth
+#' Modified Half-Region Depth for univariate functional data
 #'
-#' \code{MHRD} computes the Modified Half Region Depth of a functional dataset
+#' This function computes the Modified Half-Region Depth (MHRD) of elements of
+#' a univariate functional dataset.
 #'
-#' @param Data a matrix-like dataset of functional data, with observations as rows and time points as columns
+#' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+#' defined over a compact interval \eqn{I=[a,b]}, this function computes the MHRD
+#' of its elements, i.e.:
+#'
+#' \deqn{MHRD(X(t)) = \min( MEI( X(t) ), MHI(X(t)) ),}
+#'
+#' where \eqn{MEI(X(t))} indicates the Modified Epigraph Index (MEI) of
+#' \eqn{X(t)} with respect to the dataset, and \eqn{MHI(X(t))} indicates the
+#' Modified Hypograph Index of \eqn{X(t)} with respect to the dataset.
+#'
+#' @param Data a matrix-like dataset of functional data (e.g. \code{fData$values}),
+#' with observations as rows and measurements over grid points as columns.
+#'
+#' @return The function returns a vector containing the values of MHRD for each
+#' element of the functional dataset provided in \code{Data}.
+#'
+#' @references
+#'
+#' Lopez-Pintado, S. and Romo, J. (2012). A half-region depth for functional
+#' data, \emph{Computational Statistics and Data Analysis}, 55, 1679-1695.
+#'
+#' Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and
+#' visualization for functional data: the outliergram, \emph{Biostatistics},
+#' 15(4), 603-619.
+#'
+#' @examples
+#'
+#' N = 20
+#' P = 1e2
+#'
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+#'
+#' Data = generate_gauss_fdata( N,
+#'                              centerline = sin( 2 * pi * grid ),
+#'                              C )
+#' MHRD( Data )
+#'
+#' @seealso \code{\link{HRD}}, \code{\link{MEI}}, \code{\link{MHI}}
+#'
+#' @export
+#'
 MHRD = function( Data )
 {
   mei = MEI( Data )

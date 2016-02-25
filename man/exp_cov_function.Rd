@@ -4,10 +4,10 @@
 \alias{exp_cov_function}
 \title{Exponential covariance function over a grid}
 \usage{
-exp_cov_function(time_grid, alpha, beta)
+exp_cov_function(grid, alpha, beta)
 }
 \arguments{
-\item{time_grid}{a vector of time points.}
+\item{grid}{a vector of time points.}
 
 \item{alpha}{the alpha parameter in the exponential covariance formula.}
 
