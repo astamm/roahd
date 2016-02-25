@@ -248,12 +248,12 @@ wfD = fData( time_grid, warpings )
 fD_warped = warp( fD, wfD )
 
 test_that( ' Warping - max',
-           expect_true( all( max_fData( fD_warped ) -
+           expect_true( all( maxima( fD_warped ) -
                                dnorm( 0.5, 0.5, 0.05 ) <= .Machine$double.eps )
                         ) )
 
 test_that( ' Warping - which.max',
-           expect_true( all( max_fData( fD_warped, which = TRUE )$grid -
+           expect_true( all( maxima( fD_warped, which = TRUE )$grid -
                                0.5 <= .Machine$double.eps )
            ) )
 

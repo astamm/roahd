@@ -18,32 +18,45 @@ fD = fData( time_grid, Data )
 # plot( fD, lwd = 2 )
 
 test_that( 'Max function for functional data, which = TRUE, grid',
-           expect_equal( max_fData( fD, which = TRUE )$grid,
+           expect_equal( maxima( fD, which = TRUE )$grid,
                              c( 1, 1, 0 + 4999 * h ) ) )
 
 test_that( 'Max function for functional data, which = TRUE, value',
-           expect_equal( max_fData( fD, which = TRUE )$value,
+           expect_equal( maxima( fD, which = TRUE )$value,
                              c( 1, 2, 3 * ( 0.5 - abs( 0.5 - 4999 * h) ) ) ) )
 
 test_that( 'Min function for functional data, which = TRUE, grid',
-           expect_equal( min_fData( fD, which = TRUE )$grid,
+           expect_equal( minima( fD, which = TRUE )$grid,
                          c( 0, 0, 0 ) ) )
 
 test_that( 'Min function for functional data, which = TRUE, value',
-           expect_equal( min_fData( fD, which = TRUE )$value,
+           expect_equal( minima( fD, which = TRUE )$value,
                          c( 0, 0, 0 ) ) )
 
 test_that( 'Max function for functional data, which = FALSE',
-           expect_equal( max_fData( fD, which = FALSE ),
+           expect_equal( maxima( fD, which = FALSE ),
                          c( 1, 2, 3 * ( 0.5 - abs( 0.5 - 4999 * h) ) ) ) )
 
 test_that( 'Min function for functional data, which = FALSE',
-           expect_equal( min_fData( fD, which = FALSE ),
+           expect_equal( minima( fD, which = FALSE ),
                          c( 0, 0, 0 ) ) )
 
-test_that( 'Area under the curve',
+test_that( 'Area under the curve - 1',
            expect_equal( area_under_curve( fD ),
                          c( 0.5, 1, 0.75 ) ) )
+
+fD = fData( time_grid,
+            matrix( c( sin( 2 * pi * time_grid ),
+                       cos( 2 * pi * time_grid ),
+                       4 * time_grid * ( 1 - time_grid ) ),
+                    nrow = 3, ncol = P, byrow = TRUE ) )
+
+test_that( 'Area under the curve - 2',
+           expect_true(
+             all( c( area_under_curve( fD )[1:2],
+                     abs( area_under_curve( fD[ 3, ] ) - 2/3 ) ) <=
+                    .Machine$double.eps^0.5 ) ) )
+
 
 # ORDERING ----------------------------------------------------------------
 
@@ -99,18 +112,18 @@ test_that( 'Area ordering - case 2',
            expect_equal( area_ordered( fD_2, fD_1 ),
                          c( FALSE, TRUE ) ) )
 
-test_that( 'Max_ordering - case 3',
+test_that( 'Area ordering - case 3',
            expect_error( area_ordered( fD_1, fD_3 ) ) )
 
-test_that( 'Max_ordering - case 4',
+test_that( 'Area ordering - case 4',
            expect_error( area_ordered( fD_3, fD_1 ) ) )
 
-test_that( 'Max_ordering - case 5',
+test_that( 'Area ordering - case 5',
            expect_equal( area_ordered( fD_2, fD_3 ),
                          c( FALSE, TRUE, FALSE, TRUE ) ) )
 
-test_that( 'Max_ordering - case 6',
-           expect_equal( max_ordered( fD_3, fD_2 ),
+test_that( 'Area ordering - case 6',
+           expect_equal( area_ordered( fD_3, fD_2 ),
                          c( TRUE, FALSE, TRUE, FALSE ) ) )
 
 

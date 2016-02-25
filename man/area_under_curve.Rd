@@ -2,16 +2,47 @@
 % Please edit documentation in R/correlation.R
 \name{area_under_curve}
 \alias{area_under_curve}
-\title{Area under curve of elements of a univariate functional dataset}
+\title{Area under curve of elements of univariate functional data}
 \usage{
 area_under_curve(fData)
 }
 \arguments{
 \item{fData}{the functional dataset containing elements whose areas under the
-curve have to be computed}
+curve have to be computed, in form of \code{fData} object.}
+}
+\value{
+The function returns a numeric vector containing the values of areas
+under the curve for all the elements of the functional dataset \code{fData}.
 }
 \description{
-It computes the area under the curve of elements of a univariate functional
- dataset. A plain trapezoidal rule is employed to compute the integral.
+This method computes the (signed) area under the curve of elements of a
+univariate functional dataset, namely, their integral.
+}
+\details{
+Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+defined over a compact interval \eqn{I=[a,b]} and observed on an evenly sapced
+1D grid \eqn{[a = t_0, t_1, \ldots, t_{P-1} = b \subset I}, the function
+computes: \bold{CHECK THIS!!!}
+
+\deqn{ \sum_{i=1}^{P-2} \frac{X(t_{i+1}) - X(t_{i-1})}{2} h \approx
+\int_a^b X(t) dt,}
+
+where \eqn{h = t_1 - t_0}.
+}
+\examples{
+P = 1e3
+grid = seq( 0, 1, length.out = P )
+
+fD = fData( grid,
+            matrix( c( sin( 2 * pi * grid ),
+                       cos( 2 * pi * grid ),
+                       4 * grid * ( 1 - grid ) ),
+                    nrow = 3, ncol = P, byrow = TRUE ) )
+plot( fD )
+
+area_under_curve( fD )
+}
+\seealso{
+\code{\link{area_ordered}}, \code{\link{fData}}
 }
 

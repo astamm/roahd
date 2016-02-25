@@ -33,10 +33,11 @@ elements of the former with respect to elements of the latter, i.e.:
 
 \deqn{ MBD( X_i( t ) ) = {M \choose 2 }^{-1} \sum_{1 \leq i_1 < i_2 \leq M}
 \tilde{\lambda}\big( {t : \min( Y_{i_1}(t), Y_{i_2}(t) ) \leq X_i(t) \leq
-\max( Y_{i_1}(t), Y_{i_2}(t) ) } \big), \qquad \forall i = 1, \ldots, N, }
+\max( Y_{i_1}(t), Y_{i_2}(t) ) } \big),}
 
-where \eqn{\tilde{\lambda}(\cdot)} is the normalised Lebesgue measure over
-\eqn{I=[a,b]}, that is \eqn{\tilde{\lambda(A)} = \lambda( A ) / ( b - a )}.
+\eqn{\forall i = 1, \ldots, N}, where \eqn{\tilde{\lambda}(\cdot)} is the
+normalised Lebesgue measure over \eqn{I=[a,b]}, that is
+\eqn{\tilde{\lambda(A)} = \lambda( A ) / ( b - a )}.
 }
 \examples{
 grid = seq( 0, 1, length.out = 1e2 )

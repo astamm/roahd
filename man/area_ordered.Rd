@@ -2,27 +2,67 @@
 % Please edit documentation in R/correlation.R
 \name{area_ordered}
 \alias{area_ordered}
-\title{Area under curve order relation among univariate functional data}
+\title{Area-under-curve order relation between univariate functional data}
 \usage{
 area_ordered(fData, gData)
 }
 \arguments{
 \item{fData}{the first univariate functional dataset containing elements to
-be compared}
+be compared, in form of \code{fData} object.}
 
 \item{gData}{the second univariate functional dataset containing elements to
-be compared}
+be compared , in form of \code{fData} object.}
+}
+\value{
+The function returns a logical vector of length \eqn{\max(N,M)} containing the
+value of the predicate for all the corresponding elements.
 }
 \description{
-It implements the area under curve order relation among univariate f
- unctional data, that is the pre-order relation obtained by comparing the
- area under curve maxima of two different functional data.
+This function implements an order relation between univariate functional
+ data based on the area-under-curve relation, that is to say a pre-order
+ relation obtained by comparing the area-under-curve of two
+ different functional data.
 }
 \details{
-It accepts two fData objects, that can have either same sample size (number
- of elemnets), or just one element. In the former case the comparison is made
- element-wise between corresponding observations of the two datasets; in the
- latter case, the dataset with just one observation is used cyclically
- against the other one (if need be).
+Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)}
+ and another functional dataset \eqn{Y_1(t),} \eqn{Y_2(t), \ldots, Y_M(t)}
+ defined over the same compact interval \eqn{I=[a,b]}, the function computes
+ the area-under-curve (namely, the integral) in both the datasets, and checks
+ whether the first ones are lower or equal than the second ones.
+
+By default the function tries to compare each \eqn{X_i(t)} with the
+ corresponding \eqn{Y_i(t)}, thus assuming \eqn{N=M}, but when either \eqn{N=1}
+ or \eqn{M=1}, the comparison is carried out cycling over the dataset with
+ fewer elements. In all the other cases (\eqn{N\neq M,} and either
+ \eqn{N \neq 1} or \eqn{M \neq 1}) the function stops.
+}
+\examples{
+P = 1e3
+
+grid = seq( 0, 1, length.out = P )
+
+Data_1 = matrix( c( 1 * grid,
+                    2 *  grid ),
+                 nrow = 2, ncol = P, byrow = TRUE )
+
+Data_2 = matrix( 3 * ( 0.5 - abs( grid - 0.5 ) ),
+                 nrow = 1, byrow = TRUE )
+
+Data_3 = rbind( Data_1, Data_1 )
+
+
+fD_1 = fData( grid, Data_1 )
+fD_2 = fData( grid, Data_2 )
+fD_3 = fData( grid, Data_3 )
+
+area_ordered( fD_1, fD_2 )
+
+area_ordered( fD_2, fD_3 )
+}
+\references{
+\bold{REFERENCE HERE!!!}
+}
+\seealso{
+\code{\link{area_under_curve}}, \code{\link{fData}}
 }
 
