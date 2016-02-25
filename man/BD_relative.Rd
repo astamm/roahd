@@ -2,18 +2,82 @@
 % Please edit documentation in R/BandDepths.R
 \name{BD_relative}
 \alias{BD_relative}
-\title{Relative Band Depth of functions in a functional dataset
-\code{BD_relative} computes the Band Depth (BD) of a functional dataset (Data_target) with respect to another (Data_reference)}
+\title{Relative Band Depth of functions in a univariate functional dataset}
 \usage{
 BD_relative(Data_target, Data_reference)
 }
 \arguments{
-\item{Data_target}{is the dataset containing signals whose depths are to be computed with respect to the reference population.}
+\item{Data_target}{is the univariate functional dataset, provided in matrix
+form (N observations as rows and P measurements as columns), whose BD
+have to be computed with respect to the reference dataset.}
 
-\item{Data_reference}{is the dataset containing the reference population used to measure the centrality through depths. In particular, the depths of these functions will not be computed.}
+\item{Data_reference}{is the dataset, provided in matrix form (N observations
+as rows and P measurements as columns), containing the reference
+univariate functional data that must be used to compute the band depths of
+elements in \code{Data_target}.}
+}
+\value{
+The function returns a vector containing the BD of elements in
+\code{Data_target} with respect to elements in \code{Data_reference}.
 }
 \description{
-Relative Band Depth of functions in a functional dataset
-\code{BD_relative} computes the Band Depth (BD) of a functional dataset (Data_target) with respect to another (Data_reference)
+This function computes Band Depth (BD) of elements of a univariate functional
+dataset with respect to another univariate functional dataset.
+}
+\details{
+Given a univariate functional dataset of elements \eqn{X_1(t), X_2(t),
+\ldots, X_N(t)}, and another univariate functional dataset of elements
+\eqn{Y_1(t), Y_2(t) \ldots, Y_M(t)}, this function computes the BD of
+elements of the former with respect to elements of the latter, i.e.:
+
+\deqn{ BD( X_i( t ) ) = {M \choose 2 }^{-1} \sum_{1 \leq i_1 < i_2 \leq M} I(
+G(X_i) \subset B( Y_{i_1}, Y_{i_2} ) ), \quad \forall i = 1, \ldots, N,}
+
+where \eqn{G(X_i)} is the graphic of \eqn{X_i(t)} and \eqn{B(Y_{i_1},Y_{i_2})} is
+the envelope of \eqn{Y_{i_1}(t)} and \eqn{Y_{i_2}(t)}.
+}
+\examples{
+grid = seq( 0, 1, length.out = 1e2 )
+
+Data_ref = matrix( c( 0  + sin( 2 * pi * grid ),
+                      1  + sin( 2 * pi * grid ),
+                      -1 + sin( 2 * pi * grid ) ),
+                   nrow = 3, ncol = length( grid ), byrow = TRUE )
+
+Data_test_1 = matrix( c( 0.6 + sin( 2 * pi * grid ) ),
+                      nrow = 1, ncol = length( grid ), byrow = TRUE )
+
+Data_test_2 = matrix( c( 0.6 + sin( 2 * pi * grid ) ),
+                      nrow = length( grid ), ncol = 1, byrow = TRUE )
+
+Data_test_3 = 0.6 + sin( 2 * pi * grid )
+
+Data_test_4 = array( 0.6 + sin( 2 * pi * grid ), dim = length( grid ) )
+
+Data_test_5 = array( 0.6 + sin( 2 * pi * grid ), dim = c( 1, length( grid ) ) )
+
+Data_test_6 = array( 0.6 + sin( 2 * pi * grid ), dim = c( length( grid ), 1 ) )
+
+Data_test_7 = matrix( c( 0.5  + sin( 2 * pi * grid ),
+                         -0.5 + sin( 2 * pi * grid ),
+                         1.1 + sin( 2 * pi * grid ) ),
+                      nrow = 3, ncol = length( grid ), byrow = TRUE )
+
+BD_relative( Data_test_1, Data_ref )
+
+BD_relative( Data_test_2, Data_ref )
+
+BD_relative( Data_test_3, Data_ref )
+
+BD_relative( Data_test_4, Data_ref )
+
+BD_relative( Data_test_5, Data_ref )
+
+BD_relative( Data_test_6, Data_ref )
+
+BD_relative( Data_test_7, Data_ref )
+}
+\seealso{
+\code{\link{BD}}, \code{\link{MBD}}, \code{\link{MBD_relative}}
 }
 

@@ -2,18 +2,84 @@
 % Please edit documentation in R/BandDepths.R
 \name{MBD_relative}
 \alias{MBD_relative}
-\title{Relative Modified Band Depth of functions in a functional dataset
-\code{MBD_relative} computes the Modified Band Depth (MBD) of a functional dataset (Data_target) with respect to another (Data_reference)}
+\title{Relative Modified Band Depth of functions in a univariate functional dataset}
 \usage{
 MBD_relative(Data_target, Data_reference)
 }
 \arguments{
-\item{Data_target}{is the dataset containing signals whose depths are to be computed with respect to the reference population.}
+\item{Data_target}{is the univariate functional dataset, provided in matrix
+form (N observations as rows and P measurements as columns), whose MBD
+have to be computed with respect to the reference dataset.}
 
-\item{Data_reference}{is the dataset containing the reference population used to measure the centrality through depths. In particular, the depths of these functions will not be computed.}
+\item{Data_reference}{is the dataset, provided in matrix form (N observations
+as rows and P measurements as columns), containing the reference
+univariate functional data that must be used to compute the MBD of
+elements in \code{Data_target}.}
+}
+\value{
+The function returns a vector containing the MBD of elements in
+\code{Data_target} with respect to elements in \code{Data_reference}.
 }
 \description{
-Relative Modified Band Depth of functions in a functional dataset
-\code{MBD_relative} computes the Modified Band Depth (MBD) of a functional dataset (Data_target) with respect to another (Data_reference)
+This function computes Modified Band Depth (BD) of elements of a univariate
+functional dataset with respect to another univariate functional dataset.
+}
+\details{
+Given a univariate functional dataset of elements \eqn{X_1(t), X_2(t),
+\ldots, X_N(t)}, and another univariate functional dataset of elements
+\eqn{Y_1(t), Y_2(t) \ldots, Y_M(t)}, defined over the same compact interval
+\eqn{I=[a,b]}, this function computes the MBD of
+elements of the former with respect to elements of the latter, i.e.:
+
+\deqn{ MBD( X_i( t ) ) = {M \choose 2 }^{-1} \sum_{1 \leq i_1 < i_2 \leq M}
+\tilde{\lambda}\big( {t : \min( Y_{i_1}(t), Y_{i_2}(t) ) \leq X_i(t) \leq
+\max( Y_{i_1}(t), Y_{i_2}(t) ) } \big), \qquad \forall i = 1, \ldots, N, }
+
+where \eqn{\tilde{\lambda}(\cdot)} is the normalised Lebesgue measure over
+\eqn{I=[a,b]}, that is \eqn{\tilde{\lambda(A)} = \lambda( A ) / ( b - a )}.
+}
+\examples{
+grid = seq( 0, 1, length.out = 1e2 )
+
+Data_ref = matrix( c( 0  + sin( 2 * pi * grid ),
+                      1  + sin( 2 * pi * grid ),
+                      -1 + sin( 2 * pi * grid ) ),
+                   nrow = 3, ncol = length( grid ), byrow = TRUE )
+
+Data_test_1 = matrix( c( 0.6 + sin( 2 * pi * grid ) ),
+                      nrow = 1, ncol = length( grid ), byrow = TRUE )
+
+Data_test_2 = matrix( c( 0.6 + sin( 2 * pi * grid ) ),
+                      nrow = length( grid ), ncol = 1, byrow = TRUE )
+
+Data_test_3 = 0.6 + sin( 2 * pi * grid )
+
+Data_test_4 = array( 0.6 + sin( 2 * pi * grid ), dim = length( grid ) )
+
+Data_test_5 = array( 0.6 + sin( 2 * pi * grid ), dim = c( 1, length( grid ) ) )
+
+Data_test_6 = array( 0.6 + sin( 2 * pi * grid ), dim = c( length( grid ), 1 ) )
+
+Data_test_7 = matrix( c( 0.5  + sin( 2 * pi * grid ),
+                         -0.5 + sin( 2 * pi * grid ),
+                         1.1 + sin( 2 * pi * grid ) ),
+                      nrow = 3, ncol = length( grid ), byrow = TRUE )
+
+MBD_relative( Data_test_1, Data_ref )
+
+MBD_relative( Data_test_2, Data_ref )
+
+MBD_relative( Data_test_3, Data_ref )
+
+MBD_relative( Data_test_4, Data_ref )
+
+MBD_relative( Data_test_5, Data_ref )
+
+MBD_relative( Data_test_6, Data_ref )
+
+MBD_relative( Data_test_7, Data_ref )
+}
+\seealso{
+\code{\link{MBD}}, \code{\link{BD}}, \code{\link{BD_relative}}
 }
 

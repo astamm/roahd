@@ -2,19 +2,63 @@
 % Please edit documentation in R/BandDepths.R
 \name{MBD}
 \alias{MBD}
-\title{Modified Band Depth for univariate funcitonal data}
+\title{Modified Band Depth for univariate functional data}
 \usage{
 MBD(Data, manage_ties = FALSE)
 }
 \arguments{
-\item{Data}{is the dataset of functional observations whose MBD are to be computed. Its rows
-should be the functional observations, while the columns must be time-point evaluations of such
-observations}
+\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
+with observations as rows and measurements over grid points as columns.}
 
-\item{manage_ties}{is a flag specifying if the method should accomodate for the presence of ties
-in the dataset.}
+\item{manage_ties}{a logical flag specifying whether a check for ties and
+relative treatment must be carried out or not (default is FALSE).}
+}
+\value{
+The function returns a vector containing the values of MBD for the
+given dataset.
 }
 \description{
-\code{MBD} Computes the Modified Band Depth (MBD) of elements of a functional dataset
+This function computes the Modified Band Depth (MBD) of elements of a
+functional dataset.
+}
+\details{
+Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+defined over a compact interval \eqn{I= [a,b]},
+this function computes the sample MBD of each element with respect to the
+other elements of the dataset, i.e.:
+
+\deqn{ MBD( X( t ) ) = {N \choose 2 }^{-1} \sum_{1 \leq i_1 < i_2 \leq N}
+\tilde{\lambda}\big( {t : \min( X_{i_1}(t), X_{i_2}(t) ) \leq X(t) \leq
+\max( X_{i_1}(t), X_{i_2}(t) ) } \big), }
+
+where \eqn{\tilde{\lambda}(\cdot)} is the normalised Lebesgue measure over
+\eqn{I=[a,b]}, that is \eqn{\tilde{\lambda(A)} = \lambda( A ) / ( b - a )}.
+
+See the References section for more details.
+}
+\examples{
+grid = seq( 0, 1, length.out = 1e2 )
+
+
+D = matrix( c( 1 + sin( 2 * pi * grid ),
+               0 + sin( 4 * pi * grid ),
+               1 - sin( pi * ( grid - 0.2 ) ),
+               0.1 + cos( 2 * pi * grid ),
+               0.5 + sin( 3 * pi + grid ),
+               -2 + sin( pi * grid ) ),
+            nrow = 6, ncol = length( grid ), byrow = TRUE )
+
+MBD( D )
+}
+\references{
+Lopez-Pintado, S. and Romo, J. (2009). On the Concept of Depth for Functional
+Data, \emph{Journal of the American Statistical Association}, 104, 718-734.
+
+Lopez-Pintado, S. and Romo. J. (2007). Depth-based inference for functional
+data, \emph{Computational Statistics & Data Analysis} 51, 4957-4968.
+}
+\seealso{
+\code{\link{BD}}, \code{\link{MBD_relative}},
+\code{\link{BD_relative}}
 }
 

@@ -12,7 +12,7 @@ D = matrix( c( 1 + sin( 2 * pi * time_grid ),
                -2 + sin( pi * time_grid ) ),
             nrow = 6, ncol = length( time_grid ), byrow = TRUE )
 
-# quartz()
+# dev.new()
 # matplot( t( D ), lty = 1, type = 'l' )
 
 test_that( "Correctness of BD method",

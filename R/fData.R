@@ -963,7 +963,7 @@ toListOfValues = function( mfData )
 #' the unfolded version of the corresponding observations in the argument
 #' \code{fData}.
 #'
-#' @references Arribas-Gil, A. and Romo, J. (2012) Robust depth-based estimation
+#' @references Arribas-Gil, A. and Romo, J. (2012). Robust depth-based estimation
 #' in the time warping model, \emph{Biostatistics}, 13 (3), 398--414.
 #'
 #' @seealso \code{\link{fData}}, \code{\link{warp}}

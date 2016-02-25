@@ -7,9 +7,54 @@
 BD(Data)
 }
 \arguments{
-\item{Data}{a matrix-like dataset of functional data, with observations as rows and time points as columns}
+\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
+with observations as rows and measurements over grid points as columns.}
+}
+\value{
+The function returns a vector containing the values of BD for the
+given dataset.
 }
 \description{
-\code{BD} computes the Band Depth of a functional dataset
+This function computes the Band Depth (BD) of elements of a functional
+dataset.
+}
+\details{
+Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+this function computes the sample BD of each element with respect to the
+other elements of the dataset, i.e.:
+
+\deqn{ BD( X( t ) ) = {N \choose 2 }^{-1} \sum_{1 \leq i_1 < i_2 \leq N} I(
+G(X) \subset B( X_{i_1}, X_{i_2} ) ),}
+
+where \eqn{G(X)} is the graphic of \eqn{X(t)}, \eqn{B(X_{i_1},X_{i_2})} is
+the envelope of \eqn{X_{i_1}(t)} and \eqn{X_{i_2}(t)}, and \eqn{X \in
+\left\{X_1, \ldots, X_N\right\}}.
+
+See the References section for more details.
+}
+\examples{
+grid = seq( 0, 1, length.out = 1e2 )
+
+
+D = matrix( c( 1 + sin( 2 * pi * grid ),
+               0 + sin( 4 * pi * grid ),
+               1 - sin( pi * ( grid - 0.2 ) ),
+               0.1 + cos( 2 * pi * grid ),
+               0.5 + sin( 3 * pi + grid ),
+               -2 + sin( pi * grid ) ),
+            nrow = 6, ncol = length( grid ), byrow = TRUE )
+
+BD( D )
+}
+\references{
+Lopez-Pintado, S. and Romo, J. (2009). On the Concept of Depth for Functional
+Data, \emph{Journal of the American Statistical Association}, 104, 718-734.
+
+Lopez-Pintado, S. and Romo. J. (2007). Depth-based inference for functional
+data, \emph{Computational Statistics & Data Analysis} 51, 4957-4968.
+}
+\seealso{
+\code{\link{MBD}}, \code{\link{BD_relative}},
+\code{\link{MBD_relative}}
 }
 

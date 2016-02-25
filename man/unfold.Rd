@@ -45,7 +45,7 @@ plot( fD, main = 'Original data' )
 plot( fD_unfold, main = 'Unfolded data' )
 }
 \references{
-Arribas-Gil, A. and Romo, J. (2012) Robust depth-based estimation
+Arribas-Gil, A. and Romo, J. (2012). Robust depth-based estimation
 in the time warping model, \emph{Biostatistics}, 13 (3), 398--414.
 }
 \seealso{
