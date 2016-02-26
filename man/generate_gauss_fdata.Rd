@@ -4,10 +4,10 @@
 \alias{generate_gauss_fdata}
 \title{Generation of gaussian univariate functional data}
 \usage{
-generate_gauss_fdata(M, centerline, Cov = NULL, CholCov = NULL)
+generate_gauss_fdata(N, centerline, Cov = NULL, CholCov = NULL)
 }
 \arguments{
-\item{M}{the number of distinct functional observations to generate.}
+\item{N}{the number of distinct functional observations to generate.}
 
 \item{centerline}{the centerline of the distribution, represented as a one-
 dimensional data structure  of length \eqn{P} containing the measurement of
@@ -26,7 +26,7 @@ argument between \code{Cov} and \code{CholCov} should be different from
 }
 \value{
 The function returns a matrix containing the discretized
-values of the generated observations (in form of an \eqn{M \times P}{M x P}
+values of the generated observations (in form of an \eqn{N \times P}{N x P}
 matrix).
 }
 \description{
@@ -51,7 +51,7 @@ dimensional grid of P points: \eqn{[a = t_0, t_1, \ldots, t_{P-1} = b]
 \subset I }.
 }
 \examples{
-M = 30
+N = 30
 P = 1e2
 
 t0 = 0
@@ -65,9 +65,9 @@ CholC = chol( C )
 
 centerline = sin( 2 * pi * time_grid )
 
-generate_gauss_fdata( M, centerline, Cov = C )
+generate_gauss_fdata( N, centerline, Cov = C )
 
-generate_gauss_fdata( M, centerline, CholCov = CholC )
+generate_gauss_fdata( N, centerline, CholCov = CholC )
 }
 \seealso{
 \code{\link{exp_cov_function}}, \code{\link{fData}},

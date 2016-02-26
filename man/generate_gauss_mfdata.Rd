@@ -4,11 +4,11 @@
 \alias{generate_gauss_mfdata}
 \title{Generation of gaussian multivariate functional data}
 \usage{
-generate_gauss_mfdata(M, L, centerline, correlations, listCov = NULL,
+generate_gauss_mfdata(N, L, centerline, correlations, listCov = NULL,
   listCholCov = NULL)
 }
 \arguments{
-\item{M}{the number of distinct functional observations to generate.}
+\item{N}{the number of distinct functional observations to generate.}
 
 \item{L}{the number of components of the multivariate functional data.}
 
@@ -41,7 +41,7 @@ different from \code{NULL}.}
 \value{
 The function returns a list of L matrices, one for each component of
 the multivariate functional random variable, containing the discretized
-values of the generated observations (in form of \eqn{M \times P}{N x P}
+values of the generated observations (in form of \eqn{N \times P}{N x P}
 matrices).
 }
 \description{
@@ -78,7 +78,7 @@ dimensional grid of P points: \eqn{[ a = t_0, t_1, \ldots, t_{P-1} = b]
 \subset I }.
 }
 \examples{
-M = 30
+N = 30
 P = 1e2
 L = 3
 
@@ -94,7 +94,7 @@ centerline = matrix( c( sin( 2 * pi * time_grid ),
                         10 * ( time_grid - 0.5 ) * time_grid ),
                      nrow = 3, byrow = TRUE )
 
-generate_gauss_mfdata( M, L, centerline,
+generate_gauss_mfdata( N, L, centerline,
                        correlations = c( 0.5, 0.5, 0.5 ),
                        listCov = list( C1, C2, C3 ) )
 
@@ -102,7 +102,7 @@ CholC1 = chol( C1 )
 CholC2 = chol( C2 )
 CholC3 = chol( C3 )
 
-generate_gauss_mfdata( M, L, centerline,
+generate_gauss_mfdata( N, L, centerline,
                        correlations = c( 0.5, 0.5, 0.5 ),
                       listCholCov = list( CholC1, CholC2, CholC3 ) )
 }

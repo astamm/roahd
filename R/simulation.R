@@ -58,7 +58,7 @@ exp_cov_function = function( grid, alpha, beta )
 #' \subset I }.
 #'
 #'
-#' @param M the number of distinct functional observations to generate.
+#' @param N the number of distinct functional observations to generate.
 #' @param centerline the centerline of the distribution, represented as a one-
 #' dimensional data structure  of length \eqn{P} containing the measurement of
 #' the centerline on grid points.
@@ -74,7 +74,7 @@ exp_cov_function = function( grid, alpha, beta )
 #'
 #'
 #' @return The function returns a matrix containing the discretized
-#' values of the generated observations (in form of an \eqn{M \times P}{M x P}
+#' values of the generated observations (in form of an \eqn{N \times P}{N x P}
 #' matrix).
 #'
 #' @seealso \code{\link{exp_cov_function}}, \code{\link{fData}},
@@ -83,7 +83,7 @@ exp_cov_function = function( grid, alpha, beta )
 #'
 #' @examples
 #'
-#' M = 30
+#' N = 30
 #' P = 1e2
 #'
 #' t0 = 0
@@ -97,12 +97,12 @@ exp_cov_function = function( grid, alpha, beta )
 #'
 #' centerline = sin( 2 * pi * time_grid )
 #'
-#' generate_gauss_fdata( M, centerline, Cov = C )
+#' generate_gauss_fdata( N, centerline, Cov = C )
 #'
-#' generate_gauss_fdata( M, centerline, CholCov = CholC )
+#' generate_gauss_fdata( N, centerline, CholCov = CholC )
 #'
 #' @export
-generate_gauss_fdata = function( M, centerline,
+generate_gauss_fdata = function( N, centerline,
                                  Cov = NULL, CholCov = NULL )
 {
 
@@ -132,8 +132,8 @@ to generate_gauss_fdata\n')
       CholCov = chol( Cov )
       }
 
-  return( t( t( matrix( rnorm( M * P ),
-                  nrow = M,
+  return( t( t( matrix( rnorm( N * P ),
+                  nrow = N,
                   ncol = P ) %*% CholCov ) + centerline ) )
 }
 
@@ -171,7 +171,7 @@ to generate_gauss_fdata\n')
 #' \subset I }.
 #'
 #'
-#' @param M the number of distinct functional observations to generate.
+#' @param N the number of distinct functional observations to generate.
 #' @param L the number of components of the multivariate functional data.
 #' @param centerline the centerline of the distribution, represented as a
 #' 2-dimensional data structure with L rows (one for each dimension) having the
@@ -198,7 +198,7 @@ to generate_gauss_fdata\n')
 #'
 #' @return The function returns a list of L matrices, one for each component of
 #' the multivariate functional random variable, containing the discretized
-#' values of the generated observations (in form of \eqn{M \times P}{N x P}
+#' values of the generated observations (in form of \eqn{N \times P}{N x P}
 #' matrices).
 #'
 #' @seealso \code{\link{exp_cov_function}}, \code{\link{mfData}},
@@ -206,7 +206,7 @@ to generate_gauss_fdata\n')
 #'
 #' @examples
 #'
-#' M = 30
+#' N = 30
 #' P = 1e2
 #' L = 3
 #'
@@ -222,7 +222,7 @@ to generate_gauss_fdata\n')
 #'                         10 * ( time_grid - 0.5 ) * time_grid ),
 #'                      nrow = 3, byrow = TRUE )
 #'
-#' generate_gauss_mfdata( M, L, centerline,
+#' generate_gauss_mfdata( N, L, centerline,
 #'                        correlations = c( 0.5, 0.5, 0.5 ),
 #'                        listCov = list( C1, C2, C3 ) )
 #'
@@ -230,12 +230,12 @@ to generate_gauss_fdata\n')
 #' CholC2 = chol( C2 )
 #' CholC3 = chol( C3 )
 #'
-#' generate_gauss_mfdata( M, L, centerline,
+#' generate_gauss_mfdata( N, L, centerline,
 #'                        correlations = c( 0.5, 0.5, 0.5 ),
 #'                       listCholCov = list( CholC1, CholC2, CholC3 ) )
 #'
 #' @export
-generate_gauss_mfdata = function( M, L, centerline, correlations,
+generate_gauss_mfdata = function( N, L, centerline, correlations,
                                   listCov = NULL, listCholCov = NULL )
 {
   if( length( correlations ) != 0.5 * ( L ) * ( L - 1 ) )
@@ -293,7 +293,7 @@ matrices to generate_gauss_mfdata')
   R_chol = chol( R )
 
   # Generating gaussian data with correlations among dimensions
-  Data = matrix( rnorm( M * L * P ), ncol = L, nrow = M * P )
+  Data = matrix( rnorm( N * L * P ), ncol = L, nrow = N * P )
 
   Data = Data %*% R_chol
 
@@ -301,7 +301,7 @@ matrices to generate_gauss_mfdata')
     parse( text =
              paste( 'list( ',
                     paste( 't( t( matrix( Data[ , ', 1 : L,
-                           ' ], nrow = M, ncol = P ) %*% listCholCov[[ ',
+                           ' ], nrow = N, ncol = P ) %*% listCholCov[[ ',
                            1 : L, ' ]] ) + as.numeric( centerline[ ',
                            1 : L, ', ] ) )',
                            sep = '', collapse  = ', ' ),

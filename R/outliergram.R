@@ -188,7 +188,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
       }
 
       fData_gauss = fData( grid,
-                           generate_gauss_fdata( M = trial_size,
+                           generate_gauss_fdata( N = trial_size,
                                                  centerline = centerline,
                                                  CholCov = CholCov ) )
 
