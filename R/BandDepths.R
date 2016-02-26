@@ -17,7 +17,8 @@
 #' See the References section for more details.
 #'
 #'
-#' @param Data a matrix-like dataset of functional data (e.g. \code{fData$values}),
+#' @param Data either an object of class \code{fData} or a matrix-like dataset
+#' of functional data (e.g. \code{fData$values}),
 #' with observations as rows and measurements over grid points as columns.
 #'
 #' @return The function returns a vector containing the values of BD for the
@@ -32,7 +33,7 @@
 #' data, \emph{Computational Statistics & Data Analysis} 51, 4957-4968.
 #'
 #' @seealso \code{\link{MBD}}, \code{\link{BD_relative}},
-#' \code{\link{MBD_relative}}
+#' \code{\link{MBD_relative}}, \code{\link{fData}}
 #'
 #' @examples
 #'
@@ -47,12 +48,36 @@
 #'                -2 + sin( pi * grid ) ),
 #'             nrow = 6, ncol = length( grid ), byrow = TRUE )
 #'
+#' fD = fData( grid, D )
+#'
+#' BD( fD )
+#'
 #' BD( D )
 #'
 #' @export
 #'
-#'
 BD = function( Data )
+{
+  UseMethod( 'BD', Data )
+}
+
+#' @rdname BD
+#'
+#' @aliases BD
+#'
+#' @export
+BD.fData = function( Data )
+{
+  Data = Data$values
+  NextMethod()
+}
+
+#' @rdname BD
+#'
+#' @aliases BD
+#'
+#' @export
+BD.default = function( Data )
 {
   # Number of rows
   N = nrow( Data )
@@ -87,19 +112,23 @@ BD = function( Data )
 #' where \eqn{G(X_i)} is the graphic of \eqn{X_i(t)} and \eqn{B(Y_{i_1},Y_{i_2})} is
 #' the envelope of \eqn{Y_{i_1}(t)} and \eqn{Y_{i_2}(t)}.
 #'
-#' @param Data_target is the univariate functional dataset, provided in matrix
+#' @param Data_target is the univariate functional dataset, provided either as
+#' a \code{fData} object or in matrix
 #' form (N observations as rows and P measurements as columns), whose BD
 #' have to be computed with respect to the reference dataset.
-#' @param Data_reference is the dataset, provided in matrix form (N observations
+#' @param Data_reference is the dataset, provided either as a \code{fData}
+#' object or in matrix form (N observations
 #' as rows and P measurements as columns), containing the reference
 #' univariate functional data that must be used to compute the band depths of
-#' elements in \code{Data_target}.
+#' elements in \code{Data_target}. If \code{Data_target} is \code{fData}, it
+#' must be of class \code{fData}
 #'
 #'
 #' @return The function returns a vector containing the BD of elements in
 #' \code{Data_target} with respect to elements in \code{Data_reference}.
 #'
-#' @seealso \code{\link{BD}}, \code{\link{MBD}}, \code{\link{MBD_relative}}
+#' @seealso \code{\link{BD}}, \code{\link{MBD}}, \code{\link{MBD_relative}},
+#' \code{\link{fData}}
 #'
 #' @examples
 #'
@@ -129,24 +158,71 @@ BD = function( Data )
 #'                          1.1 + sin( 2 * pi * grid ) ),
 #'                       nrow = 3, ncol = length( grid ), byrow = TRUE )
 #'
+#' fD_ref = fData( grid, Data_ref )
+#' fD_test_1 = fData( grid, Data_test_1 )
+#' fD_test_2 = fData( grid, Data_test_2 )
+#' fD_test_3 = fData( grid, Data_test_3 )
+#' fD_test_4 = fData( grid, Data_test_4 )
+#' fD_test_5 = fData( grid, Data_test_5 )
+#' fD_test_6 = fData( grid, Data_test_6 )
+#' fD_test_7 = fData( grid, Data_test_7 )
+#'
+#' BD_relative( fD_test_1, fD_ref )
 #' BD_relative( Data_test_1, Data_ref )
 #'
+#' BD_relative( fD_test_2, fD_ref )
 #' BD_relative( Data_test_2, Data_ref )
 #'
+#' BD_relative( fD_test_3, fD_ref )
 #' BD_relative( Data_test_3, Data_ref )
 #'
+#' BD_relative( fD_test_4, fD_ref )
 #' BD_relative( Data_test_4, Data_ref )
 #'
+#' BD_relative( fD_test_5, fD_ref )
 #' BD_relative( Data_test_5, Data_ref )
 #'
+#' BD_relative( fD_test_6, fD_ref )
 #' BD_relative( Data_test_6, Data_ref )
 #'
+#' BD_relative( fD_test_7, fD_ref )
 #' BD_relative( Data_test_7, Data_ref )
-#'
 #'
 #' @export
 #'
 BD_relative = function( Data_target, Data_reference )
+{
+  if( class( Data_target ) != class( Data_reference ) )
+  {
+    if( ! ( class( Data_target ) %in% c( 'numeric', 'array', 'matrix' ) &
+            class( Data_reference ) %in% c( 'numeric', 'array', 'matrix' ) ) )
+    {
+      stop( 'Error in BD_relative: you have to provide target and reference data
+          with the same class')
+    }
+  }
+
+  UseMethod( 'BD_relative', Data_target )
+}
+
+#' @rdname BD_relative
+#'
+#' @aliases BD_relative
+#'
+#' @export
+BD_relative.fData = function( Data_target, Data_reference )
+{
+  Data_target = Data_target$values
+  Data_reference = Data_reference$values
+  NextMethod()
+}
+
+#' @rdname BD_relative
+#'
+#' @aliases BD_relative
+#'
+#' @export
+BD_relative.default = function( Data_target, Data_reference )
 {
   # Observations
   N = nrow( Data_reference )
@@ -199,10 +275,11 @@ not compliant dimensions to BD_relative')
 #' See the References section for more details.
 #'
 #'
-#' @param Data a matrix-like dataset of functional data (e.g. \code{fData$values}),
-#' with observations as rows and measurements over grid points as columns.
+#' @param Data either a \code{fData} object or a matrix-like dataset of functional
+#' data (e.g. \code{fData$values}), with observations as rows and measurements
+#' over grid points as columns.
 #' @param manage_ties a logical flag specifying whether a check for ties and
-#' relative treatment must be carried out or not (default is FALSE).
+#' relative treatment must be carried out or not (default is \code{FALSE}).
 #'
 #' @return The function returns a vector containing the values of MBD for the
 #' given dataset.
@@ -216,7 +293,7 @@ not compliant dimensions to BD_relative')
 #' data, \emph{Computational Statistics & Data Analysis} 51, 4957-4968.
 #'
 #' @seealso \code{\link{BD}}, \code{\link{MBD_relative}},
-#' \code{\link{BD_relative}}
+#' \code{\link{BD_relative}}, \code{\link{fData}}
 #'
 #' @examples
 #' grid = seq( 0, 1, length.out = 1e2 )
@@ -230,11 +307,36 @@ not compliant dimensions to BD_relative')
 #'                -2 + sin( pi * grid ) ),
 #'             nrow = 6, ncol = length( grid ), byrow = TRUE )
 #'
+#' fD = fData( grid, D )
+#'
+#' MBD( fD )
+#'
 #' MBD( D )
 #'
 #' @export
-#'
 MBD = function( Data, manage_ties = FALSE )
+{
+  UseMethod( 'MBD', Data )
+}
+
+#' @rdname MBD
+#'
+#' @aliases MBD
+#'
+#' @export
+MBD.fData = function( Data, manage_ties = FALSE )
+{
+  Data = Data$values
+  NextMethod()
+}
+
+
+#' @rdname MBD
+#'
+#' @aliases MBD
+#'
+#' @export
+MBD.default = function( Data, manage_ties = FALSE )
 {
   # Number of rows
   N = nrow( Data )
@@ -308,19 +410,23 @@ MBD = function( Data, manage_ties = FALSE )
 #' normalised Lebesgue measure over \eqn{I=[a,b]}, that is
 #' \eqn{\tilde{\lambda(A)} = \lambda( A ) / ( b - a )}.
 #'
-#' @param Data_target is the univariate functional dataset, provided in matrix
+#' @param Data_target is the univariate functional dataset, provided either as
+#' an \code{fData} object or in matrix
 #' form (N observations as rows and P measurements as columns), whose MBD
 #' have to be computed with respect to the reference dataset.
-#' @param Data_reference is the dataset, provided in matrix form (N observations
+#' @param Data_reference is the dataset, provided either as an \code{fData}
+#' object or in matrix form (N observations
 #' as rows and P measurements as columns), containing the reference
 #' univariate functional data that must be used to compute the MBD of
-#' elements in \code{Data_target}.
+#' elements in \code{Data_target}. If \code{Data_target} is \code{fData}, it
+#' must be of class \code{fData}.
 #'
 #'
 #' @return The function returns a vector containing the MBD of elements in
 #' \code{Data_target} with respect to elements in \code{Data_reference}.
 #'
-#' @seealso \code{\link{MBD}}, \code{\link{BD}}, \code{\link{BD_relative}}
+#' @seealso \code{\link{MBD}}, \code{\link{BD}}, \code{\link{BD_relative}},
+#' \code{\link{fData}}
 #'
 #' @examples
 #'
@@ -350,24 +456,73 @@ MBD = function( Data, manage_ties = FALSE )
 #'                          1.1 + sin( 2 * pi * grid ) ),
 #'                       nrow = 3, ncol = length( grid ), byrow = TRUE )
 #'
+#' fD_ref = fData( grid, Data_ref )
+#' fD_test_1 = fData( grid, Data_test_1 )
+#' fD_test_2 = fData( grid, Data_test_2 )
+#' fD_test_3 = fData( grid, Data_test_3 )
+#' fD_test_4 = fData( grid, Data_test_4 )
+#' fD_test_5 = fData( grid, Data_test_5 )
+#' fD_test_6 = fData( grid, Data_test_6 )
+#' fD_test_7 = fData( grid, Data_test_7 )
+#'
+#' MBD_relative( fD_test_1, fD_ref )
 #' MBD_relative( Data_test_1, Data_ref )
 #'
+#' MBD_relative( fD_test_2, fD_ref )
 #' MBD_relative( Data_test_2, Data_ref )
 #'
+#' MBD_relative( fD_test_3, fD_ref )
 #' MBD_relative( Data_test_3, Data_ref )
 #'
+#' MBD_relative( fD_test_4, fD_ref )
 #' MBD_relative( Data_test_4, Data_ref )
 #'
+#' MBD_relative( fD_test_5, fD_ref )
 #' MBD_relative( Data_test_5, Data_ref )
 #'
+#' MBD_relative( fD_test_6, fD_ref )
 #' MBD_relative( Data_test_6, Data_ref )
 #'
+#' MBD_relative( fD_test_7, fD_ref )
 #' MBD_relative( Data_test_7, Data_ref )
 #'
 #'
 #' @export
 #'
 MBD_relative = function( Data_target, Data_reference )
+{
+  if( class( Data_target ) != class( Data_reference ) )
+  {
+    if( ! ( class( Data_target ) %in% c( 'numeric', 'array', 'matrix' ) &
+            class( Data_reference ) %in% c( 'numeric', 'array', 'matrix' ) ) )
+    {
+      stop( 'Error in MBD_relative: you have to provide target and reference data
+            with the same class')
+    }
+    }
+
+
+  UseMethod( 'MBD_relative', Data_target )
+  }
+
+#' @rdname MBD_relative
+#'
+#' @aliases MBD_relative
+#'
+#' @export
+MBD_relative.fData = function( Data_target, Data_reference )
+{
+  Data_target = Data_target$values
+  Data_reference = Data_reference$values
+  NextMethod()
+}
+
+#' @rdname MBD_relative
+#'
+#' @aliases MBD_relative
+#'
+#' @export
+MBD_relative.default = function( Data_target, Data_reference )
 {
   # Observations
   N = nrow( Data_reference )
