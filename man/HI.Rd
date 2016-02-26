@@ -2,12 +2,19 @@
 % Please edit documentation in R/Indexes.R
 \name{HI}
 \alias{HI}
+\alias{HI.default}
+\alias{HI.fData}
 \title{Hypograph Index of univariate functional dataset}
 \usage{
 HI(Data)
+
+\method{HI}{fData}(Data)
+
+\method{HI}{default}(Data)
 }
 \arguments{
-\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
+\item{Data}{either an \code{fData} object or a matrix-like dataset of
+functional data (e.g. \code{fData$values}),
 with observations as rows and measurements over grid points as columns.}
 }
 \value{
@@ -41,6 +48,10 @@ C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
 Data = generate_gauss_fdata( N,
                              centerline = sin( 2 * pi * grid ),
                              C )
+fD = fData( grid, Data )
+
+HI( fD )
+
 HI( Data )
 }
 \references{
@@ -52,6 +63,7 @@ visualization for functional data: the outliergram, \emph{Biostatistics},
 15(4), 603-619.
 }
 \seealso{
-\code{\link{MHI}}, \code{\link{EI}}, \code{\link{MEI}}
+\code{\link{MHI}}, \code{\link{EI}}, \code{\link{MEI}},
+\code{\link{fData}}
 }
 

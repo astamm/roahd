@@ -3,7 +3,6 @@
 
 # RESTYLING UNIVARIATE DEPTHS ---------------------------------------------
 
-
 ###### BD
 
 N = 1e2
@@ -109,4 +108,46 @@ test_that( 'Restyling test on MBD ',
                              MBD_relative( Data_target, Data_reference ) ) )
 
 
+# RESTYLING INDEXES -------------------------------------------------------
 
+#### EI and MEI
+N = 1e2
+
+P = 1e2
+
+grid = seq( 0, 1, length.out = 1e2 )
+
+centerline = sin( 2 * pi * grid )
+
+Cov = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+
+Data = generate_gauss_fdata( N,
+                             centerline,
+                             Cov )
+fD = fData( grid, Data )
+
+test_that( 'Restyling test on EI',
+           expect_identical( EI( fD ),
+                             EI( Data ) ) )
+
+test_that( 'Restyling test on MEI',
+           expect_identical( MEI( fD ),
+                             MEI( Data ) ) )
+
+#### HI and MHI
+test_that( 'Restyling test on EI',
+           expect_identical( HI( fD ),
+                             HI( Data ) ) )
+
+test_that( 'Restyling test on MHI',
+           expect_identical( MHI( fD ),
+                             MHI( Data ) ) )
+
+#### HRD and MHRD
+test_that( 'Restyling test on EI',
+           expect_identical( HRD( fD ),
+                             HRD( Data ) ) )
+
+test_that( 'Restyling test on MEI',
+           expect_identical( MHRD( fD ),
+                             MHRD( Data ) ) )
