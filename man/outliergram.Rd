@@ -5,7 +5,8 @@
 \title{Outliergram for univariate functional datasets}
 \usage{
 outliergram(fData, MBD_data = NULL, MEI_data = NULL, q_low = 0,
-  q_high = 1, p_check = 0.05, adjust = FALSE, display = TRUE, ...)
+  q_high = 1, p_check = 0.05, Fvalue = 1.5, adjust = FALSE,
+  display = TRUE, ...)
 }
 \arguments{
 \item{fData}{the univariate functional dataset whose outliergram has to be
@@ -33,9 +34,44 @@ compared to the maximum of all the remaining functions.}
 checked for outliers in the secondary step (shift towards the center of the
 dataset).}
 
+\item{Fvalue}{the \eqn{F} value to be used in the procedure that finds the
+shape outliers by looking at the lower parabolic limit in the outliergram.
+Default is \code{1.5}. You can also leave the default value and, by providing
+the parameter \code{adjust}, specify that you want \code{Fvalue} to be
+adjusted for the dataset provided in \code{fData}.}
+
 \item{adjust}{either \code{FALSE} if you would like the default value for the
 inflation factor, \eqn{F = 1.5}, to be used, or a list specifying the
-parameters required by the adjustment.}
+parameters required by the adjustment.
+ \itemize{
+ \item{"\code{N_trials}"}{: the number of repetitions of the adujustment
+ procedure based on the simulation of a gaussisan population of functional
+ data, each one producing an adjusted value of \eqn{F}, which will lead
+ to the averaged adjusted value \eqn{\bar{F}}. Default is 20;}
+ \item{"\code{trial_size}"}{: the number of elements in the gaussian
+ population of functional data that will be simulated at each repetition of
+ the adjustment procedure. Default is \code{5 * fData$N};}
+ \item{"\code{TPR}"}{: the True Positive Rate of outleirs, i.e. the proportion
+ of observations in a dataset without shape outliers that have to be considered
+ outliers. Default is \code{2 * pnorm( 4 * qnorm( 0.25 ) )};}
+ \item{"\code{F_min}"}{: the minimum value of \eqn{F}, defining the left
+ boundary for the optimisation problem aimed at finding, for a given dataset
+ of simulated gaussian data associated to \code{fData}, the optimal value of
+ \eqn{F}. Default is 0.5;}
+ \item{"\code{F_max}"}{: the maximum value of \eqn{F}, defining the right
+ boundary for the optimisation problem aimed at finding, for a given dataset
+ of simulated gaussian data associated to \code{fData}, the optimal value of
+ \eqn{F}. Default is 20;}
+ \item{"\code{tol}"}{: the tolerance to be used in the optimisation problem
+ aimed at finding, for a given dataset of simulated gaussian data associated
+ to \code{fData}, the optimal value of \eqn{F}. Default is \code{1e-3};}
+ \item{"\code{maxiter}"}{: the maximum number of iterations to solve the
+ optimisation problem aimed at finding, for a given dataset of simulated
+ gaussian data associated to \code{fData}, the optimal value of \eqn{F}.
+ Default is \code{100};}
+ \item{"\code{VERBOSE}"}{: a parameter controlling the verbosity of the
+ adjustment process;}
+ }}
 
 \item{display}{either a logical value indicating wether you want the
 outliergram to be displayed, or the number of the graphical device
@@ -53,6 +89,20 @@ considered as shape outliers.
 This function performs the outliergram of a univariate functional dataset,
 possibly with an adjustment of the true positive rate of outliers discovered
 under assumption of gaussianity.
+}
+\section{Adjustment}{
+
+
+When the adjustment option is selected, the value of \eqn{F} is optimised for
+the univariate functional dataset provided with \code{fData}. In practice,
+a number \code{adjust$N_trials} of times a synthetic population
+(of size \code{adjust$tiral_size} with the same covariance (robustly
+estimated from data) and centerline as \code{fData} is simulated without
+outliers and each time an optimised value \eqn{F_i} is computed so that a
+given proportion (\code{adjust$TPR}) of observations is flagged as outliers.
+The final value of \code{F} for the outliergram is determined as an average
+of \eqn{F_1, F_2, \ldots, F_{N_{trials}}}. At each time step the optimisation
+problem is solved using \code{stats::uniroot} (Brent's method).
 }
 \references{
 Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and visualization
