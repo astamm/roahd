@@ -24,7 +24,10 @@ Description: This package is meant to collect and provide methods for the robust
     with attention to computational efficiency and simplicity of use
 License: file LICENSE
 LazyData: yes
-Suggests: testthat
+Suggests: testthat,
+    knitr,
+    rmarkdown
 Imports: scales,
 	 robustbase,
     	 stats
+VignetteBuilder: knitr
