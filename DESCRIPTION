@@ -1,15 +1,29 @@
 Package: roahd
 Type: Package
-Title: Robust Analysis of High Dimensional Data 
+Title: Robust Analysis of High Dimensional Data
 Version: 1.0
 Date: 2016-01-25
-Author: NA
-Maintainer: Nicholas Tarabelloni <nicholas.tarabelloni@gmail.com> 
+Authors@R: c( person("Nicholas", "Tarabelloni", role = c("aut", "cre"),
+                     email = "nicholas.tarabelloni@polimi.it"),
+              person("Ana", "Arribas-Gil", role = "aut",
+                      email = "aarribas@est-econ.uc3m.es" ),
+              person("Francesca", "Ieva", role = "aut",
+                      email = "francesca.ieva@unimi.it" ),
+              person("Anna Maria", "Paganoni", role = "aut",
+                     email = "anna.paganoni@polimi.it" ),
+              person("Juan", "Romo", role = "aut",
+                      email = "romo@est-econ.uc3m.es") )
+Author: Nicholas Developer [aut, cre],
+  Ana Arribas-Gil [aut],
+  Francesca Ieva [aut],
+  Anna Maria Paganoni [aut],
+  Juan Romo [aut]
+Maintainer: Nicholas Tarabelloni <nicholas.tarabelloni@polimi.it>
 Description: This package is meant to collect and provide methods for the robust analysis of
     univariate and multivariate functional data, possibly in high-dimensional cases, and hence
-    with attention to computational efficiency and simplicity of use 
-License: file LICENSE 
-LazyData: yes 
+    with attention to computational efficiency and simplicity of use
+License: file LICENSE
+LazyData: yes
 Suggests: testthat
 Imports: scales,
 	 robustbase,
