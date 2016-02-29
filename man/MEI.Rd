@@ -2,12 +2,19 @@
 % Please edit documentation in R/Indexes.R
 \name{MEI}
 \alias{MEI}
+\alias{MEI.default}
+\alias{MEI.fData}
 \title{Modified Epigraph Index of univariate functional dataset}
 \usage{
 MEI(Data)
+
+\method{MEI}{fData}(Data)
+
+\method{MEI}{default}(Data)
 }
 \arguments{
-\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
+\item{Data}{either an \code{fData} object or a matrix-like dataset of
+functional data (e.g. \code{fData$values}),
 with observations as rows and measurements over grid points as columns.}
 }
 \value{
@@ -40,6 +47,11 @@ C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
 Data = generate_gauss_fdata( N,
                              centerline = sin( 2 * pi * grid ),
                              C )
+
+fD = fData( grid, Data )
+
+MEI( fD )
+
 MEI( Data )
 }
 \references{
@@ -51,6 +63,7 @@ visualization for functional data: the outliergram, \emph{Biostatistics},
 15(4), 603-619.
 }
 \seealso{
-\code{\link{EI}}, \code{\link{MHI}}, \code{\link{HI}}
+\code{\link{EI}}, \code{\link{MHI}}, \code{\link{HI}},
+\code{\link{fData}}
 }
 

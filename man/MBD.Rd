@@ -2,16 +2,23 @@
 % Please edit documentation in R/BandDepths.R
 \name{MBD}
 \alias{MBD}
+\alias{MBD.default}
+\alias{MBD.fData}
 \title{Modified Band Depth for univariate functional data}
 \usage{
 MBD(Data, manage_ties = FALSE)
+
+\method{MBD}{fData}(Data, manage_ties = FALSE)
+
+\method{MBD}{default}(Data, manage_ties = FALSE)
 }
 \arguments{
-\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
-with observations as rows and measurements over grid points as columns.}
+\item{Data}{either a \code{fData} object or a matrix-like dataset of functional
+data (e.g. \code{fData$values}), with observations as rows and measurements
+over grid points as columns.}
 
 \item{manage_ties}{a logical flag specifying whether a check for ties and
-relative treatment must be carried out or not (default is FALSE).}
+relative treatment must be carried out or not (default is \code{FALSE}).}
 }
 \value{
 The function returns a vector containing the values of MBD for the
@@ -48,6 +55,10 @@ D = matrix( c( 1 + sin( 2 * pi * grid ),
                -2 + sin( pi * grid ) ),
             nrow = 6, ncol = length( grid ), byrow = TRUE )
 
+fD = fData( grid, D )
+
+MBD( fD )
+
 MBD( D )
 }
 \references{
@@ -59,6 +70,6 @@ data, \emph{Computational Statistics & Data Analysis} 51, 4957-4968.
 }
 \seealso{
 \code{\link{BD}}, \code{\link{MBD_relative}},
-\code{\link{BD_relative}}
+\code{\link{BD_relative}}, \code{\link{fData}}
 }
 

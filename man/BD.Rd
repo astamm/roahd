@@ -2,12 +2,19 @@
 % Please edit documentation in R/BandDepths.R
 \name{BD}
 \alias{BD}
+\alias{BD.default}
+\alias{BD.fData}
 \title{Band Depth for univariate functional data}
 \usage{
 BD(Data)
+
+\method{BD}{fData}(Data)
+
+\method{BD}{default}(Data)
 }
 \arguments{
-\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
+\item{Data}{either an object of class \code{fData} or a matrix-like dataset
+of functional data (e.g. \code{fData$values}),
 with observations as rows and measurements over grid points as columns.}
 }
 \value{
@@ -44,6 +51,10 @@ D = matrix( c( 1 + sin( 2 * pi * grid ),
                -2 + sin( pi * grid ) ),
             nrow = 6, ncol = length( grid ), byrow = TRUE )
 
+fD = fData( grid, D )
+
+BD( fD )
+
 BD( D )
 }
 \references{
@@ -55,6 +66,6 @@ data, \emph{Computational Statistics & Data Analysis} 51, 4957-4968.
 }
 \seealso{
 \code{\link{MBD}}, \code{\link{BD_relative}},
-\code{\link{MBD_relative}}
+\code{\link{MBD_relative}}, \code{\link{fData}}
 }
 

@@ -2,12 +2,19 @@
 % Please edit documentation in R/Indexes.R
 \name{HRD}
 \alias{HRD}
+\alias{HRD.default}
+\alias{HRD.fData}
 \title{Half-Region Depth for univariate functional data}
 \usage{
 HRD(Data)
+
+\method{HRD}{fData}(Data)
+
+\method{HRD}{default}(Data)
 }
 \arguments{
-\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
+\item{Data}{either an \code{fData} object or a matrix-like dataset of
+functional data (e.g. \code{fData$values}),
 with observations as rows and measurements over grid points as columns.}
 }
 \value{
@@ -40,6 +47,11 @@ C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
 Data = generate_gauss_fdata( N,
                              centerline = sin( 2 * pi * grid ),
                              C )
+
+fD = fData( grid, Data )
+
+HRD( fD )
+
 HRD( Data )
 }
 \references{
@@ -51,6 +63,7 @@ visualization for functional data: the outliergram, \emph{Biostatistics},
 15(4), 603-619.
 }
 \seealso{
-\code{\link{MHRD}}, \code{\link{EI}}, \code{\link{HI}}
+\code{\link{MHRD}}, \code{\link{EI}}, \code{\link{HI}},
+\code{\link{fData}}
 }
 
