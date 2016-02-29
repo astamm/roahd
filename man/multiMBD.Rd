@@ -2,18 +2,30 @@
 % Please edit documentation in R/multivariate_depths.R
 \name{multiMBD}
 \alias{multiBD}
+\alias{multiBD.default}
+\alias{multiBD.mfData}
 \alias{multiMBD}
+\alias{multiMBD.default}
+\alias{multiMBD.mfData}
 \title{(Modified) Band Depth for multivariate functional data}
 \usage{
-multiMBD(listData, weights = "uniform", manage_ties = FALSE)
+multiMBD(Data, weights = "uniform", manage_ties = FALSE)
 
-multiBD(listData, weights = "uniform")
+\method{multiMBD}{mfData}(Data, weights = "uniform", manage_ties = FALSE)
+
+\method{multiMBD}{default}(Data, weights = "uniform", manage_ties = FALSE)
+
+multiBD(Data, weights = "uniform")
+
+\method{multiBD}{mfData}(Data, weights = "uniform")
+
+\method{multiBD}{default}(Data, weights = "uniform")
 }
 \arguments{
-\item{listData}{specifies the values of the multivariate functional dataset.
-It is a list of 2-dimensional matrices having as rows the elements of that
-component and as columns the measurements of the functional data over the
-grid.}
+\item{Data}{specifies the the multivariate functional dataset.
+It is either an object of class \code{mfData} or a list of 2-dimensional
+matrices having as rows the elements of that component and as columns the
+measurements of the functional data over the grid.}
 
 \item{weights}{either a set of weights (of the same length of \code{listData}
 ) or the string \code{"uniform"} specifying that a set of uniform weights
@@ -64,8 +76,13 @@ Data_1 = generate_gauss_fdata( N, centerline = rep( 0, P ), Cov = Cov )
 # First component of the multivariate guassian functional dataset
 Data_2 = generate_gauss_fdata( N, centerline = rep( 0, P ), Cov = Cov )
 
-multiBD( list( Data_1, Data_2 ), weights = 'uniform')
-multiMBD( list( Data_1, Data_2 ), weights = 'uniform', manage_ties = TRUE )
+mfD = mfData( grid, list( Data_1, Data_2 ) )
+
+multiBD( mfD, weights = 'uniform' )
+multiMBD( mfD, weights = 'uniform', manage_ties = TRUE )
+
+multiBD( mfD, weights = c( 1/3, 2/3 ))
+multiMBD( mfD, weights = c( 1/3, 2/3 ), manage_ties = FALSE )
 
 multiBD( list( Data_1, Data_2 ), weights = 'uniform')
 multiMBD( list( Data_1, Data_2 ), weights = 'uniform', manage_ties = TRUE )
