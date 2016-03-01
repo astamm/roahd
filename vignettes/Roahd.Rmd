@@ -1,13 +1,217 @@
 ---
-title: "Roahd"
+title: "roahd"
 author: "Nicholas Tarabelloni"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output:: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Vignette Title}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
+## Introduction
+
+Package **roahd** (**RO**bust **A**nalysis of **H**igh dimensional **D**ata) is 
+an `R` package meant to gather recently proposed statistical methods to deal 
+with the robust analysis of functional data.
+
+The package contains an implementation of quantitative methods, based on
+functional depths and indices, on top of which are built some graphical methods
+(funcitonal boxplot and outliergram) useful to carry out an explorative analysis
+of a functional dataset and to robustify it from shape and magnitude outliers.
+
+Both univariate and multivariate functional data are supported in the package,
+whose functions have been implemented with a particular emphasis on computational
+efficiency, in order to allow the processing of high-dimensional dataset.
+
+## Representation of functional data
+
+The package has been designed to work with a representation of functional data
+through dedicated, simple and handy `S3` classes, namely `fData` for univariate
+functional data and `mfData` for multivariate functional data.
+
+The use of `S3` classes is exploited by suitable `S3` methods implementing the
+statistical features of the package, that are able to dispatch the correct
+method call depending on the class of their functional data argument.
+
+### fData
+
+`S3` class `fData` implements a representaion of univariate functional datasets.
+They are obtained once specifying, for each observation in the functional
+dataset, a set of measurements over a discrete grid, representing the continuous
+variable indexing the functional dataset (e.g. time).
+
+In other words, if we denote by $T = [t_0, t_1, \ldots, t_{P-1}]$ an evenly spaced
+grid ($t_i - t_{i-1} = h > 0$), and imagine to deal with a dataset 
+$D_{i,j} = X_i(t_j)$, $\forall i = 1, \ldots, N$ and $\forall j=0, \ldots, P-1$,
+the object `fData` is built starting from the grid and the values in the 
+following way: 
+
+```{r fData, fig.align='center', fig.height=4, fig.width=4, cache=TRUE}
+
+library( roahd )
+
+# The number of observations in the functional dataset.
+N = 5
+# The number of points in the 1D grid where the functional data are measured.
+P = 1e2
+# The previous two variable names are used consistently throughout the tutorial
+# and the package's documentation to indicate the number of observations and the
+# grid size.
+
+# The grid over which the functional dataset is defined
+grid = seq( 0, 1, length.out = P )
+
+# Creating the values of the functional dataset
+Data = matrix( c( sin( 2 * pi * grid  ),
+                  cos( 2 * pi * grid ),
+                  4 * grid * ( 1 - grid ),
+                  tan( grid ),
+                  log( grid ) ),
+              nrow = N, ncol = P, byrow = TRUE )
+
+# Building an fData object
+# The constructor takes a grid and a matrix-like structure for data values
+# (see help for more details on how to use the constructor)
+fD = fData( grid, Data )
+
+# Inspecting the structure of an fData object
+str( fD )
+
+plot( fD, main = 'Univariate FD', xlab = 'time [s]', ylab = 'values', lwd = 2 )
+```
+Thus, an object `fData` is a list containing: the fields `t0`, `tP`, the defining
+the starting and end point of the one dimensional grid of the `fData`, the
+constant step size `h` and the number of grid points `P`; the field 
+
+### mfData
+
+An `mfData` object, instead, can be created in this way:
+
+```{r mfData, cache = TRUE, fig.width = 7, fig.height = 4, fig.align = 'center' }
+
+# Creating some values for first component of the dataset
+Data_1 = t( sapply( runif( 10, 0, 4 ), 
+                    function( phase ) sin( 2 * pi * grid + phase ) ) )
+
+# Creating some values of functions for  
+Data_2 = t( sapply( runif( 10, 0, 4 ), 
+                    function( phase ) log( grid + phase ) ) )
+
+
+# Building an fData object
+# The constructor takes a grid and a list of matrix-like structures for data values
+# (see help for more details on how to use the constructor)
+mfD = mfData( grid, list( Data_1, Data_2 ) )
+
+str( mfD )
+
+# Each component of the mfData object is a fData object 
+sapply( mfD$fDList, class )
+
+
+plot( mfD, lwd = 2, main = 'Multivariate FD',
+      xlab = 'time', ylab = list( 'Values 1', 'Values 2' ))
+
+```
+
+The fact that `mfData` components are `fData` obejcts is indeed conceptyally
+very natural, but also allows for a seamless application of `S3` methods meant 
+for `fData` on multivariate functional data components, making the exploration
+and manipulation of multivariate datasets rather easy:
+
+```{r mfDataComponents, fig.width = 4, fig.height = 4, fig.align = 'center' }
+
+plot( mfD$fDList[[ 1 ]], main = 'First component', 
+      xlab = 'time', ylab = 'Values', lwd = 2 )
+
+# S3 method for mean of univariate functional data
+plot( mean( mfD$fDList[[ 1 ]] ), lwd = 2, col = 'black', add = TRUE )
+```
+
+Moreover, `mfData` objects can be obtained also from a set of homogeneous 
+`fData` objects, i.e. of equal sample size and defined on the same grid:
+
+```{r fDataToMfData, eval = FALSE }
+
+fD_1 = fData( grid, Data_1 )
+
+fD_2 = fData( grid, Data_2 )
+
+mfD = as.mfData( list( fD_1, fD_2 ) ) 
+
+mfD = as.mfData( lapply( 1 : 10, function( i )( fD_1 ) ) )
+```
+
+### Subsetting fData
+
+`fData` objects can be subset using a suitably overloaded operator `[.fData`,
+that allows for the use of standard slices of `matrix` and `array` classes also
+for `fData`.
+
+```{r fData_subset_1, eval = FALSE }
+
+# Subseting fData and returning result in matrix form
+fD[ 1 , 1, as_fData = FALSE ]
+
+fD[ 1, , as_fData = FALSE ]
+
+fD[ 2, 10 : 20, as_fData = FALSE ]
+
+fD[ , 10, as_fData = FALSE ]
+```
+```{r fData_subset_2, fig.align='center', fig.width=7, fig.height=4, cache=TRUE, }
+# As default behaviour the subset is returned in fData form
+par( mfrow = c(1,2) )
+plot( fD, main = 'Original dataset', lwd = 2 )
+plot( fD[ , 1 : 20 ], main = 'Zooming in', lwd = 2 )
+```
+
+### Algebra
+
+An algebra of `fData` obejcts is also implemented, making it easy to sum,
+subtract, multiply and divide these objects by meaningful and compliant
+structures.
+
+**Sums** and **subtractions**, available through `+` and `-` operators (see help at
+`+-.fData`), allow for sums of a `fData` on the left hand side and a compliant
+structure on the right hand side. This can be either another `fData` of same
+sample size and defined over the same grid, or a 1D/2D data structure with a
+number of columns equal `fData`'s grid length (i.e. `P`), and number of rows
+equal to `fData`'s sample size (i.e. `N`) or equal to one (in this case the only
+observation available is recycled `N` times). The operataions are then performed
+element-wise between the lhs and rhs. 
+
+```{r fData_algebra_1, eval = FALSE }
+fD + fD
+
+fD + matrix( 1, nrow = N, ncol = P )
+
+fD + array( 2, dim = c( N, P ) )
+
+fD + 1 : P 
+```
+**Multiplication** and **division**, instead, is implemented only for an `fData` 
+left hand side and a numeric variable or numeric vector right hand side. In the 
+first case, each function in the functional dataset is multiplied/divided by the
+specified quantity; in the second case, specifying a vector of length `N`, the
+multiplication/division of each functional observation is carried out by the
+corresponding quantity in the vector, in an element-wise way:
+
+```{r fData_algebra_2, eval = FALSE}
+fD * 2
+
+fD / 3
+
+fD * ( 1 : N )
+
+fD / ( 1 : N )
+```
+
+
+
+
+## Stuff 
 
 Vignettes are long form documentation commonly included in packages. Because they are part of the distribution of the package, they need to be as compact as possible. The `html_vignette` output type provides a custom style sheet (and tweaks some options) to ensure that the resulting html is as small as possible. The `html_vignette` format:
 
@@ -31,10 +235,10 @@ The `html_vignette` template includes a basic CSS theme. To override this theme 
 
 The figure sizes have been customised so that you can easily put two images side-by-side. 
 
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
+<!-- ```{r, fig.show='hold'} -->
+<!-- plot(1:10) -->
+<!-- plot(10:1) -->
+<!-- ``` -->
 
 You can enable figure captions by `fig_caption: yes` in YAML:
 
