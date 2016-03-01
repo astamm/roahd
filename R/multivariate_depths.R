@@ -20,10 +20,10 @@
 #' j = 1, \ldots N.}
 #'
 #'
-#' @param listData specifies the values of the multivariate functional dataset.
-#' It is a list of 2-dimensional matrices having as rows the elements of that
-#' component and as columns the measurements of the functional data over the
-#' grid.
+#' @param Data specifies the the multivariate functional dataset.
+#' It is either an object of class \code{mfData} or a list of 2-dimensional
+#' matrices having as rows the elements of that component and as columns the
+#' measurements of the functional data over the grid.
 #' @param weights either a set of weights (of the same length of \code{listData}
 #' ) or the string \code{"uniform"} specifying that a set of uniform weights
 #' (of value \eqn{1 / L}, where \eqn{L} is the number of dimensions of the
@@ -68,8 +68,13 @@
 #' # First component of the multivariate guassian functional dataset
 #' Data_2 = generate_gauss_fdata( N, centerline = rep( 0, P ), Cov = Cov )
 #'
-#' multiBD( list( Data_1, Data_2 ), weights = 'uniform')
-#' multiMBD( list( Data_1, Data_2 ), weights = 'uniform', manage_ties = TRUE )
+#' mfD = mfData( grid, list( Data_1, Data_2 ) )
+#'
+#' multiBD( mfD, weights = 'uniform' )
+#' multiMBD( mfD, weights = 'uniform', manage_ties = TRUE )
+#'
+#' multiBD( mfD, weights = c( 1/3, 2/3 ))
+#' multiMBD( mfD, weights = c( 1/3, 2/3 ), manage_ties = FALSE )
 #'
 #' multiBD( list( Data_1, Data_2 ), weights = 'uniform')
 #' multiMBD( list( Data_1, Data_2 ), weights = 'uniform', manage_ties = TRUE )
@@ -79,15 +84,36 @@
 #'
 #' @export
 #'
-multiMBD = function( listData, weights = 'uniform', manage_ties = FALSE )
+multiMBD = function( Data, weights = 'uniform', manage_ties = FALSE )
 {
-  L = length( listData )
+  UseMethod( 'multiMBD', Data )
+}
 
-  N = nrow( listData[[ 1 ]] )
-  P = ncol( listData[[ 2 ]] )
+#' @rdname multiMBD
+#'
+#' @aliases multiMBD
+#'
+#' @export
+multiMBD.mfData = function( Data, weights = 'uniform', manage_ties = FALSE )
+{
+  Data = toListOfValues( Data )
+  NextMethod()
+}
 
-  if( ! all( sapply( listData, nrow ) - N == 0 ) |
-      ! any( sapply( listData, ncol ) - P == 0 ) )
+#' @rdname multiMBD
+#'
+#' @aliases multiMBD
+#'
+#' @export
+multiMBD.default = function( Data, weights = 'uniform', manage_ties = FALSE )
+{
+  L = length( Data )
+
+  N = nrow( Data[[ 1 ]] )
+  P = ncol( Data[[ 2 ]] )
+
+  if( ! all( sapply( Data, nrow ) - N == 0 ) |
+      ! any( sapply( Data, ncol ) - P == 0 ) )
   {
     stop( ' Error in multiMBD: you provided a list with mismatching univariate
           functional datasets' )
@@ -112,21 +138,44 @@ multiMBD = function( listData, weights = 'uniform', manage_ties = FALSE )
     weights = as.numeric( weights )
   }
 
-  return( as.numeric( sapply( listData, MBD, manage_ties ) %*% weights ) )
+  return( as.numeric( sapply( Data, MBD, manage_ties ) %*% weights ) )
 }
 
 #' @rdname multiMBD
 #'
+#' @aliases multiMBD
+#'
 #' @export
-multiBD = function( listData, weights = 'uniform' )
+multiBD = function( Data, weights = 'uniform' )
 {
-  L = length( listData )
+  UseMethod( 'multiBD', Data )
+}
 
-  N = nrow( listData[[ 1 ]] )
-  P = ncol( listData[[ 2 ]] )
+#' @rdname multiMBD
+#'
+#' @aliases multiMBD
+#'
+#' @export
+multiBD.mfData =  function( Data, weights = 'uniform' )
+{
+  Data = toListOfValues( Data )
+  NextMethod()
+}
 
-  if( ! all( sapply( listData, nrow ) - N == 0 ) |
-      ! any( sapply( listData, ncol ) - P == 0 ) )
+#' @rdname multiMBD
+#'
+#' @aliases multiMBD
+#'
+#' @export
+multiBD.default = function( Data, weights = 'uniform' )
+{
+  L = length( Data )
+
+  N = nrow( Data[[ 1 ]] )
+  P = ncol( Data[[ 2 ]] )
+
+  if( ! all( sapply( Data, nrow ) - N == 0 ) |
+      ! any( sapply( Data, ncol ) - P == 0 ) )
   {
     stop( ' Error in multiBD: you provided a list with mismatching univariate
           functional datasets' )
@@ -151,5 +200,5 @@ multiBD = function( listData, weights = 'uniform' )
     weights = as.numeric( weights )
     }
 
-  return( as.numeric( sapply( listData, BD ) %*% weights ) )
+  return( as.numeric( sapply( Data, BD ) %*% weights ) )
   }

@@ -2,12 +2,19 @@
 % Please edit documentation in R/Indexes.R
 \name{MHRD}
 \alias{MHRD}
+\alias{MHRD.default}
+\alias{MHRD.fData}
 \title{Modified Half-Region Depth for univariate functional data}
 \usage{
 MHRD(Data)
+
+\method{MHRD}{fData}(Data)
+
+\method{MHRD}{default}(Data)
 }
 \arguments{
-\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
+\item{Data}{either an \code{fData} object or a matrix-like dataset of
+functional data (e.g. \code{fData$values}),
 with observations as rows and measurements over grid points as columns.}
 }
 \value{
@@ -40,6 +47,10 @@ C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
 Data = generate_gauss_fdata( N,
                              centerline = sin( 2 * pi * grid ),
                              C )
+fD = fData( grid, Data )
+
+MHRD( fD )
+
 MHRD( Data )
 }
 \references{

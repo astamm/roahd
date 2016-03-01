@@ -13,7 +13,7 @@ Authors@R: c( person("Nicholas", "Tarabelloni", role = c("aut", "cre"),
                      email = "anna.paganoni@polimi.it" ),
               person("Juan", "Romo", role = "aut",
                       email = "romo@est-econ.uc3m.es") )
-Author: Nicholas Developer [aut, cre],
+Author: Nicholas Tarabelloni [aut, cre],
   Ana Arribas-Gil [aut],
   Francesca Ieva [aut],
   Anna Maria Paganoni [aut],

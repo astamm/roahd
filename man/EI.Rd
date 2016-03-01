@@ -2,13 +2,20 @@
 % Please edit documentation in R/Indexes.R
 \name{EI}
 \alias{EI}
+\alias{EI.default}
+\alias{EI.fData}
 \title{Epigraph Index of univariate functional dataset}
 \usage{
 EI(Data)
+
+\method{EI}{fData}(Data)
+
+\method{EI}{default}(Data)
 }
 \arguments{
-\item{Data}{a matrix-like dataset of functional data (e.g. \code{fData$values}),
-with observations as rows and measurements over grid points as columns.}
+\item{Data}{either an \code{fData} object or a matrix-like dataset of
+functional data (e.g. \code{fData$values}), with observations as rows and
+measurements over grid points as columns.}
 }
 \value{
 The function returns a vector containing the values of EI for each
@@ -41,6 +48,10 @@ C = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
 Data = generate_gauss_fdata( N,
                              centerline = sin( 2 * pi * grid ),
                              C )
+fD = fData( grid, Data )
+
+EI( fD )
+
 EI( Data )
 }
 \references{
@@ -52,6 +63,7 @@ visualization for functional data: the outliergram, \emph{Biostatistics},
 15(4), 603-619.
 }
 \seealso{
-\code{\link{MEI}}, \code{\link{HI}}, \code{\link{MHI}}
+\code{\link{MEI}}, \code{\link{HI}}, \code{\link{MHI}},
+\code{\link{fData}}
 }
 

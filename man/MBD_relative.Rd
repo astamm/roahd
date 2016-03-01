@@ -2,19 +2,28 @@
 % Please edit documentation in R/BandDepths.R
 \name{MBD_relative}
 \alias{MBD_relative}
+\alias{MBD_relative.default}
+\alias{MBD_relative.fData}
 \title{Relative Modified Band Depth of functions in a univariate functional dataset}
 \usage{
 MBD_relative(Data_target, Data_reference)
+
+\method{MBD_relative}{fData}(Data_target, Data_reference)
+
+\method{MBD_relative}{default}(Data_target, Data_reference)
 }
 \arguments{
-\item{Data_target}{is the univariate functional dataset, provided in matrix
+\item{Data_target}{is the univariate functional dataset, provided either as
+an \code{fData} object or in matrix
 form (N observations as rows and P measurements as columns), whose MBD
 have to be computed with respect to the reference dataset.}
 
-\item{Data_reference}{is the dataset, provided in matrix form (N observations
+\item{Data_reference}{is the dataset, provided either as an \code{fData}
+object or in matrix form (N observations
 as rows and P measurements as columns), containing the reference
 univariate functional data that must be used to compute the MBD of
-elements in \code{Data_target}.}
+elements in \code{Data_target}. If \code{Data_target} is \code{fData}, it
+must be of class \code{fData}.}
 }
 \value{
 The function returns a vector containing the MBD of elements in
@@ -66,21 +75,38 @@ Data_test_7 = matrix( c( 0.5  + sin( 2 * pi * grid ),
                          1.1 + sin( 2 * pi * grid ) ),
                       nrow = 3, ncol = length( grid ), byrow = TRUE )
 
+fD_ref = fData( grid, Data_ref )
+fD_test_1 = fData( grid, Data_test_1 )
+fD_test_2 = fData( grid, Data_test_2 )
+fD_test_3 = fData( grid, Data_test_3 )
+fD_test_4 = fData( grid, Data_test_4 )
+fD_test_5 = fData( grid, Data_test_5 )
+fD_test_6 = fData( grid, Data_test_6 )
+fD_test_7 = fData( grid, Data_test_7 )
+
+MBD_relative( fD_test_1, fD_ref )
 MBD_relative( Data_test_1, Data_ref )
 
+MBD_relative( fD_test_2, fD_ref )
 MBD_relative( Data_test_2, Data_ref )
 
+MBD_relative( fD_test_3, fD_ref )
 MBD_relative( Data_test_3, Data_ref )
 
+MBD_relative( fD_test_4, fD_ref )
 MBD_relative( Data_test_4, Data_ref )
 
+MBD_relative( fD_test_5, fD_ref )
 MBD_relative( Data_test_5, Data_ref )
 
+MBD_relative( fD_test_6, fD_ref )
 MBD_relative( Data_test_6, Data_ref )
 
+MBD_relative( fD_test_7, fD_ref )
 MBD_relative( Data_test_7, Data_ref )
 }
 \seealso{
-\code{\link{MBD}}, \code{\link{BD}}, \code{\link{BD_relative}}
+\code{\link{MBD}}, \code{\link{BD}}, \code{\link{BD_relative}},
+\code{\link{fData}}
 }
 
