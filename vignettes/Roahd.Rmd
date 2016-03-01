@@ -316,7 +316,7 @@ compute the depths defining the sample median, taking respectively a 2D matrix o
 data values and a list of 2D matrix of data values as argument (plus, optionally,
 the dots arguments).
 
-```{r, eval = FALSE, cache = TRUE }
+```{r mean_1, eval = FALSE, cache = TRUE }
 
   mean( fD )
   mean( mfD)
@@ -325,26 +325,93 @@ the dots arguments).
   median_fData( fD, type = 'MHRD' )
 
 ```
-```{r, eval = TRUE, fig.height=3, fig.width=6, fig.align='center'}
+```{r mean_2, eval = TRUE, fig.height=3, fig.width=6, fig.align='center'}
 
   par( mfrow = c(1,2) )
   plot( fD, main = 'Mean', lwd = 2 )
   plot( mean( fD ), add = TRUE, lwd = 2, col = 'black', lty = 2 )
   
   plot( fD, main = 'Median', lwd = 2 )
-  plot( median_fData( fD, type = 'MBD' ), add = TRUE, lwd = 2, lty = 2, 
-        col = 'black' )
+  plot( median_fData( fD, type = 'MBD' ), add = TRUE, lwd = 2, lty = 2, col = 'black' )
 ```
 
-
-
-
-
 ### Indexes
+`roahd` collects the implementation of some useful indexes that can be used to 
+describe and summarise functional datasets. 
 
+`EI` and `MEI` implement the **Epigraph Index** and the **Modified Epigraph Index**,
+while `HI` and `MHI` implement the **Hypograph Index** and the **Modified Hypograph Index**
+[see @lopezpintado_romo_2011; @arribasgil_romo_2014].
+These indexes can be used to sort data, respectively, in a top-down and bototm-up
+fashion, and are used to define the HRD/MHRD and to build the outliegram.
+
+These `S3` methods can be called on univariate functional datasets, provided
+either in form of a `fData` object or a 2D matrix of values.
+
+```{r indexes, eval = FALSE }
+  
+  # Calling on fData objects
+  EI( fD )
+  MEI( fD )
+  
+  HI( fD )
+  MHI( fD )
+
+  # Calling on 2D matrix type objects
+  EI( fD$values )
+  EI( matrix( rnorm( 20 ), nrow = 4, ncol = 5 ) )
+  
+```
 
 ### Correlation coefficients
 
+When dealing with multivariate functional data, in particular in case of **bivariate**
+data, it is possible to compute correlation coefficients between data components
+that generalise the Kendall's tau and Spearman's coefficients **REFERENCES!**.
+
+The function `cor_kendall( mfD, ordering = 'max' )` allows to compute the 
+Kendall's tau correlation coefficient between components of a bivariate dataset.
+The function accepts a `mfData` object and a criterion to perform the ordering
+of functional data (this ordering is used to determine the concordances and
+discordacnes between pairs in the definition of the coefficient).
+
+Two criteria are available so far, that directly reflect those proposed in the
+reference paper: `max`, for the ordering between maxima of functions,
+and `area`, for the ordering between area-under-the-curve of functions.
+
+```{r cor_kendall_1, eval = TRUE, cache = TRUE}
+  N = 10
+  P = 1e3
+
+  grid = seq( 0, 1, length.out = P )
+  
+  Data_1 = t( sapply( 1 : N, function( i )( sin( 2 * pi * grid ) + i ) ) )
+  # Monotone nonlinear transformation of data
+  Data_2 = Data_1^3
+  
+  mfD = mfData( grid, list( Data_1, Data_2 ) )
+```
+
+```{r cor_kendall_2, eval = TRUE, cache = TRUE, collapse = TRUE, fig.align = 'center', fig.height = 4, fig.width = 6} 
+  plot( mfD, main = list( 'Comp. 1', 'Comp. 2') )  
+
+  # Kendall correlation of monotonically dependent data is exactly 1
+  cor_kendall( mfD, ordering = 'max' )
+  cor_kendall( mfD, ordering = 'area' )
+```
+
+The funciton `cor_spearman( mfD, ordering = 'MEI', ... )` can be used to compute
+the Spearman correlation coefficient for a bivariate `mfData` object, uning the
+ordering policy specified by `ordering` (defaulting to `MEI`) to rank univariate
+compoenents and then compute the correlation coefficient. Besides `MEI`, also `MHI`
+can be used to determine ranks of univariate components. Additional parameters
+captured by `...` are passed directly to the rank function. 
+
+```{r Spearman, eval = TRUE, cache = TRUE, collapse = TRUE }
+# Spearman correlation of monotonically dependent data is exactly 1
+  cor_spearman( mfD, ordering = 'MEI' )
+  cor_spearman( mfD, ordering = 'MHI' )
+```
 
 ## Simulation of functional data
 
