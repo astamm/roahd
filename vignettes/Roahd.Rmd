@@ -414,6 +414,94 @@ captured by `...` are passed directly to the rank function.
 ```
 
 ## Simulation of functional data
+`roahd` contains also some functions that can be used to simulate artificial data
+sets of functional data, both univariate and multivariate. These are used in the
+adjustment procedure of the outliegram and functional boxplot, but can also be
+used to help the development of new methodologies and help their testing.
+
+Artificial univariate data are obtained simulating realisations of a gaussian 
+process over a discrete grid with a specific covariance function and center
+(e.g. mean or median).
+Given a covariance function, $C(s,t)$ and a centerline $m(t)$, the model
+generating data is:
+$$X_i(t) = m(t) + \epsilon(t), \quad Cov(\epsilon(s),\epsilon(t)) = C(s,t), \quad i = 1, \ldots, N.$$
+
+### Univariate functional data
+
+The function `generate_gauss_fdata(N, centerline, Cov = NULL, CholCov = NULL)` 
+can be used to simulate a population of such gaussian functional data. 
+The required arguments are: `N` the number of elements to be generated; 
+`centerline`, the center of the distribution (mean or median); `Cov`, a matrix
+representation of the desired covariance function, meant as the measurements
+of such function over a tensor grid whose marginal will be the grid where the
+functional data will be defined (i.e. the argument `grid` in `fData`);
+`CholCov` the Cholesky factor of the discrete representation of the Covariance
+function over the tensor grid (optional and alternative to the argument `Cov`).
+The inner procedure to generate the synthetic population of gaussian functional
+data makes use of the Cholesky factor of `Cov`, hence by providing its Cholesky
+factor, if already present in the caller's scope, can save computing time.
+
+A built-in function can be used to generate exponential-like covariance functions,
+namely `exp_cov_function( grid, alpha, beta )`, generating the discretised
+version of a covariance of the form $C(s,t) = \alpha e^{-\beta | s - t | }$
+over a lattice given by the tensorisation of grid in `grid`.
+
+A comprehensive example is the following:
+
+```{r simulation_univariate, execute = FALSE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4}
+  N = 50
+  P = 1e3
+
+  grid = seq( 0, 1, length.out = P )
+  
+  Cov = exp_cov_function( grid, alpha = 0.2, beta  = 0.3 )
+  
+  Data = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
+  
+  fD = fData( grid, Data )
+  
+  plot( fD, main = 'Gaussian fData', xlab = 'grid', lwd = 2)
+```
+
+### Multivariate functional data
+The function `generate_gauss_mfdata( N, L, centerline, correlations, listCov = NULL, listCholCov = NULL)` can be used to generate a gaussian dataset of multivariate functional
+data. The model generating data is the following:
+
+$$ X_{i,k} = m_k(t) + \epsilon_k(t), \quad Cov(\epsilon_k(s),\epsilon_k(t))=C(s,t), \quad
+\forall i = 1, \ldots, N, \quad \forall k = 1, \ldots, L,$$
+
+where $Cor( \epsilon_j(t),\epsilon_l(t))=\rho_{j,l}$ specifies (__synchronous__)
+a correlation structure among the compoenents of the functional dataset.
+
+In order to use the function one should provide: `N`, the number of elelemnts to
+simulate; `L`, the number of components of the functional data; `centerline`, a
+matrix containing (by rows) the centerline for each component; `correlations`,
+a vector of length `1/2 * L * ( L - 1 )`, containing all the correlation 
+coefficients among the components; either `listCov` or `listCholCov`, a list
+containing either the discretised covariance functions over the tensorised
+grid where functional data will be defined), or their Cholesky factor.
+
+A comprehensive example is the following:
+```{r simulation_multivariate, execute = FALSE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4}
+  N = 10
+  P = 1e3
+
+  grid = seq( 0, 1, length.out = P )
+  
+  Cov_1 = exp_cov_function( grid, alpha = 0.1, beta  = 0.5 )
+  Cov_2 = exp_cov_function( grid, alpha = 0.5, beta = 0.1)
+  
+  centerline = matrix( c( sin( 2 * pi * grid ),
+                          cos( 2 * pi * grid ) ), nrow = 2, byrow = TRUE )
+  
+  Data = generate_gauss_mfdata( N, 2, centerline, 0.8, list( Cov, Cov ) )
+  
+  mfD = mfData( grid, Data )
+  
+  plot( mfD, main = list( 'Comp.1', 'Comp. 2'), xlab = 'grid', lwd = 2)
+```
+
+
 
 ## Visualization
 
