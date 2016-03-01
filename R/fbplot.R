@@ -89,7 +89,12 @@
 #'
 #' @references
 #'
-#' \bold{REFERENCES HERE!!}
+#'
+#'	Sun, Y., & Genton, M. G. (2012). Functional boxplots. Journal of
+#'	Computational and Graphical Statistics.
+#'
+#'	Sun, Y., & Genton, M. G. (2012). Adjusted functional boxplots for spatio-
+#'	temporal data visualization and outlier detection. Environmetrics, 23(1), 54-64.
 #'
 #' @examples
 #'

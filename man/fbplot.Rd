@@ -190,7 +190,11 @@ fbplot( mfD, Fvalue = 2.5, xlab = 'time', ylab = list( 'Values 1',
 #'
 }
 \references{
-\bold{REFERENCES HERE!!}
+Sun, Y., & Genton, M. G. (2012). Functional boxplots. Journal of
+	Computational and Graphical Statistics.
+
+	Sun, Y., & Genton, M. G. (2012). Adjusted functional boxplots for spatio-
+	temporal data visualization and outlier detection. Environmetrics, 23(1), 54-64.
 }
 \seealso{
 \code{\link{fData}}, \code{\link{MBD}}, \code{\link{BD}},
