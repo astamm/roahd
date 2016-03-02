@@ -40,7 +40,6 @@ Data_1 = t( sapply( runif( 10, 0, 4 ),
 Data_2 = t( sapply( runif( 10, 0, 4 ), 
                     function( phase ) log( grid + phase ) ) )
 
-
 # Building an fData object
 # The constructor takes a grid and a list of matrix-like structures for data values
 # (see help for more details on how to use the constructor)
@@ -55,15 +54,14 @@ sapply( mfD$fDList, class )
 plot( mfD, lwd = 2, main = 'Multivariate FD',
       xlab = 'time', ylab = list( 'Values 1', 'Values 2' ))
 
-## ----mfDataComponents, eval = FALSE, fig.width = 4, fig.height = 4, fig.align = 'center'----
-#  plot( mfD$fDList[[ 1 ]], main = 'First component',
-#        xlab = 'time', ylab = 'Values', lwd = 2 )
-#  
-#  # S3 method for mean of univariate functional data
-#  plot( mean( mfD$fDList[[ 1 ]] ), lwd = 2, col = 'black', add = TRUE )
+## ----mfDataComponents, autodep = TRUE, fig.width = 4, fig.height = 4, fig.align = 'center'----
+plot( mfD$fDList[[ 1 ]], main = 'First component', 
+      xlab = 'time', ylab = 'Values', lwd = 2 )
+
+# S3 method for mean of univariate functional data
+plot( mean( mfD$fDList[[ 1 ]] ), lwd = 2, col = 'black', add = TRUE )
 
 ## ----fDataToMfData, eval = FALSE-----------------------------------------
-#  
 #  fD_1 = fData( grid, Data_1 )
 #  
 #  fD_2 = fData( grid, Data_2 )

@@ -6,7 +6,7 @@ output:: rmarkdown::html_vignette
 bibliography: references.bib
 vignette: >
   %\VignetteIndexEntry{roahd}
-  %\VignetteEngine{knitr::knitr_notangle}
+  %\VignetteEngine{knitr::rmarkdown_notangle}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -118,12 +118,9 @@ very natural, but also allows for a seamless application of `S3` methods meant
 for `fData` on multivariate functional data components, making the exploration
 and manipulation of multivariate datasets rather easy:
 
-```{r mfDataComponents, autodep = TRUE, fig.width = 4, fig.height = 4, fig.align = 'center' }
-plot( mfD$fDList[[ 1 ]], main = 'First component', 
+```{r mfDataComponents, eval = TRUE, fig.width = 4, fig.height = 4, fig.align = 'center' }
+plot( mfD$fDList[[ 1 ]], main = 'First component',
       xlab = 'time', ylab = 'Values', lwd = 2 )
-
-# S3 method for mean of univariate functional data
-plot( mean( mfD$fDList[[ 1 ]] ), lwd = 2, col = 'black', add = TRUE )
 ```
 
 Moreover, `mfData` objects can be obtained also from a set of homogeneous 
