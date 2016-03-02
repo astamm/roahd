@@ -49,7 +49,7 @@ the adjustment:
  \item{"\code{trial_size}"}{: the number of elements in the gaussian
  population of functional data that will be simulated at each repetition of
  the adjustment procedure. Default is \code{5 * Data$N};}
- \item{"\code{TPR}"}{: the True Positive Rate of outleirs, i.e. the proportion
+ \item{"\code{TPR}"}{: the True Positive Rate of outliers, i.e. the proportion
  of observations in a dataset without amplitude outliers that have to be
  considered outliers. Default is \code{2 * pnorm( 4 * qnorm( 0.25 ) )};}
  \item{"\code{F_min}"}{: the minimum value of \eqn{F}, defining the left
@@ -88,8 +88,9 @@ case) to be used when displaying the functional boxplot.}
 }
 \value{
 Even when used in graphical way to plot the functional boxplot, the function
-returns a list of two vectors: the first, \code{Depths}, contains the depths
-of each element of the functional dataset; the second, \code{ID_out}, contains
+returns a list of three elements: the first, \code{Depths}, contains the depths
+of each element of the functional dataset; the second, \code{Fvalue}, is the
+value of F used to obtain the outliers, and the third, \code{ID_out}, contains
 the vector of indices of dataset's elements flagged as outliers (if any).
 }
 \description{

@@ -236,7 +236,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
       matplot( grid, t( fData$values[ - out$ID_SO, ] ), type = 'l', lty = 1,
                ylim = range( fData$values ),
                col = col_non_outlying, ... )
-      matplot( grid, t( toRowMatrixForm( fData$values[   out$ID_SO, ] ) ),
+      matplot( grid, t( toRowMatrixForm( fData$values[ out$ID_SO, ] ) ),
                type = 'l', lty = 1, lwd = 3, ylim = range( fData$values ),
                col = col_outlying, add = TRUE )
     } else {

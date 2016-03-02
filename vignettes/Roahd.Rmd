@@ -209,6 +209,26 @@ fD * ( 1 : N )
 fD / ( 1 : N )
 ```
 
+### Visualization
+`fData` and `mfData` objects can be visualised thanks to specific `S3` plotting
+methods, `plot.fData` and `plot.mfData`.
+
+The graphical parameters of these functions have been suitably customised in order
+to enhance the visualization of functions. In particular, as a default elements
+are plotted with continuous lines and an ad-hoc palette that helps differentiating
+them. As default x- and y-axis labels, as long as titles, are dropped so that
+plot's arguments calls are not displayed when no value is provided.
+
+In case of `mfData` the graphical window is split into a rectangular lattice to
+plot single dimensions. The rectangular frame has `floor( sqrt( L ) )` rows and
+`ceiling( x$L / floor( sqrt( x$L ) ) )` columns. If custom labels/titles are
+desired, they must be provided in the following way: since the grid is the same
+for all the dimensions, just one string is expected for x-axis
+(e.g. `xlab = 'grid'`), while either a single string or a list of `L` strings 
+(one for each dimension) is expected for both the y-label(s) and title(s). 
+In case just one string is passed to `plot.mfData`, the same value is used for 
+all the dimensions.
+
 ## Statistics
 
 ### Depths
@@ -282,7 +302,7 @@ used. The latter option allows to use ad-hoc set of weights, like in
 Suitable `S3` extensions to the functions for the computation of mean function 
 and median of functional datasets are also present.
 
-The sample mean of a functional dataset coincides with the __cross-sectional__
+The sample mean of a functional dataset coincides with the *cross-sectional*
 mean function, i.e. the function obtained by computing the mean across the whole
 dataset point-by-point along the grid where functional data are defined:
 
@@ -470,8 +490,8 @@ data. The model generating data is the following:
 $$ X_{i,k} = m_k(t) + \epsilon_k(t), \quad Cov(\epsilon_k(s),\epsilon_k(t))=C(s,t), \quad
 \forall i = 1, \ldots, N, \quad \forall k = 1, \ldots, L,$$
 
-where $Cor( \epsilon_j(t),\epsilon_l(t))=\rho_{j,l}$ specifies (__synchronous__)
-a correlation structure among the compoenents of the functional dataset.
+where $Cor( \epsilon_j(t),\epsilon_l(t))=\rho_{j,l}$ specifies a (*synchronous*) 
+correlation structure among the compoenents of the functional dataset.
 
 In order to use the function one should provide: `N`, the number of elelemnts to
 simulate; `L`, the number of components of the functional data; `centerline`, a
@@ -501,11 +521,103 @@ A comprehensive example is the following:
   plot( mfD, main = list( 'Comp.1', 'Comp. 2'), xlab = 'grid', lwd = 2)
 ```
 
+## Robustification
+
+### Functional boxplot
+
+An implementation of the functional boxplot, through the `S3` method `fbplot`, 
+allows for the detection of *amplitude* outliers in univariate and multivariate 
+functional datasets [see @Sun_Genton_2011].
+
+`fbplot` can be used to compute the set of indices inside a dataset marking
+outlying observations. If used in graphical way (default behaviour), it also 
+plots the functional boxplot of the dataset provided.
+
+The functional boxplot is obtained by ranking functions from the center of the
+distribution outwards thanks to a depth definition, computing the region of 50%
+most central functions and inflating such region by a factor `F`. Whichever
+function crossing these boundaries is flagged as outlier. The default value for
+`F` is `1.5`, otherwise it can be set with the argument `Fvalue`.
+
+The argument `Depths` can take either the name of the function to call in order
+to compute the depths (default is `MBD`), or a vector containing the dephts 
+values for the provided dataset.
+
+An example is:
+
+```{r fbplot_fData, fig.align='center', fig.height=5, fig.width=7, cache=TRUE, results='hide'}
+  N = 1e2
+  P = 1e2
+  
+  grid = seq( 0, 1, length.out = P )
+  
+  Cov = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+  
+  Data = generate_gauss_fdata( N, sin( 2 * pi * grid ), Cov )
+  
+  fD = fData( grid, Data )
+  
+  Data = generate_gauss_mfdata( N, 2, matrix( sin( 2 * pi * grid ), nrow = 2, ncol = P, byrow = TRUE ), 0.6, listCov = list( Cov, Cov ) )
+
+  mfD = mfData( grid, Data )
+  
+  fbplot( fD, main = 'Fbplot', Fvalue = 3.5 )
+
+  fbplot( mfD, main = list( 'Comp. 1', 'Comp. 2' ), Fvalue = 3.5 )
+```
+
+The method `fboplot.fData` also allows to automatically compute the best 
+adjustment factor `F` that yields a desired proportion of outliers 
+(True Positive Rate, `TPR`) out of a Gaussian dataset with same center and 
+covariance function as the `fData` object [see @Sun_Genton_2012_boxplot].
+
+Such automatic tuning involves the simulation of a number `N_trials` of
+populations of Gaussian functional data with same center and covariance as the
+original dataset (the covariance is robustly estimated with `robustbase::covOGK`)
+of size `trials_size`, and the computation of `N_trials` values for `Fvalue` 
+such that the desired proportion `TPR` of observations is flagged as outliers.
+The optimal value of `Fvalue` for the original population is then found as the 
+average of the previously computed values `Fvalue`.
+The computation of the optimal `Fvalue` at each iteration of the procedure is
+carried out exploiting the zero-finding algorithm in `stats::uniroot` (Brent's
+method).
+
+The parameters to control the adjustment procedure can be passed through the
+argument `adjust`, whose default is `FALSE` and otherwise is a list with 
+(some of) the fields:
+
+* `N_trials`: the number of repetitions of the adujustment procedure based on 
+the simulation of a gaussisan population of functional data, each one producing
+an adjusted value of F, which will lead to the averaged adjusted value `Fvalue`. 
+Default is 20;
+* `trial_size`: the number of elements in the gaussian population of functional 
+data that will be simulated at each repetition of the adjustment procedure. 
+Default is `5 * Data$N`;
+* `TPR`: the True Positive Rate of outliers, i.e. the proportion of observations 
+in a dataset without amplitude outliers that have to be considered outliers. 
+Default is `2 * pnorm( 4 * qnorm( 0.25 ) )`;
+* `F_min`: the minimum value of `Fvalue`, defining the left boundary for the 
+optimisation problem aimed at finding, for a given dataset of simulated gaussian 
+data associated to Data, the optimal value of `Fvalue`. Default is `0.5`;
+* `F_max`: the maximum value of `Fvalue`, defining the right boundary for the 
+optimisation problem aimed at finding, for a given dataset of simulated gaussian 
+data associated to Data, the optimal value of `Fvalue`. Default is `5`;
+* `tol`: the tolerance to be used in the optimisation problem aimed at finding, 
+for a given dataset of simulated gaussian data associated to Data, the optimal 
+value of `Fvalue`. Default is `1e-3`;
+* `maxiter`: the maximum number of iterations to solve the optimisation problem 
+aimed at finding, for a given dataset of simulated gaussian data associated to 
+`Data`, the optimal value of `Fvalue`. Default is `100`;
+* `VERBOSE`: a parameter controlling the verbosity of the adjustment process;
 
 
-## Visualization
+```{r fbplot_fData_adjust, eval = TRUE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4, cache = TRUE}
+  fbplot( fD, adjust = list( N_trials = 10, trials_size = N, TPR = 0.007, F_min = 1, F_max = 10 ), xlab = 'grid', ylab = 'values', main = 'Adjusted functional boxplot' )
+```
 
+### Outliergram 
 
 
 
 ## References
+
