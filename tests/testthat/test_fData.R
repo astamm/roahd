@@ -138,6 +138,12 @@ test_that( 'Plot of mfData object',
                                                                    'values' ),
                                        main = list( 'First Component',
                                                     'Second Component' ) ) ) )
+mfD = mfData( time_grid,
+              list( Data_1, Data_2 ))
+
+test_that( 'Plotting a component',
+           expect_silent( plot( mfD$fDList[[ 1 ]] ) ) )
+
 
 test_that( 'As.mfdata.list',
            expect_silent( as.mfData( list( fData( time_grid,

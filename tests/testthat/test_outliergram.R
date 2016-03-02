@@ -40,14 +40,14 @@ fD = fData( grid, Data )
 
 test_that( 'Outliergram - no adjustment',
            expect_equal(
-             outliergram( fD, display = TRUE )
+             outliergram( fD, display = TRUE )$ID_outliers
              ,
              c( 31,  78, 117, 122, 152, 183, 201, 202, 203, 204 ) ) )
 
 test_that( 'Outliergram - no adjustment 2',
            expect_equal(
              outliergram( fD, Fvalue = 10,
-                          display = TRUE ),
+                          display = TRUE )$ID_outliers,
              c( 201, 202, 203, 204 ) ) )
 
 
@@ -58,6 +58,6 @@ test_that( 'Outliergram - with adjustment',
                                          trial_size = 5 * nrow( Data ),
                                          TPR = 0.01,
                                          VERBOSE = FALSE ),
-                          display = TRUE ),
+                          display = TRUE )$ID_outliers,
              c( 78, 117, 183, 201, 202, 203, 204 ) ) )
 

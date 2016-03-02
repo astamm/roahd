@@ -5,8 +5,8 @@ date: "`r Sys.Date()`"
 output:: rmarkdown::html_vignette
 bibliography: references.bib
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteIndexEntry{roahd}
+  %\VignetteEngine{knitr::knitr_notangle}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -90,7 +90,6 @@ constant step size `h` and the number of grid points `P`; the field
 An `mfData` object, instead, can be created in this way:
 
 ```{r mfData, cache = TRUE, fig.width = 7, fig.height = 4, fig.align = 'center' }
-
 # Creating some values for first component of the dataset
 Data_1 = t( sapply( runif( 10, 0, 4 ), 
                     function( phase ) sin( 2 * pi * grid + phase ) ) )
@@ -98,7 +97,6 @@ Data_1 = t( sapply( runif( 10, 0, 4 ),
 # Creating some values of functions for  
 Data_2 = t( sapply( runif( 10, 0, 4 ), 
                     function( phase ) log( grid + phase ) ) )
-
 
 # Building an fData object
 # The constructor takes a grid and a list of matrix-like structures for data values
@@ -113,7 +111,6 @@ sapply( mfD$fDList, class )
 
 plot( mfD, lwd = 2, main = 'Multivariate FD',
       xlab = 'time', ylab = list( 'Values 1', 'Values 2' ))
-
 ```
 
 The fact that `mfData` components are `fData` obejcts is indeed conceptyally
@@ -121,8 +118,7 @@ very natural, but also allows for a seamless application of `S3` methods meant
 for `fData` on multivariate functional data components, making the exploration
 and manipulation of multivariate datasets rather easy:
 
-```{r mfDataComponents, fig.width = 4, fig.height = 4, fig.align = 'center' }
-
+```{r mfDataComponents, autodep = TRUE, fig.width = 4, fig.height = 4, fig.align = 'center' }
 plot( mfD$fDList[[ 1 ]], main = 'First component', 
       xlab = 'time', ylab = 'Values', lwd = 2 )
 
@@ -134,7 +130,6 @@ Moreover, `mfData` objects can be obtained also from a set of homogeneous
 `fData` objects, i.e. of equal sample size and defined on the same grid:
 
 ```{r fDataToMfData, eval = FALSE }
-
 fD_1 = fData( grid, Data_1 )
 
 fD_2 = fData( grid, Data_2 )
@@ -574,7 +569,7 @@ covariance function as the `fData` object [see @Sun_Genton_2012_boxplot].
 Such automatic tuning involves the simulation of a number `N_trials` of
 populations of Gaussian functional data with same center and covariance as the
 original dataset (the covariance is robustly estimated with `robustbase::covOGK`)
-of size `trials_size`, and the computation of `N_trials` values for `Fvalue` 
+of size `trial_size`, and the computation of `N_trials` values for `Fvalue` 
 such that the desired proportion `TPR` of observations is flagged as outliers.
 The optimal value of `Fvalue` for the original population is then found as the 
 average of the previously computed values `Fvalue`.
@@ -612,11 +607,89 @@ aimed at finding, for a given dataset of simulated gaussian data associated to
 
 
 ```{r fbplot_fData_adjust, eval = TRUE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4, cache = TRUE}
-  fbplot( fD, adjust = list( N_trials = 10, trials_size = N, TPR = 0.007, F_min = 1, F_max = 10 ), xlab = 'grid', ylab = 'values', main = 'Adjusted functional boxplot' )
+  fbplot( fD, adjust = list( N_trials = 15, trial_size = N, TPR = 0.007, F_min = 0.1, F_max = 20 ), xlab = 'grid', ylab = 'values', main = 'Adjusted functional boxplot' )
 ```
 
-### Outliergram 
+### Outliergram
+A method that can be used to detect **shape outliers** is the outliergram [see
+@arribasgil_romo_2014], based on the computation of MBD and MEI of univariate
+functional data. Such pairs are compared to a limiting parabola, where they 
+should be placed in case of non-crossing data, and outliers are then identified
+applying a thresholding rule.
 
+The function `outliergram` displays the outliergram of a univariate functional
+dataset of class `fData`, and returns a vector of IDs indicating the shape
+outlying observations in the dataset.
+
+```{r outliergram, cache = FALSE, fig.align = 'center', fig.width = 7, fig.height = 4 }
+set.seed( 1618 )
+
+N = 200
+P = 200
+N_extra = 4
+
+grid = seq( 0, 1, length.out = P )
+
+Cov = exp_cov_function( grid, alpha = 0.2, beta = 0.5 )
+
+Data = generate_gauss_fdata( N, sin( 4 * pi * grid ), Cov )
+
+Data_extra = array( 0, dim = c( N_extra, P ) )
+
+Data_extra[ 1, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid + pi / 2 ), Cov )
+
+Data_extra[ 2, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid - pi / 2 ), Cov )
+
+Data_extra[ 3, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid + pi/ 3 ), Cov )
+
+Data_extra[ 4, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid - pi / 3), Cov )
+
+fD = fData( grid, rbind( Data, Data_extra ) )
+
+outliergram( fD, display = TRUE )
+outliergram( fD, Fvalue = 10, display = TRUE )
+```
+
+Similarly to the functional boxplot, also the outliergram makes use of an `Fvalue`
+constant controlling the check by which observations are flagged as outliers
+[see @arribasgil_romo_2014 for more details]. Such value can be provided as an 
+argument (default is `1.5`), or can be determined by the function itself, through
+an adjustment procedure similar to that of `fbplot.fData`. In particolar, whenever
+`adjust` is not `FALSE`, `adjust` should be a list containing the fields 
+controlling the adjustment:
+
+* `N_trials` the number of repetitions of the adujustment
+procedure based on the simulation of a gaussisan population of functional
+data, each one producing an adjusted value of `Fvalue`, which will lead
+to the averaged adjusted value. Default is `20`;
+* `trial_size` the number of elements in the gaussian
+population of functional data that will be simulated at each repetition of
+the adjustment procedure. Default is `5 * fData$N`;
+* `TPR` the True Positive Rate of outleirs, i.e. the proportion
+of observations in a dataset without shape outliers that have to be considered
+outliers. Default is `2 * pnorm( 4 * qnorm( 0.25 ) )`;
+* `F_min` the minimum value of `Fvalue`, defining the left
+boundary for the optimisation problem aimed at finding, for a given dataset
+of simulated gaussian data associated to `fData`, the optimal value of
+`Fvalue`. Default is `0.5`;
+* `F_max` the maximum value of `Fvalue`, defining the right
+boundary for the optimisation problem aimed at finding, for a given dataset
+of simulated gaussian data associated to `fData`, the optimal value of
+`Fvalue`. Default is `20`;}
+* `tol` the tolerance to be used in the optimisation problem
+aimed at finding, for a given dataset of simulated gaussian data associated
+to `fData`, the optimal value of `Fvalue`. Default is `1e-3`;
+* `maxiter` the maximum number of iterations to solve the
+optimisation problem aimed at finding, for a given dataset of simulated
+gaussian data associated to `fData`, the optimal value of `Fvalue`.
+Default is `100`;
+* `VERBOSE` a parameter controlling the verbosity of the
+adjustment process;
+
+
+```{r outliergram_adjusted, fig.alicn = 'center', fig.width = 7, fig.height = 4 }
+outliergram( fD, adjust = list( N_trials = 10, trial_size = 5 * nrow( Data ), TPR = 0.01, VERBOSE = FALSE ), display = TRUE )
+```
 
 
 ## References

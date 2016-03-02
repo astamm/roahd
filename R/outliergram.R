@@ -10,7 +10,7 @@
 #' When the adjustment option is selected, the value of \eqn{F} is optimised for
 #' the univariate functional dataset provided with \code{fData}. In practice,
 #' a number \code{adjust$N_trials} of times a synthetic population
-#' (of size \code{adjust$tiral_size} with the same covariance (robustly
+#' (of size \code{adjust$trial_size} with the same covariance (robustly
 #' estimated from data) and centerline as \code{fData} is simulated without
 #' outliers and each time an optimised value \eqn{F_i} is computed so that a
 #' given proportion (\code{adjust$TPR}) of observations is flagged as outliers.
@@ -77,14 +77,21 @@
 #' @param display either a logical value indicating wether you want the
 #' outliergram to be displayed, or the number of the graphical device
 #' where you want the outliergram to be displayed.
+#' @param xlab a list of two labels to use on the x axis when displaying the
+#' functional dataset and the outliergram
+#' @param ylab a list of two labels to use on the y axis when displaying the
+#' functional dataset and the outliergram;
+#' @param main a list of two titles to be used on the plot of the functional
+#' dataset and the outliergram;
 #' @param ... additional graphical parameters to be used \emph{only} in the plot
 #' of the functional dataset
 #'
 #' @return
 #'
 #' Even when used graphically to plot the outliergram, the function returns a
-#' numeric vector containing the IDs of observations in \code{fData} that are
-#' considered as shape outliers.
+#' list containing a numeric vector with the IDs of observations in
+#' \code{fData} that are considered as shape outliers and the value of
+#' \code{Fvalue} that has been used in determining them.
 #'
 #' @references
 #'
@@ -94,11 +101,62 @@
 #' @seealso \code{\link{fData}}, \code{\link{MEI}}, \code{\link{MBD}},
 #' \code{\link{fbplot}}
 #'
+#' @examples
+#'
+#'
+#' set.seed( 1618 )
+#'
+#' N = 200
+#' P = 200
+#' N_extra = 4
+#'
+#' grid = seq( 0, 1, length.out = P )
+#'
+#' Cov = exp_cov_function( grid, alpha = 0.2, beta = 0.8 )
+#'
+#' Data = generate_gauss_fdata( N,
+#'                              centerline = sin( 4 * pi * grid ),
+#'                              Cov = Cov )
+#'
+#' Data_extra = array( 0, dim = c( N_extra, P ) )
+#'
+#' Data_extra[ 1, ] = generate_gauss_fdata( 1,
+#'                                          sin( 4 * pi * grid + pi / 2 ),
+#'                                          Cov = Cov )
+#'
+#' Data_extra[ 2, ] = generate_gauss_fdata( 1,
+#'                                          sin( 4 * pi * grid - pi / 2 ),
+#'                                          Cov = Cov )
+#'
+#' Data_extra[ 3, ] = generate_gauss_fdata( 1,
+#'                                          sin( 4 * pi * grid + pi/ 3 ),
+#'                                          Cov = Cov )
+#'
+#' Data_extra[ 4, ] = generate_gauss_fdata( 1,
+#'                                          sin( 4 * pi * grid - pi / 3),
+#'                                          Cov = Cov )
+#' Data = rbind( Data, Data_extra )
+#'
+#' fD = fData( grid, Data )
+#'
+#' outliergram( fD, display = TRUE )
+#'
+#' outliergram( fD, Fvalue = 10, display = TRUE )
+#'
+#' outliergram( fD,
+#'              adjust = list( N_trials = 10,
+#'                             trial_size = 5 * nrow( Data ),
+#'                             TPR = 0.01,
+#'                             VERBOSE = FALSE ),
+#'              display = TRUE )
+#'
+#'
 #' @export
 outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
                         q_low = 0, q_high = 1, p_check = 0.05,
                         Fvalue = 1.5,
-                        adjust = FALSE, display = TRUE, ... )
+                        adjust = FALSE, display = TRUE,
+                        xlab = NULL, ylab = NULL, main = NULL, ... )
 {
   N = fData$N
 
@@ -218,6 +276,22 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
   # Plot
   if( display )
   {
+
+    if( is.null( xlab ) )
+    {
+      xlab = list( '', 'MEI' )
+    }
+
+    if( is.null( ylab ) )
+    {
+      ylab = list( '', 'MBD' )
+    }
+
+    if( is.null( main ) )
+    {
+      main = list( '', 'Outliergram' )
+    }
+
     # Setting up palettes
     col_non_outlying = scales::hue_pal( h = c( 180, 270 ),
                                         l = 60 )( length( out$ID_NO ) )
@@ -235,14 +309,22 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
     {
       matplot( grid, t( fData$values[ - out$ID_SO, ] ), type = 'l', lty = 1,
                ylim = range( fData$values ),
-               col = col_non_outlying, ... )
+               col = col_non_outlying,
+               xlab = xlab[[1]],
+               ylab = ylab[[1]],
+               main = main[[1]],
+               ... )
       matplot( grid, t( toRowMatrixForm( fData$values[ out$ID_SO, ] ) ),
                type = 'l', lty = 1, lwd = 3, ylim = range( fData$values ),
                col = col_outlying, add = TRUE )
     } else {
       matplot( grid, t( fData$values ), type = 'l', lty = 1,
                ylim = range( fData$values ),
-               col = col_non_outlying, ... )
+               col = col_non_outlying,
+               xlab = xlab[[1]],
+               ylab = ylab[[1]],
+               main = main[[1]],
+               ... )
     }
 
 
@@ -268,7 +350,9 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
     plot( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2,
           lty = 2, type = 'l', col = 'darkblue', lwd = 2,
           ylim = c( 0, a_0_2 + a_1 / 2 + a_0_2 * N^2/4 ),
-          main = 'Outliergram', xlab = 'MEI', ylab = 'MBD' )
+          xlab = xlab[[2]],
+          ylab = ylab[[2]],
+          main = main[[2]] )
 
     if( length( out$ID_SO ) > 0 )
     {
@@ -304,7 +388,8 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
 
   }
 
-  return( out$ID_SO )
+  return( list( Fvalue = Fvalue,
+                ID_outliers = out$ID_SO ) )
 }
 
 .outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,

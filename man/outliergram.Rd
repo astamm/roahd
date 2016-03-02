@@ -6,7 +6,7 @@
 \usage{
 outliergram(fData, MBD_data = NULL, MEI_data = NULL, q_low = 0,
   q_high = 1, p_check = 0.05, Fvalue = 1.5, adjust = FALSE,
-  display = TRUE, ...)
+  display = TRUE, xlab = NULL, ylab = NULL, main = NULL, ...)
 }
 \arguments{
 \item{fData}{the univariate functional dataset whose outliergram has to be
@@ -77,13 +77,23 @@ parameters required by the adjustment.
 outliergram to be displayed, or the number of the graphical device
 where you want the outliergram to be displayed.}
 
+\item{xlab}{a list of two labels to use on the x axis when displaying the
+functional dataset and the outliergram}
+
+\item{ylab}{a list of two labels to use on the y axis when displaying the
+functional dataset and the outliergram;}
+
+\item{main}{a list of two titles to be used on the plot of the functional
+dataset and the outliergram;}
+
 \item{...}{additional graphical parameters to be used \emph{only} in the plot
 of the functional dataset}
 }
 \value{
 Even when used graphically to plot the outliergram, the function returns a
-numeric vector containing the IDs of observations in \code{fData} that are
-considered as shape outliers.
+list containing a numeric vector with the IDs of observations in
+\code{fData} that are considered as shape outliers and the value of
+\code{Fvalue} that has been used in determining them.
 }
 \description{
 This function performs the outliergram of a univariate functional dataset,
@@ -96,13 +106,60 @@ under assumption of gaussianity.
 When the adjustment option is selected, the value of \eqn{F} is optimised for
 the univariate functional dataset provided with \code{fData}. In practice,
 a number \code{adjust$N_trials} of times a synthetic population
-(of size \code{adjust$tiral_size} with the same covariance (robustly
+(of size \code{adjust$trial_size} with the same covariance (robustly
 estimated from data) and centerline as \code{fData} is simulated without
 outliers and each time an optimised value \eqn{F_i} is computed so that a
 given proportion (\code{adjust$TPR}) of observations is flagged as outliers.
 The final value of \code{F} for the outliergram is determined as an average
 of \eqn{F_1, F_2, \ldots, F_{N_{trials}}}. At each time step the optimisation
 problem is solved using \code{stats::uniroot} (Brent's method).
+}
+\examples{
+set.seed( 1618 )
+
+N = 200
+P = 200
+N_extra = 4
+
+grid = seq( 0, 1, length.out = P )
+
+Cov = exp_cov_function( grid, alpha = 0.2, beta = 0.8 )
+
+Data = generate_gauss_fdata( N,
+                             centerline = sin( 4 * pi * grid ),
+                             Cov = Cov )
+
+Data_extra = array( 0, dim = c( N_extra, P ) )
+
+Data_extra[ 1, ] = generate_gauss_fdata( 1,
+                                         sin( 4 * pi * grid + pi / 2 ),
+                                         Cov = Cov )
+
+Data_extra[ 2, ] = generate_gauss_fdata( 1,
+                                         sin( 4 * pi * grid - pi / 2 ),
+                                         Cov = Cov )
+
+Data_extra[ 3, ] = generate_gauss_fdata( 1,
+                                         sin( 4 * pi * grid + pi/ 3 ),
+                                         Cov = Cov )
+
+Data_extra[ 4, ] = generate_gauss_fdata( 1,
+                                         sin( 4 * pi * grid - pi / 3),
+                                         Cov = Cov )
+Data = rbind( Data, Data_extra )
+
+fD = fData( grid, Data )
+
+outliergram( fD, display = TRUE )
+
+outliergram( fD, Fvalue = 10, display = TRUE )
+
+outliergram( fD,
+             adjust = list( N_trials = 10,
+                            trial_size = 5 * nrow( Data ),
+                            TPR = 0.01,
+                            VERBOSE = FALSE ),
+             display = TRUE )
 }
 \references{
 Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and visualization

@@ -32,7 +32,6 @@ str( fD )
 plot( fD, main = 'Univariate FD', xlab = 'time [s]', ylab = 'values', lwd = 2 )
 
 ## ----mfData, cache = TRUE, fig.width = 7, fig.height = 4, fig.align = 'center'----
-
 # Creating some values for first component of the dataset
 Data_1 = t( sapply( runif( 10, 0, 4 ), 
                     function( phase ) sin( 2 * pi * grid + phase ) ) )
@@ -56,14 +55,12 @@ sapply( mfD$fDList, class )
 plot( mfD, lwd = 2, main = 'Multivariate FD',
       xlab = 'time', ylab = list( 'Values 1', 'Values 2' ))
 
-
-## ----mfDataComponents, fig.width = 4, fig.height = 4, fig.align = 'center'----
-
-plot( mfD$fDList[[ 1 ]], main = 'First component', 
-      xlab = 'time', ylab = 'Values', lwd = 2 )
-
-# S3 method for mean of univariate functional data
-plot( mean( mfD$fDList[[ 1 ]] ), lwd = 2, col = 'black', add = TRUE )
+## ----mfDataComponents, eval = FALSE, fig.width = 4, fig.height = 4, fig.align = 'center'----
+#  plot( mfD$fDList[[ 1 ]], main = 'First component',
+#        xlab = 'time', ylab = 'Values', lwd = 2 )
+#  
+#  # S3 method for mean of univariate functional data
+#  plot( mean( mfD$fDList[[ 1 ]] ), lwd = 2, col = 'black', add = TRUE )
 
 ## ----fDataToMfData, eval = FALSE-----------------------------------------
 #  
@@ -245,10 +242,41 @@ plot( fD[ , 1 : 20 ], main = 'Zooming in', lwd = 2 )
 
   mfD = mfData( grid, Data )
   
-  fbplot( fD, main = 'Fbplot', Fvalue = 4 )
+  fbplot( fD, main = 'Fbplot', Fvalue = 3.5 )
 
-  fbplot( mfD, main = list( 'Comp. 1', 'Comp. 2' ), Fvalue = 4 )
+  fbplot( mfD, main = list( 'Comp. 1', 'Comp. 2' ), Fvalue = 3.5 )
 
 ## ----fbplot_fData_adjust, eval = TRUE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4, cache = TRUE----
-  fbplot( fD, adjust = list( N_trials = 5, trials_size = 5 * N, TPR = 0.007, F_min = 1, F_max = 10 ) )
+  fbplot( fD, adjust = list( N_trials = 15, trial_size = N, TPR = 0.007, F_min = 0.1, F_max = 20 ), xlab = 'grid', ylab = 'values', main = 'Adjusted functional boxplot' )
+
+## ----outliergram, cache = FALSE, fig.align = 'center', fig.width = 7, fig.height = 4----
+set.seed( 1618 )
+
+N = 200
+P = 200
+N_extra = 4
+
+grid = seq( 0, 1, length.out = P )
+
+Cov = exp_cov_function( grid, alpha = 0.2, beta = 0.5 )
+
+Data = generate_gauss_fdata( N, sin( 4 * pi * grid ), Cov )
+
+Data_extra = array( 0, dim = c( N_extra, P ) )
+
+Data_extra[ 1, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid + pi / 2 ), Cov )
+
+Data_extra[ 2, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid - pi / 2 ), Cov )
+
+Data_extra[ 3, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid + pi/ 3 ), Cov )
+
+Data_extra[ 4, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid - pi / 3), Cov )
+
+fD = fData( grid, rbind( Data, Data_extra ) )
+
+outliergram( fD, display = TRUE )
+outliergram( fD, Fvalue = 10, display = TRUE )
+
+## ----outliergram_adjusted, fig.alicn = 'center', fig.width = 7, fig.height = 4----
+outliergram( fD, adjust = list( N_trials = 10, trial_size = 5 * nrow( Data ), TPR = 0.01, VERBOSE = FALSE ), display = TRUE )
 
