@@ -5,3 +5,4 @@ lattice
 Rcpp
 pryr
 roahd
+devtools

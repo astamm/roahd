@@ -48,7 +48,7 @@ the adjustment:
  to the averaged adjusted value \eqn{\bar{F}}. Default is 20;}
  \item{"\code{trial_size}"}{: the number of elements in the gaussian
  population of functional data that will be simulated at each repetition of
- the adjustment procedure. Default is \code{5 * Data$N};}
+ the adjustment procedure. Default is \code{Data$N};}
  \item{"\code{TPR}"}{: the True Positive Rate of outliers, i.e. the proportion
  of observations in a dataset without amplitude outliers that have to be
  considered outliers. Default is \code{2 * pnorm( 4 * qnorm( 0.25 ) )};}
