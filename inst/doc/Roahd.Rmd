@@ -1,0 +1,696 @@
+---
+title: "roahd"
+author: "Nicholas Tarabelloni"
+date: "`r Sys.Date()`"
+output:: rmarkdown::html_vignette
+bibliography: references.bib
+vignette: >
+  %\VignetteIndexEntry{roahd}
+  %\VignetteEngine{knitr::rmarkdown_notangle}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+
+Package **roahd** (**RO**bust **A**nalysis of **H**igh dimensional **D**ata) is 
+an `R` package meant to gather recently proposed statistical methods to deal 
+with the robust analysis of functional data.
+
+The package contains an implementation of quantitative methods, based on
+functional depths and indices, on top of which are built some graphical methods
+(funcitonal boxplot and outliergram) useful to carry out an explorative analysis
+of a functional dataset and to robustify it from shape and magnitude outliers.
+
+Both univariate and multivariate functional data are supported in the package,
+whose functions have been implemented with a particular emphasis on computational
+efficiency, in order to allow the processing of high-dimensional dataset.
+
+## Representation of functional data
+
+The package has been designed to work with a representation of functional data
+through dedicated, simple and handy `S3` classes, namely `fData` for univariate
+functional data and `mfData` for multivariate functional data.
+
+The use of `S3` classes is exploited by suitable `S3` methods implementing the
+statistical features of the package, that are able to dispatch the correct
+method call depending on the class of their functional data argument.
+
+### fData
+
+`S3` class `fData` implements a representaion of univariate functional datasets.
+They are obtained once specifying, for each observation in the functional
+dataset, a set of measurements over a discrete grid, representing the continuous
+variable indexing the functional dataset (e.g. time).
+
+In other words, if we denote by $T = [t_0, t_1, \ldots, t_{P-1}]$ an evenly spaced
+grid ($t_i - t_{i-1} = h > 0$), and imagine to deal with a dataset 
+$D_{i,j} = X_i(t_j)$, $\forall i = 1, \ldots, N$ and $\forall j=0, \ldots, P-1$,
+the object `fData` is built starting from the grid and the values in the 
+following way: 
+
+```{r fData, fig.align='center', fig.height=4, fig.width=4, cache=TRUE}
+
+library( roahd )
+
+# The number of observations in the functional dataset.
+N = 5
+# The number of points in the 1D grid where the functional data are measured.
+P = 1e2
+# The previous two variable names are used consistently throughout the tutorial
+# and the package's documentation to indicate the number of observations and the
+# grid size.
+
+# The grid over which the functional dataset is defined
+grid = seq( 0, 1, length.out = P )
+
+# Creating the values of the functional dataset
+Data = matrix( c( sin( 2 * pi * grid  ),
+                  cos( 2 * pi * grid ),
+                  4 * grid * ( 1 - grid ),
+                  tan( grid ),
+                  log( grid ) ),
+              nrow = N, ncol = P, byrow = TRUE )
+
+# Building an fData object
+# The constructor takes a grid and a matrix-like structure for data values
+# (see help for more details on how to use the constructor)
+fD = fData( grid, Data )
+
+# Inspecting the structure of an fData object
+str( fD )
+
+plot( fD, main = 'Univariate FD', xlab = 'time [s]', ylab = 'values', lwd = 2 )
+```
+Thus, an object `fData` is a list containing: the fields `t0`, `tP`, the defining
+the starting and end point of the one dimensional grid of the `fData`, the
+constant step size `h` and the number of grid points `P`; the field 
+
+### mfData
+
+An `mfData` object, instead, can be created in this way:
+
+```{r mfData, cache = TRUE, fig.width = 7, fig.height = 4, fig.align = 'center' }
+# Creating some values for first component of the dataset
+Data_1 = t( sapply( runif( 10, 0, 4 ), 
+                    function( phase ) sin( 2 * pi * grid + phase ) ) )
+
+# Creating some values of functions for  
+Data_2 = t( sapply( runif( 10, 0, 4 ), 
+                    function( phase ) log( grid + phase ) ) )
+
+# Building an fData object
+# The constructor takes a grid and a list of matrix-like structures for data values
+# (see help for more details on how to use the constructor)
+mfD = mfData( grid, list( Data_1, Data_2 ) )
+
+str( mfD )
+
+# Each component of the mfData object is a fData object 
+sapply( mfD$fDList, class )
+
+
+plot( mfD, lwd = 2, main = 'Multivariate FD',
+      xlab = 'time', ylab = list( 'Values 1', 'Values 2' ))
+```
+
+The fact that `mfData` components are `fData` obejcts is indeed conceptyally
+very natural, but also allows for a seamless application of `S3` methods meant 
+for `fData` on multivariate functional data components, making the exploration
+and manipulation of multivariate datasets rather easy:
+
+```{r mfDataComponents, eval = TRUE, fig.width = 4, fig.height = 4, fig.align = 'center' }
+plot( mfD$fDList[[ 1 ]], main = 'First component',
+      xlab = 'time', ylab = 'Values', lwd = 2 )
+```
+
+Moreover, `mfData` objects can be obtained also from a set of homogeneous 
+`fData` objects, i.e. of equal sample size and defined on the same grid:
+
+```{r fDataToMfData, eval = FALSE }
+fD_1 = fData( grid, Data_1 )
+
+fD_2 = fData( grid, Data_2 )
+
+mfD = as.mfData( list( fD_1, fD_2 ) ) 
+
+mfD = as.mfData( lapply( 1 : 10, function( i )( fD_1 ) ) )
+```
+
+### Subsetting fData
+
+`fData` objects can be subset using a suitably overloaded operator `[.fData`,
+that allows for the use of standard slices of `matrix` and `array` classes also
+for `fData`.
+
+```{r fData_subset_1, eval = FALSE }
+
+# Subseting fData and returning result in matrix form
+fD[ 1 , 1, as_fData = FALSE ]
+
+fD[ 1, , as_fData = FALSE ]
+
+fD[ 2, 10 : 20, as_fData = FALSE ]
+
+fD[ , 10, as_fData = FALSE ]
+```
+```{r fData_subset_2, fig.align='center', fig.width=7, fig.height=4, cache=TRUE, }
+# As default behaviour the subset is returned in fData form
+par( mfrow = c(1,2) )
+plot( fD, main = 'Original dataset', lwd = 2 )
+plot( fD[ , 1 : 20 ], main = 'Zooming in', lwd = 2 )
+```
+
+### Algebra
+
+An algebra of `fData` obejcts is also implemented, making it easy to sum,
+subtract, multiply and divide these objects by meaningful and compliant
+structures.
+
+**Sums** and **subtractions**, available through `+` and `-` operators (see help at
+`+-.fData`), allow for sums of a `fData` on the left hand side and a compliant
+structure on the right hand side. This can be either another `fData` of same
+sample size and defined over the same grid, or a 1D/2D data structure with a
+number of columns equal `fData`'s grid length (i.e. `P`), and number of rows
+equal to `fData`'s sample size (i.e. `N`) or equal to one (in this case the only
+observation available is recycled `N` times). The operataions are then performed
+element-wise between the lhs and rhs. 
+
+```{r fData_algebra_1, eval = FALSE }
+fD + fD
+
+fD + matrix( 1, nrow = N, ncol = P )
+
+fD + array( 2, dim = c( N, P ) )
+
+fD + 1 : P 
+```
+**Multiplication** and **division**, instead, is implemented only for an `fData` 
+left hand side and a numeric variable or numeric vector right hand side. In the 
+first case, each function in the functional dataset is multiplied/divided by the
+specified quantity; in the second case, specifying a vector of length `N`, the
+multiplication/division of each functional observation is carried out by the
+corresponding quantity in the vector, in an element-wise way:
+
+```{r fData_algebra_2, eval = FALSE}
+fD * 2
+
+fD / 3
+
+fD * ( 1 : N )
+
+fD / ( 1 : N )
+```
+
+### Visualization
+`fData` and `mfData` objects can be visualised thanks to specific `S3` plotting
+methods, `plot.fData` and `plot.mfData`.
+
+The graphical parameters of these functions have been suitably customised in order
+to enhance the visualization of functions. In particular, as a default elements
+are plotted with continuous lines and an ad-hoc palette that helps differentiating
+them. As default x- and y-axis labels, as long as titles, are dropped so that
+plot's arguments calls are not displayed when no value is provided.
+
+In case of `mfData` the graphical window is split into a rectangular lattice to
+plot single dimensions. The rectangular frame has `floor( sqrt( L ) )` rows and
+`ceiling( x$L / floor( sqrt( x$L ) ) )` columns. If custom labels/titles are
+desired, they must be provided in the following way: since the grid is the same
+for all the dimensions, just one string is expected for x-axis
+(e.g. `xlab = 'grid'`), while either a single string or a list of `L` strings 
+(one for each dimension) is expected for both the y-label(s) and title(s). 
+In case just one string is passed to `plot.mfData`, the same value is used for 
+all the dimensions.
+
+## Statistics
+
+### Depths
+`roahd` provides a number of depth definitions, that are exploited by the
+visualization functions but can also be used by themselves. These are based on
+the notion of **Band Depth** [@lopezpintado_romo_2007; @lopezpintado_romo_2009].
+
+**Band Depth** and **Modified Band Depth** are implemented in the functions
+`BD` and `MBD`. Both of them can work with either an `fData` object, specifying
+the univariate functional dataset whose depths must be computed, or a matrix of
+data values (e.g. in the form of `fData$values` output). 
+`MBD` can be called with the additional parameters `manage_ties` (defaulting to
+`FALSE`), specifying whether a check for the presence of tied data must be made
+prior to computing depths, and therefore a suitable computing strategy must
+be used. 
+The implementation of `MBD` exploits the recommendations of [@Sun_Genton_2012],
+but extends them in order to accomodate for the possible presence of ties.
+
+```{r BD_MBD_1, eval = FALSE, cache = TRUE }
+
+  BD( fD )
+  BD( fD$values )
+  
+  MBD( fD )
+  MBD( fD$values )
+  
+  MBD( fD, manage_ties = TRUE )
+  MBD( fD$values, manage_ties = TRUE )
+```
+
+Another definition avaibable is the **Half Region Depth** (along with its modified
+version), that is built on top of the **Epigraph** and **Hypograph** indexes [
+see @lopezpintado_romo_2011]:
+
+```{r HRD, eval = FALSE, cache = TRUE}
+
+HRD( fD )
+HRD( fD$values )
+
+MHRD( fD )
+MHRD( fD$values )
+
+```
+
+A generalisation of MBD to multivariate functional data, implementing the ideas
+of @ieva_paganoni_2013, is also available thorugh the functions `multiBD` and
+`multiMBD`. These functions accept either a `mfData` object, specifying the
+multivariate functional dataset whose depths have to be computed, or a list of
+matrices of data values (see example below).
+
+The function computes the BD or MBD for each component of the multivariate
+functional dataset and then averages them accorging to a set of weights.
+These can be specified in two ways: either with the flag `uniform`, that is
+turned into `rep( 1/L, L )`, or by providing the actual set of weights to be
+used. The latter option allows to use ad-hoc set of weights, like in 
+[@tarabelloni_ieva_etal_2015].
+
+```{r multiMBD, eval = FALSE, cache = TRUE }
+
+  multiBD( mfD, weights = 'uniform' )
+  multiMBD( mfD, weights = 'uniform', manage_ties = FALSE )
+
+  multiBD( mfD, weights = c( 0.6, 0.4) )
+  multiMBD( mfD, weights = c( 0.7, 0.3 ), manage_ties = FALSE )
+
+  multiBD( list( fD_1$values, fD_2$values ), weights = c( 0.6, 0.4) )
+  multiMBD( list( fD_1$values, fD_2$values ), weights = c( 0.7, 0.3 ), manage_ties = FALSE )
+```
+
+### Mean and median
+Suitable `S3` extensions to the functions for the computation of mean function 
+and median of functional datasets are also present.
+
+The sample mean of a functional dataset coincides with the *cross-sectional*
+mean function, i.e. the function obtained by computing the mean across the whole
+dataset point-by-point along the grid where functional data are defined:
+
+$$
+\widehat{\mu}( t_j ) = \dfrac{1}{N} \sum_{i=1}^{N} X_i(t_j), \qquad \forall j = 0, \ldots, P-1
+$$
+
+for a univariate functional dataset, while in the multivariate case is:
+
+$$
+  \widehat{\mu}_k(t_j) = \dfrac{1}{N} \sum_{i=1}^{N} X_{i,k}(t_j), \qquad \forall j = 0, \ldots, P-1,
+  \qquad \forall k = 1, \ldots, L.
+$$
+
+The sample median of a functional dataset, instead, is defined as the element of
+the functional dataset fulfilling the maximum depths, given a certain definition
+of depth. For instance, for MBD:
+
+$$
+  \widehat{m}( t_j ) = \left(\text{arg}\max_{i=1, \ldots, N} MBD( X_i )\right)( t_j), \qquad j = 0, \ldots, P-1.
+$$
+
+The sample mean is implemented in the `S3` methods `mean.fData( x, ... )` and
+`mean.mfData( x, ... )`, that can be invoked directly on `fData` and `mfData`
+objects.
+The sample median, instead, is implemented in the functions 
+`mean_fData( fData, type = 'MBD', ... )` and 
+`mean_mfData( mfData, type = 'multiMBD', ... )`. Here, the `type` flag can take
+any name of functions (available in the caller's environment) that can be used to
+compute the depths defining the sample median, taking respectively a 2D matrix of
+data values and a list of 2D matrix of data values as argument (plus, optionally,
+the dots arguments).
+
+```{r mean_1, eval = FALSE, cache = TRUE }
+
+  mean( fD )
+  mean( mfD)
+  
+  median_fData( fD, type = 'MBD' )
+  median_fData( fD, type = 'MHRD' )
+
+```
+```{r mean_2, eval = TRUE, fig.height=3, fig.width=6, fig.align='center'}
+
+  par( mfrow = c(1,2) )
+  plot( fD, main = 'Mean', lwd = 2 )
+  plot( mean( fD ), add = TRUE, lwd = 2, col = 'black', lty = 2 )
+  
+  plot( fD, main = 'Median', lwd = 2 )
+  plot( median_fData( fD, type = 'MBD' ), add = TRUE, lwd = 2, lty = 2, col = 'black' )
+```
+
+### Indexes
+`roahd` collects the implementation of some useful indexes that can be used to 
+describe and summarise functional datasets. 
+
+`EI` and `MEI` implement the **Epigraph Index** and the **Modified Epigraph Index**,
+while `HI` and `MHI` implement the **Hypograph Index** and the **Modified Hypograph Index**
+[see @lopezpintado_romo_2011; @arribasgil_romo_2014].
+These indexes can be used to sort data, respectively, in a top-down and bototm-up
+fashion, and are used to define the HRD/MHRD and to build the outliegram.
+
+These `S3` methods can be called on univariate functional datasets, provided
+either in form of a `fData` object or a 2D matrix of values.
+
+```{r indexes, eval = FALSE }
+  
+  # Calling on fData objects
+  EI( fD )
+  MEI( fD )
+  
+  HI( fD )
+  MHI( fD )
+
+  # Calling on 2D matrix type objects
+  EI( fD$values )
+  EI( matrix( rnorm( 20 ), nrow = 4, ncol = 5 ) )
+  
+```
+
+### Correlation coefficients
+
+When dealing with multivariate functional data, in particular in case of **bivariate**
+data, it is possible to compute correlation coefficients between data components
+that generalise the Kendall's tau and Spearman's coefficients **REFERENCES!**.
+
+The function `cor_kendall( mfD, ordering = 'max' )` allows to compute the 
+Kendall's tau correlation coefficient between components of a bivariate dataset.
+The function accepts a `mfData` object and a criterion to perform the ordering
+of functional data (this ordering is used to determine the concordances and
+discordacnes between pairs in the definition of the coefficient).
+
+Two criteria are available so far, that directly reflect those proposed in the
+reference paper: `max`, for the ordering between maxima of functions,
+and `area`, for the ordering between area-under-the-curve of functions.
+
+```{r cor_kendall_1, eval = TRUE, cache = TRUE}
+  N = 10
+  P = 1e3
+
+  grid = seq( 0, 1, length.out = P )
+  
+  Data_1 = t( sapply( 1 : N, function( i )( sin( 2 * pi * grid ) + i ) ) )
+  # Monotone nonlinear transformation of data
+  Data_2 = Data_1^3
+  
+  mfD = mfData( grid, list( Data_1, Data_2 ) )
+```
+
+```{r cor_kendall_2, eval = TRUE, cache = TRUE, collapse = TRUE, fig.align = 'center', fig.height = 4, fig.width = 6} 
+  plot( mfD, main = list( 'Comp. 1', 'Comp. 2') )  
+
+  # Kendall correlation of monotonically dependent data is exactly 1
+  cor_kendall( mfD, ordering = 'max' )
+  cor_kendall( mfD, ordering = 'area' )
+```
+
+The funciton `cor_spearman( mfD, ordering = 'MEI', ... )` can be used to compute
+the Spearman correlation coefficient for a bivariate `mfData` object, uning the
+ordering policy specified by `ordering` (defaulting to `MEI`) to rank univariate
+compoenents and then compute the correlation coefficient. Besides `MEI`, also `MHI`
+can be used to determine ranks of univariate components. Additional parameters
+captured by `...` are passed directly to the rank function. 
+
+```{r Spearman, eval = TRUE, cache = TRUE, collapse = TRUE }
+# Spearman correlation of monotonically dependent data is exactly 1
+  cor_spearman( mfD, ordering = 'MEI' )
+  cor_spearman( mfD, ordering = 'MHI' )
+```
+
+## Simulation of functional data
+`roahd` contains also some functions that can be used to simulate artificial data
+sets of functional data, both univariate and multivariate. These are used in the
+adjustment procedure of the outliegram and functional boxplot, but can also be
+used to help the development of new methodologies and help their testing.
+
+Artificial univariate data are obtained simulating realisations of a gaussian 
+process over a discrete grid with a specific covariance function and center
+(e.g. mean or median).
+Given a covariance function, $C(s,t)$ and a centerline $m(t)$, the model
+generating data is:
+$$X_i(t) = m(t) + \epsilon(t), \quad Cov(\epsilon(s),\epsilon(t)) = C(s,t), \quad i = 1, \ldots, N.$$
+
+### Univariate functional data
+
+The function `generate_gauss_fdata(N, centerline, Cov = NULL, CholCov = NULL)` 
+can be used to simulate a population of such gaussian functional data. 
+The required arguments are: `N` the number of elements to be generated; 
+`centerline`, the center of the distribution (mean or median); `Cov`, a matrix
+representation of the desired covariance function, meant as the measurements
+of such function over a tensor grid whose marginal will be the grid where the
+functional data will be defined (i.e. the argument `grid` in `fData`);
+`CholCov` the Cholesky factor of the discrete representation of the Covariance
+function over the tensor grid (optional and alternative to the argument `Cov`).
+The inner procedure to generate the synthetic population of gaussian functional
+data makes use of the Cholesky factor of `Cov`, hence by providing its Cholesky
+factor, if already present in the caller's scope, can save computing time.
+
+A built-in function can be used to generate exponential-like covariance functions,
+namely `exp_cov_function( grid, alpha, beta )`, generating the discretised
+version of a covariance of the form $C(s,t) = \alpha e^{-\beta | s - t | }$
+over a lattice given by the tensorisation of grid in `grid`.
+
+A comprehensive example is the following:
+
+```{r simulation_univariate, execute = FALSE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4}
+  N = 50
+  P = 1e3
+
+  grid = seq( 0, 1, length.out = P )
+  
+  Cov = exp_cov_function( grid, alpha = 0.2, beta  = 0.3 )
+  
+  Data = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
+  
+  fD = fData( grid, Data )
+  
+  plot( fD, main = 'Gaussian fData', xlab = 'grid', lwd = 2)
+```
+
+### Multivariate functional data
+The function `generate_gauss_mfdata( N, L, centerline, correlations, listCov = NULL, listCholCov = NULL)` can be used to generate a gaussian dataset of multivariate functional
+data. The model generating data is the following:
+
+$$ X_{i,k} = m_k(t) + \epsilon_k(t), \quad Cov(\epsilon_k(s),\epsilon_k(t))=C(s,t), \quad
+\forall i = 1, \ldots, N, \quad \forall k = 1, \ldots, L,$$
+
+where $Cor( \epsilon_j(t),\epsilon_l(t))=\rho_{j,l}$ specifies a (*synchronous*) 
+correlation structure among the compoenents of the functional dataset.
+
+In order to use the function one should provide: `N`, the number of elelemnts to
+simulate; `L`, the number of components of the functional data; `centerline`, a
+matrix containing (by rows) the centerline for each component; `correlations`,
+a vector of length `1/2 * L * ( L - 1 )`, containing all the correlation 
+coefficients among the components; either `listCov` or `listCholCov`, a list
+containing either the discretised covariance functions over the tensorised
+grid where functional data will be defined), or their Cholesky factor.
+
+A comprehensive example is the following:
+```{r simulation_multivariate, execute = FALSE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4}
+  N = 10
+  P = 1e3
+
+  grid = seq( 0, 1, length.out = P )
+  
+  Cov_1 = exp_cov_function( grid, alpha = 0.1, beta  = 0.5 )
+  Cov_2 = exp_cov_function( grid, alpha = 0.5, beta = 0.1)
+  
+  centerline = matrix( c( sin( 2 * pi * grid ),
+                          cos( 2 * pi * grid ) ), nrow = 2, byrow = TRUE )
+  
+  Data = generate_gauss_mfdata( N, 2, centerline, 0.8, list( Cov, Cov ) )
+  
+  mfD = mfData( grid, Data )
+  
+  plot( mfD, main = list( 'Comp.1', 'Comp. 2'), xlab = 'grid', lwd = 2)
+```
+
+## Robustification
+
+### Functional boxplot
+
+An implementation of the functional boxplot, through the `S3` method `fbplot`, 
+allows for the detection of *amplitude* outliers in univariate and multivariate 
+functional datasets [see @Sun_Genton_2011].
+
+`fbplot` can be used to compute the set of indices inside a dataset marking
+outlying observations. If used in graphical way (default behaviour), it also 
+plots the functional boxplot of the dataset provided.
+
+The functional boxplot is obtained by ranking functions from the center of the
+distribution outwards thanks to a depth definition, computing the region of 50%
+most central functions and inflating such region by a factor `F`. Whichever
+function crossing these boundaries is flagged as outlier. The default value for
+`F` is `1.5`, otherwise it can be set with the argument `Fvalue`.
+
+The argument `Depths` can take either the name of the function to call in order
+to compute the depths (default is `MBD`), or a vector containing the dephts 
+values for the provided dataset.
+
+An example is:
+
+```{r fbplot_fData, fig.align='center', fig.height=5, fig.width=7, cache=TRUE, results='hide'}
+
+  set.seed(1618)
+
+  N = 1e2
+  P = 1e2
+  
+  grid = seq( 0, 1, length.out = P )
+  
+  Cov = exp_cov_function( grid, alpha = 0.2, beta = 0.3 )
+  
+  Data = generate_gauss_fdata( N, sin( 2 * pi * grid ), Cov )
+  
+  fD = fData( grid, Data )
+  
+  Data = generate_gauss_mfdata( N, 2, matrix( sin( 2 * pi * grid ), nrow = 2, ncol = P, byrow = TRUE ), 0.6, listCov = list( Cov, Cov ) )
+
+  mfD = mfData( grid, Data )
+  
+  fbplot( fD, main = 'Fbplot', Fvalue = 3.5 )
+
+  fbplot( mfD, main = list( 'Comp. 1', 'Comp. 2' ), Fvalue = 3.5 )
+```
+
+The method `fboplot.fData` also allows to automatically compute the best 
+adjustment factor `F` that yields a desired proportion of outliers 
+(True Positive Rate, `TPR`) out of a Gaussian dataset with same center and 
+covariance function as the `fData` object [see @Sun_Genton_2012_boxplot].
+
+Such automatic tuning involves the simulation of a number `N_trials` of
+populations of Gaussian functional data with same center and covariance as the
+original dataset (the covariance is robustly estimated with `robustbase::covOGK`)
+of size `trial_size`, and the computation of `N_trials` values for `Fvalue` 
+such that the desired proportion `TPR` of observations is flagged as outliers.
+The optimal value of `Fvalue` for the original population is then found as the 
+average of the previously computed values `Fvalue`.
+The computation of the optimal `Fvalue` at each iteration of the procedure is
+carried out exploiting the zero-finding algorithm in `stats::uniroot` (Brent's
+method).
+
+The parameters to control the adjustment procedure can be passed through the
+argument `adjust`, whose default is `FALSE` and otherwise is a list with 
+(some of) the fields:
+
+* `N_trials`: the number of repetitions of the adujustment procedure based on 
+the simulation of a gaussisan population of functional data, each one producing
+an adjusted value of F, which will lead to the averaged adjusted value `Fvalue`. 
+Default is 20;
+* `trial_size`: the number of elements in the gaussian population of functional 
+data that will be simulated at each repetition of the adjustment procedure. 
+Default is `Data$N`;
+* `TPR`: the True Positive Rate of outliers, i.e. the proportion of observations 
+in a dataset without amplitude outliers that have to be considered outliers. 
+Default is `2 * pnorm( 4 * qnorm( 0.25 ) )`;
+* `F_min`: the minimum value of `Fvalue`, defining the left boundary for the 
+optimisation problem aimed at finding, for a given dataset of simulated gaussian 
+data associated to Data, the optimal value of `Fvalue`. Default is `0.5`;
+* `F_max`: the maximum value of `Fvalue`, defining the right boundary for the 
+optimisation problem aimed at finding, for a given dataset of simulated gaussian 
+data associated to Data, the optimal value of `Fvalue`. Default is `5`;
+* `tol`: the tolerance to be used in the optimisation problem aimed at finding, 
+for a given dataset of simulated gaussian data associated to Data, the optimal 
+value of `Fvalue`. Default is `1e-3`;
+* `maxiter`: the maximum number of iterations to solve the optimisation problem 
+aimed at finding, for a given dataset of simulated gaussian data associated to 
+`Data`, the optimal value of `Fvalue`. Default is `100`;
+* `VERBOSE`: a parameter controlling the verbosity of the adjustment process;
+
+
+```{r fbplot_fData_adjust, eval = TRUE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4, cache = TRUE}
+  fbplot( fD, adjust = list( N_trials = 20, trial_size = N, TPR = 0.007, F_min = 0.1, F_max = 20 ), xlab = 'grid', ylab = 'values', main = 'Adjusted functional boxplot' )
+```
+
+### Outliergram
+A method that can be used to detect **shape outliers** is the outliergram [see
+@arribasgil_romo_2014], based on the computation of MBD and MEI of univariate
+functional data. Such pairs are compared to a limiting parabola, where they 
+should be placed in case of non-crossing data, and outliers are then identified
+applying a thresholding rule.
+
+The function `outliergram` displays the outliergram of a univariate functional
+dataset of class `fData`, and returns a vector of IDs indicating the shape
+outlying observations in the dataset.
+
+```{r outliergram, cache = FALSE, fig.align = 'center', fig.width = 7, fig.height = 4 }
+set.seed( 1618 )
+
+N = 200
+P = 200
+N_extra = 4
+
+grid = seq( 0, 1, length.out = P )
+
+Cov = exp_cov_function( grid, alpha = 0.2, beta = 0.5 )
+
+Data = generate_gauss_fdata( N, sin( 4 * pi * grid ), Cov )
+
+Data_extra = array( 0, dim = c( N_extra, P ) )
+
+Data_extra[ 1, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid + pi / 2 ), Cov )
+
+Data_extra[ 2, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid - pi / 2 ), Cov )
+
+Data_extra[ 3, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid + pi/ 3 ), Cov )
+
+Data_extra[ 4, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid - pi / 3), Cov )
+
+fD = fData( grid, rbind( Data, Data_extra ) )
+
+outliergram( fD, display = TRUE )
+outliergram( fD, Fvalue = 10, display = TRUE )
+```
+
+Similarly to the functional boxplot, also the outliergram makes use of an `Fvalue`
+constant controlling the check by which observations are flagged as outliers
+[see @arribasgil_romo_2014 for more details]. Such value can be provided as an 
+argument (default is `1.5`), or can be determined by the function itself, through
+an adjustment procedure similar to that of `fbplot.fData`. In particolar, whenever
+`adjust` is not `FALSE`, `adjust` should be a list containing the fields 
+controlling the adjustment:
+
+* `N_trials` the number of repetitions of the adujustment
+procedure based on the simulation of a gaussisan population of functional
+data, each one producing an adjusted value of `Fvalue`, which will lead
+to the averaged adjusted value. Default is `20`;
+* `trial_size` the number of elements in the gaussian
+population of functional data that will be simulated at each repetition of
+the adjustment procedure. Default is `5 * fData$N`;
+* `TPR` the True Positive Rate of outleirs, i.e. the proportion
+of observations in a dataset without shape outliers that have to be considered
+outliers. Default is `2 * pnorm( 4 * qnorm( 0.25 ) )`;
+* `F_min` the minimum value of `Fvalue`, defining the left
+boundary for the optimisation problem aimed at finding, for a given dataset
+of simulated gaussian data associated to `fData`, the optimal value of
+`Fvalue`. Default is `0.5`;
+* `F_max` the maximum value of `Fvalue`, defining the right
+boundary for the optimisation problem aimed at finding, for a given dataset
+of simulated gaussian data associated to `fData`, the optimal value of
+`Fvalue`. Default is `20`;}
+* `tol` the tolerance to be used in the optimisation problem
+aimed at finding, for a given dataset of simulated gaussian data associated
+to `fData`, the optimal value of `Fvalue`. Default is `1e-3`;
+* `maxiter` the maximum number of iterations to solve the
+optimisation problem aimed at finding, for a given dataset of simulated
+gaussian data associated to `fData`, the optimal value of `Fvalue`.
+Default is `100`;
+* `VERBOSE` a parameter controlling the verbosity of the
+adjustment process;
+
+
+```{r outliergram_adjusted, fig.alicn = 'center', fig.width = 7, fig.height = 4 }
+outliergram( fD, adjust = list( N_trials = 10, trial_size = 5 * nrow( Data ), TPR = 0.01, VERBOSE = FALSE ), display = TRUE )
+```
+
+
+## References
+
