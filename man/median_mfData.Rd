@@ -69,6 +69,7 @@ for( iL in 1 : L )
 }
 }
 \seealso{
-\code{\link{mfData}}, \code{\link{mean.mfData}}
+\code{\link{mfData}}, \code{\link{mean.mfData}},
+\code{\link{median_fData}}
 }
 

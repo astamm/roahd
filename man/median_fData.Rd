@@ -50,6 +50,7 @@ plot( fD )
 plot( median_fData( fD ), col = 'black', lwd = 2, lty = 2, add = TRUE )
 }
 \seealso{
-\code{\link{fData}}, \code{\link{mean.fData}}
+\code{\link{fData}}, \code{\link{mean.fData}},
+\code{\link{median_mfData}}
 }
 

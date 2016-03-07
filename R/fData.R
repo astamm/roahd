@@ -1,5 +1,5 @@
 
-#' \code{S3} class for univariate functional datasets.
+#' \code{S3} Class for univariate functional datasets.
 #'
 #'  This function implements a constructor for elements of \code{S3} class
 #'  \code{fData}, aimed at implementing a representation of a functional
@@ -722,7 +722,8 @@ mean.mfData = function( x, ... )
 #' @return The function returns a \code{fData} object containing the desired
 #' sample median.
 #'
-#' @seealso \code{\link{fData}}, \code{\link{mean.fData}}
+#' @seealso \code{\link{fData}}, \code{\link{mean.fData}},
+#' \code{\link{median_mfData}}
 #'
 #' @examples
 #'
@@ -776,7 +777,8 @@ median_fData = function( fData, type = 'MBD', ... )
 #' @return The function returns a \code{mfData} object containing the desired
 #' sample median.
 #'
-#' @seealso \code{\link{mfData}}, \code{\link{mean.mfData}}
+#' @seealso \code{\link{mfData}}, \code{\link{mean.mfData}},
+#' \code{\link{median_fData}}
 #'
 #' @examples
 #'
