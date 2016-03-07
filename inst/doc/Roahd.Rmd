@@ -18,8 +18,9 @@ with the robust analysis of functional data.
 
 The package contains an implementation of quantitative methods, based on
 functional depths and indices, on top of which are built some graphical methods
-(funcitonal boxplot and outliergram) useful to carry out an explorative analysis
-of a functional dataset and to robustify it from shape and magnitude outliers.
+(functional boxplot and outliergram) useful to carry out an explorative analysis
+of a functional dataset and to robustify it by discarding shape and magnitude 
+outliers.
 
 Both univariate and multivariate functional data are supported in the package,
 whose functions have been implemented with a particular emphasis on computational
@@ -39,7 +40,7 @@ method call depending on the class of their functional data argument.
 
 `S3` class `fData` implements a representaion of univariate functional datasets.
 They are obtained once specifying, for each observation in the functional
-dataset, a set of measurements over a discrete grid, representing the continuous
+dataset, a set of measurements over a discrete grid, representing the dependent
 variable indexing the functional dataset (e.g. time).
 
 In other words, if we denote by $T = [t_0, t_1, \ldots, t_{P-1}]$ an evenly spaced
@@ -81,13 +82,20 @@ str( fD )
 
 plot( fD, main = 'Univariate FD', xlab = 'time [s]', ylab = 'values', lwd = 2 )
 ```
-Thus, an object `fData` is a list containing: the fields `t0`, `tP`, the defining
-the starting and end point of the one dimensional grid of the `fData`, the
-constant step size `h` and the number of grid points `P`; the field 
+Thus, an object `fData` is a list containing: the fields `t0`, `tP`, defining
+the starting and end point of the one dimensional grid of the `fData` object, 
+the constant step size `h` and the number of grid points `P` and the field 
+`values` defining the measurements of the dataset over the one dimensional grid.
 
 ### mfData
 
-An `mfData` object, instead, can be created in this way:
+An `mfData` object, instead, implements a multivariate functional dataset, i.e. 
+a collection of functions having more than one components, each one depending on
+the same variable. 
+In practice, we deal with a discrete grid $[t_0, t_1, \ldots, t_{P-1}]$ and a 
+dataset of $N$ elements, each one having $L$ components observed over the same
+discrete grid: $D_{i,j,k} = X_{i,k}(t_{j-1})$, $\forall i = 1, \ldots, N$, $\forall
+j = 0, \ldots, P - 1$ and $\forall k = 1, \ldots, L$.
 
 ```{r mfData, cache = TRUE, fig.width = 7, fig.height = 4, fig.align = 'center' }
 # Creating some values for first component of the dataset
@@ -99,7 +107,9 @@ Data_2 = t( sapply( runif( 10, 0, 4 ),
                     function( phase ) log( grid + phase ) ) )
 
 # Building an fData object
-# The constructor takes a grid and a list of matrix-like structures for data values
+# The constructor takes a grid and a list of matrix-like structures for data values,
+# each one representing the data values of a single component of the dataset 
+# (i.e. D_{,,k}, k = 1, ... L ).
 # (see help for more details on how to use the constructor)
 mfD = mfData( grid, list( Data_1, Data_2 ) )
 
@@ -144,7 +154,7 @@ for `fData`.
 
 ```{r fData_subset_1, eval = FALSE }
 
-# Subseting fData and returning result in matrix form
+# Subsetting fData and returning result in matrix form
 fD[ 1 , 1, as_fData = FALSE ]
 
 fD[ 1, , as_fData = FALSE ]
@@ -274,7 +284,8 @@ matrices of data values (see example below).
 The function computes the BD or MBD for each component of the multivariate
 functional dataset and then averages them accorging to a set of weights.
 These can be specified in two ways: either with the flag `uniform`, that is
-turned into `rep( 1/L, L )`, or by providing the actual set of weights to be
+turned into `rep( 1/L, L )` (where `L` stands for the number of components in
+the multivariate dataset), or by providing the actual set of weights to be
 used. The latter option allows to use ad-hoc set of weights, like in 
 [@tarabelloni_ieva_etal_2015].
 
@@ -319,10 +330,12 @@ $$
 
 The sample mean is implemented in the `S3` methods `mean.fData( x, ... )` and
 `mean.mfData( x, ... )`, that can be invoked directly on `fData` and `mfData`
-objects.
+objects. These methods can be called directly without the `.fData` or `.mfData`
+suffix, due to their `S3` nature and call, that allows them to be dispatched 
+from the standard `mean` function.
 The sample median, instead, is implemented in the functions 
-`mean_fData( fData, type = 'MBD', ... )` and 
-`mean_mfData( mfData, type = 'multiMBD', ... )`. Here, the `type` flag can take
+`median_fData( fData, type = 'MBD', ... )` and 
+`median_mfData( mfData, type = 'multiMBD', ... )`. Here, the `type` flag can take
 any name of functions (available in the caller's environment) that can be used to
 compute the depths defining the sample median, taking respectively a 2D matrix of
 data values and a list of 2D matrix of data values as argument (plus, optionally,
@@ -330,6 +343,8 @@ the dots arguments).
 
 ```{r mean_1, eval = FALSE, cache = TRUE }
 
+  # Exploiting the S3 nature of these functions and the dispatching from the 
+  # standard `mean` function
   mean( fD )
   mean( mfD)
   
@@ -354,7 +369,7 @@ describe and summarise functional datasets.
 `EI` and `MEI` implement the **Epigraph Index** and the **Modified Epigraph Index**,
 while `HI` and `MHI` implement the **Hypograph Index** and the **Modified Hypograph Index**
 [see @lopezpintado_romo_2011; @arribasgil_romo_2014].
-These indexes can be used to sort data, respectively, in a top-down and bototm-up
+These indexes can be used to sort data, respectively, in a top-down and bottom-up
 fashion, and are used to define the HRD/MHRD and to build the outliegram.
 
 These `S3` methods can be called on univariate functional datasets, provided
@@ -412,7 +427,7 @@ and `area`, for the ordering between area-under-the-curve of functions.
   cor_kendall( mfD, ordering = 'area' )
 ```
 
-The funciton `cor_spearman( mfD, ordering = 'MEI', ... )` can be used to compute
+The function `cor_spearman( mfD, ordering = 'MEI', ... )` can be used to compute
 the Spearman correlation coefficient for a bivariate `mfData` object, uning the
 ordering policy specified by `ordering` (defaulting to `MEI`) to rank univariate
 compoenents and then compute the correlation coefficient. Besides `MEI`, also `MHI`
@@ -485,13 +500,14 @@ $$ X_{i,k} = m_k(t) + \epsilon_k(t), \quad Cov(\epsilon_k(s),\epsilon_k(t))=C(s,
 where $Cor( \epsilon_j(t),\epsilon_l(t))=\rho_{j,l}$ specifies a (*synchronous*) 
 correlation structure among the compoenents of the functional dataset.
 
-In order to use the function one should provide: `N`, the number of elelemnts to
-simulate; `L`, the number of components of the functional data; `centerline`, a
-matrix containing (by rows) the centerline for each component; `correlations`,
-a vector of length `1/2 * L * ( L - 1 )`, containing all the correlation 
-coefficients among the components; either `listCov` or `listCholCov`, a list
-containing either the discretised covariance functions over the tensorised
-grid where functional data will be defined), or their Cholesky factor.
+In order to use the function one should provide: `N`, the number of elements to
+simulate; `L`, the number of components of the multivariate functional data; 
+`centerline`, a matrix containing (by rows) the centerline for each component; 
+`correlations`, a vector of length `1/2 * L * ( L - 1 )`, containing all the 
+correlation  coefficients among the components; either `listCov` or 
+`listCholCov`, a list containing either the discretised covariance functions 
+over the tensorised grid where functional data will be defined), or their 
+Cholesky factor.
 
 A comprehensive example is the following:
 ```{r simulation_multivariate, execute = FALSE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4}
@@ -624,7 +640,7 @@ outlying observations in the dataset.
 ```{r outliergram, cache = FALSE, fig.align = 'center', fig.width = 7, fig.height = 4 }
 set.seed( 1618 )
 
-N = 200
+N = 100
 P = 200
 N_extra = 4
 
@@ -647,7 +663,7 @@ Data_extra[ 4, ] = generate_gauss_fdata( 1, sin( 4 * pi * grid - pi / 3), Cov )
 fD = fData( grid, rbind( Data, Data_extra ) )
 
 outliergram( fD, display = TRUE )
-outliergram( fD, Fvalue = 10, display = TRUE )
+outliergram( fD, Fvalue = 5, display = TRUE )
 ```
 
 Similarly to the functional boxplot, also the outliergram makes use of an `Fvalue`
@@ -688,7 +704,7 @@ adjustment process;
 
 
 ```{r outliergram_adjusted, fig.alicn = 'center', fig.width = 7, fig.height = 4 }
-outliergram( fD, adjust = list( N_trials = 10, trial_size = 5 * nrow( Data ), TPR = 0.01, VERBOSE = FALSE ), display = TRUE )
+outliergram( fD, adjust = list( N_trials = 5, trial_size = 5 * nrow( Data ), TPR = 0.01, VERBOSE = FALSE ), display = TRUE )
 ```
 
 

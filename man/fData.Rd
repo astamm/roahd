@@ -2,7 +2,7 @@
 % Please edit documentation in R/fData.R
 \name{fData}
 \alias{fData}
-\title{\code{S3} class for univariate functional datasets.}
+\title{\code{S3} Class for univariate functional datasets.}
 \usage{
 fData(grid, values)
 }
