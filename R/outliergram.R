@@ -503,7 +503,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
 
     max_diff_max = sapply( ID_non_outlying_Low_MEI, aux_function )
 
-    ID_to_check = ID_non_outlying_Low_MEI[ max_diff_max < 0 ]
+    ID_to_check = ID_non_outlying_Low_MEI[ max_diff_max > 0 ]
 
     if( length( ID_to_check ) > 0 )
     {
