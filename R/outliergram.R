@@ -439,16 +439,28 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
 
   if( shift )
   {
+    # # Low MEI curves will be checked for upward shift
+    # ID_non_outlying_Low_MEI = ID_non_outlying[
+    #   which( MEI_data[ - ID_shape_outlier ] >=
+    #            quantile( MEI_data,
+    #                      probs = 1 - p_check ) ) ]
+    #
+    # # High MEI curves will be checked for downward shift
+    # ID_non_outlying_High_MEI = ID_non_outlying[
+    #   which( MEI_data[ - ID_shape_outlier ] <=
+    #            quantile( MEI_data, probs = p_check ) ) ]
+
     # Low MEI curves will be checked for upward shift
     ID_non_outlying_Low_MEI = ID_non_outlying[
-      which( MEI_data[ - ID_shape_outlier ] >=
+      which( MEI_data[ - ID_shape_outlier ] <=
                quantile( MEI_data,
-                         probs = 1 - p_check ) ) ]
+                         probs = p_check ) ) ]
 
     # High MEI curves will be checked for downward shift
     ID_non_outlying_High_MEI = ID_non_outlying[
-      which( MEI_data[ - ID_shape_outlier ] <=
-               quantile( MEI_data, probs = p_check ) ) ]
+      which( MEI_data[ - ID_shape_outlier ] >=
+               quantile( MEI_data, probs = 1 - p_check ) ) ]
+
 
     aux_function = function( ID )( min( fData$values[ ID, ] -
                                           apply( fData$values[ - ID, ], 2,
@@ -460,24 +472,22 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
 
     ID_to_check = ID_non_outlying_High_MEI[ min_diff_min < 0 ]
 
-    aux_function_MBD = function( ID, fun )(
+    aux_function_MBD = function( ID )(
       MBD( rbind( fData$values[ - ID, ],
                   Data_tilde[ grep( ID, ID_to_check ), ] ) )[ N ] )
 
-    aux_function_MEI = function( ID, fun )(
+    aux_function_MEI = function( ID )(
       MEI( rbind( fData$values[ - ID, ],
                   Data_tilde[ grep( ID, ID_to_check ), ] ) )[ N ] )
 
     if( length( ID_to_check ) > 0 )
     {
-      Data_tilde = t( t( fData$values[ ID_to_check, ] ) -
-                        min_diff_min[ ID_to_check ] )
+      Data_tilde = toRowMatrixForm( fData$values[ ID_to_check, ] -
+                                      min_diff_min[ min_diff_min < 0 ] )
 
+      MBD_curr = sapply( ID_to_check, aux_function_MBD )
 
-      MBD_curr = sapply( ID_to_check, aux_function )
-
-
-      MEI_curr = sapply( ID_to_check, aux_function )
+      MEI_curr = sapply( ID_to_check, aux_function_MEI )
 
       d_curr = a_0_2 + a_1 * MEI_curr + N^2 * a_0_2 * MEI_curr^2 - MBD_curr
 
@@ -507,7 +517,8 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
 
     if( length( ID_to_check ) > 0 )
     {
-      Data_tilde = t( t( fData$values[ ID_to_check, ] ) - max_diff_max[ ID_to_check ] )
+      Data_tilde = toRowMatrixForm( fData$values[ ID_to_check, ] -
+                                      max_diff_max[ max_diff_max > 0 ] )
 
       MBD_curr = sapply( ID_to_check, aux_function_MBD )
 
