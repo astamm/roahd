@@ -128,7 +128,12 @@ minima = function( fData, ..., which = FALSE )
 #'
 #' @references
 #'
-#' \bold{REFERENCE HERE!!!}
+#' Valencia, D., Romo, J. and Lillo, R. (2015). A Kendall correlation
+#' coefficient for functional dependence,
+#' \emph{Universidad Carlos III de Madrid technical report},
+#' \code{http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133228}.
+#'
+#'
 #'
 #' @seealso \code{\link{maxima}}, \code{\link{minima}}, \code{\link{fData}},
 #' \code{\link{area_ordered}}
@@ -260,7 +265,11 @@ area_under_curve = function( fData)
 #'
 #' @references
 #'
-#' \bold{REFERENCE HERE!!!}
+#' Valencia, D., Romo, J. and Lillo, R. (2015). A Kendall correlation
+#' coefficient for functional dependence,
+#' \emph{Universidad Carlos III de Madrid technical report},
+#' \code{http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133228}.
+#'
 #'
 #' @seealso \code{\link{area_under_curve}}, \code{\link{fData}}
 #'
@@ -372,7 +381,11 @@ area_ordered = function( fData, gData )
 #'
 #' @references
 #'
-#' \bold{REFERENCE HERE!!!}
+#' Valencia, D., Romo, J. and Lillo, R. (2015). A Kendall correlation
+#' coefficient for functional dependence,
+#' \emph{Universidad Carlos III de Madrid technical report},
+#' \code{http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133228}.
+#'
 #'
 #' @examples
 #'
@@ -475,7 +488,9 @@ cor_kendall = function( mfD, ordering = 'max' )
 #'
 #' @references
 #'
-#' \bold{REFERENCE HERE!!!}
+#' Valencia, D., Romo, J. and Lillo, R. (2015). Spearman coefficient for
+#' functions, \emph{Universidad Carlos III de Madrid technical report},
+#' \code{http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133329}.
 #'
 #' @examples
 #'

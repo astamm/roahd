@@ -75,7 +75,9 @@ cor_spearman( mfD, ordering = 'MEI' )
 cor_spearman( mfD, ordering = 'MHI' )
 }
 \references{
-\bold{REFERENCE HERE!!!}
+Valencia, D., Romo, J. and Lillo, R. (2015). Spearman coefficient for
+functions, \emph{Universidad Carlos III de Madrid technical report},
+\code{http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133329}.
 }
 \seealso{
 \code{\link{mfData}}, \code{\link{MEI}}, \code{\link{MHI}}

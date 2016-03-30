@@ -73,7 +73,10 @@ cor_kendall( mfD, ordering = 'max' )
 cor_kendall( mfD, ordering = 'area' )
 }
 \references{
-\bold{REFERENCE HERE!!!}
+Valencia, D., Romo, J. and Lillo, R. (2015). A Kendall correlation
+coefficient for functional dependence,
+\emph{Universidad Carlos III de Madrid technical report},
+\code{http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133228}.
 }
 \seealso{
 \code{\link{mfData}}, \code{\link{area_ordered}},

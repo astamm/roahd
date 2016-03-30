@@ -60,7 +60,10 @@ area_ordered( fD_1, fD_2 )
 area_ordered( fD_2, fD_3 )
 }
 \references{
-\bold{REFERENCE HERE!!!}
+Valencia, D., Romo, J. and Lillo, R. (2015). A Kendall correlation
+coefficient for functional dependence,
+\emph{Universidad Carlos III de Madrid technical report},
+\code{http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133228}.
 }
 \seealso{
 \code{\link{area_under_curve}}, \code{\link{fData}}
