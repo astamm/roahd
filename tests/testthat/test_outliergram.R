@@ -38,26 +38,31 @@ Data = rbind( Data, Data_out )
 
 fD = fData( grid, Data )
 
+
+test_that( 'Outliergram - general',
+           expect_silent( outliergram( fD, display = FALSE ) ) )
+
 test_that( 'Outliergram - no adjustment',
            expect_equal(
-             outliergram( fD, display = TRUE )$ID_outliers
+             outliergram( fD, display = FALSE )$ID_outliers
              ,
              c( 31,  78, 117, 122, 152, 183, 201, 202, 203, 204 ) ) )
 
 test_that( 'Outliergram - no adjustment 2',
            expect_equal(
              outliergram( fD, Fvalue = 10,
-                          display = TRUE )$ID_outliers,
+                          display = FALSE )$ID_outliers,
              c( 201, 202, 203, 204 ) ) )
 
 
-test_that( 'Outliergram - with adjustment',
+test_that( 'Outliergram - with adjustment',{
+  testthat::skip_on_cran()
            expect_equal(
              outliergram( fD,
                           adjust = list( N_trials = 10,
                                          trial_size = 5 * nrow( Data ),
                                          TPR = 0.01,
                                          VERBOSE = FALSE ),
-                          display = TRUE )$ID_outliers,
-             c( 78, 117, 183, 201, 202, 203, 204 ) ) )
+                          display = FALSE )$ID_outliers,
+             c( 78, 117, 183, 201, 202, 203, 204 ) ) })
 

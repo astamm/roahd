@@ -31,11 +31,11 @@ D = matrix( c( sin( 2 * pi * time_grid ) + 0,
 fD = fData( time_grid, D )
 
 test_that( 'Functional boxplot for univariate data - simple - 1',
-           expect_silent( fbplot( fD, Fvalue = 10 ) ) )
+           expect_silent( fbplot( fD, Fvalue = 10, display = FALSE ) ) )
 
 test_that( 'Functional boxplot for univariate data - simple - 2',
            expect_silent(
-             fbplot( fD, xlab = 'time', ylab = 'value',
+             fbplot( fD, display = FALSE, xlab = 'time', ylab = 'value',
                      main = 'My Functional Boxplot' )
            ) )
 
@@ -54,14 +54,16 @@ Data = generate_gauss_fdata( N, centerline = sin( 2 * pi * time_grid ),
                                                      beta  = 0.4 ) )
 fD = fData( time_grid, Data )
 
-test_that( 'Functional boxplot for univariate data - adjusted',
+test_that( 'Functional boxplot for univariate data - adjusted',{
+  testthat::skip_on_cran()
            expect_silent(
              fbplot( fD, adjust = list( N_trials = 10,
                                         trial_size = N,
                                         VERBOSE = FALSE ),
+                     display = FALSE,
                      xlab = 'time', ylab = 'Values',
                      main = 'My adjusted functional boxplot' )
-           ) )
+           ) })
 
 
 # TESTING THE FUNCTIONAL BOXPLOT FOR MULTIVARIATE FUNCTIONAL DATA ---------
@@ -96,10 +98,10 @@ D = matrix( c( sin( 2 * pi * time_grid ) - 10,
 mfD = mfData( time_grid, list( D, D * abs( 1 : 21 - 11 ) / 5 ) )
 
 test_that( 'Functional boxplot for multivariate data - simple - 1',
-           expect_silent( fbplot( mfD, Fvalue = 3 ) ) )
+           expect_silent( fbplot( mfD, Fvalue = 3, display = FALSE ) ) )
 
 test_that( 'Functional boxplot for multivariate data - simple - 2',
-           expect_error( fbplot( mfD, adjust = list( N_trials = 10 ) ) ) )
+           expect_error( fbplot( mfD, adjust = list( N_trials = 2 ), display = FALSE ) ) )
 
 # 2 )
 
@@ -125,5 +127,5 @@ Data = generate_gauss_mfdata( N, L,
 mfD = mfData( time_grid, Data )
 
 test_that( 'Functional boxplot for multivariate data - simple - 3',
-           expect_silent( fbplot( mfD, Fvalue = 2.5 ) ) )
+           expect_silent( fbplot( mfD, Fvalue = 2.5, display = FALSE ) ) )
 

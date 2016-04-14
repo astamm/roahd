@@ -142,14 +142,14 @@
 #' outliergram( fD, display = TRUE )
 #'
 #' outliergram( fD, Fvalue = 10, display = TRUE )
-#'
+#' \dontrun{
 #' outliergram( fD,
 #'              adjust = list( N_trials = 10,
 #'                             trial_size = 5 * nrow( Data ),
 #'                             TPR = 0.01,
 #'                             VERBOSE = FALSE ),
 #'              display = TRUE )
-#'
+#' }
 #'
 #' @export
 outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,

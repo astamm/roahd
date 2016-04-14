@@ -137,11 +137,13 @@ fbplot( fD, main = 'Functional boxplot', xlab = 'time', ylab = 'values' )
 
 # UNIVARIATE FUNCTIONAL BOXPLOT - WITH ADJUSTMENT
 
+
 set.seed( 161803 )
 
-grid = seq( 0, 1, length.out = 1e2 )
+P = 2e2
+grid = seq( 0, 1, length.out = P )
 
-N = 5e2
+N = 1e2
 
 # Generating a univariate synthetic gaussian dataset
 Data = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ),
@@ -151,11 +153,13 @@ Data = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ),
 fD = fData( grid, Data )
 
 dev.new()
+\dontrun{
 fbplot( fD, adjust = list( N_trials = 10,
-                           trial_size = N,
+                           trial_size = 5 * N,
                            VERBOSE = TRUE ),
                      xlab = 'time', ylab = 'Values',
                      main = 'My adjusted functional boxplot' )
+}
 
 # MULTIVARIATE FUNCTIONAL BOXPLOT - NO ADJUSTMENT
 
@@ -185,10 +189,6 @@ dev.new()
 fbplot( mfD, Fvalue = 2.5, xlab = 'time', ylab = list( 'Values 1',
                                                        'Values 2' ),
         main = list( 'First component', 'Second component' ) )
-
-
-
-#'
 }
 \references{
 Sun, Y., & Genton, M. G. (2012). Functional boxplots. Journal of

@@ -153,13 +153,14 @@ fD = fData( grid, Data )
 outliergram( fD, display = TRUE )
 
 outliergram( fD, Fvalue = 10, display = TRUE )
-
+\dontrun{
 outliergram( fD,
              adjust = list( N_trials = 10,
                             trial_size = 5 * nrow( Data ),
                             TPR = 0.01,
                             VERBOSE = FALSE ),
              display = TRUE )
+}
 }
 \references{
 Arribas-Gil, A., and Romo, J. (2014). Shape outlier detection and visualization
