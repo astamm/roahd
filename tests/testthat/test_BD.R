@@ -12,9 +12,6 @@ D = matrix( c( 1 + sin( 2 * pi * time_grid ),
                -2 + sin( pi * time_grid ) ),
             nrow = 6, ncol = length( time_grid ), byrow = TRUE )
 
-# dev.new()
-# matplot( t( D ), lty = 1, type = 'l' )
-
 test_that( "Correctness of BD method",
            expect_equal( BD( D ), c( 1/3, 1/3, 1/3, 1/3, 14 / 30, 1 / 3 ) ) )
 

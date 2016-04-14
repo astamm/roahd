@@ -24,20 +24,6 @@ test_that( 'Restyling test on BD ',
            expect_identical( BD( fD ),
                              BD( Data ) ) )
 
-# N_trials = 1e3
-#
-# tic = proc.time()
-# invisible( sapply( 1 : N_trials, function( x )( BD( fD ) ) ) )
-# toc = proc.time()
-#
-# toc - tic
-#
-# tic = proc.time()
-# invisible( sapply( 1 : N_trials, function( x )( BD( Data ) ) ) )
-# toc = proc.time()
-#
-# toc - tic
-
 ###### MBD
 
 N = 1e2
@@ -62,21 +48,6 @@ test_that( 'Restyling test on MBD - 1 ',
 test_that( 'Restyling test on MBD - 2 ',
            expect_identical( MBD( fD, manage_ties = FALSE ),
                              MBD( Data, manage_ties = FALSE ) ) )
-
-# N_trials = 1e3
-#
-# tic = proc.time()
-# invisible( sapply( 1 : N_trials, function( x )( MBD( fD ) ) ) )
-# toc = proc.time()
-#
-# toc - tic
-#
-# tic = proc.time()
-# invisible( sapply( 1 : N_trials, function( x )( MBD( Data ) ) ) )
-# toc = proc.time()
-#
-# toc - tic
-
 
 ###### RELATIVE BD and RELATIVE MBD
 

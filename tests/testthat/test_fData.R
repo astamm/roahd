@@ -213,12 +213,6 @@ test_that( ' Unfolding of univariate functional dataset -
                              mon_func( fD$values ) ) )
 
 
-# dev.new()
-# par( mfrow = c( 1, 2 ) )
-# plot( fD, lwd = 2 )
-# plot( fD_unfold, lwd = 2 )
-#
-
 # TESTING WARPING ---------------------------------------------------------
 
 N = 30
@@ -262,14 +256,3 @@ test_that( ' Warping - which.max',
            expect_true( all( maxima( fD_warped, which = TRUE )$grid -
                                0.5 <= .Machine$double.eps )
            ) )
-
-# dev.new()
-# par( mfrow = c( 1, 3 ) )
-# plot( fD,
-#       main = 'Unregistered functions', xlab = 'time', ylab = 'values'  )
-# plot( wfD,
-#       main = 'Warping functions', xlab = 'registered time',
-#       ylab = 'actual time' )
-# plot( fD_warped,
-#       main = 'Warped functions', xlab = 'registered time',
-#       ylab = 'values' )

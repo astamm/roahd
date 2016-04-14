@@ -14,9 +14,6 @@ Data = matrix( c( 1 * time_grid,
 
 fD = fData( time_grid, Data )
 
-# quartz()
-# plot( fD, lwd = 2 )
-
 test_that( 'Max function for functional data, which = TRUE, grid',
            expect_equal( maxima( fD, which = TRUE )$grid,
                              c( 1, 1, 0 + 4999 * h ) ) )
@@ -127,7 +124,6 @@ test_that( 'Area ordering - case 6',
                          c( TRUE, FALSE, TRUE, FALSE ) ) )
 
 
-
 # KENDALL CORRELATION -----------------------------------------------------
 
 N = 2e2
@@ -151,46 +147,6 @@ test_that( 'Kendall correlation with max ordering ',
 
 test_that( 'Kendall correlation with area ordering',
            expect_silent( invisible( cor_kendall( mfD, ordering = 'area' ) ) ) )
-
-# test_that( 'Kendall correlation and var method',
-#            expect_equal( cor_kendall( mfD, ordering = 'max' ),
-#                          cor_kendall__var( mfD, ordering = 'max' ) ) )
-#
-# test_that( 'Kendall correlation and var method',
-#            expect_equal( cor_kendall( mfD, ordering = 'area' ),
-#                          cor_kendall__var( mfD, ordering = 'area' ) ) )
-#
-# time = system.time( cor_kendall( mfD, ordering = 'max' ) )
-# time_var = system.time( cor_kendall__var( mfD, ordering = 'max' ) )
-#
-# time / time_var
-#
-# time = system.time( cor_kendall( mfD, ordering = 'area' ) )
-# time_var = system.time( cor_kendall__var( mfD, ordering = 'area' ) )
-#
-# time / time_var
-
-# P = 10
-#
-# Data_1 = matrix( c( rep( 3, P ),
-#                     rep( 2, P ),
-#                     rep( 1, P ) ),
-#                  nrow = 3, ncol = P, byrow = TRUE )
-#
-# Data_2 = matrix( c( rep( 1, P ),
-#                     rep( 3, P ),
-#                     rep( 2, P ) ),
-#                  nrow = 3, ncol = P, byrow = TRUE )
-#
-# mfD = mfData( 1:10, list( Data_1, Data_2 ) )
-#
-# cor_kendall( mfD, ordering = 'max' )
-# cor_kendall( mfD, ordering = 'area' )
-#
-# cor_kendall__var( mfD, ordering = 'max' )
-# cor_kendall( mfD, ordering = 'max' )
-#
-
 
 # SPEARMAN RANK CORRELATION -----------------------------------------------
 
@@ -246,9 +202,6 @@ Y = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )^2 +
 
 mfD = mfData( time_grid, list( X, Y ) )
 
-# quartz()
-# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 1 - X', 'Case 1 - Y' ), lwd = 2 )
-
 cor_kendall( mfD, ordering = 'max' )
 cor_kendall( mfD, ordering = 'area' )
 cor_spearman( mfD, ordering = 'MEI' )
@@ -267,9 +220,6 @@ Y = cos( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )
 
 mfD = mfData( time_grid, list( X, Y ) )
 
-# quartz()
-# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 2 - X', 'Case 2 - Y' ), lwd = 2 )
-
 cor_kendall( mfD, ordering = 'max' )
 cor_kendall( mfD, ordering = 'area' )
 cor_spearman( mfD, ordering = 'MEI' )
@@ -286,9 +236,6 @@ X = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )^2
 Y = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )^4
 
 mfD = mfData( time_grid, list( X, Y ) )
-
-# quartz()
-# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 3 - X', 'Case 3 - Y' ), lwd = 2 )
 
 test_that( ' Kendall correlation coeff with max ordering - Case 3',
            expect_equal( cor_kendall( mfD, ordering = 'max' ), 1 ) )
@@ -314,9 +261,6 @@ Y = ( ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )^2 +
         2 )^3
 mfD = mfData( time_grid, list( X, Y ) )
 
-# quartz()
-# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 4 - X', 'Case 4 - Y' ), lwd = 2 )
-
 test_that( ' Kendall correlation coeff with max ordering - Case 4',
            expect_equal( cor_kendall( mfD, ordering = 'max' ), 1 ) )
 test_that( ' Kendall correlation coeff with area ordering - Case 4',
@@ -339,9 +283,6 @@ Y = 1 - ( ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )^2 +
         ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z ) * 7 +
         2 )^3
 mfD = mfData( time_grid, list( X, Y ) )
-
-# quartz()
-# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 5 - X', 'Case 5 - Y' ), lwd = 2 )
 
 test_that( ' Kendall correlation coeff with max ordering - Case 5',
            expect_equal( cor_kendall( mfD, ordering = 'max' ), -1 ) )
@@ -368,9 +309,6 @@ Y = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )^3 +
 
 mfD = mfData( time_grid, list( X, Y ) )
 
-# quartz()
-# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 6 - X', 'Case 6 - Y' ), lwd = 2 )
-
 cor_kendall( mfD, ordering = 'max' )
 cor_kendall( mfD, ordering = 'area' )
 cor_spearman( mfD, ordering = 'MEI' )
@@ -389,9 +327,6 @@ X = exp( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 1 ] )^2
 Y = cos( ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] ) )
 
 mfD = mfData( time_grid, list( X, Y ) )
-
-# quartz()
-# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 7 - X', 'Case 7 - Y' ), lwd = 2 )
 
 cor_kendall( mfD, ordering = 'max' )
 cor_kendall( mfD, ordering = 'area' )
@@ -412,9 +347,6 @@ Y = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )^2
 
 mfD = mfData( time_grid, list( X, Y ) )
 
-# quartz()
-# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 8 - X', 'Case 8 - Y' ), lwd = 2 )
-
 cor_kendall( mfD, ordering = 'max' )
 cor_kendall( mfD, ordering = 'area' )
 cor_spearman( mfD, ordering = 'MEI' )
@@ -432,9 +364,6 @@ X = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )^2 +
 Y = cos( matrix( 3 * time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z )
 
 mfD = mfData( time_grid, list( X, Y ) )
-
-# quartz()
-# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 9 - X', 'Case 9 - Y' ), lwd = 2 )
 
 cor_kendall( mfD, ordering = 'max' )
 cor_kendall( mfD, ordering = 'area' )
@@ -456,9 +385,6 @@ Y = ( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )^2 +
 
 mfD = mfData( time_grid, list( X, Y ) )
 
-# quartz()
-# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 10 - X', 'Case 10 - Y' ), lwd = 2 )
-
 cor_kendall( mfD, ordering = 'max' )
 cor_kendall( mfD, ordering = 'area' )
 cor_spearman( mfD, ordering = 'MEI' )
@@ -476,9 +402,6 @@ X = exp( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE )+ Z[ , 1 ] )
 Y = sin( matrix( time_grid, nrow = N, ncol = P, byrow = TRUE ) + Z[ , 2 ] )
 
 mfD = mfData( time_grid, list( X, Y ) )
-
-# quartz()
-# plot( mfD, xlab = 'time', ylab = list( 'X value', 'Y value' ), main = list( 'Case 11 - X', 'Case 11 - Y' ), lwd = 2 )
 
 cor_kendall( mfD, ordering = 'max' )
 cor_kendall( mfD, ordering = 'area' )

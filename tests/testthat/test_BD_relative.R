@@ -29,11 +29,6 @@ Data_test_7 = matrix( c( 0.5  + sin( 2 * pi * time_grid ),
                         1.1 + sin( 2 * pi * time_grid ) ),
                       nrow = 3, ncol = length( time_grid ), byrow = TRUE )
 
-# quartz()
-# matplot( time_grid, t( D ), lty = 1, type = 'l' )
-# lines( time_grid, Data_test_1, lty = 2, type = 'l', col = 'darkred' )
-# matplot( time_grid, t( Data_test_7 ), lty = 2, type = 'l', col = 'darkblue', add = T )
-
 test_that( "Correctness of relative BD (single test function in row matrix form)",
            expect_equal( BD_relative( Data_test_1, Data_ref ), 2/ 3  ) )
 

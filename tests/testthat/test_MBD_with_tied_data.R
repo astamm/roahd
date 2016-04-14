@@ -11,9 +11,6 @@ D = matrix( c( c( 1, 0.5, 0.25, 0.1, 0.05   ),
                c( 1, 0.4, 0.3, 0.2, 0.1 )   ),
             ncol = 5, nrow = 8, byrow = T )
 
-# quartz()
-# matplot( t( D ), lty = 1, type = 'l' )
-
 # Direct computation of MBDs
 N = nrow( D )
 P = ncol( D )
@@ -53,9 +50,6 @@ Data = matrix( c( 0  + sin( 2 * pi * time_grid ),
                   1  + sin( 2 * pi * time_grid ),
                   -1 + sin( 2 * pi * time_grid ) ),
                nrow = 3, ncol = length( time_grid ), byrow = TRUE )
-
-# quartz()
-# matplot( time_grid, t( Data ), lty = 1, type = 'l' )
 
 test_that( "Correct behaviour of MBD without checking for ties",
            expect_equal( MBD( Data, manage_ties = TRUE ),
