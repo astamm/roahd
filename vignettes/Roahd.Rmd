@@ -50,7 +50,6 @@ the object `fData` is built starting from the grid and the values in the
 following way: 
 
 ```{r fData, fig.align='center', fig.height=4, fig.width=4, cache=TRUE}
-
 library( roahd )
 
 # The number of observations in the functional dataset.
@@ -97,7 +96,7 @@ dataset of $N$ elements, each one having $L$ components observed over the same
 discrete grid: $D_{i,j,k} = X_{i,k}(t_{j-1})$, $\forall i = 1, \ldots, N$, $\forall
 j = 0, \ldots, P - 1$ and $\forall k = 1, \ldots, L$.
 
-```{r mfData, cache = TRUE, fig.width = 7, fig.height = 4, fig.align = 'center' }
+```{r mfData, fig.width = 7, fig.height = 4, fig.align = 'center' }
 # Creating some values for first component of the dataset
 Data_1 = t( sapply( runif( 10, 0, 4 ), 
                     function( phase ) sin( 2 * pi * grid + phase ) ) )
@@ -118,7 +117,6 @@ str( mfD )
 # Each component of the mfData object is a fData object 
 sapply( mfD$fDList, class )
 
-
 plot( mfD, lwd = 2, main = 'Multivariate FD',
       xlab = 'time', ylab = list( 'Values 1', 'Values 2' ))
 ```
@@ -129,7 +127,7 @@ for `fData` on multivariate functional data components, making the exploration
 and manipulation of multivariate datasets rather easy:
 
 ```{r mfDataComponents, eval = TRUE, fig.width = 4, fig.height = 4, fig.align = 'center' }
-plot( mfD$fDList[[ 1 ]], main = 'First component',
+plot( mfD$fDList[[ 1 ]], main = 'First component', 
       xlab = 'time', ylab = 'Values', lwd = 2 )
 ```
 
@@ -163,7 +161,7 @@ fD[ 2, 10 : 20, as_fData = FALSE ]
 
 fD[ , 10, as_fData = FALSE ]
 ```
-```{r fData_subset_2, fig.align='center', fig.width=7, fig.height=4, cache=TRUE, }
+```{r fData_subset_2, fig.align='center', fig.width=7, fig.height=4 }
 # As default behaviour the subset is returned in fData form
 par( mfrow = c(1,2) )
 plot( fD, main = 'Original dataset', lwd = 2 )
@@ -249,7 +247,7 @@ be used.
 The implementation of `MBD` exploits the recommendations of [@Sun_Genton_2012],
 but extends them in order to accomodate for the possible presence of ties.
 
-```{r BD_MBD_1, eval = FALSE, cache = TRUE }
+```{r BD_MBD_1, eval = FALSE }
 
   BD( fD )
   BD( fD$values )
@@ -265,7 +263,7 @@ Another definition avaibable is the **Half Region Depth** (along with its modifi
 version), that is built on top of the **Epigraph** and **Hypograph** indexes [
 see @lopezpintado_romo_2011]:
 
-```{r HRD, eval = FALSE, cache = TRUE}
+```{r HRD, eval = FALSE}
 
 HRD( fD )
 HRD( fD$values )
@@ -289,7 +287,7 @@ the multivariate dataset), or by providing the actual set of weights to be
 used. The latter option allows to use ad-hoc set of weights, like in 
 [@tarabelloni_ieva_etal_2015].
 
-```{r multiMBD, eval = FALSE, cache = TRUE }
+```{r multiMBD, eval = FALSE }
 
   multiBD( mfD, weights = 'uniform' )
   multiMBD( mfD, weights = 'uniform', manage_ties = FALSE )
@@ -341,7 +339,7 @@ compute the depths defining the sample median, taking respectively a 2D matrix o
 data values and a list of 2D matrix of data values as argument (plus, optionally,
 the dots arguments).
 
-```{r mean_1, eval = FALSE, cache = TRUE }
+```{r mean_1, eval = FALSE }
 
   # Exploiting the S3 nature of these functions and the dispatching from the 
   # standard `mean` function
@@ -406,7 +404,7 @@ Two criteria are available so far, that directly reflect those proposed in the
 reference paper: `max`, for the ordering between maxima of functions,
 and `area`, for the ordering between area-under-the-curve of functions.
 
-```{r cor_kendall_1, eval = TRUE, cache = TRUE}
+```{r cor_kendall_1, eval = TRUE}
   N = 10
   P = 1e3
 
@@ -419,7 +417,7 @@ and `area`, for the ordering between area-under-the-curve of functions.
   mfD = mfData( grid, list( Data_1, Data_2 ) )
 ```
 
-```{r cor_kendall_2, eval = TRUE, cache = TRUE, collapse = TRUE, fig.align = 'center', fig.height = 4, fig.width = 6} 
+```{r cor_kendall_2, eval = TRUE, collapse = TRUE, fig.align = 'center', fig.height = 4, fig.width = 6} 
   plot( mfD, main = list( 'Comp. 1', 'Comp. 2') )  
 
   # Kendall correlation of monotonically dependent data is exactly 1
@@ -434,7 +432,7 @@ compoenents and then compute the correlation coefficient. Besides `MEI`, also `M
 can be used to determine ranks of univariate components. Additional parameters
 captured by `...` are passed directly to the rank function. 
 
-```{r Spearman, eval = TRUE, cache = TRUE, collapse = TRUE }
+```{r Spearman, eval = TRUE, collapse = TRUE }
 # Spearman correlation of monotonically dependent data is exactly 1
   cor_spearman( mfD, ordering = 'MEI' )
   cor_spearman( mfD, ordering = 'MHI' )
@@ -622,7 +620,7 @@ aimed at finding, for a given dataset of simulated gaussian data associated to
 * `VERBOSE`: a parameter controlling the verbosity of the adjustment process;
 
 
-```{r fbplot_fData_adjust, eval = TRUE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4, cache = TRUE}
+```{r fbplot_fData_adjust, eval = TRUE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4}
   fbplot( fD, adjust = list( N_trials = 20, trial_size = N, TPR = 0.007, F_min = 0.1, F_max = 20 ), xlab = 'grid', ylab = 'values', main = 'Adjusted functional boxplot' )
 ```
 

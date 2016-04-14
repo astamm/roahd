@@ -1,8 +1,0 @@
-base
-RColorBrewer
-data.table
-lattice
-Rcpp
-pryr
-roahd
-devtools
