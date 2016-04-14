@@ -49,7 +49,7 @@ $D_{i,j} = X_i(t_j)$, $\forall i = 1, \ldots, N$ and $\forall j=0, \ldots, P-1$,
 the object `fData` is built starting from the grid and the values in the 
 following way: 
 
-```{r fData, fig.align='center', fig.height=4, fig.width=4, cache=TRUE}
+```{r fData, fig.align='center', fig.height=4, fig.width=4}
 library( roahd )
 
 # The number of observations in the functional dataset.
@@ -551,7 +551,7 @@ values for the provided dataset.
 
 An example is:
 
-```{r fbplot_fData, fig.align='center', fig.height=5, fig.width=7, cache=TRUE, results='hide'}
+```{r fbplot_fData, fig.align='center', fig.height=5, fig.width=7, results='hide'}
 
   set.seed(1618)
 
