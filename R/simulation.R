@@ -101,6 +101,8 @@ exp_cov_function = function( grid, alpha, beta )
 #'
 #' generate_gauss_fdata( N, centerline, CholCov = CholC )
 #'
+#' @importFrom stats rnorm
+#'
 #' @export
 generate_gauss_fdata = function( N, centerline,
                                  Cov = NULL, CholCov = NULL )

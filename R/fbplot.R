@@ -196,6 +196,9 @@ fbplot = function( Data,
 
 #' @rdname fbplot
 #' @aliases fbplot
+#'
+#' @importFrom stats quantile
+#'
 #' @export
 #'
 fbplot.fData = function( Data,

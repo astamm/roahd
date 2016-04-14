@@ -88,6 +88,8 @@ toRowMatrixForm = function( D )
 #'       cex = 2,
 #'       main = 'Alpha colours' )
 #'
+#' @importFrom grDevices col2rgb rgb
+#'
 #' @export
 set_alpha = function( col, alpha )
 {

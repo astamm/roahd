@@ -116,6 +116,10 @@ fData = function( grid, values )
 #'
 #' plot( fD )
 #'
+#' @importFrom grDevices matplot par dev.set
+#' @importFrom graphics text lines polygon plot points
+#' @importFrom stats cor pnorm rnorm qnorm uniroot
+#'
 #' @export
 #'
 plot.fData = function( x, ... )
@@ -1078,6 +1082,8 @@ unfold = function( fData )
 #' plot( fD_warped,
 #'      main = 'Warped functions', xlab = 'registered grid',
 #'      ylab = 'values' )
+#'
+#' @importFrom stats approx
 #'
 #' @export
 warp = function( fData, warpings )
