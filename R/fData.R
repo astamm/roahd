@@ -116,9 +116,6 @@ fData = function( grid, values )
 #'
 #' plot( fD )
 #'
-#' @importFrom grDevices matplot par dev.set
-#' @importFrom graphics text lines polygon plot points
-#' @importFrom stats cor pnorm rnorm qnorm uniroot
 #'
 #' @export
 #'

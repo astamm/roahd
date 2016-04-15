@@ -151,6 +151,10 @@
 #'              display = TRUE )
 #' }
 #'
+#' @importFrom grDevices dev.set
+#' @importFrom stats cor pnorm rnorm qnorm uniroot
+#' @importFrom graphics text lines polygon plot points matplot par
+#'
 #' @export
 outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
                         q_low = 0, q_high = 1, p_check = 0.05,
