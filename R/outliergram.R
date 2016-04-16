@@ -151,7 +151,7 @@
 #'              display = TRUE )
 #' }
 #'
-#' @importFrom grDevices dev.set
+#' @importFrom grDevices dev.set dev.cur
 #' @importFrom stats cor pnorm rnorm qnorm uniroot
 #' @importFrom graphics text lines polygon plot points matplot par
 #'
