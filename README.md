@@ -1,5 +1,5 @@
 
-# ROAHD 
+# roahd 
 
 Package roahd (Robust Analysis of High-dimensional Data ) allows to use
 a set of statistical tools for the exploratory analysis and robustification of
