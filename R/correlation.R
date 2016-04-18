@@ -192,7 +192,7 @@ max_ordered = function( fData, gData )
 #' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
 #' defined over a compact interval \eqn{I=[a,b]} and observed on an evenly sapced
 #' 1D grid \eqn{[a = t_0, t_1, \ldots, t_{P-1} = b \subset I}, the function
-#' computes: \bold{CHECK THIS!!!}
+#' computes:}
 #'
 #' \deqn{ \sum_{i=1}^{P-2} \frac{X(t_{i+1}) - X(t_{i-1})}{2} h \approx
 #' \int_a^b X(t) dt,}
