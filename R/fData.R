@@ -59,7 +59,7 @@
 #'
 fData = function( grid, values )
 {
-  all( abs( diff( unique( diff( grid ) ) ) ) < 1e-14 ) ||
+  all( abs( diff( unique( diff( grid ) ) ) ) < 1e-13 ) ||
     stop( ' Error in fData: you provided an unevenly spaced grid')
 
   P = length( grid )
