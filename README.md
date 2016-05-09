@@ -1,7 +1,7 @@
 
-# roahd [![Build Status](https://travis-ci.org/ntarabelloni/roahd.svg?branch=master)](https://travis-ci.org/ntarabelloni/roahd)
+# roahd 
 
-
+[![Build Status](https://travis-ci.org/ntarabelloni/roahd.svg?branch=master)](https://travis-ci.org/ntarabelloni/roahd) [![codecov](https://codecov.io/gh/ntarabelloni/roahd/branch/master/graph/badge.svg)](https://codecov.io/gh/ntarabelloni/roahd)
 
 Package roahd (Robust Analysis of High-dimensional Data ) allows to use
 a set of statistical tools for the exploratory analysis and robustification of
