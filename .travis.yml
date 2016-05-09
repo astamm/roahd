@@ -2,7 +2,7 @@ language: r
 cache: scales, robustbase, devtools 
 
 r_packages:
-      - covr, scales, robustbase, devtools
+      - covr
 
 after_success:
       - Rscript -e 'library(covr); codecov()'
