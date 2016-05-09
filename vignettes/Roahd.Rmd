@@ -392,7 +392,7 @@ either in form of a `fData` object or a 2D matrix of values.
 
 When dealing with multivariate functional data, in particular in case of **bivariate**
 data, it is possible to compute correlation coefficients between data components
-that generalise the Kendall's tau and Spearman's coefficients **REFERENCES!**.
+that generalise the Kendall's tau and Spearman's coefficients [@kendall_2015; @spearman_2015].
 
 The function `cor_kendall( mfD, ordering = 'max' )` allows to compute the 
 Kendall's tau correlation coefficient between components of a bivariate dataset.
