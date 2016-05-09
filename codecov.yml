@@ -1,8 +1,8 @@
 codecov:
     branch: dev
 
-coverage: 
+coverage:
     precision: 2
-    round: down 
-    range: "30...100"
+    round: down
+    range: "0...100"
 
