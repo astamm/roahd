@@ -800,7 +800,10 @@ cov_fun.mfData = function( D1, D2 = NULL )
 }
 
 
-
+plot.Cov = function( x, ... )
+{
+  image( x$values, ...  )
+}
 
 #'
 #' Median of a univariate functional dataset

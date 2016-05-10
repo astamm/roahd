@@ -64,6 +64,18 @@ test_that( 'Cross covariance of fData objects',
            expect_equal( cov( fD$values, ( fD + 1 : P )$values ),
                          cov_fun( fD, fD + 1 : P )$values ) )
 
+N = 1e2
+
+P = 1e2
+t0 = 0
+t1 = 1
+
+time_grid = seq( t0, t1, length.out = P )
+
+Cov = exp_cov_function( time_grid, alpha = 0.3, beta = 0.4 )
+
+Data = generate_gauss_fdata( N, centerline = sin( 2 * pi * time_grid ), Cov = Cov )
+
 fD = fData( time_grid, Data )
 mfD = mfData( time_grid, list( 'comp1' = Data, 'comp2' = Data, 'comp3' = Data ) )
 mfD2 = mfData( time_grid, list( Data, Data, Data ) )
@@ -96,6 +108,12 @@ test_that( 'Covariance of mfData - names 2',
                          c( '1_1', '1_2', '1_3',
                             '2_2', '2_3',
                             '3_3' ) ) )
+
+test_that( 'Plotting method for Cov object - 1 ',
+           expect_silent( plot( cov_fun( fD ) ) ) )
+
+test_that( 'Plotting method for Cov object - 2 ',
+           expect_silent( lapply( cov_fun( mfD3 ), plot ) ) )
 
 # TESTING ALGEBRAIC OPERATIONS --------------------------------------------
 
