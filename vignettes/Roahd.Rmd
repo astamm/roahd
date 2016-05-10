@@ -679,6 +679,9 @@ aimed at finding, for a given dataset of simulated gaussian data associated to
 `Data`, the optimal value of `Fvalue`. Default is `100`;
 * `VERBOSE`: a parameter controlling the verbosity of the adjustment process;
 
+*Suggestion*: Try and select a sufficiently high value for `adjust$trial_size`,
+in fact too small values (the default is `8 * adjust$N`) will result in the impossibility to carry out the optimisation since the TPR percentage is too small
+compared to the sample size.
 
 ```{r fbplot_fData_adjust, eval = TRUE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4}
   fbplot( fD, adjust = list( N_trials = 20, trial_size = N, TPR = 0.007, F_min = 0.1, F_max = 20 ), xlab = 'grid', ylab = 'values', main = 'Adjusted functional boxplot' )

@@ -24,6 +24,11 @@ which is much more robust in practical cases.
 
 2) Extended README.md
 
+3) Added `cov_fun` method to compute covariance and cross-covariance functions
+for either univariate or multivariate functional data. Implemented the `S3` class
+`Cov` and plotting specialisation `plot.Cov`, wrapping `graphics::image`.
+
+
 
 ### Minor fixes 
 
@@ -32,3 +37,9 @@ which is much more robust in practical cases.
 2) Fixed typos in vignette
 
 3) Added [Travis](https://travis-ci.org/ntarabelloni/roahd) and [Codecov](https://codecov.io/gh/ntarabelloni/roahd) support
+
+4) Modified the default parameter value for `trial_size` in `fbplot` from `Data$N` 
+to `8 * Data$N`.
+
+5) Added check to `fbplot` and `outliergram` that raises warnings when parameters
+different than those supported are provided through `adjust` argument.
