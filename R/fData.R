@@ -896,8 +896,40 @@ cov_fun.mfData = function( X, Y = NULL )
       if( X$L != Y$L )
         stop( 'You have to provide a Y dataset with same number of components as X')
 
-      return( mapply( cov_fun, X = X$fDList, Y = Y$fDList,
-                      SIMPLIFY = FALSE, USE.NAMES = FALSE ) )
+      list = NULL
+
+      for( i in 1 : X$L )
+      {
+        list = append( list,
+                       lapply( i : X$L,
+                               function( j ) cov_fun( X$fDList[[ i ]],
+                                                      Y$fDList[[ j ]] )  ) )
+      }
+
+      # Setting up names for the covariances
+      if( ! is.null( names( X$fDList ) ) )
+        nmx = names( X$fDList )
+      else nmx = 1 : X$L
+
+      if( ! is.null( names( Y$fDList ) ) )
+        nmy = names( Y$fDList )
+      else nmy = 1 : Y$L
+
+      nmlist = NULL
+
+      for( i in 1 : X$L )
+      {
+        nmlist = append( nmlist,
+                         sapply( i : X$L,
+                                 function( j ) ( paste( nmx[ i ],
+                                                        '_',
+                                                        nmy[ j ],
+                                                        sep = '' ) ) ) )
+      }
+      names( list ) = nmlist
+
+      return( list )
+
     } else if( class( Y ) == 'fData' )
     {
       return( sapply( X = X$fDList, FUN = cov_fun, Y,

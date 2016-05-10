@@ -81,10 +81,16 @@ mfD = mfData( time_grid, list( 'comp1' = Data, 'comp2' = Data, 'comp3' = Data ) 
 mfD2 = mfData( time_grid, list( Data, Data, Data ) )
 mfD3 = mfData( time_grid, list( Data, Data ) )
 
+rhs = lapply( 1 : ( 2 * mfD$L ),
+              function( i ) cov_fun( mfD$fDList[[1]] ) )
+names( rhs ) = c( 'comp1_1', 'comp1_2', 'comp1_3',
+                  'comp2_2', 'comp2_3',
+                  'comp3_3' )
+
+
 test_that( 'Cross covariance of mfData and mfData',
            expect_equal( cov_fun( mfD, mfD2 ),
-                         lapply( 1 : mfD$L,
-                                 function( i ) cov_fun( mfD$fDList[[1]] ) ) ) )
+                          rhs ) )
 
 test_that( 'Cross covariance of mfData and fData',
            expect_equal( cov_fun( mfD2, fD ),
