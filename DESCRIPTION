@@ -14,19 +14,22 @@ Authors@R: c( person("Nicholas", "Tarabelloni", role = c("aut", "cre"),
               person("Juan", "Romo", role = "aut",
                       email = "romo@est-econ.uc3m.es") )
 Author: Nicholas Tarabelloni [aut, cre],
-  Ana Arribas-Gil [aut],
-  Francesca Ieva [aut],
-  Anna Maria Paganoni [aut],
-  Juan Romo [aut]
+    Ana Arribas-Gil [aut],
+    Francesca Ieva [aut],
+    Anna Maria Paganoni [aut],
+    Juan Romo [aut]
 Maintainer: Nicholas Tarabelloni <nicholas.tarabelloni@polimi.it>
 Description: A collection of methods for the robust analysis of univariate and
     multivariate functional data, possibly in high-dimensional cases, and hence
-    with attention to computational efficiency and simplicity of use. 
+    with attention to computational efficiency and simplicity of use.
 License: GPL-3
 LazyData: yes
-Suggests: testthat,
+Suggests:
+    testthat,
     knitr,
     rmarkdown
-Imports: scales,
-	 robustbase,
+Imports:
+    scales,
+    robustbase,
 VignetteBuilder: knitr
+RoxygenNote: 5.0.1

@@ -188,6 +188,17 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
     }
   } else {
 
+    nodenames = c( 'N_trials', 'trial_size', 'TPR', 'F_min', 'F_max',
+                   'tol', 'maxiter', 'VERBOSE' )
+    unused = setdiff( names( adjust ), nodenames )
+
+    # Checking for unused parameters
+    if( length( unused ) > 0 )
+    {
+      for( i in unused )
+        warning( 'Warning: unused parameter ', i, ' in adjust argument of outliergram' )
+    }
+
     N_trials = ifelse( is.null( adjust$N_trials ),
                        20,
                        adjust$N_trials )
@@ -552,151 +563,4 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
                 IQR_d = IQR_d ) )
 
 }
-
-
-# check_outlier_Low_MEI = function( Data, idObs, q_high = 1  )
-# {
-#   diff_max_vector = Data[ idObs, ] - apply( Data[ - idObs, ],
-#                                             2,
-#                                             ifelse( q_high == 1,
-#                                                     max,
-#                                                     function( x )( quantile( x, probs = q_high ) ) ) )
-#
-#   max_diff_max = max( diff_max_vector )
-#
-#   Data_tilde = Data[ idObs, ] - any ( diff_max_vector > 0 ) * max_diff_max
-#
-#   MBD_curr = MBD( rbind( Data[ - idObs, ], Data_tilde ) )[ N ]
-#
-#   MEI_curr = MEI( rbind( Data[ - idObs, ], Data_tilde ) )[ N ]
-#
-#   P_curr = a_0_2 + a_1 * MEI_curr + N^2 * a_0_2 * MEI_curr^2
-#
-#   return( as.logical( MBD_curr <= P_curr - Q_d3 - 1.5 * IQR ) )
-# }
-#
-# check_outlier_High_MEI = function( Data, idObs, q_low = 0 )
-# {
-#   diff_min_vector = Data[ idObs, ] - apply( Data[ - idObs, ],
-#                                             2,
-#                                             ifelse( q_low == 0,
-#                                                     min,
-#                                                     function( x ) ( quantile( x, probs = q_low ) ) ) )
-#
-#   min_diff_min = min( diff_min_vector )
-#
-#   Data_tilde = Data[ idObs, ] - any ( diff_min_vector < 0 ) * min_diff_min
-#
-#   MBD_curr = MBD( rbind( Data[ - idObs, ], Data_tilde ) )[ N ]
-#
-#   MEI_curr = MEI( rbind( Data[ - idObs, ], Data_tilde ) )[ N ]
-#
-#   P_curr = a_0_2 + a_1 * MEI_curr + N^2 * a_0_2 * MEI_curr^2
-#
-#   return( as.logical( MBD_curr <= P_curr - Q_d3 - 1.5 * IQR ) )
-# }
-
-
-# par_outliergram = function( grid, Data, MBD_data = NULL, MEI_data = NULL, q_low = 0, q_high = 1, Fvalue = NULL )
-# {
-#   N = nrow( Data )
-#
-#   a_0_2 = -2 / ( N * ( N - 1 ) )
-#
-#   a_1 = 2 * ( N + 1 ) / ( N - 1 )
-#
-#   # Computing MBD
-#   if( is.null( MBD_data ) ){
-#
-#     MBD_data = MBD( Data )
-#   }
-#
-#   # Computing MEI
-#   if( is.null( MEI_data ) )
-#   {
-#     MEI_data = MEI( Data )
-#   }
-#
-#   d = a_0_2 + a_1 * MEI_data + N^2 * a_0_2 * MEI_data^2 - MBD_data
-#
-#   Q = quantile( d )
-#
-#   Q_d3 = Q[ 4 ]
-#
-#   Q_d1 = Q[ 2 ]
-#
-#   IQR_d = Q[ 4 ] - Q[ 2 ]
-#
-#   # Computing surely outlying curves
-#   ID_shape_outlier = ifelse( is.null( Fvalue ),
-#                              which( d >= Q_d3 + 1.5 * IQR_d ),
-#                              which( d >= Fvalue * Q_d1 ) )
-#
-#   # Computing non outlying curves ids
-#   ID_non_outlying = setdiff( 1 : nrow( Data ), ID_shape_outlier )
-#
-#   # Low MEI curves will be checked for upward shift
-#   ID_non_outlying_Low_MEI = ID_non_outlying[ which( MEI_data[ ID_non_outlying ] < 0.5 ) ]
-#
-#   # High MEI curves will be checked for downward shift
-#   ID_non_outlying_High_MEI = ID_non_outlying[ which( MEI_data[ ID_non_outlying ] >= 0.5 ) ]
-#
-#   registerDoParallel( 8 )
-#   min_diff_min = foreach( ID = ID_non_outlying_High_MEI, .combine = 'c' ) %dopar% {
-#     min( Data[ ID, ] -
-#            apply( Data[ - ID, ],
-#                   2, min ) )
-#   }
-#   max_diff_max = foreach( ID = ID_non_outlying_Low_MEI, .combine = 'c' ) %dopar% {
-#     max( Data[ ID, ] -
-#            apply( Data[ - ID, ],
-#                   2, max ) )
-#   }
-#
-#   ID_to_check_high = ID_non_outlying_High_MEI[ min_diff_min < 0 ]
-#   ID_to_check_low = ID_non_outlying_Low_MEI[ max_diff_max < 0 ]
-#
-#   Data_tilde_high = t( t( Data[ ID_to_check_high, ] ) - min_diff_min[ ID_to_check_high ] )
-#   Data_tilde_low = t( t( Data[ ID_to_check_low, ] ) - max_diff_max[ ID_to_check_low ] )
-#
-#   MBD_curr_high = foreach( ID = ID_to_check_high, .combine = 'c' ) %dopar% {
-#     MBD( rbind( Data[ - grep( ID, ID_non_outlying_High_MEI ), ],
-#                 Data_tilde_high[ grep( ID, ID_to_check_high ), ] ) )[ N ]
-#   }
-#   MBD_curr_low = foreach( ID = ID_to_check_low, .combine = 'c' ) %dopar% {
-#     MBD( rbind( Data[ - grep( ID, ID_non_outlying_Low_MEI ), ],
-#                 Data_tilde_low[ grep( ID, ID_to_check_low ), ] ) )[ N ]
-#   }
-#
-#   MEI_curr_high = foreach( ID = ID_to_check_high, .combine = 'c'  ) %dopar% {
-#     MEI( rbind( Data[ - grep( ID, ID_non_outlying_High_MEI ), ],
-#                 Data_tilde_high[ grep( ID, ID_to_check_high ), ] ) )[ N ]
-#   }
-#   MEI_curr_low = foreach( ID = ID_to_check_low, .combine = 'c' ) %dopar% {
-#     MEI( rbind( Data[ - grep( ID, ID_non_outlying_Low_MEI ), ],
-#                 Data_tilde_low[ grep( ID, ID_to_check_low ), ] ) )[ N ]
-#   }
-#
-#   d_curr_high = a_0_2 + a_1 * MEI_curr_high + N^2 * a_0_2 * MEI_curr_high^2 - MBD_curr_high
-#   d_curr_low = a_0_2 + a_1 * MEI_curr_low + N^2 * a_0_2 * MEI_curr_low^2 - MBD_curr_low
-#
-#   ID_out_extra_high = ID_to_check_high[ which( ifelse( is.null( Fvalue ),
-#                                              d_curr_high >= Q_d3 + 1.5 * IQR_d,
-#                                              d_curr_high >= Q_d1 * Fvalue ) ) ]
-#   ID_out_extra_low = ID_to_check_low[ which( ifelse( is.null( Fvalue ),
-#                                                      d_curr_low >= Q_d3 + 1.5 * IQR_d,
-#                                                      d_curr_low >= Q_d1 * Fvalue ) ) ]
-#
-#   ID_shape_outlier = c( ID_shape_outlier, ID_out_extra_high )
-#   ID_non_outlying = setdiff( ID_non_outlying, ID_out_extra_high )
-#   ID_shape_outlier = c( ID_shape_outlier, ID_out_extra_low )
-#   ID_non_outlying = setdiff( ID_non_outlying, ID_out_extra_low )
-#
-#
-#   return( list( ID_SO = ID_shape_outlier,
-#                 ID_NO = ID_non_outlying,
-#                 MEI_data = MEI_data,
-#                 MBD_data = MBD_data ) )
-#
-# }
 

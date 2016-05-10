@@ -2,7 +2,9 @@
 title: "roahd"
 author: "Nicholas Tarabelloni"
 date: "`r Sys.Date()`"
-output:: rmarkdown::html_vignette
+output:: 
+  rmarkdown::html_vignette:
+    toc: true
 bibliography: references.bib
 vignette: >
   %\VignetteIndexEntry{roahd}
@@ -360,6 +362,64 @@ the dots arguments).
   plot( median_fData( fD, type = 'MBD' ), add = TRUE, lwd = 2, lty = 2, col = 'black' )
 ```
 
+### Covariance and cross-covariance functions
+
+The computation of covariance functions and cross-covariance functions for 
+univariate and multivariate functional datasets is provided through the function
+`cov_fun( X, Y = NULL )`.
+
+Given a univariate functional dataset, $X_1, X_2, \ldots, X_N$, defined over the 
+grid $[t_0, t_1, \ldots, t_P] \subset I$ the sample estimator of covariance 
+function is $C(t_i,t_j) = \widehat{Cov}(X(t_i),X(t_j))$ for $i,j=1,\ldots,P$. 
+Given another univariate functional dataset $Y_1, Y_2, \ldots, Y_N$, the sample 
+estimator of the cross-covariance function is 
+$C_{X,Y}(t_i,t_j) = \widehat{Cov}(X(t_i),Y(t_j)$.
+
+Given a multivariate functional dataset with observations of $L$ components, 
+$X_1, X_2,\ldots, X_N$, the covariance function has the following block structure:
+$C^{k,l} = [ C(t_i,t_j)]_{i,j=1}^{P}$, for $k,l = 1, \ldots, L$. 
+Of course, it is $C^{k,l} = [C^{l,k}]^T$.
+The cross-covariance between two multivariate datasets is given by the cross
+covariances of the components.
+
+When `X` is a univariate or multivariate functional dataset, and if `Y` is
+`NULL`, `cov_fun` returns the sample covariance function of the functional 
+dataset, defined over the tensorised grid where `X` is defined.
+If `Y` is a univariate functional dataset (in form of `fData` object), the method
+returns the cross-covariance function of `X` and `Y`.
+
+When `X` is a multivariate dataset, `Y` can be `NULL`, an `fData` or a `mfData`
+object. In the first case the method returns the covariance function of `X`, in form of
+a list of *only* the upper-triangular blocks. The blocks are sorted in the list by row,
+therefore the first is the covariance of the first component, then the cross-covariance
+of the first component with the second, etc. In the second case, the list of
+cross-covariances between `X`'s components and `Y` are returned. In the third case,
+the list of upper-triangular blocks of cross-covarainces between `X` and `Y` 
+is returned.
+
+```{r cov, collapse = TRUE, eval = FALSE}
+    # Simple covariance function 
+    C1 = cov_fun( fD )
+
+    # Cross-covariance function of first and second component of mfD
+    CC = cov_fun( mfD$fDList[[1]], mfD$fDList[[2]] )
+    
+    # Block-covariance function of mfD
+    BC = cov_fun( mfD )
+```
+
+Each covariance function estimate (the elements of the list in the multivariate
+case, too) is returned as an istance of the `S3` class `Cov`, that stores the 
+values of the covariance matrix as well as the grid parameters.
+
+`plot.Cov`, an `S3` specialisation of `plot` is available as plotting method for
+`Cov` objects. It is built around `graphics::image`, hence all the additional
+parameters of `image` can be used to customise it.
+
+```{r plot_cov, eval = FALSE, collapse = TRUE, fig.align = 'center', fig.height = 4, fig.width = 4}
+  plot( C, main = 'Covariance function', xlab = 'time', ylab = 'time' )
+```
+
 ### Indexes
 `roahd` collects the implementation of some useful indexes that can be used to 
 describe and summarise functional datasets. 
@@ -392,7 +452,7 @@ either in form of a `fData` object or a 2D matrix of values.
 
 When dealing with multivariate functional data, in particular in case of **bivariate**
 data, it is possible to compute correlation coefficients between data components
-that generalise the Kendall's tau and Spearman's coefficients **REFERENCES!**.
+that generalise the Kendall's tau and Spearman's coefficients [@kendall_2015; @spearman_2015].
 
 The function `cor_kendall( mfD, ordering = 'max' )` allows to compute the 
 Kendall's tau correlation coefficient between components of a bivariate dataset.
@@ -601,7 +661,7 @@ an adjusted value of F, which will lead to the averaged adjusted value `Fvalue`.
 Default is 20;
 * `trial_size`: the number of elements in the gaussian population of functional 
 data that will be simulated at each repetition of the adjustment procedure. 
-Default is `Data$N`;
+Default is 8 * `Data$N`;
 * `TPR`: the True Positive Rate of outliers, i.e. the proportion of observations 
 in a dataset without amplitude outliers that have to be considered outliers. 
 Default is `2 * pnorm( 4 * qnorm( 0.25 ) )`;
@@ -619,6 +679,9 @@ aimed at finding, for a given dataset of simulated gaussian data associated to
 `Data`, the optimal value of `Fvalue`. Default is `100`;
 * `VERBOSE`: a parameter controlling the verbosity of the adjustment process;
 
+*Suggestion*: Try and select a sufficiently high value for `adjust$trial_size`,
+in fact too small values (the default is `8 * adjust$N`) will result in the impossibility to carry out the optimisation since the TPR percentage is too small
+compared to the sample size.
 
 ```{r fbplot_fData_adjust, eval = TRUE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4}
   fbplot( fD, adjust = list( N_trials = 20, trial_size = N, TPR = 0.007, F_min = 0.1, F_max = 20 ), xlab = 'grid', ylab = 'values', main = 'Adjusted functional boxplot' )

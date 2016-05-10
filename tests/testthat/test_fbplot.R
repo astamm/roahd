@@ -65,6 +65,12 @@ test_that( 'Functional boxplot for univariate data - adjusted',{
                      main = 'My adjusted functional boxplot' )
            ) })
 
+test_that( 'Functional boxplot for univariate data - warning generation',
+           expect_warning( fbplot( fD,
+                                   adjust = list( N_trials = 1, trial_size = N,
+                                                  foo = 'bar', baz = 'qux' ),
+                                   display = FALSE ) ) )
+
 
 # TESTING THE FUNCTIONAL BOXPLOT FOR MULTIVARIATE FUNCTIONAL DATA ---------
 

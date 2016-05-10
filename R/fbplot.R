@@ -48,7 +48,7 @@
 #'  to the averaged adjusted value \eqn{\bar{F}}. Default is 20;}
 #'  \item{"\code{trial_size}"}{: the number of elements in the gaussian
 #'  population of functional data that will be simulated at each repetition of
-#'  the adjustment procedure. Default is \code{Data$N};}
+#'  the adjustment procedure. Default is 8 * \code{Data$N};}
 #'  \item{"\code{TPR}"}{: the True Positive Rate of outliers, i.e. the proportion
 #'  of observations in a dataset without amplitude outliers that have to be
 #'  considered outliers. Default is \code{2 * pnorm( 4 * qnorm( 0.25 ) )};}
@@ -237,12 +237,23 @@ fbplot.fData = function( Data,
 
   } else {
 
+    nodenames = c( 'N_trials', 'trial_size', 'TPR', 'F_min', 'F_max',
+                   'tol', 'maxiter', 'VERBOSE' )
+    unused = setdiff( names( adjust ), nodenames )
+
+    # Checking for unused parameters
+    if( length( unused ) > 0 )
+    {
+      for( i in unused )
+        warning( 'Warning: unused parameter ', i, ' in adjust argument of fbplot' )
+    }
+
     N_trials = ifelse( is.null( adjust$N_trials ),
                        20,
                        adjust$N_trials )
 
     trial_size = ifelse( is.null( adjust$trial_size ),
-                         Data$N,
+                         8 * Data$N,
                          adjust$trial_size )
 
     TPR = ifelse( is.null( adjust$TPR ),
@@ -269,7 +280,7 @@ fbplot.fData = function( Data,
                       FALSE,
                       adjust$VERBOSE )
 
-    # Estimation of robust covaraince matrix
+    # Estimation of robust covariance matrix
     Cov = robustbase::covOGK( Data$values, sigmamu = robustbase::s_Qn )$cov
 
     # Cholesky factor
