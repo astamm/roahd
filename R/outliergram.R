@@ -188,6 +188,17 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
     }
   } else {
 
+    nodenames = c( 'N_trials', 'trial_size', 'TPR', 'F_min', 'F_max',
+                   'tol', 'maxiter', 'VERBOSE' )
+    unused = setdiff( names( adjust ), nodenames )
+
+    # Checking for unused parameters
+    if( length( unused ) > 0 )
+    {
+      for( i in unused )
+        warning( 'Warning: unused parameter ', i, ' in adjust argument of outliergram' )
+    }
+
     N_trials = ifelse( is.null( adjust$N_trials ),
                        20,
                        adjust$N_trials )

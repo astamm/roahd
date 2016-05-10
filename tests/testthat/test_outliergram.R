@@ -66,3 +66,10 @@ test_that( 'Outliergram - with adjustment',{
                           display = FALSE )$ID_outliers,
              c( 78, 117, 183, 201, 202, 203, 204 ) ) })
 
+test_that( 'Outliergram - warning generation',
+           expect_warning( outliergram( fD,
+                                        adjust = list( N_trials = 1, trial_size = N,
+                                                       foo = 'bar', baz = 'qux' ),
+                                        display = FALSE ) ) )
+
+

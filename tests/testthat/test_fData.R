@@ -109,12 +109,6 @@ test_that( 'Covariance of mfData - names 2',
                             '2_2', '2_3',
                             '3_3' ) ) )
 
-test_that( 'Plotting method for Cov object - 1 ',
-           expect_silent( plot( cov_fun( fD ) ) ) )
-
-test_that( 'Plotting method for Cov object - 2 ',
-           expect_silent( lapply( cov_fun( mfD3 ), plot ) ) )
-
 # TESTING ALGEBRAIC OPERATIONS --------------------------------------------
 
 fD = fData( seq( 0, 1, length.out = 10 ), values = matrix( seq( 1, 10 ),

@@ -703,91 +703,229 @@ mean.mfData = function( x, ... )
                   lapply( x$fDList, function( y )( mean( y )$values ) ) ) )
 }
 
-cov_fun = function( D1, D2 = NULL )
+
+
+#' Covariance function for functional data
+#'
+#' \code{S3} method to compute the sample covariance and cross-covariance
+#' functions for a set of functional data.
+#'
+#' Given a univariate random function X, defined
+#' over the grid \eqn{I = [a,b]}, the covariance
+#' function is defined as:
+#'
+#' \deqn{C(s,t) = Cov( X(s), X(t) ), \qquad s,t \in I.}
+#' {C(s,t) = Cov( X(s), X(t) ), for s,t in I.}
+#'
+#' Given another random function, Y, defined over the same grid as X, the cross-
+#' covariance function of X and Y is:
+#'
+#' \deqn{C^{X,Y}( s,t ) =  Cov( X(s), Y(t) ), \qquad s, t \in I.}
+#' {C^{X,Y}(s,t) = Cov( X(s), Y(t)) for s,t in I.}
+#'
+#' For a generic L-dimensional random function X, i.e. an L-dimensional
+#' multivariate functional datum, the covariance function is defined as the set
+#' of blocks:
+#'
+#' \deqn{C_{i,j}(s,t) = Cov( X_i(s), X_j(t)), i,j = 1, ...,L, s,t \in I,}
+#'
+#' while the cross-covariance function is defined by the blocks:
+#'
+#' \deqn{C^{X,Y}_{i,j}(s,t) = Cov( X_i(s), Y_j(t))}
+#'
+#' @details
+#'
+#' The method \code{cov_fun} provides the sample estimator of the covariance or
+#' cross-covariance functions for univariate or multivariate functional datasets.
+#'
+#' The class of \code{X} (\code{fData} or \code{mfData}) is used to dispatch the
+#' correct implementation of the method.
+#'
+#' @param X is the (eventually first) functional dataset, i.e. either an object
+#' of class \code{fData} or an object of class \code{mfData};
+#' @param Y is the (optional) second functional dataset to be used to compute the
+#' cross-covariance function,  either an \code{fData} or \code{mfData} object (see
+#' the Value section for details).
+#'
+#' @return
+#'
+#' The following cases are given:
+#'
+#' \itemize{
+#' \item{if \code{X} is of class \code{fData} and \code{Y} is \code{NULL}, then
+#' the covariance function of \code{X} is returned;}
+#' \item{if \code{X} is of class \code{fData} and \code{Y} is of
+#' class \code{fData},
+#' the cross-covariance function of the two datasets is returned;}
+#' \item{if \code{X} is of class \code{mfData} and \code{Y} is of
+#' class \code{fData},
+#' the cross-covariances of \code{X}'s components and \code{Y} are
+#' returned (in form of list);}
+#' \item{if \code{X} is of class \code{mfData} and \code{Y} is \code{NULL},
+#' the upper-triangular blocks of the covariance function of \code{X}
+#' are returned (in form of list and by row, i.e. in the squence 1_1, 1_2, ..., 1_L, 2_2, ...
+#' - in doubt, have a look at the labels of the list with \code{str}.).}}
+#'
+#' In any case, the return type is either an object ot \code{S3} class \code{Cov}
+#' or a list of instances of such class (for the case of multivariate
+#' functional data).
+#'
+#' @seealso \code{\link{fData}}, \code{\link{plot.Cov}}
+#'
+#' @examples
+#'
+#' # Generating a univariate functional dataset
+#' N = 1e2
+#'
+#' P = 1e2
+#' t0 = 0
+#' t1 = 1
+#'
+#' time_grid = seq( t0, t1, length.out = P )
+#'
+#' Cov = exp_cov_function( time_grid, alpha = 0.3, beta = 0.4 )
+#'
+#' D1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * time_grid ), Cov = Cov )
+#' D2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * time_grid ), Cov = Cov )
+#'
+#' fD1 = fData( time_grid, D1 )
+#' fD2 = fData( time_grid, D2 )
+#'
+#' # Computing the covariance function of fD1
+#'
+#' C = cov_fun( fD1 )
+#' str( C )
+#'
+#' # Computing the cross-covariance function of fD1 and fD2
+#' CC = cov_fun( fD1, fD2 )
+#' str( CC )
+#'
+#' # Generating a multivariate functional dataset
+#' L = 3
+#'
+#' C1 = exp_cov_function( time_grid, alpha = 0.1, beta = 0.2 )
+#' C2 = exp_cov_function( time_grid, alpha = 0.2, beta = 0.5 )
+#' C3 = exp_cov_function( time_grid, alpha = 0.3, beta = 1 )
+#'
+#' centerline = matrix( c( sin( 2 * pi * time_grid ),
+#'                         sqrt( time_grid ),
+#'                         10 * ( time_grid - 0.5 ) * time_grid ),
+#'                      nrow = 3, byrow = TRUE )
+#'
+#' D3 = generate_gauss_mfdata( N, L, centerline,
+#'                        correlations = c( 0.5, 0.5, 0.5 ),
+#'                        listCov = list( C1, C2, C3 ) )
+#'
+#' # adding names for better readability of BC3's labels
+#' names( D3 ) = c( 'comp1', 'comp2', 'comp3' )
+#' mfD3 = mfData( time_grid, D3 )
+#'
+#' D1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * time_grid ),
+#'                               Cov = Cov )
+#' fD1 = fData( time_grid, D1 )
+#'
+#' # Computing the block covariance function of mfD3
+#' BC3 = cov_fun( mfD3 )
+#' str( BC3 )
+#'
+#' # computing cross-covariance between mfData and fData objects
+#' CC = cov_fun( mfD3, fD1 )
+#' str( CC )
+#'
+#' @export
+#'
+cov_fun = function( X, Y = NULL )
 {
-  UseMethod( 'cov_fun', D1 )
+  UseMethod( 'cov_fun', X )
 }
 
-
-cov_fun.fData = function( D1, D2 = NULL )
+#' @rdname cov_fun
+#' @aliases cov_fun
+#'
+#' @importFrom stats cov
+#' @export
+cov_fun.fData = function( X, Y = NULL )
 {
-  if( ! is.null( D2 ) )
+  if( ! is.null( Y ) )
   {
-    if( class( D2 ) != 'fData' )
+    if( class( Y ) != 'fData' )
     {
       stop( 'Error: you have to provide an fData object as Y argument')
     }
 
-    if( D1$t0 != D2$t0 || D1$tP != D2$tP || D1$h != D2$h ||
-        D1$P != D2$P || D1$N != D2$N )
+    if( X$t0 != Y$t0 || X$tP != Y$tP || X$h != Y$h ||
+        X$P != Y$P || X$N != Y$N )
     {
       stop( 'Error: you have to provide a pair of compliant fData objects')
     }
 
-    return( structure( list( t0 = D1$t0,
-                             tP = D1$tP,
-                             h = D1$h,
-                             P = D1$P,
-                             values = cov( D1$values, D2$values ) ),
+    return( structure( list( t0 = X$t0,
+                             tP = X$tP,
+                             h = X$h,
+                             P = X$P,
+                             values = stats::cov( X$values, Y$values ) ),
                        class = 'Cov' ) )
   } else {
-    return( structure( list( t0 = D1$t0,
-                             tP = D1$tP,
-                             h = D1$h,
-                             P = D1$P,
-                             values = cov( D1$values ) ),
+    return( structure( list( t0 = X$t0,
+                             tP = X$tP,
+                             h = X$h,
+                             P = X$P,
+                             values = stats::cov( X$values ) ),
                        class = 'Cov' ) )
   }
 }
 
-
-cov_fun.mfData = function( D1, D2 = NULL )
+#' @rdname cov_fun
+#' @aliases cov_fun
+#'
+#' @export
+cov_fun.mfData = function( X, Y = NULL )
 {
-  if( ! is.null( D2 ) )
+  if( ! is.null( Y ) )
   {
-    if( ! class( D2 ) %in% c( 'fData', 'mfData' ) )
+    if( ! class( Y ) %in% c( 'fData', 'mfData' ) )
     {
       stop( 'Error: you have to provide either an fData or mfData object')
-    } else if( D1$N != D2$N || D1$t0 != D2$t0 || D1$tP != D2$tP || D1$P != D2$P )
+    } else if( X$N != Y$N || X$t0 != Y$t0 || X$tP != Y$tP || X$P != Y$P )
     {
-      stop( 'Errror: you have to provide a D2 dataset compliant to D1')
+      stop( 'Errror: you have to provide a Y dataset compliant to X')
     }
 
-    if( class( D2 ) == 'mfData' )
+    if( class( Y ) == 'mfData' )
     {
-      if( D1$L != D2$L )
-        stop( 'You have to provide a D2 dataset with same number of components as D1')
+      if( X$L != Y$L )
+        stop( 'You have to provide a Y dataset with same number of components as X')
 
-      return( mapply( cov_fun, D1 = D1$fDList, D2 = D2$fDList,
+      return( mapply( cov_fun, X = X$fDList, Y = Y$fDList,
                       SIMPLIFY = FALSE, USE.NAMES = FALSE ) )
-    } else if( class( D2 ) == 'fData' )
+    } else if( class( Y ) == 'fData' )
     {
-      return( sapply( X = D1$fDList, FUN = cov_fun, D2,
+      return( sapply( X = X$fDList, FUN = cov_fun, Y,
                       simplify = FALSE, USE.NAMES = FALSE ) )
     }
   } else {
 
     list = NULL
 
-    for( i in 1 : D1$L )
+    for( i in 1 : X$L )
     {
       list = append( list,
-                     lapply( i : D1$L,
-                             function( j ) cov_fun( D1$fDList[[ i ]],
-                                                    D1$fDList[[ j ]] )  ) )
+                     lapply( i : X$L,
+                             function( j ) cov_fun( X$fDList[[ i ]],
+                                                    X$fDList[[ j ]] )  ) )
     }
 
     # Setting up names for the covariances
-    if( ! is.null( names( D1$fDList ) ) )
-      nm = names( D1$fDList )
-    else nm = 1 : D1$L
+    if( ! is.null( names( X$fDList ) ) )
+      nm = names( X$fDList )
+    else nm = 1 : X$L
 
     nmlist = NULL
 
-    for( i in 1 : D1$L )
+    for( i in 1 : X$L )
     {
       nmlist = append( nmlist,
-                       sapply( i : D1$L,
+                       sapply( i : X$L,
                                function( j ) ( paste( nm[ i ],
                                                       '_',
                                                       nm[ j ],
@@ -799,10 +937,47 @@ cov_fun.mfData = function( D1, D2 = NULL )
   }
 }
 
-
+#' Specialised method to plot \code{Cov} objects
+#'
+#' This function performs the plot of an object of class \code{Cov}, i.e. a
+#' covariance or cross-covaraince function.
+#'
+#' @details
+#' It builds above the function \code{graphics::image}, therefore any additional
+#' parameter suitable for \code{graphics::image} will also be suitable as \code{...}
+#' argument to \code{plot.Cov}.
+#'
+#' @param x the covariance or cross-covariance function of class \code{Cov}.
+#' @param ... additional graphical parameters to be used in plotting functions
+#'
+#' @seealso \code{\link{cov_fun}}
+#'
+#' @examples
+#'
+#' # Generating a univariate functional dataset
+#' N = 1e2
+#'
+#' P = 1e2
+#' t0 = 0
+#' t1 = 1
+#'
+#' time_grid = seq( t0, t1, length.out = P )
+#'
+#' Cov = exp_cov_function( time_grid, alpha = 0.3, beta = 0.4 )
+#'
+#' D1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * time_grid ), Cov = Cov )
+#'
+#' fD1 = fData( time_grid, D1 )
+#'
+#' # Computing the covariance function of fD1
+#'
+#' plot( cov_fun( fD1 ), main = 'Covariance function', xlab = 'time', ylab = 'time' )
+#'
+#' @importFrom graphics image
+#' @export
 plot.Cov = function( x, ... )
 {
-  image( x$values, ...  )
+  graphics::image( x$values, ...  )
 }
 
 #'

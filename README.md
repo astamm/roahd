@@ -79,4 +79,4 @@ the visualization and identification of amplitude/shape outliers.
 
 Thanks to the functions for the simulation of synthetic functional datasets, 
 both `fbplot` and `outliergram` procedures can be auto-tuned to the dataset 
-at hand, in order to control the false outliers rate.
+at hand, in order to control the true positive outliers rate.
