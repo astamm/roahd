@@ -369,20 +369,19 @@ univariate and multivariate functional datasets is provided through the function
 `cov_fun( X, Y = NULL )`.
 
 Given a univariate functional dataset, $X_1, X_2, \ldots, X_N$, defined over the 
-grid $[t_0, t_1, \ldots, t_P] \subset I$ the sample estimator of covariance 
-function is $C(t_i,t_j) = \widehat{Cov}(X(t_i),X(t_j))$ for $i,j=1,\ldots,P$. 
-Given another univariate functional dataset $Y_1, Y_2, \ldots, Y_N$, the sample 
-estimator of the cross-covariance function is 
-$C_{X,Y}(t_i,t_j) = \widehat{Cov}(X(t_i),Y(t_j)$.
+grid $[t_0, t_1, \ldots, t_P] \subset I$, its covariance 
+function (evaluated over the grid) is $C(t_i,t_j) = Cov(X(t_i),X(t_j))$ for $i,j=1,\ldots,P$. 
+Given another univariate functional dataset $Y_1, Y_2, \ldots, Y_N$, the 
+cross-covariance function is $C_{X,Y}(t_i,t_j) = Cov(X(t_i),Y(t_j))$.
 
 Given a multivariate functional dataset with observations of $L$ components, 
 $X_1, X_2,\ldots, X_N$, the covariance function has the following block structure:
-$C^{k,l} = [ C(t_i,t_j)]_{i,j=1}^{P}$, for $k,l = 1, \ldots, L$. 
+$C^{k,l} = [ Cov(X_k(t_i),X_l(t_j))]_{i,j=1}^{P}$, for $k,l = 1, \ldots, L$. 
 Of course, it is $C^{k,l} = [C^{l,k}]^T$.
-The cross-covariance between two multivariate datasets is given by the cross
+Analogously, the cross-covariance between two multivariate datasets is given by the cross
 covariances of the components.
 
-When `X` is a univariate or multivariate functional dataset, and if `Y` is
+When `X` is a univariate functional dataset, and if `Y` is
 `NULL`, `cov_fun` returns the sample covariance function of the functional 
 dataset, defined over the tensorised grid where `X` is defined.
 If `Y` is a univariate functional dataset (in form of `fData` object), the method
@@ -392,18 +391,18 @@ When `X` is a multivariate dataset, `Y` can be `NULL`, an `fData` or a `mfData`
 object. In the first case the method returns the covariance function of `X`, in form of
 a list of *only* the upper-triangular blocks. The blocks are sorted in the list by row,
 therefore the first is the covariance of the first component, then the cross-covariance
-of the first component with the second, etc. In the second case, the list of
-cross-covariances between `X`'s components and `Y` are returned. In the third case,
-the list of upper-triangular blocks of cross-covarainces between `X` and `Y` 
-is returned.
+of the first component with the second, etc. In the second case, the method returns the 
+list of cross-covariances between `X`'s components and `Y`. In the third case, 
+the method returns the list of upper-triangular blocks of cross-covariances 
+between `X`'s and `Y`'s components.
 
-```{r cov, collapse = TRUE, eval = FALSE}
-    # Simple covariance function 
+```{r cov, collapse = TRUE, eval = TRUE }
+    # Simple covariance function
     C1 = cov_fun( fD )
 
     # Cross-covariance function of first and second component of mfD
     CC = cov_fun( mfD$fDList[[1]], mfD$fDList[[2]] )
-    
+
     # Block-covariance function of mfD
     BC = cov_fun( mfD )
 ```
@@ -417,7 +416,7 @@ values of the covariance matrix as well as the grid parameters.
 parameters of `image` can be used to customise it.
 
 ```{r plot_cov, eval = FALSE, collapse = TRUE, fig.align = 'center', fig.height = 4, fig.width = 4}
-  plot( C, main = 'Covariance function', xlab = 'time', ylab = 'time' )
+  plot( C1, main = 'Covariance function', xlab = 'time', ylab = 'time' )
 ```
 
 ### Indexes

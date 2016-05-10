@@ -17,8 +17,8 @@ cov_fun(X, Y = NULL)
 of class \code{fData} or an object of class \code{mfData};}
 
 \item{Y}{is the (optional) second functional dataset to be used to compute the
-cross-covariance function,  either an \code{fData} or \code{mfData} object (see
-the Value section for details).}
+cross-covariance function,  either \code{NULL} or an \code{fData} or
+\code{mfData} object (see the Value section for details).}
 }
 \value{
 The following cases are given:
@@ -29,16 +29,22 @@ the covariance function of \code{X} is returned;}
 \item{if \code{X} is of class \code{fData} and \code{Y} is of
 class \code{fData},
 the cross-covariance function of the two datasets is returned;}
+\item{if \code{X} is of class \code{mfData} and \code{Y} is \code{NULL},
+the upper-triangular blocks of the covariance function of \code{X}
+are returned (in form of list and by row, i.e. in the squence 1_1, 1_2, ...,
+1_L, 2_2, ... - have a look at the labels of the list with \code{str});}
 \item{if \code{X} is of class \code{mfData} and \code{Y} is of
 class \code{fData},
 the cross-covariances of \code{X}'s components and \code{Y} are
 returned (in form of list);}
-\item{if \code{X} is of class \code{mfData} and \code{Y} is \code{NULL},
-the upper-triangular blocks of the covariance function of \code{X}
-are returned (in form of list and by row, i.e. in the squence 1_1, 1_2, ..., 1_L, 2_2, ...
-- in doubt, have a look at the labels of the list with \code{str}.).}}
+\item{if \code{X} is of class \code{mfData} and \code{Y} is of
+class \code{mfData},
+the upper-triangular blocks of the cross-covariance of \code{X}'s and
+\code{Y}'s components are returned (in form of list and by row, i.e. in the
+squence 1_1, 1_2, ..., 1_L, 2_2, ... - have a look at the labels
+of the list with \code{str}));}}
 
-In any case, the return type is either an object ot \code{S3} class \code{Cov}
+In any case, the return type is either an instance of the \code{S3} class \code{Cov}
 or a list of instances of such class (for the case of multivariate
 functional data).
 }
@@ -52,13 +58,11 @@ over the grid \eqn{I = [a,b]}, the covariance
 function is defined as:
 
 \deqn{C(s,t) = Cov( X(s), X(t) ), \qquad s,t \in I.}
-{C(s,t) = Cov( X(s), X(t) ), for s,t in I.}
 
 Given another random function, Y, defined over the same grid as X, the cross-
 covariance function of X and Y is:
 
 \deqn{C^{X,Y}( s,t ) =  Cov( X(s), Y(t) ), \qquad s, t \in I.}
-{C^{X,Y}(s,t) = Cov( X(s), Y(t)) for s,t in I.}
 
 For a generic L-dimensional random function X, i.e. an L-dimensional
 multivariate functional datum, the covariance function is defined as the set
@@ -140,6 +144,6 @@ str( CC )
 
 }
 \seealso{
-\code{\link{fData}}, \code{\link{plot.Cov}}
+\code{\link{fData}}, \code{\link{mfData}}, \code{\link{plot.Cov}}
 }
 
