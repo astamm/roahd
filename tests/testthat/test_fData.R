@@ -48,6 +48,55 @@ test_that( 'Median of fData obejct - MHRD',
            expect_equal( as.numeric( median_fData( fD, type = 'MHRD' )$value ),
                          fD$values[ which.max( MHRD( fD$values ) ), ]) )
 
+test_that( 'Covariance of fData object',
+           expect_equal( cov( fD$values ), cov_fun( fD )$values ) )
+
+test_that( 'Covariance of fData object - error 1',
+           expect_error( cov_fun( 1 ) ) )
+
+test_that( 'Covariance of fData object - error 2',
+           expect_error( cov_fun( fD, fD[-1,] )  ) )
+
+test_that( 'Covariance of fData object - error 3',
+           expect_error( cov_fun( fD, fD[,1:10] )  ) )
+
+test_that( 'Cross covariance of fData objects',
+           expect_equal( cov( fD$values, ( fD + 1 : P )$values ),
+                         cov_fun( fD, fD + 1 : P )$values ) )
+
+fD = fData( time_grid, Data )
+mfD = mfData( time_grid, list( 'comp1' = Data, 'comp2' = Data, 'comp3' = Data ) )
+mfD2 = mfData( time_grid, list( Data, Data, Data ) )
+mfD3 = mfData( time_grid, list( Data, Data ) )
+
+test_that( 'Cross covariance of mfData and mfData',
+           expect_equal( cov_fun( mfD, mfD2 ),
+                         lapply( 1 : mfD$L,
+                                 function( i ) cov_fun( mfD$fDList[[1]] ) ) ) )
+
+test_that( 'Cross covariance of mfData and fData',
+           expect_equal( cov_fun( mfD2, fD ),
+                         lapply( 1 : mfD$L,
+                                 function( i ) cov_fun( mfD$fDList[[1]] ) ) ) )
+
+test_that( 'Cross covariance of mfData and mfData - error ',
+           expect_error( cov_fun( mfD, mfD3 ) ) )
+
+test_that( 'Cross covariance of mfData and fData - error ',
+           expect_error( cov_fun( mfD, fD[ , 1:10 ] ) ) )
+
+test_that( 'Covariance of mfData - names 1',
+           expect_equal( names( cov_fun( mfD ) ),
+                         c( 'comp1_comp1', 'comp1_comp2', 'comp1_comp3',
+                               'comp2_comp2', 'comp2_comp3',
+                               'comp3_comp3' ) ) )
+
+test_that( 'Covariance of mfData - names 2',
+           expect_equal( names( cov_fun( mfD2 ) ),
+                         c( '1_1', '1_2', '1_3',
+                            '2_2', '2_3',
+                            '3_3' ) ) )
+
 # TESTING ALGEBRAIC OPERATIONS --------------------------------------------
 
 fD = fData( seq( 0, 1, length.out = 10 ), values = matrix( seq( 1, 10 ),

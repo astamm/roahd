@@ -703,6 +703,105 @@ mean.mfData = function( x, ... )
                   lapply( x$fDList, function( y )( mean( y )$values ) ) ) )
 }
 
+cov_fun = function( D1, D2 = NULL )
+{
+  UseMethod( 'cov_fun', D1 )
+}
+
+
+cov_fun.fData = function( D1, D2 = NULL )
+{
+  if( ! is.null( D2 ) )
+  {
+    if( class( D2 ) != 'fData' )
+    {
+      stop( 'Error: you have to provide an fData object as Y argument')
+    }
+
+    if( D1$t0 != D2$t0 || D1$tP != D2$tP || D1$h != D2$h ||
+        D1$P != D2$P || D1$N != D2$N )
+    {
+      stop( 'Error: you have to provide a pair of compliant fData objects')
+    }
+
+    return( structure( list( t0 = D1$t0,
+                             tP = D1$tP,
+                             h = D1$h,
+                             P = D1$P,
+                             values = cov( D1$values, D2$values ) ),
+                       class = 'Cov' ) )
+  } else {
+    return( structure( list( t0 = D1$t0,
+                             tP = D1$tP,
+                             h = D1$h,
+                             P = D1$P,
+                             values = cov( D1$values ) ),
+                       class = 'Cov' ) )
+  }
+}
+
+
+cov_fun.mfData = function( D1, D2 = NULL )
+{
+  if( ! is.null( D2 ) )
+  {
+    if( ! class( D2 ) %in% c( 'fData', 'mfData' ) )
+    {
+      stop( 'Error: you have to provide either an fData or mfData object')
+    } else if( D1$N != D2$N || D1$t0 != D2$t0 || D1$tP != D2$tP || D1$P != D2$P )
+    {
+      stop( 'Errror: you have to provide a D2 dataset compliant to D1')
+    }
+
+    if( class( D2 ) == 'mfData' )
+    {
+      if( D1$L != D2$L )
+        stop( 'You have to provide a D2 dataset with same number of components as D1')
+
+      return( mapply( cov_fun, D1 = D1$fDList, D2 = D2$fDList,
+                      SIMPLIFY = FALSE, USE.NAMES = FALSE ) )
+    } else if( class( D2 ) == 'fData' )
+    {
+      return( sapply( X = D1$fDList, FUN = cov_fun, D2,
+                      simplify = FALSE, USE.NAMES = FALSE ) )
+    }
+  } else {
+
+    list = NULL
+
+    for( i in 1 : D1$L )
+    {
+      list = append( list,
+                     lapply( i : D1$L,
+                             function( j ) cov_fun( D1$fDList[[ i ]],
+                                                    D1$fDList[[ j ]] )  ) )
+    }
+
+    # Setting up names for the covariances
+    if( ! is.null( names( D1$fDList ) ) )
+      nm = names( D1$fDList )
+    else nm = 1 : D1$L
+
+    nmlist = NULL
+
+    for( i in 1 : D1$L )
+    {
+      nmlist = append( nmlist,
+                       sapply( i : D1$L,
+                               function( j ) ( paste( nm[ i ],
+                                                      '_',
+                                                      nm[ j ],
+                                                      sep = '' ) ) ) )
+    }
+    names( list ) = nmlist
+
+    return( list )
+  }
+}
+
+
+
+
 #'
 #' Median of a univariate functional dataset
 #'
