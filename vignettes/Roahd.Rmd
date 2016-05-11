@@ -2,9 +2,11 @@
 title: "roahd"
 author: "Nicholas Tarabelloni"
 date: "`r Sys.Date()`"
-output:: 
+output: 
   rmarkdown::html_vignette:
-    toc: true
+    number_sections: yes
+    toc: yes
+    toc_depth: 2
 bibliography: references.bib
 vignette: >
   %\VignetteIndexEntry{roahd}
@@ -12,7 +14,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## Introduction
+# Introduction
 
 Package **roahd** (**RO**bust **A**nalysis of **H**igh dimensional **D**ata) is 
 an `R` package meant to gather recently proposed statistical methods to deal 
@@ -28,7 +30,7 @@ Both univariate and multivariate functional data are supported in the package,
 whose functions have been implemented with a particular emphasis on computational
 efficiency, in order to allow the processing of high-dimensional dataset.
 
-## Representation of functional data
+# Representation of functional data
 
 The package has been designed to work with a representation of functional data
 through dedicated, simple and handy `S3` classes, namely `fData` for univariate
@@ -38,7 +40,7 @@ The use of `S3` classes is exploited by suitable `S3` methods implementing the
 statistical features of the package, that are able to dispatch the correct
 method call depending on the class of their functional data argument.
 
-### fData
+## fData
 
 `S3` class `fData` implements a representaion of univariate functional datasets.
 They are obtained once specifying, for each observation in the functional
@@ -88,7 +90,7 @@ the starting and end point of the one dimensional grid of the `fData` object,
 the constant step size `h` and the number of grid points `P` and the field 
 `values` defining the measurements of the dataset over the one dimensional grid.
 
-### mfData
+## mfData
 
 An `mfData` object, instead, implements a multivariate functional dataset, i.e. 
 a collection of functions having more than one components, each one depending on
@@ -128,7 +130,7 @@ very natural, but also allows for a seamless application of `S3` methods meant
 for `fData` on multivariate functional data components, making the exploration
 and manipulation of multivariate datasets rather easy:
 
-```{r mfDataComponents, eval = TRUE, fig.width = 4, fig.height = 4, fig.align = 'center' }
+```{r mfDataComponents, eval = FALSE, fig.width = 4, fig.height = 4, fig.align = 'center' }
 plot( mfD$fDList[[ 1 ]], main = 'First component', 
       xlab = 'time', ylab = 'Values', lwd = 2 )
 ```
@@ -146,7 +148,7 @@ mfD = as.mfData( list( fD_1, fD_2 ) )
 mfD = as.mfData( lapply( 1 : 10, function( i )( fD_1 ) ) )
 ```
 
-### Subsetting fData
+## Subsetting fData
 
 `fData` objects can be subset using a suitably overloaded operator `[.fData`,
 that allows for the use of standard slices of `matrix` and `array` classes also
@@ -162,15 +164,14 @@ fD[ 1, , as_fData = FALSE ]
 fD[ 2, 10 : 20, as_fData = FALSE ]
 
 fD[ , 10, as_fData = FALSE ]
-```
-```{r fData_subset_2, fig.align='center', fig.width=7, fig.height=4 }
+
 # As default behaviour the subset is returned in fData form
 par( mfrow = c(1,2) )
 plot( fD, main = 'Original dataset', lwd = 2 )
 plot( fD[ , 1 : 20 ], main = 'Zooming in', lwd = 2 )
 ```
 
-### Algebra
+## Algebra
 
 An algebra of `fData` obejcts is also implemented, making it easy to sum,
 subtract, multiply and divide these objects by meaningful and compliant
@@ -211,7 +212,7 @@ fD * ( 1 : N )
 fD / ( 1 : N )
 ```
 
-### Visualization
+## Visualization
 `fData` and `mfData` objects can be visualised thanks to specific `S3` plotting
 methods, `plot.fData` and `plot.mfData`.
 
@@ -231,9 +232,9 @@ for all the dimensions, just one string is expected for x-axis
 In case just one string is passed to `plot.mfData`, the same value is used for 
 all the dimensions.
 
-## Statistics
+# Statistics
 
-### Depths
+## Depths
 `roahd` provides a number of depth definitions, that are exploited by the
 visualization functions but can also be used by themselves. These are based on
 the notion of **Band Depth** [@lopezpintado_romo_2007; @lopezpintado_romo_2009].
@@ -301,7 +302,7 @@ used. The latter option allows to use ad-hoc set of weights, like in
   multiMBD( list( fD_1$values, fD_2$values ), weights = c( 0.7, 0.3 ), manage_ties = FALSE )
 ```
 
-### Mean and median
+## Mean and median
 Suitable `S3` extensions to the functions for the computation of mean function 
 and median of functional datasets are also present.
 
@@ -351,9 +352,6 @@ the dots arguments).
   median_fData( fD, type = 'MBD' )
   median_fData( fD, type = 'MHRD' )
 
-```
-```{r mean_2, eval = TRUE, fig.height=3, fig.width=6, fig.align='center'}
-
   par( mfrow = c(1,2) )
   plot( fD, main = 'Mean', lwd = 2 )
   plot( mean( fD ), add = TRUE, lwd = 2, col = 'black', lty = 2 )
@@ -362,7 +360,7 @@ the dots arguments).
   plot( median_fData( fD, type = 'MBD' ), add = TRUE, lwd = 2, lty = 2, col = 'black' )
 ```
 
-### Covariance and cross-covariance functions
+## Covariance and cross-covariance functions
 
 The computation of covariance functions and cross-covariance functions for 
 univariate and multivariate functional datasets is provided through the function
@@ -419,7 +417,7 @@ parameters of `image` can be used to customise it.
   plot( C1, main = 'Covariance function', xlab = 'time', ylab = 'time' )
 ```
 
-### Indexes
+## Indexes
 `roahd` collects the implementation of some useful indexes that can be used to 
 describe and summarise functional datasets. 
 
@@ -447,7 +445,7 @@ either in form of a `fData` object or a 2D matrix of values.
   
 ```
 
-### Correlation coefficients
+## Correlation coefficients
 
 When dealing with multivariate functional data, in particular in case of **bivariate**
 data, it is possible to compute correlation coefficients between data components
@@ -470,13 +468,12 @@ and `area`, for the ordering between area-under-the-curve of functions.
   grid = seq( 0, 1, length.out = P )
   
   Data_1 = t( sapply( 1 : N, function( i )( sin( 2 * pi * grid ) + i ) ) )
+ 
   # Monotone nonlinear transformation of data
   Data_2 = Data_1^3
   
   mfD = mfData( grid, list( Data_1, Data_2 ) )
-```
-
-```{r cor_kendall_2, eval = TRUE, collapse = TRUE, fig.align = 'center', fig.height = 4, fig.width = 6} 
+  
   plot( mfD, main = list( 'Comp. 1', 'Comp. 2') )  
 
   # Kendall correlation of monotonically dependent data is exactly 1
@@ -497,7 +494,7 @@ captured by `...` are passed directly to the rank function.
   cor_spearman( mfD, ordering = 'MHI' )
 ```
 
-## Simulation of functional data
+# Simulation of functional data
 `roahd` contains also some functions that can be used to simulate artificial data
 sets of functional data, both univariate and multivariate. These are used in the
 adjustment procedure of the outliegram and functional boxplot, but can also be
@@ -510,7 +507,7 @@ Given a covariance function, $C(s,t)$ and a centerline $m(t)$, the model
 generating data is:
 $$X_i(t) = m(t) + \epsilon(t), \quad Cov(\epsilon(s),\epsilon(t)) = C(s,t), \quad i = 1, \ldots, N.$$
 
-### Univariate functional data
+## Univariate functional data
 
 The function `generate_gauss_fdata(N, centerline, Cov = NULL, CholCov = NULL)` 
 can be used to simulate a population of such gaussian functional data. 
@@ -547,7 +544,7 @@ A comprehensive example is the following:
   plot( fD, main = 'Gaussian fData', xlab = 'grid', lwd = 2)
 ```
 
-### Multivariate functional data
+## Multivariate functional data
 The function `generate_gauss_mfdata( N, L, centerline, correlations, listCov = NULL, listCholCov = NULL)` can be used to generate a gaussian dataset of multivariate functional
 data. The model generating data is the following:
 
@@ -586,9 +583,9 @@ A comprehensive example is the following:
   plot( mfD, main = list( 'Comp.1', 'Comp. 2'), xlab = 'grid', lwd = 2)
 ```
 
-## Robustification
+# Robustification
 
-### Functional boxplot
+## Functional boxplot
 
 An implementation of the functional boxplot, through the `S3` method `fbplot`, 
 allows for the detection of *amplitude* outliers in univariate and multivariate 
@@ -686,7 +683,7 @@ compared to the sample size.
   fbplot( fD, adjust = list( N_trials = 20, trial_size = N, TPR = 0.007, F_min = 0.1, F_max = 20 ), xlab = 'grid', ylab = 'values', main = 'Adjusted functional boxplot' )
 ```
 
-### Outliergram
+## Outliergram
 A method that can be used to detect **shape outliers** is the outliergram [see
 @arribasgil_romo_2014], based on the computation of MBD and MEI of univariate
 functional data. Such pairs are compared to a limiting parabola, where they 
@@ -768,5 +765,5 @@ outliergram( fD, adjust = list( N_trials = 5, trial_size = 5 * nrow( Data ), TPR
 ```
 
 
-## References
+# References
 

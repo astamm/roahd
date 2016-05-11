@@ -3,4 +3,3 @@
 .travis.yml
 codecov.yml
 vignettes/Roahd.html
-vignettes/Roahd.R
