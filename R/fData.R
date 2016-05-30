@@ -198,9 +198,6 @@ plot.fData = function( x, ... )
 #'
 mfData = function( grid, Data_list )
 {
-  all( abs( diff( unique( diff( grid ) ) ) ) < 1e-14 ) ||
-    stop( ' Error in mfData: you provided an unevenly spaced grid')
-
   dimMatrix = sapply( Data_list, dim )
 
   if( any( sapply( dimMatrix, is.null ) ) )
