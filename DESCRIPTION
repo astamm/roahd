@@ -1,8 +1,8 @@
 Package: roahd
 Type: Package
 Title: Robust Analysis of High Dimensional Data
-Version: 1.1
-Date: 2016-04-13
+Version: 1.2
+Date:
 Authors@R: c( person("Nicholas", "Tarabelloni", role = c("aut", "cre"),
                      email = "nicholas.tarabelloni@polimi.it"),
               person("Ana", "Arribas-Gil", role = "aut",

@@ -61,7 +61,7 @@ fData = function( grid, values )
 {
   if( length( unique( diff( grid ) ) ) > 1 )
   {
-    max( diff( unique( diff( grid ) ) ) ) / diff( range( grid ) ) < 1e-13  ||
+    max( diff( unique( diff( grid ) ) ) ) / diff( range( grid ) ) < 1e-10  ||
       stop( ' Error in fData: you provided an unevenly spaced grid')
   }
 
