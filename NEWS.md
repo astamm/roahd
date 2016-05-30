@@ -6,5 +6,5 @@ Here's a list of what is changed in this update of __roahd__:
 
 ### Major fixes 
 
-1) Removed check for uniformity in the grid of fData() constructor
+1) Removed check for uniformity in the grid of fData() and mfData() constructor
 
