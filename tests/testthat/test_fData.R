@@ -168,11 +168,35 @@ test_that( 'Functional data subsetting - case 2',
                                             nrow = 21, ncol = 2,
                                             byrow = T ) ) ) )
 
-test_that( 'Functional data subsetting - case 2',
+test_that( 'Functional data subsetting - case 3',
            expect_identical( fD[ 1:2, 1:2, as_fData = FALSE ],
-                             matrix( seq(1,2),
+                             matrix( seq( 1, 2 ),
                                      nrow = 2, ncol = 2,
                                      byrow = TRUE ) ) )
+
+fD_logical_subset = fD[ , c( rep( FALSE, 5 ), rep( TRUE, 5 ) ) ]
+
+test_that( 'Functional data subsetting - case 4',
+           expect_identical( fD_logical_subset$values,
+                             matrix( seq( 6, 10 ),
+                                     nrow = 21, ncol = 5,
+                                     byrow = TRUE ) ) )
+
+test_that( 'Functional data subsetting - case 4 bis',
+           expect_identical( c( fD_logical_subset$t0, fD_logical_subset$tP, fD_logical_subset$h, fD_logical_subset$P ),
+                             c( 5 * fD$h, 1, fD$h, 5 )  ) )
+
+fD_logical_subset = fD[ , c( rep( TRUE, 5 ), rep( FALSE, 5 ) ) ]
+
+test_that( 'Functional data subsetting - case 5',
+           expect_identical( fD_logical_subset$values,
+                             matrix( seq( 1, 5 ),
+                                     nrow = 21, ncol = 5,
+                                     byrow = TRUE ) ) )
+
+test_that( 'Functional data subsetting - case 5 bis',
+           expect_identical( c( fD_logical_subset$t0, fD_logical_subset$tP, fD_logical_subset$h, fD_logical_subset$P ),
+                             c( 0, 4 * fD$h, fD$h, 5 )  ) )
 
 
 # TESTING MFDATA ----------------------------------------------------------
