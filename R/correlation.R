@@ -1,6 +1,6 @@
 #' Maxima of a univariate functional dataset
 #'
-#' This function computes computes the maximum value of each element of a
+#' This function computes the maximum value of each element of a
 #' univariate functional dataset, optionally returing also the value of the
 #' grid where they are fulfilled.
 #'
