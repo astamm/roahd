@@ -10,3 +10,4 @@ Here's a list of what is changed in this update of __roahd__:
 
 2) Added the possibility to subset fData in time with logical vectors
 
+3) Fixes in methods BD, BD_relative, HI and EI
