@@ -16,7 +16,7 @@ for( iObs in 1 : N )
 Data[ N, length( time_grid ) ] = 1
 
 test_that( "Correctness of HI",
-           expect_equal( HI( Data ), rep( ( N - 1 ) / N, N ) ) )
+           expect_equal( HI( Data ), rep( 1 / N, N ) ) )
 
 test_that( "Correctness of MHI",
            expect_equal( MHI( Data ), rep( ( N + ( N - 1 )^2 ) / N^2 , N ) ) )

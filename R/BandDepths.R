@@ -82,14 +82,11 @@ BD.default = function( Data )
   # Number of rows
   N = nrow( Data )
 
-  # Compute ranks of matrix-like representation of data with `min' tie-breaking rule
-  rk = apply( Data, 2, function( v )( rank( v, ties.method = 'average' ) ) )
-
   # Actual number of function values strictly above
-  N_a = N - apply( rk, 1, max )
+  N_a = apply( Data, 1, function( x ) sum( apply( Data, 1, function( s ) all( x < s ) ) ) )
 
   # Actual number of function values strictly below
-  N_b = apply( rk, 1, min ) - 1
+  N_b = apply( Data, 1, function( x ) sum( apply( Data, 1, function( s ) all( x > s ) ) ) )
 
   Depths = ( N_a * N_b + ( N - 1 ) ) / ( N * ( N - 1 ) / 2 )
 
@@ -242,12 +239,16 @@ not compliant dimensions to BD_relative')
 
   for( iObs in 1 : N_target )
   {
-    rk = apply( rbind( Data_target[ iObs, ], Data_reference ),
-                2, rank, ties.method = 'average' )
 
-    N_a = N + 1 - max( rk[ 1, ] )
+    # Actual number of function values strictly above
+    N_a = sum( apply( Data_reference,
+                      1,
+                      function( x ) all( Data_target[ iObs, ] < x ) ) )
 
-    N_b = min( rk[ 1, ] ) - 1
+    # Actual number of function values strictly below
+    N_b = sum( apply( Data_reference,
+                      1,
+                      function( x ) all( Data_target[ iObs, ] > x ) ) )
 
     Depths[ iObs ] = ( N_a * N_b ) / ( N * ( N - 1 ) / 2 )
   }

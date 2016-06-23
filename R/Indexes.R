@@ -80,13 +80,10 @@ EI.default = function( Data )
   # Number of observations
   N = nrow( Data )
 
-  rk = apply( Data, 2, function( v )( rank( v, ties.method = 'min' ) ) )
-
-  N_a = N - apply( rk, 1, max ) + 1
-
-  EI = N_a / N
-
-  return( EI )
+  return( apply( Data, 1,
+                 function( x )
+                   sum( apply( Data, 1,
+                               function( s ) ( all( x <= s  ) ) ) ) / N ) )
 }
 
 
@@ -271,11 +268,10 @@ HI.default = function( Data )
   # Number of observations
   N = nrow( Data )
 
-  rk = apply( Data, 2, function( v )( rank( v, ties.method = 'max' ) ) )
-
-  N_b = apply( rk, 1, min )
-
-  HI = N_b / N
+  return( apply( Data, 1,
+                 function( x )
+                   sum( apply( Data, 1,
+                               function( s ) ( all( x >= s  ) ) ) ) / N ) )
 
   return( HI )
 }

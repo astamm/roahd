@@ -14,6 +14,3 @@ D = matrix( c( 1 + sin( 2 * pi * time_grid ),
 
 test_that( "Correctness of BD method",
            expect_equal( BD( D ), c( 1/3, 1/3, 1/3, 1/3, 14 / 30, 1 / 3 ) ) )
-
-
-
