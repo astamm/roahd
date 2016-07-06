@@ -35,3 +35,22 @@ test_that( "Correctness of HRD",
 
 test_that( "Correctness of MHRD",
            expect_equal( MHRD( D ), mapply( min, id_vector / N, ( N - id_vector + 1 ) / N  ) ) )
+
+
+# TEST BY JAMES LONG (TAMU) -------------------------------------------------------------------
+
+yints = c( 1.27, .927, 1/2, .217, 0)
+slopes = c( -1, -1, 0, 1, 1 )
+time_grid = ( 0 : 100 ) / 100
+
+Data = matrix( 0, nrow = length( yints ),
+               ncol = length( time_grid ) )
+
+for( i in 1 : length( yints ) )
+
+  Data[ i, ] = yints[ i ] + time_grid * slopes[ i ]
+
+test_that( "Correctness of HRD - James Long test",
+           expect_equal( HRD( Data ), rep( 0.2, 5 ) ) )
+
+

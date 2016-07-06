@@ -20,3 +20,21 @@ test_that( "Correctness of HI",
 
 test_that( "Correctness of MHI",
            expect_equal( MHI( Data ), rep( ( N + ( N - 1 )^2 ) / N^2 , N ) ) )
+
+
+# TEST BY JAMES LONG (TAMU) -------------------------------------------------------------------
+
+yints = c( 1.27, .927, 1/2, .217, 0)
+slopes = c( -1, -1, 0, 1, 1 )
+time_grid = ( 0 : 100 ) / 100
+
+Data = matrix( 0, nrow = length( yints ),
+               ncol = length( time_grid ) )
+
+for( i in 1 : length( yints ) )
+
+  Data[ i, ] = yints[ i ] + time_grid * slopes[ i ]
+
+test_that( "Correctness of HI - James Long test",
+           expect_equal( HI( Data ), c( 0.4, 0.2, 0.2, 0.4, 0.2 ) ) )
+

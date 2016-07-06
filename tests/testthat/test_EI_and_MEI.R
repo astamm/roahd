@@ -20,3 +20,22 @@ test_that( "Correctness of EI",
 
 test_that( "Correctness of MEI",
            expect_equal( MEI( Data ), rep( 1 - ( N - 1 ) / N^2, N )  ) )
+
+
+
+# TEST BY JAMES LONG (TAMU) -------------------------------------------------------------------
+
+yints = c( 1.27, .927, 1/2, .217, 0)
+slopes = c( -1, -1, 0, 1, 1 )
+time_grid = ( 0 : 100 ) / 100
+
+Data = matrix( 0, nrow = length( yints ),
+            ncol = length( time_grid ) )
+
+for( i in 1 : length( yints ) )
+
+    Data[ i, ] = yints[ i ] + time_grid * slopes[ i ]
+
+test_that( "Correctness of EI - James Long test",
+           expect_equal( EI( Data ), c( 0.2, 0.4, 0.2, 0.2, 0.4 ) ) )
+
