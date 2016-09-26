@@ -1,18 +1,18 @@
 #' Epigraph Index of univariate functional dataset
 #'
 #' This function computes the Epigraphic Index (EI) of elements of a univariate
-#' functional dataste.
+#' functional dataset.
 #'
 #' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
 #' defined over a compact interval \eqn{I=[a,b]}, this function computes the
 #' EI, i.e.:
 #'
-#' \deqn{EI( X(t) ) = \frac{1}{N} \sum_{i=1}^N I( G( X(t) ) \subset
-#' epi( X_i(t) ) ) = \frac{1}{N} \sum_{i=1}^N I( X(t) \geq X_i(t), \ \
+#' \deqn{EI( X(t) ) = \frac{1}{N} \sum_{i=1}^N I( G( X_i(t) ) \subset
+#' epi( X(t) ) ) = \frac{1}{N} \sum_{i=1}^N I( X_i(t) \geq X(t), \ \
 #' \forall t \in I), }
 #'
-#' where \eqn{G(X(t))} indicates the graph of \eqn{X(t)}, \eqn{epi( X_i(t))}
-#' indicates the epigraph of \eqn{X_i(t)}.
+#' where \eqn{G(X_i(t))} indicates the graph of \eqn{X_i(t)}, \eqn{epi( X(t))}
+#' indicates the epigraph of \eqn{X(t)}.
 #'
 #' @param Data either an \code{fData} object or a matrix-like dataset of
 #' functional data (e.g. \code{fData$values}), with observations as rows and
@@ -90,13 +90,13 @@ EI.default = function( Data )
 #' Modified Epigraph Index of univariate functional dataset
 #'
 #' This function computes the Modified Epigraphic Index (MEI) of elements of a
-#' univariate functional dataste.
+#' univariate functional dataset.
 #'
 #' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
 #' defined over a compact interval \eqn{I=[a,b]}, this function computes the
 #' MEI, i.e.:
 #'
-#' \deqn{MEI( X(t) ) = \frac{1}{N} \sum_{i=1}^N \tilde{\lambda}( X(t) \geq
+#' \deqn{MEI( X(t) ) = \frac{1}{N} \sum_{i=1}^N \tilde{\lambda}( X(t) \leq
 #' X_i(t) ), }
 #'
 #' where \eqn{\tilde{\lambda}(\cdot)} is the normalised Lebesgue measure over
@@ -188,17 +188,17 @@ MEI.default = function( Data )
 #' Hypograph Index of univariate functional dataset
 #'
 #' This function computes the Hypograph Index (HI) of elements of a univariate
-#' functional dataste.
+#' functional dataset.
 #'
 #' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
 #' defined over a compact interval \eqn{I=[a,b]}, this function computes the
 #' HI, i.e.:
 #'
-#' \deqn{EI( X(t) ) = \frac{1}{N} \sum_{i=1}^N I( G( X(t) ) \subset
-#' hypo( X_i(t) ) ) = \frac{1}{N} \sum_{i=1}^N I( X(t) \leq X_i(t), \ \
+#' \deqn{HI( X(t) ) = \frac{1}{N} \sum_{i=1}^N I( G( X_i(t) ) \subset
+#' hyp( X(t) ) ) = \frac{1}{N} \sum_{i=1}^N I( X_i(t) \leq X(t), \ \
 #' \forall t \in I), }
 #'
-#' where \eqn{G(X(t))} indicates the graph of \eqn{X(t)}, \eqn{epi( X_i(t))}
+#' where \eqn{G(X_i(t))} indicates the graph of \eqn{X_i(t)}, \eqn{hyp( X(t))}
 #' indicates the hypograph of \eqn{X_i(t)}.
 #'
 #' @param Data either an \code{fData} object or a matrix-like dataset of
@@ -280,7 +280,7 @@ HI.default = function( Data )
 #' Modified Hypograph Index of univariate functional dataset
 #'
 #' This function computes the Modified Hypograph Index (MEI) of elements of a
-#' univariate functional dataste.
+#' univariate functional dataset.
 #'
 #' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
 #' defined over a compact interval \eqn{I=[a,b]}, this function computes the

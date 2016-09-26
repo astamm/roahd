@@ -23,19 +23,19 @@ element of the functional dataset provided in \code{Data}.
 }
 \description{
 This function computes the Epigraphic Index (EI) of elements of a univariate
-functional dataste.
+functional dataset.
 }
 \details{
 Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
 defined over a compact interval \eqn{I=[a,b]}, this function computes the
 EI, i.e.:
 
-\deqn{EI( X(t) ) = \frac{1}{N} \sum_{i=1}^N I( G( X(t) ) \subset
-epi( X_i(t) ) ) = \frac{1}{N} \sum_{i=1}^N I( X(t) \geq X_i(t), \ \
+\deqn{EI( X(t) ) = \frac{1}{N} \sum_{i=1}^N I( G( X_i(t) ) \subset
+epi( X(t) ) ) = \frac{1}{N} \sum_{i=1}^N I( X_i(t) \geq X(t), \ \
 \forall t \in I), }
 
-where \eqn{G(X(t))} indicates the graph of \eqn{X(t)}, \eqn{epi( X_i(t))}
-indicates the epigraph of \eqn{X_i(t)}.
+where \eqn{G(X_i(t))} indicates the graph of \eqn{X_i(t)}, \eqn{epi( X(t))}
+indicates the epigraph of \eqn{X(t)}.
 }
 \examples{
 

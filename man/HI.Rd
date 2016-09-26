@@ -23,18 +23,18 @@ element of the functional dataset provided in \code{Data}.
 }
 \description{
 This function computes the Hypograph Index (HI) of elements of a univariate
-functional dataste.
+functional dataset.
 }
 \details{
 Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
 defined over a compact interval \eqn{I=[a,b]}, this function computes the
 HI, i.e.:
 
-\deqn{EI( X(t) ) = \frac{1}{N} \sum_{i=1}^N I( G( X(t) ) \subset
-hypo( X_i(t) ) ) = \frac{1}{N} \sum_{i=1}^N I( X(t) \leq X_i(t), \ \
+\deqn{HI( X(t) ) = \frac{1}{N} \sum_{i=1}^N I( G( X_i(t) ) \subset
+hyp( X(t) ) ) = \frac{1}{N} \sum_{i=1}^N I( X_i(t) \leq X(t), \ \
 \forall t \in I), }
 
-where \eqn{G(X(t))} indicates the graph of \eqn{X(t)}, \eqn{epi( X_i(t))}
+where \eqn{G(X_i(t))} indicates the graph of \eqn{X_i(t)}, \eqn{hyp( X(t))}
 indicates the hypograph of \eqn{X_i(t)}.
 }
 \examples{

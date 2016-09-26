@@ -23,7 +23,7 @@ element of the functional dataset provided in \code{Data}.
 }
 \description{
 This function computes the Modified Hypograph Index (MEI) of elements of a
-univariate functional dataste.
+univariate functional dataset.
 }
 \details{
 Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
