@@ -47,4 +47,3 @@ plot( mean( fD ), col = 'black', lwd = 2, lty = 2, add = TRUE )
 \seealso{
 \code{\link{fData}}
 }
-

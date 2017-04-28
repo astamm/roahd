@@ -75,4 +75,3 @@ generate_gauss_fdata( N, centerline, CholCov = CholC )
 \code{\link{exp_cov_function}}, \code{\link{fData}},
 \code{\link{generate_gauss_mfdata}}
 }
-

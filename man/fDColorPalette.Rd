@@ -38,4 +38,3 @@ plot( angular_grid, angular_grid,
 \seealso{
 \code{\link{plot.fData}}, \code{\link{plot.mfData}}
 }
-

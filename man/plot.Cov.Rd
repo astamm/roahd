@@ -45,4 +45,3 @@ plot( cov_fun( fD1 ), main = 'Covariance function', xlab = 'time', ylab = 'time'
 \seealso{
 \code{\link{cov_fun}}
 }
-

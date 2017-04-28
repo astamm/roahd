@@ -73,4 +73,3 @@ for( iL in 1 : L )
 \code{\link{mfData}}, \code{\link{mean.mfData}},
 \code{\link{median_fData}}
 }
-

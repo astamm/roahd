@@ -52,4 +52,3 @@ in the time warping model, \emph{Biostatistics}, 13 (3), 398--414.
 \seealso{
 \code{\link{fData}}, \code{\link{warp}}
 }
-

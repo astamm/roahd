@@ -3,7 +3,9 @@
 \name{fbplot}
 \alias{fbplot}
 \alias{fbplot.fData}
+\alias{fbplot}
 \alias{fbplot.mfData}
+\alias{fbplot}
 \title{Functional boxplot of univariate and multivariate functional data}
 \usage{
 fbplot(Data, Depths = "MBD", Fvalue = 1.5, adjust = FALSE,
@@ -114,6 +116,7 @@ average of \eqn{F_1, F_2, \ldots, F_{N_{trials}}}.
 At each time step the optimisation problem is solved using
 \code{stats::uniroot} (Brent's method.
 }
+
 \examples{
 
 # UNIVARIATE FUNCTIONAL BOXPLOT - NO ADJUSTMENT
@@ -205,4 +208,3 @@ temporal data visualization and outlier detection. Environmetrics, 23(1), 54-64.
 \code{\link{fData}}, \code{\link{MBD}}, \code{\link{BD}},
 \code{\link{mfData}}, \code{\link{multiMBD}}, \code{\link{multiBD}}
 }
-

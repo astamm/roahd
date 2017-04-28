@@ -36,4 +36,3 @@ area_under_curve( fD )
 \seealso{
 \code{\link{area_ordered}}, \code{\link{fData}}
 }
-

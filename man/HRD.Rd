@@ -2,8 +2,10 @@
 % Please edit documentation in R/Indexes.R
 \name{HRD}
 \alias{HRD}
-\alias{HRD.default}
 \alias{HRD.fData}
+\alias{HRD}
+\alias{HRD.default}
+\alias{HRD}
 \title{Half-Region Depth for univariate functional data}
 \usage{
 HRD(Data)
@@ -68,4 +70,3 @@ visualization for functional data: the outliergram, \emph{Biostatistics},
 \code{\link{MHRD}}, \code{\link{EI}}, \code{\link{HI}},
 \code{\link{fData}}
 }
-

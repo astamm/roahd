@@ -40,4 +40,3 @@ image( exp_cov_function( grid, alpha, beta ),
 \code{\link{generate_gauss_fdata}},
 \code{\link{generate_gauss_mfdata}}
 }
-

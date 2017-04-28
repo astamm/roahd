@@ -81,4 +81,3 @@ plot( fD_warped,
 \seealso{
 \code{\link{fData}}
 }
-

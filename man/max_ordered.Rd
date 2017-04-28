@@ -70,4 +70,3 @@ coefficient for functional dependence,
 \code{\link{maxima}}, \code{\link{minima}}, \code{\link{fData}},
 \code{\link{area_ordered}}
 }
-

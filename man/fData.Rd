@@ -67,4 +67,3 @@ fD = fData( grid, values )
 \seealso{
 \code{\link{generate_gauss_fdata}}, \code{\link{sub-.fData}}
 }
-

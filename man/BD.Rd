@@ -2,8 +2,10 @@
 % Please edit documentation in R/BandDepths.R
 \name{BD}
 \alias{BD}
-\alias{BD.default}
 \alias{BD.fData}
+\alias{BD}
+\alias{BD.default}
+\alias{BD}
 \title{Band Depth for univariate functional data}
 \usage{
 BD(Data)
@@ -70,4 +72,3 @@ data, \emph{Computational Statistics & Data Analysis} 51, 4957-4968.
 \code{\link{MBD}}, \code{\link{BD_relative}},
 \code{\link{MBD_relative}}, \code{\link{fData}}
 }
-

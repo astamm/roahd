@@ -112,4 +112,3 @@ generate_gauss_mfdata( N, L, centerline,
 \code{\link{exp_cov_function}}, \code{\link{mfData}},
 \code{\link{generate_gauss_fdata}}
 }
-

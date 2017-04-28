@@ -69,4 +69,3 @@ mfData( grid, list( Data_1, Data_2 ) )
 \code{\link{fData}}, \code{\link{generate_gauss_fdata}},
 \code{\link{generate_gauss_mfdata}}
 }
-

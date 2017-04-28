@@ -2,8 +2,10 @@
 % Please edit documentation in R/Indexes.R
 \name{HI}
 \alias{HI}
-\alias{HI.default}
 \alias{HI.fData}
+\alias{HI}
+\alias{HI.default}
+\alias{HI}
 \title{Hypograph Index of univariate functional dataset}
 \usage{
 HI(Data)
@@ -68,4 +70,3 @@ visualization for functional data: the outliergram, \emph{Biostatistics},
 \code{\link{MHI}}, \code{\link{EI}}, \code{\link{MEI}},
 \code{\link{fData}}
 }
-

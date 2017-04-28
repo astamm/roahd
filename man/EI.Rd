@@ -2,8 +2,10 @@
 % Please edit documentation in R/Indexes.R
 \name{EI}
 \alias{EI}
-\alias{EI.default}
 \alias{EI.fData}
+\alias{EI}
+\alias{EI.default}
+\alias{EI}
 \title{Epigraph Index of univariate functional dataset}
 \usage{
 EI(Data)
@@ -68,4 +70,3 @@ visualization for functional data: the outliergram, \emph{Biostatistics},
 \code{\link{MEI}}, \code{\link{HI}}, \code{\link{MHI}},
 \code{\link{fData}}
 }
-

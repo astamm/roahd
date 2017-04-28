@@ -70,4 +70,3 @@ coefficient for functional dependence,
 \seealso{
 \code{\link{area_under_curve}}, \code{\link{fData}}
 }
-

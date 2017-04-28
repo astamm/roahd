@@ -41,4 +41,3 @@ toListOfValues( mfD )
 \seealso{
 \code{\link{mfData}}
 }
-

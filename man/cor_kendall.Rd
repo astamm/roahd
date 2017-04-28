@@ -84,4 +84,3 @@ coefficient for functional dependence,
 \code{\link{mfData}}, \code{\link{area_ordered}},
 \code{\link{max_ordered}}
 }
-

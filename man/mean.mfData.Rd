@@ -60,4 +60,3 @@ for( iL in 1 : L )
 \seealso{
 \code{\link{mfData}}
 }
-

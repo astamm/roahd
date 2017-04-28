@@ -4,7 +4,7 @@
 \alias{cor_spearman}
 \title{Spearman's correlation coefficient for bivariate functional data}
 \usage{
-cor_spearman(mfD, ordering = "MEI", ...)
+cor_spearman(mfD, ordering = "MEI")
 }
 \arguments{
 \item{mfD}{a bivariate functional dataset whose Spearman's correlation
@@ -13,24 +13,22 @@ coefficient must be computed, in form of bivariate \code{mfData} object
 
 \item{ordering}{the ordering relation to use on functional observations,
 either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is \code{"MEI"}).}
-
-\item{...}{additional parameters to be passed to rank function}
 }
 \value{
 The function returns the Spearman's correlation coefficient for
 the bivariate dataset provided with \code{mfData}.
 }
 \description{
-This function computes the Spearman's tau correlation coefficient for a
+This function computes the Spearman's correlation coefficient for a
 bivariate functional dataset, with either a Modified Epigraph Index (MEI) or
-Modified Hypograph Index (MHI) based ranking of univariate elments of data
+Modified Hypograph Index (MHI) ranking of univariate elments of data
 components.
 }
 \details{
 Given a bivariate functional dataset, with first components \eqn{X_1(t),
 X_2(t), \ldots, X_N(t)} and second components \eqn{Y_1(t), Y_2(t), \ldots,
-Y_N(t)}, the function exploits either the MEI or MHI to rank observations and
-hence compute the value of the correlation coefficient.
+Y_N(t)}, the function exploits either the MEI or MHI to compute the value
+of the correlation coefficient.
 
 See the references for more details.
 }
@@ -84,4 +82,3 @@ functions, \emph{Universidad Carlos III de Madrid technical report},
 \seealso{
 \code{\link{mfData}}, \code{\link{MEI}}, \code{\link{MHI}}
 }
-

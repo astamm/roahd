@@ -43,4 +43,3 @@ plot( fD )
 \seealso{
 \code{\link{fData}}
 }
-

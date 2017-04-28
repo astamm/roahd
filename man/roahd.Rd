@@ -12,4 +12,3 @@ special focus on computation of depths and outlier detection.
 Special care was devoted to the efficient implementation of robust methods,
 so that they can be employed also in high-dimensional datasets,
 }
-

@@ -61,4 +61,3 @@ plot( mfData( grid, list( Data_1, Data_2 ) ),
 \seealso{
 \code{\link{mfData}}, \code{\link{fData}}, \code{\link{plot.fData}}
 }
-

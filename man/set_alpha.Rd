@@ -44,4 +44,3 @@ plot( seq_along( alpha_col ),
 \seealso{
 \code{\link{fDColorPalette}}
 }
-

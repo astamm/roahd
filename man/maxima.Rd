@@ -46,4 +46,3 @@ maxima( fD, which = TRUE )
 \seealso{
 \code{\link{minima}}
 }
-

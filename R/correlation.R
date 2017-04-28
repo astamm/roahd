@@ -464,15 +464,15 @@ cor_kendall = function( mfD, ordering = 'max' )
 
 #' Spearman's correlation coefficient for bivariate functional data
 #'
-#' This function computes the Spearman's tau correlation coefficient for a
+#' This function computes the Spearman's correlation coefficient for a
 #' bivariate functional dataset, with either a Modified Epigraph Index (MEI) or
-#' Modified Hypograph Index (MHI) based ranking of univariate elments of data
+#' Modified Hypograph Index (MHI) ranking of univariate elments of data
 #' components.
 #'
 #' Given a bivariate functional dataset, with first components \eqn{X_1(t),
 #' X_2(t), \ldots, X_N(t)} and second components \eqn{Y_1(t), Y_2(t), \ldots,
-#' Y_N(t)}, the function exploits either the MEI or MHI to rank observations and
-#' hence compute the value of the correlation coefficient.
+#' Y_N(t)}, the function exploits either the MEI or MHI to compute the value
+#' of the correlation coefficient.
 #'
 #' See the references for more details.
 #'
@@ -481,7 +481,6 @@ cor_kendall = function( mfD, ordering = 'max' )
 #' (\code{mfD$L=2}).
 #' @param ordering the ordering relation to use on functional observations,
 #' either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is \code{"MEI"}).
-#' @param ... additional parameters to be passed to rank function
 #'
 #' @return The function returns the Spearman's correlation coefficient for
 #' the bivariate dataset provided with \code{mfData}.
@@ -536,7 +535,7 @@ cor_kendall = function( mfD, ordering = 'max' )
 #' @seealso \code{\link{mfData}}, \code{\link{MEI}}, \code{\link{MHI}}
 #'
 #' @export
-cor_spearman = function( mfD, ordering = 'MEI', ... )
+cor_spearman = function( mfD, ordering = 'MEI' )
 {
   if( mfD$L != 2 )
   {
@@ -545,12 +544,12 @@ cor_spearman = function( mfD, ordering = 'MEI', ... )
 
   if( ordering == 'MEI' )
   {
-    rk_1 = rank( MEI( mfD$fDList[[ 1 ]]$values ), ... )
-    rk_2 = rank( MEI( mfD$fDList[[ 2 ]]$values ), ... )
+    rk_1 = MEI( mfD$fDList[[ 1 ]]$values )
+    rk_2 = MEI( mfD$fDList[[ 2 ]]$values )
   } else if( ordering == 'MHI' )
   {
-    rk_1 = rank( MHI( mfD$fDList[[ 1 ]]$values ), ... )
-    rk_2 = rank( MHI( mfD$fDList[[ 2 ]]$values ), ... )
+    rk_1 = MHI( mfD$fDList[[ 1 ]]$values )
+    rk_2 = MHI( mfD$fDList[[ 2 ]]$values )
   }
   return( cor( rk_1, rk_2, method = 'pearson' ) )
 }

@@ -114,6 +114,7 @@ The final value of \code{F} for the outliergram is determined as an average
 of \eqn{F_1, F_2, \ldots, F_{N_{trials}}}. At each time step the optimisation
 problem is solved using \code{stats::uniroot} (Brent's method).
 }
+
 \examples{
 
 
@@ -173,4 +174,3 @@ for functional data: the outliergram, \emph{Biostatistics}, 15(4), 603-619.
 \code{\link{fData}}, \code{\link{MEI}}, \code{\link{MBD}},
 \code{\link{fbplot}}
 }
-

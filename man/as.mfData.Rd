@@ -33,4 +33,3 @@ fD_2 = fData( grid, cos( 2 * pi * grid ) )
 plot( as.mfData( list( fD_1, fD_2 ) ) )
 
 }
-

@@ -23,6 +23,7 @@ matrix format.
 The function is \bold{not} supposed to work with arbitrary N-dimensional
 arrays.
 }
+
 \examples{
 
 toRowMatrixForm( 1 : 10 )
@@ -40,4 +41,3 @@ toRowMatrixForm( matrix( 1 : 12, ncol = 3, nrow = 4 ) )
 toRowMatrixForm( matrix( 1 : 12, ncol = 4, nrow = 3 ) )
 
 }
-

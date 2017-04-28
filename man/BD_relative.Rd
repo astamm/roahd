@@ -2,8 +2,10 @@
 % Please edit documentation in R/BandDepths.R
 \name{BD_relative}
 \alias{BD_relative}
-\alias{BD_relative.default}
 \alias{BD_relative.fData}
+\alias{BD_relative}
+\alias{BD_relative.default}
+\alias{BD_relative}
 \title{Relative Band Depth of functions in a univariate functional dataset}
 \usage{
 BD_relative(Data_target, Data_reference)
@@ -108,4 +110,3 @@ BD_relative( Data_test_7, Data_ref )
 \code{\link{BD}}, \code{\link{MBD}}, \code{\link{MBD_relative}},
 \code{\link{fData}}
 }
-

@@ -42,7 +42,7 @@ method call depending on the class of their functional data argument.
 
 ## fData
 
-`S3` class `fData` implements a representaion of univariate functional datasets.
+`S3` class `fData` implements a representation of univariate functional datasets.
 They are obtained once specifying, for each observation in the functional
 dataset, a set of measurements over a discrete grid, representing the dependent
 variable indexing the functional dataset (e.g. time).
@@ -97,7 +97,7 @@ a collection of functions having more than one components, each one depending on
 the same variable. 
 In practice, we deal with a discrete grid $[t_0, t_1, \ldots, t_{P-1}]$ and a 
 dataset of $N$ elements, each one having $L$ components observed over the same
-discrete grid: $D_{i,j,k} = X_{i,k}(t_{j-1})$, $\forall i = 1, \ldots, N$, $\forall
+discrete grid: $D_{i,j,k} = X_{i,k}(t_{j})$, $\forall i = 1, \ldots, N$, $\forall
 j = 0, \ldots, P - 1$ and $\forall k = 1, \ldots, L$.
 
 ```{r mfData, fig.width = 7, fig.height = 4, fig.align = 'center' }
@@ -118,14 +118,14 @@ mfD = mfData( grid, list( Data_1, Data_2 ) )
 
 str( mfD )
 
-# Each component of the mfData object is a fData object 
+# Each component of the mfData object is an fData object 
 sapply( mfD$fDList, class )
 
 plot( mfD, lwd = 2, main = 'Multivariate FD',
       xlab = 'time', ylab = list( 'Values 1', 'Values 2' ))
 ```
 
-The fact that `mfData` components are `fData` obejcts is indeed conceptyally
+The fact that `mfData` components are `fData` obejcts is indeed conceptually
 very natural, but also allows for a seamless application of `S3` methods meant 
 for `fData` on multivariate functional data components, making the exploration
 and manipulation of multivariate datasets rather easy:
@@ -178,12 +178,12 @@ subtract, multiply and divide these objects by meaningful and compliant
 structures.
 
 **Sums** and **subtractions**, available through `+` and `-` operators (see help at
-`+-.fData`), allow for sums of a `fData` on the left hand side and a compliant
-structure on the right hand side. This can be either another `fData` of same
+`+-.fData`), allow to sum an `fData` on the left hand side and a compliant
+structure on the right hand side. This can be either another `fData` of the same
 sample size and defined over the same grid, or a 1D/2D data structure with a
 number of columns equal `fData`'s grid length (i.e. `P`), and number of rows
 equal to `fData`'s sample size (i.e. `N`) or equal to one (in this case the only
-observation available is recycled `N` times). The operataions are then performed
+observation available is recycled `N` times). The operations are then performed
 element-wise between the lhs and rhs. 
 
 ```{r fData_algebra_1, eval = FALSE }
@@ -217,9 +217,9 @@ fD / ( 1 : N )
 methods, `plot.fData` and `plot.mfData`.
 
 The graphical parameters of these functions have been suitably customised in order
-to enhance the visualization of functions. In particular, as a default elements
-are plotted with continuous lines and an ad-hoc palette that helps differentiating
-them. As default x- and y-axis labels, as long as titles, are dropped so that
+to enhance the visualization of functions. In particular, elements
+are plotted by default with continuous lines and an ad-hoc palette that helps differentiating
+them. As default x- and y-axis labels, as well as titles, are dropped so that
 plot's arguments calls are not displayed when no value is provided.
 
 In case of `mfData` the graphical window is split into a rectangular lattice to
@@ -228,7 +228,7 @@ plot single dimensions. The rectangular frame has `floor( sqrt( L ) )` rows and
 desired, they must be provided in the following way: since the grid is the same
 for all the dimensions, just one string is expected for x-axis
 (e.g. `xlab = 'grid'`), while either a single string or a list of `L` strings 
-(one for each dimension) is expected for both the y-label(s) and title(s). 
+(one for each dimension) is expected for both the y-axis label(s) and title(s). 
 In case just one string is passed to `plot.mfData`, the same value is used for 
 all the dimensions.
 
@@ -262,7 +262,7 @@ but extends them in order to accomodate for the possible presence of ties.
   MBD( fD$values, manage_ties = TRUE )
 ```
 
-Another definition avaibable is the **Half Region Depth** (along with its modified
+Another definition available is the **Half Region Depth** (along with its modified
 version), that is built on top of the **Epigraph** and **Hypograph** indexes [
 see @lopezpintado_romo_2011]:
 
@@ -277,13 +277,13 @@ MHRD( fD$values )
 ```
 
 A generalisation of MBD to multivariate functional data, implementing the ideas
-of @ieva_paganoni_2013, is also available thorugh the functions `multiBD` and
+of @ieva_paganoni_2013, is also available through the functions `multiBD` and
 `multiMBD`. These functions accept either a `mfData` object, specifying the
 multivariate functional dataset whose depths have to be computed, or a list of
 matrices of data values (see example below).
 
 The function computes the BD or MBD for each component of the multivariate
-functional dataset and then averages them accorging to a set of weights.
+functional dataset and then averages them according to a set of weights.
 These can be specified in two ways: either with the flag `uniform`, that is
 turned into `rep( 1/L, L )` (where `L` stands for the number of components in
 the multivariate dataset), or by providing the actual set of weights to be
@@ -424,7 +424,7 @@ describe and summarise functional datasets.
 `EI` and `MEI` implement the **Epigraph Index** and the **Modified Epigraph Index**,
 while `HI` and `MHI` implement the **Hypograph Index** and the **Modified Hypograph Index**
 [see @lopezpintado_romo_2011; @arribasgil_romo_2014].
-These indexes can be used to sort data, respectively, in a top-down and bottom-up
+These indexes can be used to sort data in a top-down and bottom-up
 fashion, and are used to define the HRD/MHRD and to build the outliegram.
 
 These `S3` methods can be called on univariate functional datasets, provided
@@ -484,9 +484,8 @@ and `area`, for the ordering between area-under-the-curve of functions.
 The function `cor_spearman( mfD, ordering = 'MEI', ... )` can be used to compute
 the Spearman correlation coefficient for a bivariate `mfData` object, uning the
 ordering policy specified by `ordering` (defaulting to `MEI`) to rank univariate
-compoenents and then compute the correlation coefficient. Besides `MEI`, also `MHI`
-can be used to determine ranks of univariate components. Additional parameters
-captured by `...` are passed directly to the rank function. 
+components and then compute the correlation coefficient. Besides `MEI`, also `MHI`
+can be used to rank univariate components. 
 
 ```{r Spearman, eval = TRUE, collapse = TRUE }
 # Spearman correlation of monotonically dependent data is exactly 1
@@ -513,10 +512,10 @@ The function `generate_gauss_fdata(N, centerline, Cov = NULL, CholCov = NULL)`
 can be used to simulate a population of such gaussian functional data. 
 The required arguments are: `N` the number of elements to be generated; 
 `centerline`, the center of the distribution (mean or median); `Cov`, a matrix
-representation of the desired covariance function, meant as the measurements
-of such function over a tensor grid whose marginal will be the grid where the
+representation of the desired covariance function, intended as the measurements
+of such function over a tensor grid whose marginal must be the grid where the
 functional data will be defined (i.e. the argument `grid` in `fData`);
-`CholCov` the Cholesky factor of the discrete representation of the Covariance
+`CholCov` the Cholesky factor of the discrete representation of the covariance
 function over the tensor grid (optional and alternative to the argument `Cov`).
 The inner procedure to generate the synthetic population of gaussian functional
 data makes use of the Cholesky factor of `Cov`, hence by providing its Cholesky
@@ -552,7 +551,7 @@ $$ X_{i,k} = m_k(t) + \epsilon_k(t), \quad Cov(\epsilon_k(s),\epsilon_k(t))=C(s,
 \forall i = 1, \ldots, N, \quad \forall k = 1, \ldots, L,$$
 
 where $Cor( \epsilon_j(t),\epsilon_l(t))=\rho_{j,l}$ specifies a (*synchronous*) 
-correlation structure among the compoenents of the functional dataset.
+correlation structure among the components of the functional dataset.
 
 In order to use the function one should provide: `N`, the number of elements to
 simulate; `L`, the number of components of the multivariate functional data; 
@@ -591,13 +590,13 @@ An implementation of the functional boxplot, through the `S3` method `fbplot`,
 allows for the detection of *amplitude* outliers in univariate and multivariate 
 functional datasets [see @Sun_Genton_2011].
 
-`fbplot` can be used to compute the set of indices inside a dataset marking
-outlying observations. If used in graphical way (default behaviour), it also 
-plots the functional boxplot of the dataset provided.
+`fbplot` can be used to compute the set of indices of observations marking
+outlying signals. If used in graphical way (default behaviour), it also 
+plots the functional boxplot of the dataset under study
 
 The functional boxplot is obtained by ranking functions from the center of the
 distribution outwards thanks to a depth definition, computing the region of 50%
-most central functions and inflating such region by a factor `F`. Whichever
+most central functions and inflating such region by a factor `F`. Any
 function crossing these boundaries is flagged as outlier. The default value for
 `F` is `1.5`, otherwise it can be set with the argument `Fvalue`.
 
