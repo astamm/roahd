@@ -537,19 +537,32 @@ cor_kendall = function( mfD, ordering = 'max' )
 #' @export
 cor_spearman = function( mfD, ordering = 'MEI' )
 {
-  if( mfD$L != 2 )
-  {
-    stop( ' Error in cor_spearman: only bivariate data are supported for now')
-  }
+  # if( mfD$L != 2 )
+  # {
+  #   stop( ' Error in cor_spearman: only bivariate data are supported for now')
+  # }
 
   if( ordering == 'MEI' )
   {
-    rk_1 = MEI( mfD$fDList[[ 1 ]]$values )
-    rk_2 = MEI( mfD$fDList[[ 2 ]]$values )
+    rks = sapply(mfD$fDList, MEI)
+
+    # rk_1 = MEI( mfD$fDList[[ 1 ]]$values )
+    # rk_2 = MEI( mfD$fDList[[ 2 ]]$values )
   } else if( ordering == 'MHI' )
   {
-    rk_1 = MHI( mfD$fDList[[ 1 ]]$values )
-    rk_2 = MHI( mfD$fDList[[ 2 ]]$values )
+    rks = sapply(mfD$fDList, MHI)
+
+    # rk_1 = MHI( mfD$fDList[[ 1 ]]$values )
+    # rk_2 = MHI( mfD$fDList[[ 2 ]]$values )
   }
-  return( cor( rk_1, rk_2, method = 'pearson' ) )
+
+  cor_output = cor(rks, method='pearson')
+
+  if( mfD$L == 2 )
+  {
+    return(cor_output[1,2])
+  } else{
+    return(cor_output)
+  }
+  # return( cor( rk_1, rk_2, method = 'pearson' ) )
 }
