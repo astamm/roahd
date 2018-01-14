@@ -462,28 +462,31 @@ cor_kendall = function( mfD, ordering = 'max' )
                        abs( sum( sign( R[ N,  ] - R[ N - 1, ]  ) ) ) ) / ( N * ( N - 1 ) / 2 )  - 1 )
 }
 
-#' Spearman's correlation coefficient for bivariate functional data
+#' Spearman's correlation coefficient for multivariate functional data
 #'
 #' This function computes the Spearman's correlation coefficient for a
-#' bivariate functional dataset, with either a Modified Epigraph Index (MEI) or
+#' multivariate functional dataset, with either a Modified Epigraph Index (MEI) or
 #' Modified Hypograph Index (MHI) ranking of univariate elments of data
 #' components.
 #'
-#' Given a bivariate functional dataset, with first components \eqn{X_1(t),
-#' X_2(t), \ldots, X_N(t)} and second components \eqn{Y_1(t), Y_2(t), \ldots,
-#' Y_N(t)}, the function exploits either the MEI or MHI to compute the value
-#' of the correlation coefficient.
+#' Given a multivariate functional dataset, with first components \eqn{X^1_1(t),
+#' X^1_2(t), \ldots, X^1_N(t)}, second components \eqn{X^2_1(t), X^2_2(t), \ldots,
+#' X^2_N(t)}, etc., the function exploits either the MEI or MHI to compute the matrix of
+#' Spearman's correlation coefficients. Such matrix is symmetrical and has ones on the
+#' diagonal. The entry (i, j) represents the Spearman correlation coefficient between
+#' curves of component i and j.
 #'
 #' See the references for more details.
 #'
-#' @param mfD a bivariate functional dataset whose Spearman's correlation
-#' coefficient must be computed, in form of bivariate \code{mfData} object
-#' (\code{mfD$L=2}).
+#' @param mfD a multivariate functional dataset whose Spearman's correlation
+#' coefficient must be computed, in form of multivariate \code{mfData} object.
 #' @param ordering the ordering relation to use on functional observations,
 #' either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is \code{"MEI"}).
 #'
-#' @return The function returns the Spearman's correlation coefficient for
-#' the bivariate dataset provided with \code{mfData}.
+#' @return If the original dataset is bivariate, the function returns only the
+#' scalar value of the correlation coefficient for the two components.
+#' When the number of components is L >2, it returns the whole matrix of
+#' Spearman's correlation coefficients for all the components.
 #'
 #' @references
 #'
@@ -566,3 +569,48 @@ cor_spearman = function( mfD, ordering = 'MEI' )
   }
   # return( cor( rk_1, rk_2, method = 'pearson' ) )
 }
+
+#' Bootstrap Spearman's correlation coefficient for multivariate functional data
+#'
+#' FINISH DOC
+#'
+cor_spearman_accuracy = function(mfD, ordering='MEI', bootstrap_iterations=1000,
+                                 verbose=FALSE)
+{
+  if( verbose ){
+    printout_iters = ceiling(seq(1, bootstrap_iterations, length.out=11))
+  }
+
+  if( mfD$L == 2 ){
+    cor_curr = 0
+  } else{
+    cor_curr = matrix(0, nrow=mfD$L, ncol=mfD$L)
+  }
+
+  # Initialising data structures
+  cor_mean = cor_curr
+  # diag(cor_mean) = 1
+  cor_sqd = cor_curr
+
+  for( iBoot in 1:bootstrap_iterations)
+  {
+    if ((verbose) && (any(iBoot == printout_iters))){
+      message(paste0(round(iBoot/bootstrap_iterations, 2) * 100,
+                     '% bootstrap Spearman`s correlation'))
+    }
+
+    w = sample.int(mfD$N, size=mfD$N, replace=TRUE, prob=NULL)
+
+    cor_curr = cor_spearman(mfD[w,])
+
+    # The order here is important to use the online updates
+    increment = (cor_curr - cor_mean)
+    cor_mean = cor_mean + increment / iBoot
+    cor_sqd = cor_sqd + increment * ( cor_curr - cor_mean )
+  }
+
+  return( list(mean = cor_mean,
+               bias = cor_mean - cor_spearman(mfD, ordering = ordering),
+               sd = sqrt(cor_sqd / ( bootstrap_iterations - 1 ))))
+}
+
