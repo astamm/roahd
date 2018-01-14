@@ -1142,9 +1142,9 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
 #'
 #' @param fD the univariate functional dataset in form of \code{fData} object.
 #' @param i a valid expression to subset rows ( observations ) of the univariate
-#' functional dataset
+#' functional dataset.
 #' @param j a valid expression to subset columns ( measurements over the grid )
-#' of the univariate functional dataset.
+#' of the univariate functional dataset (must be contiguous).
 #' @param as_fData logical flag to specify whether the output should be returned
 #' as an \code{fData} object containing the required subset or as a matrix of
 #' values, default is \code{TRUE}.
@@ -1211,7 +1211,9 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
                          class = c( 'fData' ) ) )
     } else {
       if( is.logical( j ) ){
-
+        if (sum(abs(diff(j)) > 1)){
+          stop('You must specify a contiguous grid')
+        }
         return( structure( list( t0 = fD$t0 + ( min( which( j ) ) - 1 ) * fD$h,
                                  tP = fD$t0 + ( max( which( j ) ) - 1 ) * fD$h,
                                  h = fD$h,
@@ -1221,7 +1223,6 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
                            class = c( 'fData' ) ) )
 
       } else if( is.numeric( j ) ){
-
         return( structure( list( t0 = fD$t0 + ( min( j ) - 1 ) * fD$h,
                                  tP = fD$t0 + ( max( j ) - 1 ) * fD$h,
                                  h = fD$h,
@@ -1235,6 +1236,75 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
     return( fD$values[ i, j ] )
   }
 }
+
+#' Operator \code{sub-.mfData} to subset \code{mfData} obejcts
+#'
+#' This method provides an easy and natural way to subset a multivariate
+#' functional dataset stored in a \code{mfData} object, without having to
+#' deal with the inner representation of \code{mfData} class.
+#'
+#' @param mfD the multivariate functional dataset in form of \code{mfData} object.
+#' @param i a valid expression to subset rows ( observations ) of the univariate
+#' functional dataset.
+#' @param j a valid expression to subset columns ( measurements over the grid )
+#' of the univariate functional dataset (must be contiguous).
+#'
+#' @return The method returns and \code{mfData} object containing the
+#' required subset ( both in terms  of observations and measurement points ) of
+#' the multivariate functional dataset.
+#'
+#' @name sub-.mfData
+#'
+#' @seealso \code{\link{mfData}}
+#'
+#' @examples
+#' # Defining parameters
+#' N = 1e2
+#'
+#' P = 1e3
+#'
+#' t0 = 0
+#' t1 = 1
+#'
+#' # Defining the measurement grid
+#' grid = seq( t0, t1, length.out = P )
+#'
+#' # Generating an exponential covariance matrix to be used in the simulation of
+#' # the functional datasets (see the related help for details)
+#' C = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+#'
+#' # Simulating the measurements of two univariate functional datasets with
+#' # required center and covariance function
+#' Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = C )
+#' Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = C )
+#'
+#' # Building the mfData object
+#' mfD = mfData( grid, list( Data_1, Data_2 ) )
+#'
+#' # Subsetting the first 10 elements and 10 time points
+#' mfD[1:10, 1:10]
+#'
+#' # Subsetting only observations
+#' mfD[1:10,]
+#'
+#' # Subsetting only time points (contiguously)
+#' mfD[,1:10]
+#'
+#' @export
+#'
+#' @export
+"[.mfData" = function(mfD, i, j)
+{
+  if(missing(j)){
+    j = 1:mfD$P
+  }
+  if(missing(i))
+  {
+    i=1:mfD$N
+  }
+  return(as.mfData(lapply(mfD$fDList, function(x)x[i, j])))
+}
+
 
 
 #' Manipulation of \code{mfData} list of values

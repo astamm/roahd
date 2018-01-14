@@ -11,10 +11,10 @@
 \item{fD}{the univariate functional dataset in form of \code{fData} object.}
 
 \item{i}{a valid expression to subset rows ( observations ) of the univariate
-functional dataset}
+functional dataset.}
 
 \item{j}{a valid expression to subset columns ( measurements over the grid )
-of the univariate functional dataset.}
+of the univariate functional dataset (must be contiguous).}
 
 \item{as_fData}{logical flag to specify whether the output should be returned
 as an \code{fData} object containing the required subset or as a matrix of
