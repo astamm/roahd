@@ -8,16 +8,19 @@ Authors@R: c( person("Nicholas", "Tarabelloni", role = c("aut", "cre"),
               person("Ana", "Arribas-Gil", role = "aut",
                       email = "aarribas@est-econ.uc3m.es" ),
               person("Francesca", "Ieva", role = "aut",
-                      email = "francesca.ieva@unimi.it" ),
+                      email = "francesca.ieva@polimi.it" ),
               person("Anna Maria", "Paganoni", role = "aut",
                      email = "anna.paganoni@polimi.it" ),
               person("Juan", "Romo", role = "aut",
-                      email = "romo@est-econ.uc3m.es") )
+                      email = "romo@est-econ.uc3m.es"),
+              person("Francesco", "Palma", role = "ctb",
+                      email = "frapalma7892@gmail.com") )
 Author: Nicholas Tarabelloni [aut, cre],
     Ana Arribas-Gil [aut],
     Francesca Ieva [aut],
     Anna Maria Paganoni [aut],
-    Juan Romo [aut]
+    Juan Romo [aut],
+    Francesco Palma [ctb]
 Maintainer: Nicholas Tarabelloni <nicholas.tarabelloni@polimi.it>
 Description: A collection of methods for the robust analysis of univariate and
     multivariate functional data, possibly in high-dimensional cases, and hence

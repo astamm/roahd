@@ -2,7 +2,7 @@
 % Please edit documentation in R/correlation.R
 \name{cor_spearman}
 \alias{cor_spearman}
-\title{Spearman's correlation coefficient for bivariate functional data}
+\title{Spearman's correlation coefficient for multivariate functional data}
 \usage{
 cor_spearman(mfD, ordering = "MEI")
 }

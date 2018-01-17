@@ -101,7 +101,7 @@ BCIntervalMultivariate = function(mfD,
 }
 
 
-bootstrapTest2 = function( mfD1, mfD2, bootstrap_iterations=1000, ordering='MEI', normtype='f',
+bootstrapTest = function( mfD1, mfD2, bootstrap_iterations=1000, ordering='MEI', normtype='f',
                           verbose=FALSE)
 {
   stopifnot((mfD1$P == mfD2$P) & (mfD1$t0 == mfD2$t0) & (mfD1$tP == mfD2$tP)
