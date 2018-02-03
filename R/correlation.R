@@ -572,7 +572,33 @@ cor_spearman = function( mfD, ordering = 'MEI' )
 
 #' Bootstrap Spearman's correlation coefficient for multivariate functional data
 #'
-#' FINISH DOC
+#' This function computes the bootstrap estimates of standard error and bias of the Spearman's
+#' correlation coefficient for a multivariate functional dataset.
+#'
+#' Given a multivariate functional dataset \eqn{X_1^(i), \ldots, X_n^(i)}, \eqn{i=0, \ldots, L}
+#' defined over the grid \eqn{I = t_0, \ldots, t_P}, having components \eqn{i=1, \ldots, L}, and a
+#' chosen ordering strategy (MEI or MHI), the function computes the matrix of Speraman's correlation
+#' indexes of the dataset's components, as well as their bias and standard deviation estimates
+#' through a specified number of bootstrap iterations (bias and standard error are updated with
+#' on-line formulas).
+#'
+#' @param mfD a multivariate functional dataset whose Spearman's correlation
+#' coefficient must be computed, in form of multivariate \code{mfData} object.
+#' @param ordering the ordering relation to use on functional observations,
+#' either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is \code{"MEI"}).
+#' @param bootstrap_iterations the number of bootstrap iterations to be used for estimation of bias and
+#' standard error.
+#' @param verbose a logical flag specifying whether to log information on the estimation progress.
+#'
+#'
+#' @returns a list of three elements: \code{mean}, the mean of the matrix of correlation coefficients;
+#' \code{bias}, a matrix containing the estimated bias (mean - point estimate of correlation coefficients);
+#' \code{sd}, a matrix containing the estiated standard deviation of the coefficients' matrix. In case
+#' the multivariate functional dataset has only two components, the return type is scalar and not matrix.
+#'
+#' @seealso \code{\link{cor_spearman}}, \code{\link{mfData}}
+#'
+#' @export
 #'
 cor_spearman_accuracy = function(mfD, ordering='MEI', bootstrap_iterations=1000,
                                  verbose=FALSE)

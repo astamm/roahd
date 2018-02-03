@@ -97,9 +97,9 @@ exp_cov_function = function( grid, alpha, beta )
 #'
 #' centerline = sin( 2 * pi * time_grid )
 #'
-#' generate_gauss_fdata( N, centerline, Cov = C )
+#' invisible(generate_gauss_fdata( N, centerline, Cov = C ))
 #'
-#' generate_gauss_fdata( N, centerline, CholCov = CholC )
+#' invisible(generate_gauss_fdata( N, centerline, CholCov = CholC ))
 #'
 #' @importFrom stats rnorm
 #'

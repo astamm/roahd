@@ -46,5 +46,5 @@ append_fData(fD1, fD2)
 
 }
 \seealso{
-\code{append_mfData}, \code{fData}
+\code{\link{append_mfData}}, \code{\link{fData}}
 }

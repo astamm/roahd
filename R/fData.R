@@ -96,7 +96,7 @@ fData = function( grid, values )
 #'
 #' @return The function returns a \code{fData} object containing the union of \code{fD1} and \code{fD2}
 #'
-#' @seealso \code{append_mfData}, \code{fData}
+#' @seealso \code{\link{append_mfData}}, \code{\link{fData}}
 #'
 #' @examples
 #' # Creating two simple univariate datasets
@@ -303,7 +303,7 @@ mfData = function( grid, Data_list )
 #'
 #' @return The function returns a \code{mfData} object containing the union of \code{mfD1} and \code{mfD2}
 #'
-#' @seealso \code{append_fData}, \code{mfData}
+#' @seealso \code{\link{append_fData}}, \code{\link{mfData}}
 #'
 #' @examples
 #' # Creating two simple bivariate datasets

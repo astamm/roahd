@@ -7,6 +7,30 @@
 cor_spearman_accuracy(mfD, ordering = "MEI", bootstrap_iterations = 1000,
   verbose = FALSE)
 }
+\arguments{
+\item{mfD}{a multivariate functional dataset whose Spearman's correlation
+coefficient must be computed, in form of multivariate \code{mfData} object.}
+
+\item{ordering}{the ordering relation to use on functional observations,
+either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is \code{"MEI"}).}
+
+\item{bootstrap_iterations}{the number of bootstrap iterations to be used for estimation of bias and
+standard error.}
+
+\item{verbose}{a logical flag specifying whether to log information on the estimation progress.}
+}
 \description{
-FINISH DOC
+This function computes the bootstrap estimates of standard error and bias of the Spearman's
+correlation coefficient for a multivariate functional dataset.
+}
+\details{
+Given a multivariate functional dataset \eqn{X_1^(i), \ldots, X_n^(i)}, \eqn{i=0, \ldots, L}
+defined over the grid \eqn{I = t_0, \ldots, t_P}, having components \eqn{i=1, \ldots, L}, and a
+chosen ordering strategy (MEI or MHI), the function computes the matrix of Speraman's correlation
+indexes of the dataset's components, as well as their bias and standard deviation estimates
+through a specified number of bootstrap iterations (bias and standard error are updated with
+on-line formulas).
+}
+\seealso{
+\code{\link{cor_spearman}}, \code{\link{mfData}}
 }

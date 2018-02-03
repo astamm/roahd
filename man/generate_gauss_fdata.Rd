@@ -66,9 +66,9 @@ CholC = chol( C )
 
 centerline = sin( 2 * pi * time_grid )
 
-generate_gauss_fdata( N, centerline, Cov = C )
+invisible(generate_gauss_fdata( N, centerline, Cov = C ))
 
-generate_gauss_fdata( N, centerline, CholCov = CholC )
+invisible(generate_gauss_fdata( N, centerline, CholCov = CholC ))
 
 }
 \seealso{
