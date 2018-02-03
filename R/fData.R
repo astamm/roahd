@@ -80,6 +80,54 @@ fData = function( grid, values )
                      class = c( 'fData' ) ) )
 }
 
+#' Append two sets of observations from compatible univariate datasets
+#'
+#' This is a convenience function that simplifies the task of appending univariate
+#' functional observations of two datasets to a unique univariate functional dataset.
+#'
+#' The two original datasets must be compatible, i.e. must be defined on the same time grid.
+#' If we denote with \eqn{X_1, \ldots, X_n} the first dataset, defined over the
+#' grid \eqn{I = t_0, \ldots, t_P}, and with \eqn{Y_1, \ldots, Y_m} the second functional dataset,
+#' defined on the same grid, the method returns the union dataset obtained by taking all the
+#' \eqn{n + m} observations altogether.
+#'
+#' @param fD1 is the first functional dataset, stored into an \code{fData} object.
+#' @param fD2 is the second functional dataset, stored into an \code{fData} object.
+#'
+#' @return The function returns a \code{fData} object containing the union of \code{fD1} and \code{fD2}
+#'
+#' @seealso \code{append_mfData}, \code{fData}
+#'
+#' @examples
+#' Creating two simple univariate datasets
+#'
+#' grid = seq(0, 2 * pi, length.out = 100)
+#'
+#' values1 = matrix( c(sin(grid),
+#'                     sin(2 * grid)), nrow = 2, ncol = length(grid),
+#'                    byrow=TRUE)
+#'
+#' values2 = matrix( c(cos(grid),
+#'                     cos(2 * grid)), nrow = 2, ncol = length(grid),
+#'                    byrow=TRUE)
+#'
+#' fD1 = fData( grid, values1 )
+#' fD2 = fData( grid, values2 )
+#'
+#' # Appending them to a unique dataset
+#' append_fData(fD1, fD2)
+#'
+#' @export
+append_fData = function(fD1, fD2)
+{
+  stopifnot((fD1$P == fD2$P) & (fD1$t0 == fD2$t0) & (fD1$tP == fD2$tP)
+            & (fD1$h == fD2$h))
+
+  grid = seq(fD1$t0, fD1$tP, length.out=fD1$P)
+
+  return(fData(grid, values = rbind(fD1$values, fD2$values)))
+}
+
 #' Specialised method to plot \code{fData} objects
 #'
 #' This function performs the plot of a functional univariate dataset stored in
@@ -237,6 +285,59 @@ mfData = function( grid, Data_list )
                            tP = fDList[[ 1 ]]$tP,
                            fDList = fDList ),
                      class = c( 'mfData' ) ) )
+}
+#' Append two sets of observations from compatible multivariate datasets
+#'
+#' This is a convenience function that simplifies the task of appending multivariate
+#' functional observations of two datasets to a unique multivariate functional dataset.
+#'
+#' The two original datasets must be compatible, i.e. must have same number of components
+#' (dimensions) and must be defined on the same time grid. If we denote with
+#' \eqn{X_1^(i), \ldots, X_n^(i)}, \eqn{i=0, \ldots, L} the first dataset, defined over the
+#' grid \eqn{I = t_0, \ldots, t_P}, and with \eqn{X_1^(i), \ldots, X_m^(i)}, \eqn{i=0, \ldots, L}
+#' the second functional dataset, the method returns the union dataset obtained by taking all the
+#' \eqn{n + m} observations altogether.
+#'
+#' @param mfD1 is the first multivariate functional dataset, stored into an \code{mfData} object.
+#' @param mfD2 is the second multivariate functional dataset, stored into an \code{mfData} object.
+#'
+#' @return The function returns a \code{mfData} object containing the union of \code{mfD1} and \code{mfD2}
+#'
+#' @seealso \code{append_fData}, \code{mfData}
+#'
+#' @examples
+#'
+#' Creating two simple bivariate datasets
+#'
+#' grid = seq(0, 2 * pi, length.out = 100)
+#'
+#' values11 = matrix( c(sin(grid),
+#'                      sin(2 * grid)), nrow = 2, ncol = length(grid),
+#'                    byrow=TRUE)
+#' values12 = matrix( c(sin(3 * grid),
+#'                      sin(4 * grid)), nrow = 2, ncol = length(grid),
+#'                    byrow=TRUE)
+#' values21 = matrix( c(cos(grid),
+#'                      cos(2 * grid)), nrow = 2, ncol = length(grid),
+#'                    byrow=TRUE)
+#' values22 = matrix( c(cos(3 * grid),
+#'                      cos(4 * grid)), nrow = 2, ncol = length(grid),
+#'                    byrow=TRUE)
+#'
+#' mfD1 = mfData( grid, list(values11, values12) )
+#' mfD2 = mfData( grid, list(values21, values22) )
+#'
+#' # Appending them to a unique dataset
+#' append_mfData(mfD1, mfD2)
+#'
+#' @export
+append_mfData = function(mfD1, mfD2)
+{
+  stopifnot((mfD1$P == mfD2$P) & (mfD1$t0 == mfD2$t0) & (mfD1$tP == mfD2$tP)
+            & (mfD1$fDList[[1]]$h == mfD2$fDList[[1]]$h) & (mfD1$L == mfD2$L))
+
+  return(as.mfData(lapply(1:mfD1$L,
+                          function(id) append_fData(mfD1$fDList[[id]], mfD2$fDList[[id]]))))
 }
 
 #' Specialised method to plot \code{mfData} objects
@@ -1292,7 +1393,6 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
 #'
 #' @export
 #'
-#' @export
 "[.mfData" = function(mfD, i, j)
 {
   if(missing(j)){
@@ -1304,8 +1404,6 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
   }
   return(as.mfData(lapply(mfD$fDList, function(x)x[i, j])))
 }
-
-
 
 #' Manipulation of \code{mfData} list of values
 #'

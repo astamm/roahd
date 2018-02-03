@@ -149,25 +149,3 @@ bootstrapTest = function( mfD1, mfD2, bootstrap_iterations=1000, ordering='MEI',
 
   return(list( pvalue=pvalue, phi=phi ))
 }
-
-
-append_fData = function(fD1, fD2)
-{
-  stopifnot((fD1$P == fD2$P) & (fD1$t0 == fD2$t0) & (fD1$tP == fD2$tP)
-            & (fD1$h == fD2$h))
-
-  grid = seq(fD1$t0, fD1$tP, length.out=fD1$P)
-
-  return(fData(grid, values = rbind(fD1$values, fD2$values)))
-}
-
-append_mfData = function(mfD1, mfD2)
-{
-  stopifnot((mfD1$P == mfD2$P) & (mfD1$t0 == mfD2$t0) & (mfD1$tP == mfD2$tP)
-            & (mfD1$fDList[[1]]$h == mfD2$fDList[[1]]$h) & (mfD1$L == mfD2$L))
-
-  return(as.mfData(lapply(1:mfD1$L,
-                          function(id) append_fData(mfD1$fDList[[id]], mfD2$fDList[[id]]))))
-}
-
-
