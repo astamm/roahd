@@ -99,7 +99,7 @@ fData = function( grid, values )
 #' @seealso \code{append_mfData}, \code{fData}
 #'
 #' @examples
-#' Creating two simple univariate datasets
+#' # Creating two simple univariate datasets
 #'
 #' grid = seq(0, 2 * pi, length.out = 100)
 #'
@@ -306,8 +306,7 @@ mfData = function( grid, Data_list )
 #' @seealso \code{append_fData}, \code{mfData}
 #'
 #' @examples
-#'
-#' Creating two simple bivariate datasets
+#' # Creating two simple bivariate datasets
 #'
 #' grid = seq(0, 2 * pi, length.out = 100)
 #'

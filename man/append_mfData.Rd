@@ -27,8 +27,7 @@ the second functional dataset, the method returns the union dataset obtained by 
 \eqn{n + m} observations altogether.
 }
 \examples{
-
-Creating two simple bivariate datasets
+# Creating two simple bivariate datasets
 
 grid = seq(0, 2 * pi, length.out = 100)
 

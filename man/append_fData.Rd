@@ -26,7 +26,7 @@ defined on the same grid, the method returns the union dataset obtained by takin
 \eqn{n + m} observations altogether.
 }
 \examples{
-Creating two simple univariate datasets
+# Creating two simple univariate datasets
 
 grid = seq(0, 2 * pi, length.out = 100)
 
