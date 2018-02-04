@@ -80,21 +80,21 @@ fData = function( grid, values )
                      class = c( 'fData' ) ) )
 }
 
-#' Append two sets of observations from compatible univariate datasets
+#' Append two compatible univariate functional datasets
 #'
 #' This is a convenience function that simplifies the task of appending univariate
 #' functional observations of two datasets to a unique univariate functional dataset.
 #'
-#' The two original datasets must be compatible, i.e. must be defined on the same time grid.
+#' The two original datasets must be compatible, i.e. must be defined on the same grid.
 #' If we denote with \eqn{X_1, \ldots, X_n} the first dataset, defined over the
-#' grid \eqn{I = t_0, \ldots, t_P}, and with \eqn{Y_1, \ldots, Y_m} the second functional dataset,
+#' grid \eqn{I = t_1, \ldots, t_P}, and with \eqn{Y_1, \ldots, Y_m} the second functional dataset,
 #' defined on the same grid, the method returns the union dataset obtained by taking all the
-#' \eqn{n + m} observations altogether.
+#' \eqn{n + m} observations together.
 #'
 #' @param fD1 is the first functional dataset, stored into an \code{fData} object.
 #' @param fD2 is the second functional dataset, stored into an \code{fData} object.
 #'
-#' @return The function returns a \code{fData} object containing the union of \code{fD1} and \code{fD2}
+#' @return The function returns an \code{fData} object containing the union of \code{fD1} and \code{fD2}
 #'
 #' @seealso \code{\link{append_mfData}}, \code{\link{fData}}
 #'
@@ -286,17 +286,17 @@ mfData = function( grid, Data_list )
                            fDList = fDList ),
                      class = c( 'mfData' ) ) )
 }
-#' Append two sets of observations from compatible multivariate datasets
+#' Append two compatible multivariate functional datasets
 #'
 #' This is a convenience function that simplifies the task of appending multivariate
 #' functional observations of two datasets to a unique multivariate functional dataset.
 #'
 #' The two original datasets must be compatible, i.e. must have same number of components
-#' (dimensions) and must be defined on the same time grid. If we denote with
+#' (dimensions) and must be defined on the same grid. If we denote with
 #' \eqn{X_1^(i), \ldots, X_n^(i)}, \eqn{i=0, \ldots, L} the first dataset, defined over the
-#' grid \eqn{I = t_0, \ldots, t_P}, and with \eqn{X_1^(i), \ldots, X_m^(i)}, \eqn{i=0, \ldots, L}
+#' grid \eqn{I = t_1, \ldots, t_P}, and with \eqn{Y_1^(i), \ldots, Y_m^(i)}, \eqn{i=0, \ldots, L}
 #' the second functional dataset, the method returns the union dataset obtained by taking all the
-#' \eqn{n + m} observations altogether.
+#' \eqn{n + m} observations together.
 #'
 #' @param mfD1 is the first multivariate functional dataset, stored into an \code{mfData} object.
 #' @param mfD2 is the second multivariate functional dataset, stored into an \code{mfData} object.
@@ -1323,6 +1323,9 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
                            class = c( 'fData' ) ) )
 
       } else if( is.numeric( j ) ){
+        if (sum(abs(diff(j)) > 1)){
+          stop('You must specify a contiguous grid')
+        }
         return( structure( list( t0 = fD$t0 + ( min( j ) - 1 ) * fD$h,
                                  tP = fD$t0 + ( max( j ) - 1 ) * fD$h,
                                  h = fD$h,

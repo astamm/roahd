@@ -199,6 +199,58 @@ test_that( 'Functional data subsetting - case 5 bis',
                              c( 0, 4 * fD$h, fD$h, 5 )  ) )
 
 
+
+N = 3
+P = 20
+L = 2
+
+grid = seq( 0, 1, length.out = P )
+
+values1 = rep( 1, P)
+values2 = cos( 2 * pi * grid )
+values3 = sin( 2 * pi * grid )
+
+values4 = rep( 2, P)
+values5 = cos( 4 * pi * grid )
+values6 = sin( 4 * pi * grid )
+
+mfD = mfData( grid, list( matrix( c( values1, values2, values3 ), nrow=3, ncol=P, byrow=TRUE),
+                          matrix( c( values4, values5, values6 ), nrow=3, ncol=P, byrow=TRUE)) )
+
+
+test_that( 'Multivariate functional data  subsetting - case 1',
+           expect_error( mfD[ , c(1:5, 7:8)]))
+
+test_that( 'Multivariate functional data subsetting - case 2',
+           expect_equal( mfD[1,]$fDList[[1]]$values, t(as.matrix(values1)) ) )
+
+test_that( 'Multivariate functional data subsetting - case 3',
+           expect_equal( mfD[1,]$fDList[[2]]$values, t(as.matrix(values4)) ) )
+
+test_that( 'Multivariate functional data subsetting - case 4',
+           expect_equal( mfD[1:2,]$fDList[[1]]$values, matrix(c(values1, values2), nrow=2,
+                                                              ncol=P, byrow=TRUE) ) )
+test_that( 'Multivariate functional data subsetting - case 5',
+           expect_equal( mfD[1:2,]$fDList[[2]]$values, matrix(c(values4, values5), nrow=2,
+                                                              ncol=P, byrow=TRUE) ) )
+test_that( 'Multivariate functional data subsetting - case 6',
+           expect_equal( mfD[,1:5]$fDList[[1]]$values, matrix(c(values1[1:5], values2[1:5],
+                                                                values3[1:5]), nrow=3,
+                                                              ncol=5, byrow=TRUE) ) )
+test_that( 'Multivariate functional data subsetting - case 7',
+           expect_equal( mfD[,1:5]$fDList[[2]]$values, matrix(c(values4[1:5], values5[1:5],
+                                                                values6[1:5]), nrow=3,
+                                                              ncol=5, byrow=TRUE) ) )
+test_that( 'Multivariate functional data subsetting - case 8',
+           expect_true( (mfD[1:2,]$N == 2) & (mfD[1:2,]$P == P) & (mfD[1:2,]$L == 2 )))
+
+test_that( 'Multivariate functional data appending - case 1',
+           expect_equal( append_mfData(mfD[1:2,], mfD[3,])$fDList[[1]]$values, mfD$fDList[[1]]$values ))
+
+test_that( 'Multivariate functional data appending - case 2',
+           expect_equal( append_fData(mfD[1:2,]$fDList[[1]], mfD[3,]$fDList[[1]])$values,
+                         mfD$fDList[[1]]$values ))
+
 # TESTING MFDATA ----------------------------------------------------------
 
 N = 1e2

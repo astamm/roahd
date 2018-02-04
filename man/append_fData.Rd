@@ -2,7 +2,7 @@
 % Please edit documentation in R/fData.R
 \name{append_fData}
 \alias{append_fData}
-\title{Append two sets of observations from compatible univariate datasets}
+\title{Append two compatible univariate functional datasets}
 \usage{
 append_fData(fD1, fD2)
 }
@@ -12,18 +12,18 @@ append_fData(fD1, fD2)
 \item{fD2}{is the second functional dataset, stored into an \code{fData} object.}
 }
 \value{
-The function returns a \code{fData} object containing the union of \code{fD1} and \code{fD2}
+The function returns an \code{fData} object containing the union of \code{fD1} and \code{fD2}
 }
 \description{
 This is a convenience function that simplifies the task of appending univariate
 functional observations of two datasets to a unique univariate functional dataset.
 }
 \details{
-The two original datasets must be compatible, i.e. must be defined on the same time grid.
+The two original datasets must be compatible, i.e. must be defined on the same grid.
 If we denote with \eqn{X_1, \ldots, X_n} the first dataset, defined over the
-grid \eqn{I = t_0, \ldots, t_P}, and with \eqn{Y_1, \ldots, Y_m} the second functional dataset,
+grid \eqn{I = t_1, \ldots, t_P}, and with \eqn{Y_1, \ldots, Y_m} the second functional dataset,
 defined on the same grid, the method returns the union dataset obtained by taking all the
-\eqn{n + m} observations altogether.
+\eqn{n + m} observations together.
 }
 \examples{
 # Creating two simple univariate datasets

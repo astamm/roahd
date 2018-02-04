@@ -2,7 +2,7 @@
 % Please edit documentation in R/bootstrap_spearman_inference.R
 \name{BTestSpearman}
 \alias{BTestSpearman}
-\title{Bootstrap Hypothesis Test on Spearman Correlation Coefficients for Functional Data}
+\title{Bootstrap Hypothesis Test on Spearman Correlation Coefficients for Multivariate Functional Data}
 \usage{
 BTestSpearman(mfD1, mfD2, bootstrap_iterations = 1000, ordering = "MEI",
   normtype = "f", verbose = FALSE)
@@ -26,15 +26,16 @@ the base function \code{norm}).}
 \item{verbose}{a boolean flag specifying whether to print the progress of bootstrap iterations or not (default is FALSE).}
 }
 \value{
-The function returns the estimates of the test's p-value and test statistics.
+The function returns the estimates of the test's p-value and statistics.
 }
 \description{
 This function performs a bootstrap test that checks whether the Spearman correlation structures
 (e.g. matrices) of two populations of compatible multivariate functional data are equal or not.
 }
 \details{
-Given a first multivariate functional population, \eqn{X_1(t)^(i), \ldots, X_n(t)^(i)} with \eqn{i=1, \ldots, L}, defined on the grid \eqn{I = t_1, \ldots, t_P}, and a second multivariate functional population,
-\eqn{Y_1(t)^(i), \ldots, Y_m(t)^(i)} with \eqn{i=1, \ldots, L}, defined on the same grid \eqn{I}, the
+Given a first multivariate functional population, \eqn{X_1^(i), \ldots, X_n^(i)} with \eqn{i=1, \ldots, L},
+defined on the grid \eqn{I = t_1, \ldots, t_P}, and a second multivariate functional population,
+\eqn{Y_1^(i), \ldots, Y_m^(i)} with \eqn{i=1, \ldots, L}, defined on the same grid \eqn{I}, the
 function performs a bootstrap test to check the hypothesis:
 
 \deqn{H_0: R_X = R_Y}
@@ -46,9 +47,9 @@ where R_X and R_Y denote the L x L matrices of Spearman correlation coefficients
 \item{The two functional samples must have the same number of components and must be defined over the same
 discrete interval \eqn{t_1, \ldots, t_P}.}
 \item{The test is performed through a bootstrap argument, so
-a number of bootstrap iterations muse be specified as well. A high number of iterations may result
-in slow performances of the test (it may be useful to allow the function for verbosity in order
-to get hints on the process).}}
+a number of bootstrap iterations must be specified as well. A high value for this parameter may result
+in slow performances of the test (you may consider setting \code{verbose} to \code{TRUE} to get
+hints on the process).}}
 }
 \examples{
 

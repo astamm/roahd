@@ -1,14 +1,14 @@
-#' Bootstrap Confidence Interval on Spearman's Correlation Coefficient between Univariate Samples
+#' Bootstrap Confidence Interval on Spearman's Correlation Coefficient between Univariate Functional Datasets
 #'
-#' This function computes the \eqn{\alpha} bootstrap confidence interval of coverage probability
+#' This function computes the bootstrap confidence interval of coverage probability
 #' \eqn{1 - \alpha} for the Spearman correlation coefficient between two univariate functional samples.
 #'
 #' The function takes two samples of compatible functional data (i.e., they must be defined over the
 #' same grid and have same number of observations) and computes a bootstrap confidence interval for
 #' their Spearman correlation coefficient.
 #'
-#' @param fD1 is the first univariate functional sample in form of \code{fData} object.
-#' @param fD2 is the first univariate functional sample in form of \code{fData} object.
+#' @param fD1 is the first univariate functional sample in form of an \code{fData} object.
+#' @param fD2 is the first univariate functional sample in form of an \code{fData} object.
 #' @param ordering is either \code{MEI} (default) or \code{MHI}, and indicates the ordering relation
 #' to be used during in the Spearman's coefficient computation.
 #' @param bootstrap_iterations is the number of bootstrap iterations to use in order to estimate the
@@ -117,13 +117,13 @@ BCIntervalSpearman = function( fD1, fD2, ordering='MEI', bootstrap_iterations=10
   return( list( lower=int1, upper=int2 ) )
 }
 
-#' Bootstrap Confidence Interval on Spearman's Correlation Coefficient of a Multivariate Dataset
+#' Bootstrap Confidence Interval on Spearman's Correlation Coefficient of a Multivariate Functional Dataset
 #'
-#' This function computes the \eqn{\alpha} bootstrap confidence intervals of coverage probability
+#' This function computes the bootstrap confidence intervals of coverage probability
 #' \eqn{1 - \alpha} for the Spearman correlation coefficients within a multivariate functional dataset.
 #'
-#' The function takes a multivariate functional dataset and computes a bootstrap confidence interval
-#' for their Spearman correlation coefficients.
+#' The function takes a multivariate functional dataset and computes a matrix of bootstrap confidence
+#' intervals for its Spearman correlation coefficients.
 #'
 #' @param mfD is the multivariate functional sample in form of \code{mfData} object.
 #' @param ordering is either \code{MEI} (default) or \code{MHI}, and indicates the ordering relation
@@ -201,13 +201,14 @@ BCIntervalSpearmanMultivariate = function(mfD,
   return(list( lower=lower, upper=upper))
 }
 
-#' Bootstrap Hypothesis Test on Spearman Correlation Coefficients for Functional Data
+#' Bootstrap Hypothesis Test on Spearman Correlation Coefficients for Multivariate Functional Data
 #'
 #' This function performs a bootstrap test that checks whether the Spearman correlation structures
 #' (e.g. matrices) of two populations of compatible multivariate functional data are equal or not.
 #'
-#' Given a first multivariate functional population, \eqn{X_1(t)^(i), \ldots, X_n(t)^(i)} with \eqn{i=1, \ldots, L}, defined on the grid \eqn{I = t_1, \ldots, t_P}, and a second multivariate functional population,
-#' \eqn{Y_1(t)^(i), \ldots, Y_m(t)^(i)} with \eqn{i=1, \ldots, L}, defined on the same grid \eqn{I}, the
+#' Given a first multivariate functional population, \eqn{X_1^(i), \ldots, X_n^(i)} with \eqn{i=1, \ldots, L},
+#' defined on the grid \eqn{I = t_1, \ldots, t_P}, and a second multivariate functional population,
+#' \eqn{Y_1^(i), \ldots, Y_m^(i)} with \eqn{i=1, \ldots, L}, defined on the same grid \eqn{I}, the
 #' function performs a bootstrap test to check the hypothesis:
 #'
 #' \deqn{H_0: R_X = R_Y}
@@ -219,9 +220,9 @@ BCIntervalSpearmanMultivariate = function(mfD,
 #' \item{The two functional samples must have the same number of components and must be defined over the same
 #' discrete interval \eqn{t_1, \ldots, t_P}.}
 #' \item{The test is performed through a bootstrap argument, so
-#' a number of bootstrap iterations muse be specified as well. A high number of iterations may result
-#' in slow performances of the test (it may be useful to allow the function for verbosity in order
-#' to get hints on the process).}}
+#' a number of bootstrap iterations must be specified as well. A high value for this parameter may result
+#' in slow performances of the test (you may consider setting \code{verbose} to \code{TRUE} to get
+#' hints on the process).}}
 #'
 #' @param mfD1 is the first functional dataset, specified in form of \code{mfData} object; it must
 #' be compatible with \code{mfD2}.
@@ -236,7 +237,7 @@ BCIntervalSpearmanMultivariate = function(mfD,
 #' @param verbose a boolean flag specifying whether to print the progress of bootstrap iterations or not (default is FALSE).
 #'
 #' @return
-#' The function returns the estimates of the test's p-value and test statistics.
+#' The function returns the estimates of the test's p-value and statistics.
 #'
 #' @seealso \code{\link{BCIntervalSpearman}}, \code{\link{BCIntervalSpearmanMultivariate}}, \code{\link{mfData}}
 #' @examples

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fData.R
 \name{append_mfData}
 \alias{append_mfData}
-\title{Append two sets of observations from compatible multivariate datasets}
+\title{Append two compatible multivariate functional datasets}
 \usage{
 append_mfData(mfD1, mfD2)
 }
@@ -20,11 +20,11 @@ functional observations of two datasets to a unique multivariate functional data
 }
 \details{
 The two original datasets must be compatible, i.e. must have same number of components
-(dimensions) and must be defined on the same time grid. If we denote with
+(dimensions) and must be defined on the same grid. If we denote with
 \eqn{X_1^(i), \ldots, X_n^(i)}, \eqn{i=0, \ldots, L} the first dataset, defined over the
-grid \eqn{I = t_0, \ldots, t_P}, and with \eqn{X_1^(i), \ldots, X_m^(i)}, \eqn{i=0, \ldots, L}
+grid \eqn{I = t_1, \ldots, t_P}, and with \eqn{Y_1^(i), \ldots, Y_m^(i)}, \eqn{i=0, \ldots, L}
 the second functional dataset, the method returns the union dataset obtained by taking all the
-\eqn{n + m} observations altogether.
+\eqn{n + m} observations together.
 }
 \examples{
 # Creating two simple bivariate datasets

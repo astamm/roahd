@@ -2,7 +2,7 @@
 % Please edit documentation in R/bootstrap_spearman_inference.R
 \name{BCIntervalSpearmanMultivariate}
 \alias{BCIntervalSpearmanMultivariate}
-\title{Bootstrap Confidence Interval on Spearman's Correlation Coefficient of a Multivariate Dataset}
+\title{Bootstrap Confidence Interval on Spearman's Correlation Coefficient of a Multivariate Functional Dataset}
 \usage{
 BCIntervalSpearmanMultivariate(mfD, ordering = "MEI",
   bootstrap_iterations = 1000, alpha = 0.05, verbose = FALSE)
@@ -26,12 +26,12 @@ the matrices of lower and upper ends of the bootstrap confidence intervals for e
 components. The elements on the main diagonal are set to 1.
 }
 \description{
-This function computes the \eqn{\alpha} bootstrap confidence intervals of coverage probability
+This function computes the bootstrap confidence intervals of coverage probability
 \eqn{1 - \alpha} for the Spearman correlation coefficients within a multivariate functional dataset.
 }
 \details{
-The function takes a multivariate functional dataset and computes a bootstrap confidence interval
-for their Spearman correlation coefficients.
+The function takes a multivariate functional dataset and computes a matrix of bootstrap confidence
+intervals for its Spearman correlation coefficients.
 }
 \examples{
 

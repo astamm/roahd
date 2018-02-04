@@ -2,15 +2,15 @@
 % Please edit documentation in R/bootstrap_spearman_inference.R
 \name{BCIntervalSpearman}
 \alias{BCIntervalSpearman}
-\title{Bootstrap Confidence Interval on Spearman's Correlation Coefficient between Univariate Samples}
+\title{Bootstrap Confidence Interval on Spearman's Correlation Coefficient between Univariate Functional Datasets}
 \usage{
 BCIntervalSpearman(fD1, fD2, ordering = "MEI", bootstrap_iterations = 1000,
   alpha = 0.05, verbose = FALSE)
 }
 \arguments{
-\item{fD1}{is the first univariate functional sample in form of \code{fData} object.}
+\item{fD1}{is the first univariate functional sample in form of an \code{fData} object.}
 
-\item{fD2}{is the first univariate functional sample in form of \code{fData} object.}
+\item{fD2}{is the first univariate functional sample in form of an \code{fData} object.}
 
 \item{ordering}{is either \code{MEI} (default) or \code{MHI}, and indicates the ordering relation
 to be used during in the Spearman's coefficient computation.}
@@ -27,7 +27,7 @@ The function returns a list of two elements, \code{lower} and \code{upper}, repr
 the lower and upper end of the bootstrap confidence interval.
 }
 \description{
-This function computes the \eqn{\alpha} bootstrap confidence interval of coverage probability
+This function computes the bootstrap confidence interval of coverage probability
 \eqn{1 - \alpha} for the Spearman correlation coefficient between two univariate functional samples.
 }
 \details{
