@@ -72,6 +72,7 @@ other statistical indexes for functional data:
   - Modified band depths for multivariate functional data,
   - Epigraph and Hypograph indexes,
   - Spearman and Kendall's correlation indexes for functional data.
+  - Confidence intervals and tests on Spearman's correlation coefficients for univariate andmultivariate functional data.
 
 These also are the core of the visualization/robustification tools like
 functional boxplot (`fbplot`) and outliergram (`outliergram`), allowing
