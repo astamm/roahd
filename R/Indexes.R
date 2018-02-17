@@ -60,8 +60,6 @@ EI = function( Data )
 
 #' @rdname EI
 #'
-#' @aliases EI
-#'
 #' @export
 EI.fData = function( Data )
 {
@@ -70,8 +68,6 @@ EI.fData = function( Data )
 }
 
 #' @rdname EI
-#'
-#' @aliases EI
 #'
 #' @export
 #'
@@ -149,8 +145,6 @@ MEI = function( Data )
 
 #' @rdname MEI
 #'
-#' @aliases MEI
-#'
 #' @export
 MEI.fData = function( Data )
 {
@@ -160,8 +154,6 @@ MEI.fData = function( Data )
 
 
 #' @rdname MEI
-#'
-#' @aliases MEI
 #'
 #' @export
 MEI.default = function( Data )
@@ -248,8 +240,6 @@ HI = function( Data )
 
 #' @rdname HI
 #'
-#' @aliases HI
-#'
 #' @export
 HI.fData = function( Data )
 {
@@ -259,8 +249,6 @@ HI.fData = function( Data )
 
 
 #' @rdname HI
-#'
-#' @aliases HI
 #'
 #' @export
 HI.default = function( Data )
@@ -338,8 +326,6 @@ MHI = function( Data )
 
 #' @rdname MHI
 #'
-#' @aliases MHI
-#'
 #' @export
 MHI.fData = function( Data )
 {
@@ -348,8 +334,6 @@ MHI.fData = function( Data )
 }
 
 #' @rdname MHI
-#'
-#' @aliases MHI
 #'
 #' @export
 MHI.default = function( Data )
@@ -434,8 +418,6 @@ HRD = function( Data )
 
 #' @rdname HRD
 #'
-#' @aliases HRD
-#'
 #' @export
 HRD.fData = function( Data )
 {
@@ -445,8 +427,6 @@ HRD.fData = function( Data )
 
 
 #' @rdname HRD
-#'
-#' @aliases HRD
 #'
 #' @export
 HRD.default = function( Data )
@@ -520,8 +500,6 @@ MHRD = function( Data )
 
 #' @rdname MHRD
 #'
-#' @aliases MHRD
-#'
 #' @export
 MHRD.fData = function( Data )
 {
@@ -531,8 +509,6 @@ MHRD.fData = function( Data )
 
 
 #' @rdname MHRD
-#'
-#' @aliases MHRD
 #'
 #' @export
 MHRD.default = function( Data )

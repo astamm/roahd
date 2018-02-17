@@ -3,9 +3,7 @@
 \name{cov_fun}
 \alias{cov_fun}
 \alias{cov_fun.fData}
-\alias{cov_fun}
 \alias{cov_fun.mfData}
-\alias{cov_fun}
 \title{Covariance function for functional data}
 \usage{
 cov_fun(X, Y = NULL)

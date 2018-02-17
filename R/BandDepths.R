@@ -63,8 +63,6 @@ BD = function( Data )
 
 #' @rdname BD
 #'
-#' @aliases BD
-#'
 #' @export
 BD.fData = function( Data )
 {
@@ -73,8 +71,6 @@ BD.fData = function( Data )
 }
 
 #' @rdname BD
-#'
-#' @aliases BD
 #'
 #' @export
 BD.default = function( Data )
@@ -204,8 +200,6 @@ BD_relative = function( Data_target, Data_reference )
 
 #' @rdname BD_relative
 #'
-#' @aliases BD_relative
-#'
 #' @export
 BD_relative.fData = function( Data_target, Data_reference )
 {
@@ -215,8 +209,6 @@ BD_relative.fData = function( Data_target, Data_reference )
 }
 
 #' @rdname BD_relative
-#'
-#' @aliases BD_relative
 #'
 #' @export
 BD_relative.default = function( Data_target, Data_reference )
@@ -322,8 +314,6 @@ MBD = function( Data, manage_ties = FALSE )
 
 #' @rdname MBD
 #'
-#' @aliases MBD
-#'
 #' @export
 MBD.fData = function( Data, manage_ties = FALSE )
 {
@@ -333,8 +323,6 @@ MBD.fData = function( Data, manage_ties = FALSE )
 
 
 #' @rdname MBD
-#'
-#' @aliases MBD
 #'
 #' @export
 MBD.default = function( Data, manage_ties = FALSE )
@@ -508,8 +496,6 @@ MBD_relative = function( Data_target, Data_reference )
 
 #' @rdname MBD_relative
 #'
-#' @aliases MBD_relative
-#'
 #' @export
 MBD_relative.fData = function( Data_target, Data_reference )
 {
@@ -519,8 +505,6 @@ MBD_relative.fData = function( Data_target, Data_reference )
 }
 
 #' @rdname MBD_relative
-#'
-#' @aliases MBD_relative
 #'
 #' @export
 MBD_relative.default = function( Data_target, Data_reference )

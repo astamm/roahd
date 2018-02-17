@@ -3,9 +3,7 @@
 \name{MBD_relative}
 \alias{MBD_relative}
 \alias{MBD_relative.fData}
-\alias{MBD_relative}
 \alias{MBD_relative.default}
-\alias{MBD_relative}
 \title{Relative Modified Band Depth of functions in a univariate functional dataset}
 \usage{
 MBD_relative(Data_target, Data_reference)

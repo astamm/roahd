@@ -24,18 +24,16 @@
 #' It is either an object of class \code{mfData} or a list of 2-dimensional
 #' matrices having as rows the elements of that component and as columns the
 #' measurements of the functional data over the grid.
-#' @param weights either a set of weights (of the same length of \code{listData}
+#' @param weights either a set of weights (of the same length of \code{Data}
 #' ) or the string \code{"uniform"} specifying that a set of uniform weights
 #' (of value \eqn{1 / L}, where \eqn{L} is the number of dimensions of the
-#' functional dataset and thus the length of \code{listData}) is to be used.
+#' functional dataset and thus the length of \code{Data}) is to be used.
 #' @param manage_ties a logical flag specifying whether the check for ties and
 #' the relative treatment is to be carried out while computing the MBDs in each
 #' dimension. It is directly passed to \code{MBD}.
 #'
 #' @return The function returns a vector containing the depths of each element
 #' of the multivariate functional dataset.
-#'
-#' @aliases multiBD
 #'
 #' @references
 #'
@@ -91,8 +89,6 @@ multiMBD = function( Data, weights = 'uniform', manage_ties = FALSE )
 
 #' @rdname multiMBD
 #'
-#' @aliases multiMBD
-#'
 #' @export
 multiMBD.mfData = function( Data, weights = 'uniform', manage_ties = FALSE )
 {
@@ -101,8 +97,6 @@ multiMBD.mfData = function( Data, weights = 'uniform', manage_ties = FALSE )
 }
 
 #' @rdname multiMBD
-#'
-#' @aliases multiMBD
 #'
 #' @export
 multiMBD.default = function( Data, weights = 'uniform', manage_ties = FALSE )
@@ -143,8 +137,6 @@ multiMBD.default = function( Data, weights = 'uniform', manage_ties = FALSE )
 
 #' @rdname multiMBD
 #'
-#' @aliases multiMBD
-#'
 #' @export
 multiBD = function( Data, weights = 'uniform' )
 {
@@ -152,8 +144,6 @@ multiBD = function( Data, weights = 'uniform' )
 }
 
 #' @rdname multiMBD
-#'
-#' @aliases multiMBD
 #'
 #' @export
 multiBD.mfData =  function( Data, weights = 'uniform' )
@@ -163,8 +153,6 @@ multiBD.mfData =  function( Data, weights = 'uniform' )
 }
 
 #' @rdname multiMBD
-#'
-#' @aliases multiMBD
 #'
 #' @export
 multiBD.default = function( Data, weights = 'uniform' )
@@ -202,3 +190,227 @@ multiBD.default = function( Data, weights = 'uniform' )
 
   return( as.numeric( sapply( Data, BD ) %*% weights ) )
   }
+
+
+#' Modified Hypograph Index for multivariate functional data
+#'
+#' These functions compute the Modified Hypograph Index of
+#' elements of a multivariate functional dataset.
+#'
+#'
+#' Given a multivariate functional dataset composed of \eqn{N} elements with
+#' \eqn{L} components each, \eqn{\mathbf{X_1} =( X^1_1(t),} \eqn{X^2_1(t),
+#' \ldots, X^L_1(t))}, and a set of \eqn{L} non-negative weights,
+#'
+#' \deqn{ w_1, w_2, \ldots, w_L, \qquad \sum_{i=1}^L w_i = 1,}
+#'
+#' these functions compute the MHI of each element of the functional
+#' dataset, namely:
+#'
+#' \deqn{ MHI( \mathbf{X_j} ) = \sum_{i=1}^{L} w_i MHI( X^i_j ), \quad \forall
+#' j = 1, \ldots N.}
+#'
+#'
+#' @param Data specifies the the multivariate functional dataset.
+#' It is either an object of class \code{mfData} or a list of 2-dimensional
+#' matrices having as rows the elements of that component and as columns the
+#' measurements of the functional data over the grid.
+#' @param weights either a set of weights (of the same length of \code{Data}
+#' ) or the string \code{"uniform"} specifying that a set of uniform weights
+#' (of value \eqn{1 / L}, where \eqn{L} is the number of dimensions of the
+#' functional dataset and thus the length of \code{Data}) is to be used.
+#'
+#' @return The function returns a vector containing the values of MHI of each element
+#' of the multivariate functional dataset.
+#'
+#' @seealso \code{\link{mfData}}, \code{\link{MHI}}, \code{\link{MEI}}, \code{\link{multiMEI}}
+#'
+#' @examples
+#' N = 20
+#' P = 1e3
+#'
+#' grid = seq( 0, 10, length.out = P )
+#'
+#' # Generating an exponential covariance function to be used to simulate gaussian
+#' # functional data
+#' Cov = exp_cov_function( grid, alpha = 0.2, beta = 0.8 )
+#'
+#' # First component of the multivariate guassian functional dataset
+#' Data_1 = generate_gauss_fdata( N, centerline = rep( 0, P ), Cov = Cov )
+#'
+#' # First component of the multivariate guassian functional dataset
+#' Data_2 = generate_gauss_fdata( N, centerline = rep( 0, P ), Cov = Cov )
+#'
+#' mfD = mfData( grid, list( Data_1, Data_2 ) )
+#'
+#' # Uniform weights
+#' multiMHI( mfD, weights = 'uniform' )
+#'
+#' # Non-uniform, custom weights
+#' multiMHI( mfD, weights = c(2/3, 1/3) )
+#'
+#' @export
+multiMHI = function( Data, weights = 'uniform'  )
+{
+  UseMethod( 'multiMHI', Data )
+}
+
+#' @rdname multiMHI
+#'
+#' @export
+multiMHI.mfData = function( Data, weights = 'uniform' )
+{
+  Data = toListOfValues( Data )
+  NextMethod()
+}
+
+#' @rdname multiMHI
+#'
+#' @export
+multiMHI.default = function( Data, weights = 'uniform' )
+{
+  L = length( Data )
+
+  N = nrow( Data[[ 1 ]] )
+  P = ncol( Data[[ 2 ]] )
+
+  if( ! all( sapply( Data, nrow ) - N == 0 ) |
+      ! any( sapply( Data, ncol ) - P == 0 ) )
+  {
+    stop( ' Error in multiMHI: you provided a list with mismatching univariate
+          functional datasets' )
+  }
+
+  if( is.character( weights ) )
+  {
+    if( weights == 'uniform' )
+    {
+      weights = rep( 1 / L, L )
+    } else {
+      stop( ' Error in multiMHI: misspecified weights characetr information')
+    }
+  } else {
+    if( length( weights ) != L )
+    {
+      stop( ' Error in multiMHI: you provided more/fewer weights than
+            required' )
+    } else if( sum( weights ) != 1 ){
+      stop( ' Error in multiMHI: sum of weights is not 1')
+    }
+    weights = as.numeric( weights )
+  }
+
+  return( as.numeric( sapply( Data, MHI  ) %*% weights ) )
+}
+
+#' Modified Epigraph Index for multivariate functional data
+#'
+#' These functions compute the Modified Epigraph Index of
+#' elements of a multivariate functional dataset.
+#'
+#'
+#' Given a multivariate functional dataset composed of \eqn{N} elements with
+#' \eqn{L} components each, \eqn{\mathbf{X_1} =( X^1_1(t),} \eqn{X^2_1(t),
+#' \ldots, X^L_1(t))}, and a set of \eqn{L} non-negative weights,
+#'
+#' \deqn{ w_1, w_2, \ldots, w_L, \qquad \sum_{i=1}^L w_i = 1,}
+#'
+#' these functions compute the MEI of each element of the functional
+#' dataset, namely:
+#'
+#' \deqn{ MEI( \mathbf{X_j} ) = \sum_{i=1}^{L} w_i MEI( X^i_j ), \quad \forall
+#' j = 1, \ldots N.}
+#'
+#'
+#' @param Data specifies the the multivariate functional dataset.
+#' It is either an object of class \code{mfData} or a list of 2-dimensional
+#' matrices having as rows the elements of that component and as columns the
+#' measurements of the functional data over the grid.
+#' @param weights either a set of weights (of the same length of \code{Data}
+#' ) or the string \code{"uniform"} specifying that a set of uniform weights
+#' (of value \eqn{1 / L}, where \eqn{L} is the number of dimensions of the
+#' functional dataset and thus the length of \code{Data}) is to be used.
+#'
+#' @return The function returns a vector containing the values of MEI of each element
+#' of the multivariate functional dataset.
+#'
+#' @seealso \code{\link{mfData}}, \code{\link{MEI}}, \code{\link{MHI}}, \code{\link{multiMHI}}
+#'
+#' @examples
+#' N = 20
+#' P = 1e3
+#'
+#' grid = seq( 0, 10, length.out = P )
+#'
+#' # Generating an exponential covariance function to be used to simulate gaussian
+#' # functional data
+#' Cov = exp_cov_function( grid, alpha = 0.2, beta = 0.8 )
+#'
+#' # First component of the multivariate guassian functional dataset
+#' Data_1 = generate_gauss_fdata( N, centerline = rep( 0, P ), Cov = Cov )
+#'
+#' # First component of the multivariate guassian functional dataset
+#' Data_2 = generate_gauss_fdata( N, centerline = rep( 0, P ), Cov = Cov )
+#'
+#' mfD = mfData( grid, list( Data_1, Data_2 ) )
+#'
+#' # Uniform weights
+#' multiMEI( mfD, weights = 'uniform' )
+#'
+#' # Non-uniform, custom weights
+#' multiMEI( mfD, weights = c(2/3, 1/3) )
+#'
+#' @export
+multiMEI = function( Data, weights = 'uniform'  )
+{
+  UseMethod( 'multiMEI', Data )
+}
+
+#' @rdname multiMEI
+#'
+#' @export
+multiMEI.mfData = function( Data, weights = 'uniform' )
+{
+  Data = toListOfValues( Data )
+  NextMethod()
+}
+
+#' @rdname multiMEI
+#'
+#' @export
+multiMEI.default = function( Data, weights = 'uniform' )
+{
+  L = length( Data )
+
+  N = nrow( Data[[ 1 ]] )
+  P = ncol( Data[[ 2 ]] )
+
+  if( ! all( sapply( Data, nrow ) - N == 0 ) |
+      ! any( sapply( Data, ncol ) - P == 0 ) )
+  {
+    stop( ' Error in multiMEI: you provided a list with mismatching univariate
+          functional datasets' )
+  }
+
+  if( is.character( weights ) )
+  {
+    if( weights == 'uniform' )
+    {
+      weights = rep( 1 / L, L )
+    } else {
+      stop( ' Error in multiMEI: misspecified weights characetr information')
+    }
+  } else {
+    if( length( weights ) != L )
+    {
+      stop( ' Error in multiMEI: you provided more/fewer weights than
+            required' )
+    } else if( sum( weights ) != 1 ){
+      stop( ' Error in multiMEI: sum of weights is not 1')
+    }
+    weights = as.numeric( weights )
+  }
+
+  return( as.numeric( sapply( Data, MEI  ) %*% weights ) )
+}
+

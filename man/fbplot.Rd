@@ -3,9 +3,7 @@
 \name{fbplot}
 \alias{fbplot}
 \alias{fbplot.fData}
-\alias{fbplot}
 \alias{fbplot.mfData}
-\alias{fbplot}
 \title{Functional boxplot of univariate and multivariate functional data}
 \usage{
 fbplot(Data, Depths = "MBD", Fvalue = 1.5, adjust = FALSE,

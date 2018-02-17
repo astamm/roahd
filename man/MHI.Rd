@@ -3,9 +3,7 @@
 \name{MHI}
 \alias{MHI}
 \alias{MHI.fData}
-\alias{MHI}
 \alias{MHI.default}
-\alias{MHI}
 \title{Modified Hypograph Index of univariate functional dataset}
 \usage{
 MHI(Data)

@@ -3,9 +3,7 @@
 \name{EI}
 \alias{EI}
 \alias{EI.fData}
-\alias{EI}
 \alias{EI.default}
-\alias{EI}
 \title{Epigraph Index of univariate functional dataset}
 \usage{
 EI(Data)

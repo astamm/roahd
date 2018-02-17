@@ -2,17 +2,11 @@
 % Please edit documentation in R/multivariate_depths.R
 \name{multiMBD}
 \alias{multiMBD}
-\alias{multiBD}
 \alias{multiMBD.mfData}
-\alias{multiMBD}
 \alias{multiMBD.default}
-\alias{multiMBD}
 \alias{multiBD}
-\alias{multiMBD}
 \alias{multiBD.mfData}
-\alias{multiMBD}
 \alias{multiBD.default}
-\alias{multiMBD}
 \title{(Modified) Band Depth for multivariate functional data}
 \usage{
 multiMBD(Data, weights = "uniform", manage_ties = FALSE)
@@ -33,10 +27,10 @@ It is either an object of class \code{mfData} or a list of 2-dimensional
 matrices having as rows the elements of that component and as columns the
 measurements of the functional data over the grid.}
 
-\item{weights}{either a set of weights (of the same length of \code{listData}
+\item{weights}{either a set of weights (of the same length of \code{Data}
 ) or the string \code{"uniform"} specifying that a set of uniform weights
 (of value \eqn{1 / L}, where \eqn{L} is the number of dimensions of the
-functional dataset and thus the length of \code{listData}) is to be used.}
+functional dataset and thus the length of \code{Data}) is to be used.}
 
 \item{manage_ties}{a logical flag specifying whether the check for ties and
 the relative treatment is to be carried out while computing the MBDs in each

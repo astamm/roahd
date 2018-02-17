@@ -3,9 +3,7 @@
 \name{BD_relative}
 \alias{BD_relative}
 \alias{BD_relative.fData}
-\alias{BD_relative}
 \alias{BD_relative.default}
-\alias{BD_relative}
 \title{Relative Band Depth of functions in a univariate functional dataset}
 \usage{
 BD_relative(Data_target, Data_reference)

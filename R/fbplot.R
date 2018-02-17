@@ -195,7 +195,6 @@ fbplot = function( Data,
 }
 
 #' @rdname fbplot
-#' @aliases fbplot
 #'
 #' @importFrom stats quantile
 #'
@@ -462,7 +461,7 @@ fbplot.fData = function( Data,
 }
 
 #' @rdname fbplot
-#' @aliases fbplot
+#'
 #' @export
 fbplot.mfData = function( Data,
                           Depths = list( def = 'MBD',

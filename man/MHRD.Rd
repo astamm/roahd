@@ -3,9 +3,7 @@
 \name{MHRD}
 \alias{MHRD}
 \alias{MHRD.fData}
-\alias{MHRD}
 \alias{MHRD.default}
-\alias{MHRD}
 \title{Modified Half-Region Depth for univariate functional data}
 \usage{
 MHRD(Data)

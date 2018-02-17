@@ -3,9 +3,7 @@
 \name{MBD}
 \alias{MBD}
 \alias{MBD.fData}
-\alias{MBD}
 \alias{MBD.default}
-\alias{MBD}
 \title{Modified Band Depth for univariate functional data}
 \usage{
 MBD(Data, manage_ties = FALSE)

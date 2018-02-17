@@ -3,9 +3,7 @@
 \name{MEI}
 \alias{MEI}
 \alias{MEI.fData}
-\alias{MEI}
 \alias{MEI.default}
-\alias{MEI}
 \title{Modified Epigraph Index of univariate functional dataset}
 \usage{
 MEI(Data)

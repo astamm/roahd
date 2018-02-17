@@ -3,9 +3,7 @@
 \name{HI}
 \alias{HI}
 \alias{HI.fData}
-\alias{HI}
 \alias{HI.default}
-\alias{HI}
 \title{Hypograph Index of univariate functional dataset}
 \usage{
 HI(Data)

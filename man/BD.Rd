@@ -3,9 +3,7 @@
 \name{BD}
 \alias{BD}
 \alias{BD.fData}
-\alias{BD}
 \alias{BD.default}
-\alias{BD}
 \title{Band Depth for univariate functional data}
 \usage{
 BD(Data)

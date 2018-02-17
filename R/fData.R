@@ -935,7 +935,6 @@ cov_fun = function( X, Y = NULL )
 }
 
 #' @rdname cov_fun
-#' @aliases cov_fun
 #'
 #' @importFrom stats cov
 #' @export
@@ -971,7 +970,6 @@ cov_fun.fData = function( X, Y = NULL )
 }
 
 #' @rdname cov_fun
-#' @aliases cov_fun
 #'
 #' @export
 cov_fun.mfData = function( X, Y = NULL )
