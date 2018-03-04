@@ -91,9 +91,12 @@ of the functional dataset}
 }
 \value{
 Even when used graphically to plot the outliergram, the function returns a
-list containing a numeric vector with the IDs of observations in
-\code{fData} that are considered as shape outliers and the value of
-\code{Fvalue} that has been used in determining them.
+list containing:
+\itemize{
+\item{\code{Fvalue}}{: the value of the parameter F used;}
+\item{\code{d}}{: the vector of values of the parameter \eqn{d} for each observation
+(distance to the parabolic border of the outliergram);}
+\item{\code{ID_outliers}}{: the vector of observations id corresponding to outliers.}}
 }
 \description{
 This function performs the outliergram of a univariate functional dataset,

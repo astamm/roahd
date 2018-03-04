@@ -1,4 +1,3 @@
-
 #' Outliergram for univariate functional datasets
 #'
 #' This function performs the outliergram of a univariate functional dataset,
@@ -89,9 +88,12 @@
 #' @return
 #'
 #' Even when used graphically to plot the outliergram, the function returns a
-#' list containing a numeric vector with the IDs of observations in
-#' \code{fData} that are considered as shape outliers and the value of
-#' \code{Fvalue} that has been used in determining them.
+#' list containing:
+#' \itemize{
+#' \item{\code{Fvalue}}{: the value of the parameter F used;}
+#' \item{\code{d}}{: the vector of values of the parameter \eqn{d} for each observation
+#' (distance to the parabolic border of the outliergram);}
+#' \item{\code{ID_outliers}}{: the vector of observations id corresponding to outliers.}}
 #'
 #' @references
 #'
@@ -171,21 +173,13 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
   if( ! is.list( adjust ) )
   {
     # Plain outliergram with default F value: F = 1.5
+    stopifnot( is.numeric(Fvalue) )
 
-    if( Fvalue == 1.5 )
-    {
-      out = .outliergram( fData,
-                          MBD_data = MBD_data, MEI_data = MEI_data,
-                          p_check = p_check, q_low = q_low, q_high = q_high,
-                          shift = TRUE )
-
-    } else {
-      out = .outliergram( fData,
-                          MBD_data = MBD_data, MEI_data = MEI_data,
-                          p_check = p_check, q_low = q_low, q_high = q_high,
-                          Fvalue = Fvalue,
-                          shift = TRUE )
-    }
+    out = .outliergram( fData,
+                        MBD_data = MBD_data, MEI_data = MEI_data,
+                        p_check = p_check, q_low = q_low, q_high = q_high,
+                        Fvalue = Fvalue,
+                        shift = TRUE )
   } else {
 
     nodenames = c( 'N_trials', 'trial_size', 'TPR', 'F_min', 'F_max',
@@ -404,12 +398,13 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
   }
 
   return( list( Fvalue = Fvalue,
+                d = out$d,
                 ID_outliers = out$ID_SO ) )
 }
 
 .outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
                          p_check = 0.05, q_low = 0, q_high = 1,
-                         Fvalue = NULL, shift = TRUE )
+                         Fvalue = 1.5, shift = TRUE )
 {
   N = fData$N
 
@@ -441,11 +436,10 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
 
   # Computing surely outlying curves
 
-  if( is.null( Fvalue ) )
+  if( Fvalue == 1.5 )
   {
-    ID_shape_outlier = which( d >= Q_d3 + 1.5 * IQR_d )
+    ID_shape_outlier = which( d >= Q_d3 + Fvalue * IQR_d )
   } else {
-
     ID_shape_outlier = which( d >= Fvalue * Q_d1 )
   }
 
@@ -506,9 +500,9 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
 
       d_curr = a_0_2 + a_1 * MEI_curr + N^2 * a_0_2 * MEI_curr^2 - MBD_curr
 
-      if( is.null( Fvalue ) )
+      if( Fvalue == 1.5 )
       {
-        ID_out_extra = ID_to_check[ which( d_curr >= Q_d3 + 1.5 * IQR_d ) ]
+        ID_out_extra = ID_to_check[ which( d_curr >= Q_d3 + Fvalue * IQR_d ) ]
 
       } else {
         ID_out_extra = ID_to_check[ which( d_curr >= Q_d1 * Fvalue ) ]
@@ -541,9 +535,9 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
 
       d_curr = a_0_2 + a_1 * MEI_curr + N^2 * a_0_2 * MEI_curr^2 - MBD_curr
 
-      if( is.null( Fvalue ) )
+      if( Fvalue == 1.5 )
       {
-        ID_out_extra = ID_to_check[ which( d_curr >= Q_d3 + 1.5 * IQR_d ) ]
+        ID_out_extra = ID_to_check[ which( d_curr >= Q_d3 + Fvalue * IQR_d ) ]
       } else {
         ID_out_extra = ID_to_check[ which( d_curr >= Q_d1 * Fvalue ) ]
       }
@@ -560,7 +554,8 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL,
                 MBD_data = MBD_data,
                 Q_d3 = Q_d3,
                 Q_d1 = Q_d1,
-                IQR_d = IQR_d ) )
+                IQR_d = IQR_d,
+                d = d) )
 
 }
 
