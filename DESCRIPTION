@@ -34,5 +34,7 @@ Suggests:
 Imports:
     scales,
     robustbase,
+    magrittr,
+    dplyr
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
