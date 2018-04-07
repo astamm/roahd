@@ -4,7 +4,7 @@
 \name{mfD_healthy}
 \alias{mfD_healthy}
 \title{ECG trace of healthy subjects}
-\format{An object of class \code{mfData} of length 6.}
+\format{A \code{\link{mfData}} object.}
 \usage{
 mfD_healthy
 }

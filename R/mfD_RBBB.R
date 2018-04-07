@@ -7,4 +7,6 @@
 #' The 8 leads are, in order, V1, V2, V3, V4, V5, D1 and D2. The signals have been registered and
 #' smoothed over an evenly spaced grid of 1024 time points at 1kHz.
 #'
+#' @format A \code{\link{mfData}} object.
+#'
 "mfD_RBBB"
