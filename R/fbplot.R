@@ -101,23 +101,31 @@
 #'
 #' # UNIVARIATE FUNCTIONAL BOXPLOT - NO ADJUSTMENT
 #'
-#' N = 2 * 10 + 1
+#' set.seed(1)
+#'
+#' N = 2 * 100 + 1
 #' P = 2e2
 #'
 #' grid = seq( 0, 1, length.out = P )
 #'
-#' D = matrix( sin( 2 * pi * grid ), nrow = N, ncol = P, byrow = TRUE )
+#' D = 10 * matrix( sin( 2 * pi * grid ), nrow = N, ncol = P, byrow = TRUE )
 #'
-#' D = D + c( 0, 1 : (( N - 1 )/2), -( ( ( N - 1 ) / 2 ) : 1 ) )
+#' D = D + rexp(N, rate = 0.05)
+#'
+#'
+#' # c( 0, 1 : (( N - 1 )/2), -( ( ( N - 1 ) / 2 ) : 1 ) )^4
+#'
 #'
 #' fD = fData( grid, D )
 #'
 #' dev.new()
-#' par( mfrow = c(1,2) )
+#' par( mfrow = c(1,3) )
 #' plot( fD, lwd = 2, main = 'Functional dataset',
 #'       xlab = 'time', ylab = 'values' )
 #'
-#' fbplot( fD, main = 'Functional boxplot', xlab = 'time', ylab = 'values' )
+#' fbplot( fD, main = 'Functional boxplot', xlab = 'time', ylab = 'values', Fvalue = 1.5 )
+#'
+#' boxplot(fD$values[,1], ylim = range(fD$values), main = 'Boxplot of functional dataset at t_0 ' )
 #'
 #' # UNIVARIATE FUNCTIONAL BOXPLOT - WITH ADJUSTMENT
 #'
@@ -447,8 +455,8 @@ fbplot.fData = function( Data,
   max_envelope_central = apply( Data[ id_central_region, ], 2, max )
   min_envelope_central = apply( Data[ id_central_region, ], 2, min )
 
-  fence_upper = ( max_envelope_central - Data_center ) * Fvalue + Data_center
-  fence_lower = ( min_envelope_central - Data_center ) * Fvalue + Data_center
+  fence_upper = ( max_envelope_central - min_envelope_central ) * Fvalue + max_envelope_central
+  fence_lower = ( min_envelope_central - max_envelope_central ) * Fvalue + min_envelope_central
 
   ID_outlying = which( apply( Data, 1, function(x)( any( x > fence_upper  ) |
                                                       any ( x < fence_lower ) ) ) )
@@ -699,8 +707,8 @@ provided in the multivariate version of the functional boxplot' )
   min_envelope_central = t( sapply( 1 : L, function( i ) (
     apply( listOfValues[[ i ]][ id_central_region, ], 2, min ) ) ) )
 
-  fence_upper = ( max_envelope_central - Data_center ) * Fvalue + Data_center
-  fence_lower = ( min_envelope_central - Data_center ) * Fvalue + Data_center
+  fence_upper = ( max_envelope_central - min_envelope_central ) * Fvalue + max_envelope_central
+  fence_lower = ( min_envelope_central - max_envelope_central ) * Fvalue + min_envelope_central
 
   ID_outlying = unique( unlist( sapply( 1 : L, function( iL ) ( which(
     apply( listOfValues[[ iL ]], 1,

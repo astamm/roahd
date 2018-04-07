@@ -133,7 +133,7 @@
 #'
 #' outliergram( fD, display = TRUE )
 #'
-#' outliergram( fD, Fvalue = 10, display = TRUE )
+#' outliergram( fD, Fvalue = 2.5, display = TRUE )
 #' \dontrun{
 #' outliergram( fD,
 #'              adjust = list( N_trials = 10,
@@ -370,19 +370,9 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
     }
 
     # lower parabolic limit
-    if( Fvalue == 1.5 )
-    {
-      lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
-               out$Q_d3 - 1.5 * out$IQR_d,
-             lty = 2, lwd = 2, col = 'lightblue' )
-    }
-    else
-    {
-      lines( grid_1D,  a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
-               Fvalue * out$Q_d1,
-             lty = 2, lwd = 2, col = 'lightblue' )
-    }
-
+    lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
+             out$Q_d3 - Fvalue * out$IQR_d,
+           lty = 2, lwd = 2, col = 'lightblue' )
   }
 
   return( list( Fvalue = Fvalue,
@@ -423,13 +413,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
   IQR_d = Q[ 4 ] - Q[ 2 ]
 
   # Computing surely outlying curves
-
-  if( Fvalue == 1.5 )
-  {
-    ID_shape_outlier = which( d >= Q_d3 + Fvalue * IQR_d )
-  } else {
-    ID_shape_outlier = which( d >= Fvalue * Q_d1 )
-  }
+  ID_shape_outlier = which( d >= Q_d3 + Fvalue * IQR_d )
 
   # Computing non outlying curves ids
   ID_non_outlying = setdiff( 1 : nrow( fData$values ), ID_shape_outlier )
@@ -564,7 +548,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 #'
 #'
 #' dev.new()
-#' out = multivariate_outliergram(mfD, Fvalue = 13, shift=TRUE)
+#' out = multivariate_outliergram(mfD, Fvalue = 2., shift=TRUE)
 #' col_non_outlying = scales::hue_pal( h = c( 180, 270 ),
 #'                                     l = 60 )( N - length( out$ID_outliers ) )
 #' col_non_outlying = set_alpha( col_non_outlying, 0.5 )
@@ -663,18 +647,9 @@ multivariate_outliergram = function( mfData,
     }
 
     # lower parabolic limit
-    if( Fvalue == 1.5 )
-    {
       lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
-               out$Q_d3 - 1.5 * out$IQR_d,
+               out$Q_d3 - Fvalue * out$IQR_d,
              lty = 2, lwd = 2, col = 'lightblue' )
-    }
-    else
-    {
-      lines( grid_1D,  a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
-               Fvalue * out$Q_d1,
-             lty = 2, lwd = 2, col = 'lightblue' )
-    }
   }
   return( list( Fvalue = Fvalue,
                 d = out$d,
@@ -712,13 +687,7 @@ multivariate_outliergram = function( mfData,
   IQR_d = Q[ 4 ] - Q[ 2 ]
 
   # Computing surely outlying curves
-
-  if( Fvalue == 1.5 )
-  {
-    ID_shape_outlier = which( d >= Q_d3 + 1.5 * IQR_d )
-  } else {
-    ID_shape_outlier = which( d >= Fvalue * Q_d1 )
-  }
+  ID_shape_outlier = which( d >= Q_d3 + Fvalue * IQR_d )
 
   # Computing non outlying curves ids
   ID_non_outlying = setdiff( 1 : N, ID_shape_outlier )
@@ -828,13 +797,7 @@ manage_high_MEI_data = function(fData,
 
     d_curr = a_0_2 + a_1 * MEI_curr + N^2 * a_0_2 * MEI_curr^2 - MBD_curr
 
-    if( Fvalue == 1.5 )
-    {
-      ID_out_extra = ID_to_check[ which( d_curr >= Q_d3 + Fvalue * IQR_d ) ]
-
-    } else {
-      ID_out_extra = ID_to_check[ which( d_curr >= Q_d1 * Fvalue ) ]
-    }
+    ID_out_extra = ID_to_check[ which( d_curr >= Q_d3 + Fvalue * IQR_d ) ]
 
     ID_shape_outlier = c( ID_shape_outlier, ID_out_extra )
     ID_non_outlying = setdiff( ID_non_outlying, ID_out_extra )
@@ -891,13 +854,7 @@ manage_low_MEI_data = function(fData,
 
     d_curr = a_0_2 + a_1 * MEI_curr + N^2 * a_0_2 * MEI_curr^2 - MBD_curr
 
-    if( Fvalue == 1.5 )
-    {
-      ID_out_extra = ID_to_check[ which( d_curr >= Q_d3 + Fvalue * IQR_d ) ]
-
-    } else {
-      ID_out_extra = ID_to_check[ which( d_curr >= Q_d1 * Fvalue ) ]
-    }
+    ID_out_extra = ID_to_check[ which( d_curr >= Q_d3 + Fvalue * IQR_d ) ]
 
     ID_shape_outlier = c( ID_shape_outlier, ID_out_extra )
     ID_non_outlying = setdiff( ID_non_outlying, ID_out_extra )
