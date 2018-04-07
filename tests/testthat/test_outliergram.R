@@ -50,9 +50,9 @@ test_that( 'Outliergram - no adjustment',
 
 test_that( 'Outliergram - no adjustment 2',
            expect_equal(
-             outliergram( fD, Fvalue = 10,
+             outliergram( fD, Fvalue = 2.5,
                           display = FALSE )$ID_outliers,
-             c( 201, 202, 203, 204 ) ) )
+             c( 78, 117, 183, 201, 202, 203, 204 ) ) )
 
 
 test_that( 'Outliergram - with adjustment',{

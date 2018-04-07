@@ -119,23 +119,31 @@ At each time step the optimisation problem is solved using
 
 # UNIVARIATE FUNCTIONAL BOXPLOT - NO ADJUSTMENT
 
-N = 2 * 10 + 1
+set.seed(1)
+
+N = 2 * 100 + 1
 P = 2e2
 
 grid = seq( 0, 1, length.out = P )
 
-D = matrix( sin( 2 * pi * grid ), nrow = N, ncol = P, byrow = TRUE )
+D = 10 * matrix( sin( 2 * pi * grid ), nrow = N, ncol = P, byrow = TRUE )
 
-D = D + c( 0, 1 : (( N - 1 )/2), -( ( ( N - 1 ) / 2 ) : 1 ) )
+D = D + rexp(N, rate = 0.05)
+
+
+# c( 0, 1 : (( N - 1 )/2), -( ( ( N - 1 ) / 2 ) : 1 ) )^4
+
 
 fD = fData( grid, D )
 
 dev.new()
-par( mfrow = c(1,2) )
+par( mfrow = c(1,3) )
 plot( fD, lwd = 2, main = 'Functional dataset',
       xlab = 'time', ylab = 'values' )
 
-fbplot( fD, main = 'Functional boxplot', xlab = 'time', ylab = 'values' )
+fbplot( fD, main = 'Functional boxplot', xlab = 'time', ylab = 'values', Fvalue = 1.5 )
+
+boxplot(fD$values[,1], ylim = range(fD$values), main = 'Boxplot of functional dataset at t_0 ' )
 
 # UNIVARIATE FUNCTIONAL BOXPLOT - WITH ADJUSTMENT
 

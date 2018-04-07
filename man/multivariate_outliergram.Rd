@@ -89,7 +89,7 @@ mfD = mfData( grid, Data )
 
 
 dev.new()
-out = multivariate_outliergram(mfD, Fvalue = 13, shift=TRUE)
+out = multivariate_outliergram(mfD, Fvalue = 2., shift=TRUE)
 col_non_outlying = scales::hue_pal( h = c( 180, 270 ),
                                     l = 60 )( N - length( out$ID_outliers ) )
 col_non_outlying = set_alpha( col_non_outlying, 0.5 )

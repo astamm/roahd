@@ -146,7 +146,7 @@ fD = fData( grid, Data )
 
 outliergram( fD, display = TRUE )
 
-outliergram( fD, Fvalue = 10, display = TRUE )
+outliergram( fD, Fvalue = 2.5, display = TRUE )
 \dontrun{
 outliergram( fD,
              adjust = list( N_trials = 10,

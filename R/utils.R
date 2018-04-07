@@ -41,7 +41,7 @@ toRowMatrixForm = function( D )
   {
     D = t( as.matrix( D ) )
 
-  } else if( is.matrix( D ) ) {
+  } else if( is.matrix( D ) | is.data.frame( D ) ) {
 
     if( ncol( D ) == 1 ){
       D = t( D )

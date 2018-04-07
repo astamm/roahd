@@ -696,8 +696,6 @@ multivariate_outliergram = function( mfData,
   {
     for( iDim in seq_along(mfData$fDList))
     {
-      # print(paste0('* * * Processing dimension ', iDim))
-
       # Low MEI curves will be checked for upward shift
       ID_non_outlying_Low_MEI = ID_non_outlying[
         which( MEI_data[ - ID_shape_outlier ] <=
