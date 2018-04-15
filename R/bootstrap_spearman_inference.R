@@ -104,7 +104,9 @@ BCIntervalSpearman = function( fD1, fD2, ordering='MEI', bootstrap_iterations=10
   else
     # when alpha1 * bootstrap_iterations is not an integer,
     # a modification is used
-    int1 = v[ floor( ( bootstrap_iterations + 1 ) * alpha1 ) ]
+    id = min(c(floor( ( bootstrap_iterations + 1 ) * alpha1 ), bootstrap_iterations))
+    id = max(c(id, 1))
+    int1 = v[ id ]
 
   # it's the case in which alpha2 * bootstrap_iterations is an integer
   if( alpha2 * bootstrap_iterations - floor( alpha2 * bootstrap_iterations ) == 0 )
@@ -112,6 +114,8 @@ BCIntervalSpearman = function( fD1, fD2, ordering='MEI', bootstrap_iterations=10
   else
     # when alpha2*bootstrap_iterations is not an integer,
     # a modification is used
+    id = min( c( floor( ( bootstrap_iterations + 1 ) * alpha2 ), bootstrap_iterations ) )
+    id = max( c( id, 1 ) )
     int2 = v[ floor( ( bootstrap_iterations + 1 ) * alpha2 ) ]
 
   return( list( lower=int1, upper=int2 ) )
@@ -184,12 +188,18 @@ BCIntervalSpearmanMultivariate = function(mfD,
   {
     for( jL in (iL + 1): mfD$L )
     {
+      if( verbose )
+      {
+        message(paste0('Bootstrap of components (', iL, ', ', jL, ')'))
+      }
+
       interval = BCIntervalSpearman( mfD$fDList[[ iL ]],
                                      mfD$fDList[[ jL ]],
                                      ordering=ordering,
                                      bootstrap_iterations=bootstrap_iterations,
                                      alpha=alpha,
                                      verbose=verbose )
+
       lower[ iL, jL ] = interval$lower
       lower[ jL, iL ] = lower[iL, jL]
 
