@@ -54,11 +54,11 @@ Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
 # Using the simulated data as (independent) components of a bivariate functional
 # dataset
 mfD = mfData( grid, list( Data_1, Data_2 ) )
-
+\dontrun{
 BCIntervalSpearman(mfD$fDList[[1]], mfD$fDList[[2]], ordering = 'MEI')
 
 BCIntervalSpearman(mfD$fDList[[1]], mfD$fDList[[2]], ordering = 'MHI')
-
+}
 # BC intervals contain zero since the functional samples are uncorrelated.
 
 }

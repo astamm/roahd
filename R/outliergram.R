@@ -765,6 +765,7 @@ manage_high_MEI_data = function(fData,
   stopifnot( length(intersect(ID_shape_outlier, ID_non_outlying)) == 0 )
 
   # Managing High MEI data
+  obs = min_diffs = NULL
   mins = data.frame(min_diffs = apply(fData$values, 2, compute_min_diff_min),
                     obs = apply(fData$values, 2, which.min))
 
@@ -823,6 +824,7 @@ manage_low_MEI_data = function(fData,
   stopifnot( length(intersect(ID_shape_outlier, ID_non_outlying)) == 0 )
 
   # Managing Low MEI data
+  obs = max_diffs = NULL
   maxs = data.frame(max_diffs = apply(fData$values, 2, compute_max_diff_max),
                     obs = apply(fData$values, 2, which.max))
 

@@ -41,11 +41,11 @@
 #' # Using the simulated data as (independent) components of a bivariate functional
 #' # dataset
 #' mfD = mfData( grid, list( Data_1, Data_2 ) )
-#'
+#'\dontrun{
 #' BCIntervalSpearman(mfD$fDList[[1]], mfD$fDList[[2]], ordering = 'MEI')
 #'
 #' BCIntervalSpearman(mfD$fDList[[1]], mfD$fDList[[2]], ordering = 'MHI')
-#'
+#'}
 #' # BC intervals contain zero since the functional samples are uncorrelated.
 #'
 #' @export
@@ -165,8 +165,9 @@ BCIntervalSpearman = function( fD1, fD2, ordering='MEI', bootstrap_iterations=10
 #' # dataset
 #' mfD = mfData( grid, list( Data_1, Data_2, Data_3 ) )
 #'
+#'\dontrun{
 #' BCIntervalSpearmanMultivariate(mfD, ordering = 'MEI')
-#'
+#'}
 #' # BC intervals contain zero since the functional samples are uncorrelated.
 #'
 #' @export
@@ -283,8 +284,9 @@ BCIntervalSpearmanMultivariate = function(mfD,
 #' cor_spearman(mfD2)
 #'
 #' # Applying the test
+#' \dontrun{
 #' BTestSpearman(mfD1, mfD2)
-#'
+#' }
 #' @export
 #'
 BTestSpearman = function( mfD1, mfD2, bootstrap_iterations=1000, ordering='MEI', normtype='f',

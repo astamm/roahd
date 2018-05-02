@@ -84,8 +84,9 @@ mfD2 = mfData(grid, values2)
 cor_spearman(mfD2)
 
 # Applying the test
+\dontrun{
 BTestSpearman(mfD1, mfD2)
-
+}
 }
 \seealso{
 \code{\link{BCIntervalSpearman}}, \code{\link{BCIntervalSpearmanMultivariate}}, \code{\link{mfData}}

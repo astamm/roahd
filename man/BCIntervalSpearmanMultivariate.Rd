@@ -54,8 +54,9 @@ Data_3 = generate_gauss_fdata( N, centerline = sin( 6 * pi * grid ), Cov = Cov )
 # dataset
 mfD = mfData( grid, list( Data_1, Data_2, Data_3 ) )
 
+\dontrun{
 BCIntervalSpearmanMultivariate(mfD, ordering = 'MEI')
-
+}
 # BC intervals contain zero since the functional samples are uncorrelated.
 
 }

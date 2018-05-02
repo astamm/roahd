@@ -613,11 +613,11 @@ cor_spearman = function( mfD, ordering = 'MEI' )
 #'
 #' # Using the simulated data as (independent) components of a bivariate functional dataset
 #' mfD = mfData( grid, list( Data_1, Data_2 ) )
-#'
+#'\dontrun{
 #' cor_spearman_accuracy(mfD, ordering='MEI')
 #'
 #' cor_spearman_accuracy(mfD, ordering='MHI')
-#'
+#'}
 #' @export
 #'
 cor_spearman_accuracy = function(mfD, ordering='MEI', bootstrap_iterations=1000,

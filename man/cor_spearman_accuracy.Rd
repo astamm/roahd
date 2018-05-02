@@ -53,11 +53,11 @@ Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
 
 # Using the simulated data as (independent) components of a bivariate functional dataset
 mfD = mfData( grid, list( Data_1, Data_2 ) )
-
+\dontrun{
 cor_spearman_accuracy(mfD, ordering='MEI')
 
 cor_spearman_accuracy(mfD, ordering='MHI')
-
+}
 }
 \seealso{
 \code{\link{cor_spearman}}, \code{\link{mfData}}
