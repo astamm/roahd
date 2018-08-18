@@ -352,8 +352,15 @@ fbplot.fData = function( Data,
 
     col_non_outlying = set_alpha( col_non_outlying, 0.5 )
 
-    col_outlying = scales::hue_pal( h = c( - 90, 180  ),
-                                    c = 150 )( length( ID_out ) )
+    if( length( ID_out ) > 0 )
+    {
+      col_outlying = scales::hue_pal( h = c( - 90, 180  ),
+                                      c = 150 )( length( ID_out ) )
+    } else {
+      col_outlying = scales::hue_pal( h = c( - 90, 180  ),
+                                      c = 150 )( 1 )
+    }
+
     col_envelope = set_alpha( 'blue', alpha = 0.4 )
     col_center = set_alpha( 'blue', alpha = 1 )
     col_fence_structure = 'darkblue'
@@ -568,8 +575,15 @@ provided in the multivariate version of the functional boxplot' )
 
     col_non_outlying = set_alpha( col_non_outlying, 0.5 )
 
-    col_outlying = scales::hue_pal( h = c( - 90, 180  ),
-                                    c = 150 )( length( ID_out ) )
+    if( length( ID_out ) > 0 )
+    {
+      col_outlying = scales::hue_pal( h = c( - 90, 180  ),
+                                      c = 150 )( length( ID_out ) )
+    } else {
+      col_outlying = scales::hue_pal( h = c( - 90, 180  ),
+                                      c = 150 )( 1 )
+    }
+
     col_envelope = set_alpha( 'blue', alpha = 0.4 )
     col_center = set_alpha( 'blue', alpha = 1 )
     col_fence_structure = 'darkblue'

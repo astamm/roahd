@@ -295,8 +295,17 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 
     col_non_outlying = set_alpha( col_non_outlying, 0.5 )
 
-    col_outlying = scales::hue_pal( h = c( - 90, 180  ),
-                                    c = 150 )( length( out$ID_SO ) )
+    if( length( out$ID_SO ) > 0 )
+    {
+      col_outlying = scales::hue_pal( h = c( - 90, 180  ),
+                                      c = 150 )( length( out$ID_SO ) )
+
+    } else
+    {
+      col_outlying = scales::hue_pal( h = c( - 90, 180  ),
+                                      c = 150 )( 1 )
+
+    }
 
     dev.cur()
     par( mfrow = c( 1, 2 ) )
@@ -613,8 +622,15 @@ multivariate_outliergram = function( mfData,
 
     col_non_outlying = set_alpha( col_non_outlying, 0.5 )
 
-    col_outlying = scales::hue_pal( h = c( - 90, 180  ),
-                                    c = 150 )( length( out$ID_SO ) )
+    if( length( out$ID_SO ) > 0 )
+    {
+      col_outlying = scales::hue_pal( h = c( - 90, 180  ),
+                                      c = 150 )( length( out$ID_SO ) )
+
+    } else {
+      col_outlying = scales::hue_pal( h = c( - 90, 180  ),
+                                      c = 150 )( 1 )
+    }
 
     dev.cur()
     # Plotting outliergram
