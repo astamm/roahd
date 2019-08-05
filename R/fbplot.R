@@ -71,8 +71,8 @@
 #'  adjustment process;}
 #'  }
 #' @param display either a logical value indicating wether you want the
-#' outliergram to be displayed, or the number of the graphical device
-#' where you want the outliergram to be displayed.
+#' functional boxplot to be displayed, or the number of the graphical device
+#' where you want the functional boxplot to be displayed.
 #' @param xlab the label to use on the x axis when displaying the functional
 #' boxplot.
 #' @param ylab the label (or list of labels for the multivariate functional case)
