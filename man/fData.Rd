@@ -39,7 +39,7 @@ The functional dataset is represented as a collection of measurement of the
  e.g. time), namely, for functional data defined over a grid \eqn{[t_0,
  t_1, \ldots, t_{P-1}]}:
 
-\deqn{ f_{i,j} = f_i( t_0 + j h ), \quad h =  \frac{t_P - t_0}{N},
+ \deqn{ f_{i,j} = f_i( t_0 + j h ), \quad h =  \frac{t_P - t_0}{N},
  \quad \forall j = 1, \ldots, P, \quad \forall i = 1, \ldots
  N.}
 }

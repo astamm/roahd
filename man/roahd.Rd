@@ -3,7 +3,6 @@
 \docType{package}
 \name{roahd}
 \alias{roahd}
-\alias{roahd-package}
 \title{roahd: RObust Analysis for High dimensional Data.}
 \description{
 A package meant to collect and provide methods for the analysis of unviariate

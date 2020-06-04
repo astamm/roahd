@@ -7,17 +7,17 @@
 cor_kendall(mfD, ordering = "max")
 }
 \arguments{
-\item{mfD}{a bivariate functional dataset whose Kendall's tau
-coefficient must be computed, in form of bivariate \code{mfData} object
+\item{mfD}{a bivariate functional dataset whose Kendall's tau coefficient
+must be computed, in form of bivariate \code{mfData} object
 (\code{mfD$L=2}).}
 
 \item{ordering}{the ordering relation to use on functional observations,
-either \code{"max"} for the maximum relation or \code{"area"} for the
-area under the curve relation (default is \code{"max"}).}
+either \code{"max"} for the maximum relation or \code{"area"} for the area
+under the curve relation (default is \code{"max"}).}
 }
 \value{
 The function returns the Kendall's tau correlation coefficient for
-the bivariate dataset provided with \code{mfData}.
+  the bivariate dataset provided with \code{mfData}.
 }
 \description{
 This function computes the Kendall's tau correlation coefficient for a
@@ -76,11 +76,11 @@ cor_kendall( mfD, ordering = 'area' )
 }
 \references{
 Valencia, D., Romo, J. and Lillo, R. (2015). A Kendall correlation
-coefficient for functional dependence,
-\emph{Universidad Carlos III de Madrid technical report},
+coefficient for functional dependence, \emph{Universidad Carlos III de Madrid
+technical report},
 \code{http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133228}.
 }
 \seealso{
 \code{\link{mfData}}, \code{\link{area_ordered}},
-\code{\link{max_ordered}}
+  \code{\link{max_ordered}}
 }

@@ -4,8 +4,14 @@
 \alias{BTestSpearman}
 \title{Bootstrap Hypothesis Test on Spearman Correlation Coefficients for Multivariate Functional Data}
 \usage{
-BTestSpearman(mfD1, mfD2, bootstrap_iterations = 1000, ordering = "MEI",
-  normtype = "f", verbose = FALSE)
+BTestSpearman(
+  mfD1,
+  mfD2,
+  bootstrap_iterations = 1000,
+  ordering = "MEI",
+  normtype = "f",
+  verbose = FALSE
+)
 }
 \arguments{
 \item{mfD1}{is the first functional dataset, specified in form of \code{mfData} object; it must

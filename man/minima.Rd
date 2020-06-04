@@ -17,15 +17,15 @@ fulfilled have to be returned too.}
 }
 \value{
 If \code{which = FALSE}, the function returns a vector containing the
-minima for each element of the functional dataset; if \code{which = TRUE},
-the function returns a \code{data.frame} whose field \code{value} contains
-the values of minima, and \code{grid} contains the grid points where minima
-are reached.
+  minima for each element of the functional dataset; if \code{which = TRUE},
+  the function returns a \code{data.frame} whose field \code{value} contains
+  the values of minima, and \code{grid} contains the grid points where minima
+  are reached.
 }
 \description{
 This function computes computes the minimum value of each element of a
-univariate functional dataset, optionally returing also the value of the
-grid where they are fulfilled.
+univariate functional dataset, optionally returing also the value of the grid
+where they are fulfilled.
 }
 \examples{
 

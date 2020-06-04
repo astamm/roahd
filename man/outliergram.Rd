@@ -4,9 +4,19 @@
 \alias{outliergram}
 \title{Outliergram for univariate functional datasets}
 \usage{
-outliergram(fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
-  Fvalue = 1.5, adjust = FALSE, display = TRUE, xlab = NULL,
-  ylab = NULL, main = NULL, ...)
+outliergram(
+  fData,
+  MBD_data = NULL,
+  MEI_data = NULL,
+  p_check = 0.05,
+  Fvalue = 1.5,
+  adjust = FALSE,
+  display = TRUE,
+  xlab = NULL,
+  ylab = NULL,
+  main = NULL,
+  ...
+)
 }
 \arguments{
 \item{fData}{the univariate functional dataset whose outliergram has to be

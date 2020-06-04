@@ -4,9 +4,19 @@
 \alias{multivariate_outliergram}
 \title{Outliergram for multivariate functional datasets}
 \usage{
-multivariate_outliergram(mfData, MBD_data = NULL, MEI_data = NULL,
-  weights = "uniform", p_check = 0.05, Fvalue = 1.5, shift = TRUE,
-  display = TRUE, xlab = NULL, ylab = NULL, main = NULL)
+multivariate_outliergram(
+  mfData,
+  MBD_data = NULL,
+  MEI_data = NULL,
+  weights = "uniform",
+  p_check = 0.05,
+  Fvalue = 1.5,
+  shift = TRUE,
+  display = TRUE,
+  xlab = NULL,
+  ylab = NULL,
+  main = NULL
+)
 }
 \arguments{
 \item{mfData}{the multivariate functional dataset whose outliergram has to be

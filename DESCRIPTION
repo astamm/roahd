@@ -15,18 +15,12 @@ Authors@R: c( person("Nicholas", "Tarabelloni", role = c("aut", "cre"),
                       email = "romo@est-econ.uc3m.es"),
               person("Francesco", "Palma", role = "ctb",
                       email = "frapalma7892@gmail.com") )
-Author: Nicholas Tarabelloni [aut, cre],
-    Ana Arribas-Gil [aut],
-    Francesca Ieva [aut],
-    Anna Maria Paganoni [aut],
-    Juan Romo [aut],
-    Francesco Palma [ctb]
-Maintainer: Nicholas Tarabelloni <nicholas.tarabelloni@polimi.it>
 Description: A collection of methods for the robust analysis of univariate and
     multivariate functional data, possibly in high-dimensional cases, and hence
     with attention to computational efficiency and simplicity of use.
 Depends: R (>= 2.10)
 License: GPL-3
+Encoding: UTF-8
 LazyData: yes
 Suggests:
     testthat,
@@ -38,4 +32,4 @@ Imports:
     magrittr,
     dplyr
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.0

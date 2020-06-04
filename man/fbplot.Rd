@@ -6,15 +6,41 @@
 \alias{fbplot.mfData}
 \title{Functional boxplot of univariate and multivariate functional data}
 \usage{
-fbplot(Data, Depths = "MBD", Fvalue = 1.5, adjust = FALSE,
-  display = TRUE, xlab = NULL, ylab = NULL, main = NULL, ...)
+fbplot(
+  Data,
+  Depths = "MBD",
+  Fvalue = 1.5,
+  adjust = FALSE,
+  display = TRUE,
+  xlab = NULL,
+  ylab = NULL,
+  main = NULL,
+  ...
+)
 
-\method{fbplot}{fData}(Data, Depths = "MBD", Fvalue = 1.5, adjust = FALSE,
-  display = TRUE, xlab = NULL, ylab = NULL, main = NULL, ...)
+\method{fbplot}{fData}(
+  Data,
+  Depths = "MBD",
+  Fvalue = 1.5,
+  adjust = FALSE,
+  display = TRUE,
+  xlab = NULL,
+  ylab = NULL,
+  main = NULL,
+  ...
+)
 
-\method{fbplot}{mfData}(Data, Depths = list(def = "MBD", weights = "uniform"),
-  Fvalue = 1.5, adjust = FALSE, display = TRUE, xlab = NULL,
-  ylab = NULL, main = NULL, ...)
+\method{fbplot}{mfData}(
+  Data,
+  Depths = list(def = "MBD", weights = "uniform"),
+  Fvalue = 1.5,
+  adjust = FALSE,
+  display = TRUE,
+  xlab = NULL,
+  ylab = NULL,
+  main = NULL,
+  ...
+)
 }
 \arguments{
 \item{Data}{the univariate or multivariate functional dataset whose functional

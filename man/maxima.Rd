@@ -17,18 +17,17 @@ fulfilled have to be returned too.}
 }
 \value{
 If \code{which = FALSE}, the function returns a vector containing the
-maxima for each element of the functional dataset; if \code{which = TRUE},
-the function returns a \code{data.frame} whose field \code{value} contains
-the values of maxima, and \code{grid} contains the grid points where maxima
-are reached.
+  maxima for each element of the functional dataset; if \code{which = TRUE},
+  the function returns a \code{data.frame} whose field \code{value} contains
+  the values of maxima, and \code{grid} contains the grid points where maxima
+  are reached.
 }
 \description{
-This function computes the maximum value of each element of a
-univariate functional dataset, optionally returing also the value of the
-grid where they are fulfilled.
+This function computes the maximum value of each element of a univariate
+functional dataset, optionally returning also the value of the grid where
+they are fulfilled.
 }
 \examples{
-
 P = 1e3
 
 grid = seq( 0, 1, length.out = P )

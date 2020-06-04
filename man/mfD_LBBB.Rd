@@ -4,7 +4,9 @@
 \name{mfD_LBBB}
 \alias{mfD_LBBB}
 \title{ECG trace of subjects suffering from Left-Bundle-Branch-Block (LBBB)}
-\format{A \code{\link{mfData}} object.}
+\format{
+A \code{\link{mfData}} object.
+}
 \usage{
 mfD_LBBB
 }

@@ -4,7 +4,9 @@
 \name{mfD_healthy}
 \alias{mfD_healthy}
 \title{ECG trace of healthy subjects}
-\format{A \code{\link{mfData}} object.}
+\format{
+A \code{\link{mfData}} object.
+}
 \usage{
 mfD_healthy
 }

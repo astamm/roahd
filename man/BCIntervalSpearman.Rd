@@ -4,8 +4,14 @@
 \alias{BCIntervalSpearman}
 \title{Bootstrap Confidence Interval on Spearman's Correlation Coefficient between Univariate Functional Datasets}
 \usage{
-BCIntervalSpearman(fD1, fD2, ordering = "MEI", bootstrap_iterations = 1000,
-  alpha = 0.05, verbose = FALSE)
+BCIntervalSpearman(
+  fD1,
+  fD2,
+  ordering = "MEI",
+  bootstrap_iterations = 1000,
+  alpha = 0.05,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{fD1}{is the first univariate functional sample in form of an \code{fData} object.}

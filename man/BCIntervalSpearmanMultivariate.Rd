@@ -4,8 +4,13 @@
 \alias{BCIntervalSpearmanMultivariate}
 \title{Bootstrap Confidence Interval on Spearman's Correlation Coefficient of a Multivariate Functional Dataset}
 \usage{
-BCIntervalSpearmanMultivariate(mfD, ordering = "MEI",
-  bootstrap_iterations = 1000, alpha = 0.05, verbose = FALSE)
+BCIntervalSpearmanMultivariate(
+  mfD,
+  ordering = "MEI",
+  bootstrap_iterations = 1000,
+  alpha = 0.05,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{mfD}{is the multivariate functional sample in form of \code{mfData} object.}

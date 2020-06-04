@@ -4,8 +4,14 @@
 \alias{generate_gauss_mfdata}
 \title{Generation of gaussian multivariate functional data}
 \usage{
-generate_gauss_mfdata(N, L, centerline, correlations, listCov = NULL,
-  listCholCov = NULL)
+generate_gauss_mfdata(
+  N,
+  L,
+  centerline,
+  correlations,
+  listCov = NULL,
+  listCholCov = NULL
+)
 }
 \arguments{
 \item{N}{the number of distinct functional observations to generate.}
@@ -52,7 +58,7 @@ desired correlation structure among components.
 \details{
 In particular, the following model is considered for the generation of data:
 
-\deqn{X(t) = ( m_1( t ) + \epsilon_1( t ), \ldots, m_L(t) +
+ \deqn{X(t) = ( m_1( t ) + \epsilon_1( t ), \ldots, m_L(t) +
  \epsilon_L(t)), \quad t \in I = [a, b]}{ X(t) = ( m_1( t ) +
  \epsilon_1(t), ..., m_L(t) + \epsilon_L(t) ), for all  t in I = [a, b] }
 
@@ -61,7 +67,7 @@ random variable, \eqn{m_i(t)} is the \eqn{i-}th component of the center and
 \eqn{\epsilon_i(t)} is a centered gaussian process with covariance function
 \eqn{C_i}. That is to say:
 
-\deqn{Cov( \epsilon_{i}(s), \epsilon_{i}(t) ) = C( s, t ), \quad \forall i =
+ \deqn{Cov( \epsilon_{i}(s), \epsilon_{i}(t) ) = C( s, t ), \quad \forall i =
  1, \ldots, L, \quad \forall s, t \in I}{Cov( \epsilon_i(s),
   \epsilon_i(t) ) = C( s, t ),  with  i =
  1, \ldots, L, and with s, t in I}
