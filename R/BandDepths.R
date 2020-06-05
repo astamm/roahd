@@ -185,9 +185,9 @@ BD.default = function( Data )
 #'
 BD_relative = function( Data_target, Data_reference )
 {
-  if( class( Data_target ) != class( Data_reference ) )
+  if( any(class( Data_target ) != class( Data_reference )) )
   {
-    if( ! ( class( Data_target ) %in% c( 'numeric', 'array', 'matrix' ) &
+    if( ! all( class( Data_target ) %in% c( 'numeric', 'array', 'matrix' ) &
             class( Data_reference ) %in% c( 'numeric', 'array', 'matrix' ) ) )
     {
       stop( 'Error in BD_relative: you have to provide target and reference data
@@ -480,9 +480,9 @@ MBD.default = function( Data, manage_ties = FALSE )
 #'
 MBD_relative = function( Data_target, Data_reference )
 {
-  if( class( Data_target ) != class( Data_reference ) )
+  if( any(class( Data_target ) != class( Data_reference )) )
   {
-    if( ! ( class( Data_target ) %in% c( 'numeric', 'array', 'matrix' ) &
+    if( ! all( class( Data_target ) %in% c( 'numeric', 'array', 'matrix' ) &
             class( Data_reference ) %in% c( 'numeric', 'array', 'matrix' ) ) )
     {
       stop( 'Error in MBD_relative: you have to provide target and reference data

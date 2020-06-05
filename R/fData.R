@@ -518,7 +518,7 @@ NULL
 #' @export
 "+.fData" = function( fD, A )
 {
-  if( class( A ) == 'fData' )
+  if( 'fData' %in% class( A ) )
   {
     if( fD$t0 != A$t0 || fD$tP != A$tP || fD$h != A$h || fD$P != A$P )
     {
@@ -574,7 +574,7 @@ NULL
 #'
 "-.fData" = function( fD, A )
 {
-  if( class( A ) == 'fData' )
+  if( 'fData' %in% class( A ) )
   {
     if( fD$t0 != A$t0 || fD$tP != A$tP || fD$h != A$h || fD$P != A$P )
     {
