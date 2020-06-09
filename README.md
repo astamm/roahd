@@ -30,7 +30,7 @@ grid of the dependent variable, the pointwise observations etc.):
 # Grid representing the dependent variable
 grid = seq( 0, 1, length.out = 100 )
 
-# Pointwise-measurements of the functional dataset
+# Pointwise measurements of the functional dataset
 Data = matrix( c( sin( 2 * pi * grid ),
                   cos ( 2 * pi * grid ),
                   sin( 2 * pi * grid + pi / 4 ) ), ncol = 100, byrow = TRUE )
@@ -71,17 +71,17 @@ plot( fD[ 2:3, :] )
 ## Robust methods for functional data analysis
 
 A part of the package is specifically devoted to the computation of depths and
-other statistical indexes for functional data:
+other statistical indices for functional data:
 
-  - Band Dephts and Modified Band Depths,
+  - Band depths and modified band depths,
   - Modified band depths for multivariate functional data,
-  - Epigraph and Hypograph indexes,
-  - Spearman and Kendall's correlation indexes for functional data.
-  - Confidence intervals and tests on Spearman's correlation coefficients for univariate andmultivariate functional data.
+  - Epigraph and hypograph indexes,
+  - Spearman and Kendall's correlation indexes for functional data,
+  - Confidence intervals and tests on Spearman's correlation coefficients for univariate and multivariate functional data.
 
 These also are the core of the visualization/robustification tools like
 functional boxplot (`fbplot`) and outliergram (`outliergram`), allowing
-the visualization and identification of amplitude/shape outliers.
+the visualization and identification of amplitude and shape outliers.
 
 Thanks to the functions for the simulation of synthetic functional datasets,
 both `fbplot` and `outliergram` procedures can be auto-tuned to the dataset
