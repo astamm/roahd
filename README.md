@@ -5,6 +5,7 @@
 [![check-standard](https://github.com/astamm/roahd/workflows/R-CMD-check/badge.svg)](https://github.com/astamm/roahd/actions)
 [![test-coverage](https://github.com/astamm/roahd/workflows/test-coverage/badge.svg)](https://github.com/astamm/roahd/actions)
 [![codecov](https://codecov.io/gh/astamm/roahd/branch/master/graph/badge.svg)](https://codecov.io/gh/astamm/roahd)
+[![pkgdown](https://github.com/astamm/roahd/workflows/pkgdown/badge.svg)](https://github.com/astamm/roahd/actions)
 <!-- badges: end -->
 
 Package __roahd__ (_Robust Analysis of High-dimensional Data_) allows to use
