@@ -1,7 +1,11 @@
 
 # roahd
 
-[![Build Status](https://travis-ci.org/ntarabelloni/roahd.svg?branch=dev)](https://travis-ci.org/ntarabelloni/roahd) [![codecov](https://codecov.io/gh/ntarabelloni/roahd/branch/master/graph/badge.svg)](https://codecov.io/gh/ntarabelloni/roahd)
+<!-- badges: start -->
+[![check-standard](https://github.com/astamm/roahd/workflows/R-CMD-check/badge.svg)](https://github.com/astamm/roahd/actions)
+[![test-coverage](https://github.com/astamm/roahd/workflows/test-coverage/badge.svg)](https://github.com/astamm/roahd/actions)
+[![codecov](https://codecov.io/gh/astamm/roahd/branch/master/graph/badge.svg)](https://codecov.io/gh/astamm/roahd)
+<!-- badges: end -->
 
 Package __roahd__ (_Robust Analysis of High-dimensional Data_) allows to use
 a set of statistical tools for the _exploration_ and _robustification_ of
