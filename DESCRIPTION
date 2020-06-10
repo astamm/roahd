@@ -1,12 +1,12 @@
 Package: roahd
 Type: Package
 Title: Robust Analysis of High Dimensional Data
-Version: 1.4.1
+Version: 1.4.2
 Date: 2018-08-18
 Authors@R: c( 
     person(given = "Nicholas", 
            family = "Tarabelloni", 
-           role = c("aut", "cre"), 
+           role = "aut", 
            email = "nicholas.tarabelloni@polimi.it"), 
     person(given = "Ana", 
            family = "Arribas-Gil", 
@@ -30,7 +30,7 @@ Authors@R: c(
            email = "frapalma7892@gmail.com"),
     person(given = "Aymeric",
            family = "Stamm",
-           role = "ctb", 
+           role = c("ctb", "cre"), 
            email = "aymeric.stamm@math.cnrs.fr",
            comment = c(ORCID = "0000-0002-8725-3654")))
 Description: A collection of methods for the robust analysis of univariate and
@@ -52,3 +52,4 @@ Imports:
 VignetteBuilder: knitr
 RoxygenNote: 7.1.0
 URL: https://astamm.github.io/roahd/, https://github.com/astamm/roahd
+BugReports: https://github.com/astamm/roahd/issues
