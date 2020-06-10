@@ -30,12 +30,12 @@ report to both the [Github page](https://github.com/astamm/roahd) and
 
 ## Fixes
 
-### Minor fixes 
+### Minor fixes
 
 * Fixed dependency error on a new version of **scales** package that breaks the
 use of multivariate `fbplot` in the corner-case of zero outliers.
 
-# roahd 1.4.0
+# roahd 1.4
 
 ## Upgrades
 
@@ -76,7 +76,7 @@ paper.
 * Standardised formulas for the application of F inflations in outliergram and
 boxplot.
 
-# roahd 1.2.0
+# roahd 1.2
 
 ## Fixes
 
@@ -93,7 +93,7 @@ BD, and HI/EI are wrong. Now the implementation exploited sticks to the
 definition, at the cost of a higher computational burden (and thus, time to
 complete the computation).
 
-# roahd 1.1.0
+# roahd 1.1
 
 ## Fixes
 
@@ -129,6 +129,6 @@ for either univariate or multivariate functional data. Implemented the `S3` clas
 * Added check to `fbplot` and `outliergram` that raises warnings when parameters
 different than those supported are provided through `adjust` argument.
 
-# roahd 1.0.0
+# roahd 1.0
 
 * Initial release of the package.
