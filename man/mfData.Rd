@@ -19,14 +19,14 @@ or array) having as rows the \code{N} observations and as columns the
 The function returns a \code{S3} object of class \code{mfData}, containing
 the following elements:
 \itemize{
- \item{"\code{N}"}{: the number of elements in the dataset;}
- \item{"\code{L}"}{: the number of components of the functional dataset;}
- \item{"\code{P}"}{: the number of points in the 1D grid over which elements
- are measured;}
- \item{"\code{t0}"}{: the starting point of the 1D grid;}
- \item{"\code{tP}"}{: the ending point of the 1D grid;}
- \item{"\code{fDList}"}{: the list of \code{fData} objects representing the
- \code{L} components as corresponding univariate functional datasets.}
+\item{"\code{N}"}{: the number of elements in the dataset;}
+\item{"\code{L}"}{: the number of components of the functional dataset;}
+\item{"\code{P}"}{: the number of points in the 1D grid over which elements
+are measured;}
+\item{"\code{t0}"}{: the starting point of the 1D grid;}
+\item{"\code{tP}"}{: the ending point of the 1D grid;}
+\item{"\code{fDList}"}{: the list of \code{fData} objects representing the
+\code{L} components as corresponding univariate functional datasets.}
 }
 }
 \description{

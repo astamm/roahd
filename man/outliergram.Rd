@@ -41,35 +41,35 @@ adjusted for the dataset provided in \code{fData}.}
 \item{adjust}{either \code{FALSE} if you would like the default value for the
 inflation factor, \eqn{F = 1.5}, to be used, or a list specifying the
 parameters required by the adjustment.
- \itemize{
- \item{"\code{N_trials}"}{: the number of repetitions of the adjustment
- procedure based on the simulation of a gaussian population of functional
- data, each one producing an adjusted value of \eqn{F}, which will lead
- to the averaged adjusted value \eqn{\bar{F}}. Default is 20;}
- \item{"\code{trial_size}"}{: the number of elements in the gaussian
- population of functional data that will be simulated at each repetition of
- the adjustment procedure. Default is \code{5 * fData$N};}
- \item{"\code{TPR}"}{: the True Positive Rate of outliers, i.e. the proportion
- of observations in a dataset without shape outliers that have to be considered
- outliers. Default is \code{2 * pnorm( 4 * qnorm( 0.25 ) )};}
- \item{"\code{F_min}"}{: the minimum value of \eqn{F}, defining the left
- boundary for the optimization problem aimed at finding, for a given dataset
- of simulated gaussian data associated to \code{fData}, the optimal value of
- \eqn{F}. Default is 0.5;}
- \item{"\code{F_max}"}{: the maximum value of \eqn{F}, defining the right
- boundary for the optimization problem aimed at finding, for a given dataset
- of simulated gaussian data associated to \code{fData}, the optimal value of
- \eqn{F}. Default is 20;}
- \item{"\code{tol}"}{: the tolerance to be used in the optimization problem
- aimed at finding, for a given dataset of simulated gaussian data associated
- to \code{fData}, the optimal value of \eqn{F}. Default is \code{1e-3};}
- \item{"\code{maxiter}"}{: the maximum number of iterations to solve the
- optimization problem aimed at finding, for a given dataset of simulated
- gaussian data associated to \code{fData}, the optimal value of \eqn{F}.
- Default is \code{100};}
- \item{"\code{VERBOSE}"}{: a parameter controlling the verbosity of the
- adjustment process;}
- }}
+\itemize{
+\item{"\code{N_trials}"}{: the number of repetitions of the adjustment
+procedure based on the simulation of a gaussian population of functional
+data, each one producing an adjusted value of \eqn{F}, which will lead
+to the averaged adjusted value \eqn{\bar{F}}. Default is 20;}
+\item{"\code{trial_size}"}{: the number of elements in the gaussian
+population of functional data that will be simulated at each repetition of
+the adjustment procedure. Default is \code{5 * fData$N};}
+\item{"\code{TPR}"}{: the True Positive Rate of outliers, i.e. the proportion
+of observations in a dataset without shape outliers that have to be considered
+outliers. Default is \code{2 * pnorm( 4 * qnorm( 0.25 ) )};}
+\item{"\code{F_min}"}{: the minimum value of \eqn{F}, defining the left
+boundary for the optimization problem aimed at finding, for a given dataset
+of simulated gaussian data associated to \code{fData}, the optimal value of
+\eqn{F}. Default is 0.5;}
+\item{"\code{F_max}"}{: the maximum value of \eqn{F}, defining the right
+boundary for the optimization problem aimed at finding, for a given dataset
+of simulated gaussian data associated to \code{fData}, the optimal value of
+\eqn{F}. Default is 20;}
+\item{"\code{tol}"}{: the tolerance to be used in the optimization problem
+aimed at finding, for a given dataset of simulated gaussian data associated
+to \code{fData}, the optimal value of \eqn{F}. Default is \code{1e-3};}
+\item{"\code{maxiter}"}{: the maximum number of iterations to solve the
+optimization problem aimed at finding, for a given dataset of simulated
+gaussian data associated to \code{fData}, the optimal value of \eqn{F}.
+Default is \code{100};}
+\item{"\code{VERBOSE}"}{: a parameter controlling the verbosity of the
+adjustment process;}
+}}
 
 \item{display}{either a logical value indicating whether you want the
 outliergram to be displayed, or the number of the graphical device

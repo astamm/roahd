@@ -16,9 +16,9 @@ either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is
 }
 \value{
 If the original dataset is bivariate, the function returns only the
-  scalar value of the correlation coefficient for the two components. When
-  the number of components is L >2, it returns the whole matrix of Spearman's
-  correlation coefficients for all the components.
+scalar value of the correlation coefficient for the two components. When
+the number of components is L >2, it returns the whole matrix of Spearman's
+correlation coefficients for all the components.
 }
 \description{
 This function computes the Spearman's correlation coefficient for a

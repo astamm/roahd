@@ -12,8 +12,8 @@ curve have to be computed, in form of \code{fData} object.}
 }
 \value{
 The function returns a numeric vector containing the values of areas
-  under the curve for all the elements of the functional dataset
-  \code{fData}.
+under the curve for all the elements of the functional dataset
+\code{fData}.
 }
 \description{
 This method computes the (signed) area under the curve of elements of a

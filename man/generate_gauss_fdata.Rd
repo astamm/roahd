@@ -36,14 +36,14 @@ with a desired mean and covariance function.
 \details{
 In particular, the following model is considered for the generation of data:
 
- \deqn{X(t) = m( t ) + \epsilon( t ), \quad t \in I = [a, b]}{ X(t) =
+\deqn{X(t) = m( t ) + \epsilon( t ), \quad t \in I = [a, b]}{ X(t) =
  m( t ) + \epsilon(t), for all  t in I = [a, b] }
 
 where \eqn{m(t)} is the center and \eqn{\epsilon(t)} is a centered gaussian
 process with covariance function \eqn{C_i}.
 That is to say:
 
- \deqn{Cov( \epsilon(s), \epsilon(t) ) = C( s, t ), \quad \forall s, t \in
+\deqn{Cov( \epsilon(s), \epsilon(t) ) = C( s, t ), \quad \forall s, t \in
   I}{Cov( \epsilon(s), \epsilon(t) ) = C( s, t ), with s, t in I}
 
 All the functions are supposed to be observed on an evenly-spaced, one-

@@ -16,11 +16,11 @@ exp_cov_function(grid, alpha, beta)
 \description{
 This function computes the discretization of an exponential
 covariance function of the form:
- \deqn{C( s, t ) = \alpha e^{ - \beta | s - t | }}
+\deqn{C( s, t ) = \alpha e^{ - \beta | s - t | }}
 over a 1D grid \eqn{[t_0, t_1, \ldots, t_{P-1}]}, thus obtaining the
 \eqn{P \times P} matrix
 of values:
- \deqn{ C_{i,j} = C( t_i, t_j ) = \alpha e^{ - \beta | t_i - t_j | } .}
+\deqn{ C_{i,j} = C( t_i, t_j ) = \alpha e^{ - \beta | t_i - t_j | } .}
 }
 \examples{
 

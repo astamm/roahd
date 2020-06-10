@@ -17,7 +17,7 @@ under the curve relation (default is \code{"max"}).}
 }
 \value{
 The function returns the Kendall's tau correlation coefficient for
-  the bivariate dataset provided with \code{mfData}.
+the bivariate dataset provided with \code{mfData}.
 }
 \description{
 This function computes the Kendall's tau correlation coefficient for a
@@ -82,5 +82,5 @@ technical report},
 }
 \seealso{
 \code{\link{mfData}}, \code{\link{area_ordered}},
-  \code{\link{max_ordered}}
+\code{\link{max_ordered}}
 }

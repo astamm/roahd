@@ -68,5 +68,5 @@ technical report},
 }
 \seealso{
 \code{\link{maxima}}, \code{\link{minima}}, \code{\link{fData}},
-  \code{\link{area_ordered}}
+\code{\link{area_ordered}}
 }

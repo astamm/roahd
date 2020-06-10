@@ -27,11 +27,11 @@ estimation progress.}
 }
 \value{
 a list of three elements: \code{mean}, the mean of the matrix of
-  correlation coefficients; \code{bias}, a matrix containing the estimated
-  bias (mean - point estimate of correlation coefficients); \code{sd}, a
-  matrix containing the estimated standard deviation of the coefficients'
-  matrix. In case the multivariate functional dataset has only two
-  components, the return type is scalar and not matrix.
+correlation coefficients; \code{bias}, a matrix containing the estimated
+bias (mean - point estimate of correlation coefficients); \code{sd}, a
+matrix containing the estimated standard deviation of the coefficients'
+matrix. In case the multivariate functional dataset has only two
+components, the return type is scalar and not matrix.
 }
 \description{
 This function computes the bootstrap estimates of standard error and bias of

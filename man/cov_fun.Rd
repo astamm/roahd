@@ -74,8 +74,6 @@ while the cross-covariance function is defined by the blocks:
 
 \deqn{C^{X,Y}_{i,j}(s,t) = Cov( X_i(s), Y_j(t))}
 
-
-
 The method \code{cov_fun} provides the sample estimator of the covariance or
 cross-covariance functions for univariate or multivariate functional datasets.
 
