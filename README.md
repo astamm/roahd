@@ -18,19 +18,19 @@ efficiency, so that they can be profitably used also for the analysis of
 high-dimensional datasets.
 
 For a full-featured description of the package, please take a look at the
-[roahd](https://astamm.github.io/roahd/articles/roahd.html) vignette.
+[roahd](https://astamm.github.io/roahd/articles/roahd-overview.html) vignette.
 
 ## Installation
 
 Install the released version of **roahd** from CRAN:
 
-```{r, eval = FALSE}
+```{r cran-install, eval=FALSE}
 install.packages("roahd")
 ```
 
 Or install the development version from GitHub with:
 
-```{r, eval = FALSE}
+```{r github-install, eval=FALSE}
 # install.packages("remotes")
 remotes::install_github("astamm/roahd")
 ```
