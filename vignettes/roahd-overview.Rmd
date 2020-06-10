@@ -125,7 +125,7 @@ plot( mfD, lwd = 2, main = 'Multivariate FD',
       xlab = 'time', ylab = list( 'Values 1', 'Values 2' ))
 ```
 
-The fact that `mfData` components are `fData` obejcts is indeed conceptually
+The fact that `mfData` components are `fData` objects is indeed conceptually
 very natural, but also allows for a seamless application of `S3` methods meant 
 for `fData` on multivariate functional data components, making the exploration
 and manipulation of multivariate datasets rather easy:
@@ -165,7 +165,7 @@ fD[ 2, 10 : 20, as_fData = FALSE ]
 
 fD[ , 10, as_fData = FALSE ]
 
-# As default behaviour the subset is returned in fData form
+# As default behavior the subset is returned in fData form
 par( mfrow = c(1,2) )
 plot( fD, main = 'Original dataset', lwd = 2 )
 plot( fD[ , 1 : 20 ], main = 'Zooming in', lwd = 2 )
@@ -173,7 +173,7 @@ plot( fD[ , 1 : 20 ], main = 'Zooming in', lwd = 2 )
 
 ## Algebra
 
-An algebra of `fData` obejcts is also implemented, making it easy to sum,
+An algebra of `fData` objects is also implemented, making it easy to sum,
 subtract, multiply and divide these objects by meaningful and compliant
 structures.
 
@@ -213,10 +213,10 @@ fD / ( 1 : N )
 ```
 
 ## Visualization
-`fData` and `mfData` objects can be visualised thanks to specific `S3` plotting
+`fData` and `mfData` objects can be visualized thanks to specific `S3` plotting
 methods, `plot.fData` and `plot.mfData`.
 
-The graphical parameters of these functions have been suitably customised in order
+The graphical parameters of these functions have been suitably customized in order
 to enhance the visualization of functions. In particular, elements
 are plotted by default with continuous lines and an ad-hoc palette that helps differentiating
 them. As default x- and y-axis labels, as well as titles, are dropped so that
@@ -248,7 +248,7 @@ data values (e.g. in the form of `fData$values` output).
 prior to computing depths, and therefore a suitable computing strategy must
 be used. 
 The implementation of `MBD` exploits the recommendations of [@Sun_Genton_2012],
-but extends them in order to accomodate for the possible presence of ties.
+but extends them in order to accommodate for the possible presence of ties.
 
 ```{r BD_MBD_1, eval = FALSE }
 
@@ -276,7 +276,7 @@ MHRD( fD$values )
 
 ```
 
-A generalisation of MBD to multivariate functional data, implementing the ideas
+A generalization of MBD to multivariate functional data, implementing the ideas
 of @ieva_paganoni_2013, is also available through the functions `multiBD` and
 `multiMBD`. These functions accept either a `mfData` object, specifying the
 multivariate functional dataset whose depths have to be computed, or a list of
@@ -381,7 +381,7 @@ covariances of the components.
 
 When `X` is a univariate functional dataset, and if `Y` is
 `NULL`, `cov_fun` returns the sample covariance function of the functional 
-dataset, defined over the tensorised grid where `X` is defined.
+dataset, defined over the tensorized grid where `X` is defined.
 If `Y` is a univariate functional dataset (in form of `fData` object), the method
 returns the cross-covariance function of `X` and `Y`.
 
@@ -406,12 +406,12 @@ between `X`'s and `Y`'s components.
 ```
 
 Each covariance function estimate (the elements of the list in the multivariate
-case, too) is returned as an istance of the `S3` class `Cov`, that stores the 
+case, too) is returned as an instance of the `S3` class `Cov`, that stores the 
 values of the covariance matrix as well as the grid parameters.
 
-`plot.Cov`, an `S3` specialisation of `plot` is available as plotting method for
+`plot.Cov`, an `S3` specialization of `plot` is available as plotting method for
 `Cov` objects. It is built around `graphics::image`, hence all the additional
-parameters of `image` can be used to customise it.
+parameters of `image` can be used to customize it.
 
 ```{r plot_cov, eval = FALSE, collapse = TRUE, fig.align = 'center', fig.height = 4, fig.width = 4}
   plot( C1, main = 'Covariance function', xlab = 'time', ylab = 'time' )
@@ -419,13 +419,13 @@ parameters of `image` can be used to customise it.
 
 ## Indexes
 `roahd` collects the implementation of some useful indexes that can be used to 
-describe and summarise functional datasets. 
+describe and summarize functional datasets. 
 
 `EI` and `MEI` implement the **Epigraph Index** and the **Modified Epigraph Index**,
 while `HI` and `MHI` implement the **Hypograph Index** and the **Modified Hypograph Index**
 [see @lopezpintado_romo_2011; @arribasgil_romo_2014].
 These indexes can be used to sort data in a top-down and bottom-up
-fashion, and are used to define the HRD/MHRD and to build the outliegram.
+fashion, and are used to define the HRD/MHRD and to build the outliergram.
 
 These `S3` methods can be called on univariate functional datasets, provided
 either in form of a `fData` object or a 2D matrix of values.
@@ -449,13 +449,13 @@ either in form of a `fData` object or a 2D matrix of values.
 
 When dealing with multivariate functional data, in particular in case of **bivariate**
 data, it is possible to compute correlation coefficients between data components
-that generalise the Kendall's tau and Spearman's coefficients [@kendall_2015; @spearman_2015].
+that generalize the Kendall's tau and Spearman's coefficients [@kendall_2015; @spearman_2015].
 
 The function `cor_kendall( mfD, ordering = 'max' )` allows to compute the 
 Kendall's tau correlation coefficient between components of a bivariate dataset.
 The function accepts a `mfData` object and a criterion to perform the ordering
 of functional data (this ordering is used to determine the concordances and
-discordacnes between pairs in the definition of the coefficient).
+discordances between pairs in the definition of the coefficient).
 
 Two criteria are available so far, that directly reflect those proposed in the
 reference paper: `max`, for the ordering between maxima of functions,
@@ -482,7 +482,7 @@ and `area`, for the ordering between area-under-the-curve of functions.
 ```
 
 The function `cor_spearman( mfD, ordering = 'MEI', ... )` can be used to compute
-the Spearman correlation coefficient for a bivariate `mfData` object, uning the
+the Spearman correlation coefficient for a bivariate `mfData` object, tuning the
 ordering policy specified by `ordering` (defaulting to `MEI`) to rank univariate
 components and then compute the correlation coefficient. Besides `MEI`, also `MHI`
 can be used to rank univariate components. 
@@ -496,10 +496,10 @@ can be used to rank univariate components.
 # Simulation of functional data
 `roahd` contains also some functions that can be used to simulate artificial data
 sets of functional data, both univariate and multivariate. These are used in the
-adjustment procedure of the outliegram and functional boxplot, but can also be
+adjustment procedure of the outliergram and functional boxplot, but can also be
 used to help the development of new methodologies and help their testing.
 
-Artificial univariate data are obtained simulating realisations of a gaussian 
+Artificial univariate data are obtained simulating realizations of a gaussian 
 process over a discrete grid with a specific covariance function and center
 (e.g. mean or median).
 Given a covariance function, $C(s,t)$ and a centerline $m(t)$, the model
@@ -522,9 +522,9 @@ data makes use of the Cholesky factor of `Cov`, hence by providing its Cholesky
 factor, if already present in the caller's scope, can save computing time.
 
 A built-in function can be used to generate exponential-like covariance functions,
-namely `exp_cov_function( grid, alpha, beta )`, generating the discretised
+namely `exp_cov_function( grid, alpha, beta )`, generating the discretized
 version of a covariance of the form $C(s,t) = \alpha e^{-\beta | s - t | }$
-over a lattice given by the tensorisation of grid in `grid`.
+over a lattice given by the tensorization of grid in `grid`.
 
 A comprehensive example is the following:
 
@@ -558,8 +558,8 @@ simulate; `L`, the number of components of the multivariate functional data;
 `centerline`, a matrix containing (by rows) the centerline for each component; 
 `correlations`, a vector of length `1/2 * L * ( L - 1 )`, containing all the 
 correlation  coefficients among the components; either `listCov` or 
-`listCholCov`, a list containing either the discretised covariance functions 
-over the tensorised grid where functional data will be defined), or their 
+`listCholCov`, a list containing either the discretized covariance functions 
+over the tensorized grid where functional data will be defined), or their 
 Cholesky factor.
 
 A comprehensive example is the following:
@@ -591,7 +591,7 @@ allows for the detection of *amplitude* outliers in univariate and multivariate
 functional datasets [see @Sun_Genton_2011].
 
 `fbplot` can be used to compute the set of indices of observations marking
-outlying signals. If used in graphical way (default behaviour), it also 
+outlying signals. If used in graphical way (default behavior), it also 
 plots the functional boxplot of the dataset under study
 
 The functional boxplot is obtained by ranking functions from the center of the
@@ -601,7 +601,7 @@ function crossing these boundaries is flagged as outlier. The default value for
 `F` is `1.5`, otherwise it can be set with the argument `Fvalue`.
 
 The argument `Depths` can take either the name of the function to call in order
-to compute the depths (default is `MBD`), or a vector containing the dephts 
+to compute the depths (default is `MBD`), or a vector containing the depth 
 values for the provided dataset.
 
 An example is:
@@ -650,8 +650,8 @@ The parameters to control the adjustment procedure can be passed through the
 argument `adjust`, whose default is `FALSE` and otherwise is a list with 
 (some of) the fields:
 
-* `N_trials`: the number of repetitions of the adujustment procedure based on 
-the simulation of a gaussisan population of functional data, each one producing
+* `N_trials`: the number of repetitions of the adjustment procedure based on 
+the simulation of a gaussian population of functional data, each one producing
 an adjusted value of F, which will lead to the averaged adjusted value `Fvalue`. 
 Default is 20;
 * `trial_size`: the number of elements in the gaussian population of functional 
@@ -661,21 +661,21 @@ Default is 8 * `Data$N`;
 in a dataset without amplitude outliers that have to be considered outliers. 
 Default is `2 * pnorm( 4 * qnorm( 0.25 ) )`;
 * `F_min`: the minimum value of `Fvalue`, defining the left boundary for the 
-optimisation problem aimed at finding, for a given dataset of simulated gaussian 
+optimization problem aimed at finding, for a given dataset of simulated gaussian 
 data associated to Data, the optimal value of `Fvalue`. Default is `0.5`;
 * `F_max`: the maximum value of `Fvalue`, defining the right boundary for the 
-optimisation problem aimed at finding, for a given dataset of simulated gaussian 
+optimization problem aimed at finding, for a given dataset of simulated gaussian 
 data associated to Data, the optimal value of `Fvalue`. Default is `5`;
-* `tol`: the tolerance to be used in the optimisation problem aimed at finding, 
+* `tol`: the tolerance to be used in the optimization problem aimed at finding, 
 for a given dataset of simulated gaussian data associated to Data, the optimal 
 value of `Fvalue`. Default is `1e-3`;
-* `maxiter`: the maximum number of iterations to solve the optimisation problem 
+* `maxiter`: the maximum number of iterations to solve the optimization problem 
 aimed at finding, for a given dataset of simulated gaussian data associated to 
 `Data`, the optimal value of `Fvalue`. Default is `100`;
 * `VERBOSE`: a parameter controlling the verbosity of the adjustment process;
 
 *Suggestion*: Try and select a sufficiently high value for `adjust$trial_size`,
-in fact too small values (the default is `8 * adjust$N`) will result in the impossibility to carry out the optimisation since the TPR percentage is too small
+in fact too small values (the default is `8 * adjust$N`) will result in the impossibility to carry out the optimization since the TPR percentage is too small
 compared to the sample size.
 
 ```{r fbplot_fData_adjust, eval = TRUE, collapse = TRUE, fig.align = 'center', fig.width = 7, fig.height = 4}
@@ -726,33 +726,33 @@ Similarly to the functional boxplot, also the outliergram makes use of an `Fvalu
 constant controlling the check by which observations are flagged as outliers
 [see @arribasgil_romo_2014 for more details]. Such value can be provided as an 
 argument (default is `1.5`), or can be determined by the function itself, through
-an adjustment procedure similar to that of `fbplot.fData`. In particolar, whenever
+an adjustment procedure similar to that of `fbplot.fData`. In particular, whenever
 `adjust` is not `FALSE`, `adjust` should be a list containing the fields 
 controlling the adjustment:
 
-* `N_trials` the number of repetitions of the adujustment
-procedure based on the simulation of a gaussisan population of functional
+* `N_trials` the number of repetitions of the adjustment
+procedure based on the simulation of a gaussian population of functional
 data, each one producing an adjusted value of `Fvalue`, which will lead
 to the averaged adjusted value. Default is `20`;
 * `trial_size` the number of elements in the gaussian
 population of functional data that will be simulated at each repetition of
 the adjustment procedure. Default is `5 * fData$N`;
-* `TPR` the True Positive Rate of outleirs, i.e. the proportion
+* `TPR` the True Positive Rate of outliers, i.e. the proportion
 of observations in a dataset without shape outliers that have to be considered
 outliers. Default is `2 * pnorm( 4 * qnorm( 0.25 ) )`;
 * `F_min` the minimum value of `Fvalue`, defining the left
-boundary for the optimisation problem aimed at finding, for a given dataset
+boundary for the optimization problem aimed at finding, for a given dataset
 of simulated gaussian data associated to `fData`, the optimal value of
 `Fvalue`. Default is `0.5`;
 * `F_max` the maximum value of `Fvalue`, defining the right
-boundary for the optimisation problem aimed at finding, for a given dataset
+boundary for the optimization problem aimed at finding, for a given dataset
 of simulated gaussian data associated to `fData`, the optimal value of
 `Fvalue`. Default is `20`;}
-* `tol` the tolerance to be used in the optimisation problem
+* `tol` the tolerance to be used in the optimization problem
 aimed at finding, for a given dataset of simulated gaussian data associated
 to `fData`, the optimal value of `Fvalue`. Default is `1e-3`;
 * `maxiter` the maximum number of iterations to solve the
-optimisation problem aimed at finding, for a given dataset of simulated
+optimization problem aimed at finding, for a given dataset of simulated
 gaussian data associated to `fData`, the optimal value of `Fvalue`.
 Default is `100`;
 * `VERBOSE` a parameter controlling the verbosity of the

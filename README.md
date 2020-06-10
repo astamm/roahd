@@ -57,7 +57,7 @@ fD = fData( grid, Data )
 mfD = mfData( grid, list( 'comp1' = Data, 'comp2' = Data ) )
 ```
 
-Also, this allows to exploit simple calls to customised functions which
+Also, this allows to exploit simple calls to customized functions which
 simplifies the exploratory analysis:
 
 ```r

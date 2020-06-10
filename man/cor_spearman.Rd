@@ -23,7 +23,7 @@ If the original dataset is bivariate, the function returns only the
 \description{
 This function computes the Spearman's correlation coefficient for a
 multivariate functional dataset, with either a Modified Epigraph Index (MEI)
-or Modified Hypograph Index (MHI) ranking of univariate elments of data
+or Modified Hypograph Index (MHI) ranking of univariate elements of data
 components.
 }
 \details{

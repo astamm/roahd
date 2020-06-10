@@ -15,7 +15,7 @@ This function manipulates a numeric data structure of vector/array/matrix
 type in order to obtain a matrix representation.
 For 1D data structures and column/row arrays and matrices the output is
 turned in a matrix format with just one row.
-If the input structure is rectangualar, instead, it is only converted in
+If the input structure is rectangular, instead, it is only converted in
 matrix format.
 }
 \section{Warning}{

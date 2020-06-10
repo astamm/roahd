@@ -35,7 +35,7 @@ for( i in 1 : N )
 }
 depths = depths / ( N * ( N - 1 ) / 2 * P )
 
-test_that( "Correct behaviour of MBD in presence of ties",
+test_that( "Correct behavior of MBD in presence of ties",
            expect_equal( depths, MBD( D, manage_ties = TRUE ) ) )
 
 
@@ -51,6 +51,6 @@ Data = matrix( c( 0  + sin( 2 * pi * time_grid ),
                   -1 + sin( 2 * pi * time_grid ) ),
                nrow = 3, ncol = length( time_grid ), byrow = TRUE )
 
-test_that( "Correct behaviour of MBD without checking for ties",
+test_that( "Correct behavior of MBD without checking for ties",
            expect_equal( MBD( Data, manage_ties = TRUE ),
                          MBD( Data, manage_ties = FALSE ) ) )

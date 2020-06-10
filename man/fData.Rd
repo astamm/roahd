@@ -11,7 +11,7 @@ fData(grid, values)
 measured. It must be a numeric vector of length \code{P}.}
 
 \item{values}{the values of the observations in the functional dataset,
-prodived in form of a 2D data structure (e.g. matrix or array) having as
+provided in form of a 2D data structure (e.g. matrix or array) having as
 rows the observations and as columns their measurements over the 1D grid of
 length \code{P} specified in \code{grid}.}
 }

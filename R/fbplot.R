@@ -6,17 +6,17 @@
 #' @section Adjustment:
 #'
 #' In the \bold{univariate functional case}, when the adjustment option is selected,
-#' the value of \eqn{F} is optimised for the univariate functional dataset
+#' the value of \eqn{F} is optimized for the univariate functional dataset
 #' provided with \code{Data}.
 #'
 #' In practice, a number \code{adjust$N_trials} of times a synthetic population
 #' (of size \code{adjust$tiral_size} with the same covariance (robustly
 #' estimated from data) and centerline as \code{fData} is simulated without
-#' outliers and each time an optimised value \eqn{F_i} is computed so that a
+#' outliers and each time an optimized value \eqn{F_i} is computed so that a
 #' given proportion (\code{adjust$TPR}) of observations is flagged as outliers.
 #' The final value of \code{F} for the functional boxplot is determined as an
 #' average of \eqn{F_1, F_2, \ldots, F_{N_{trials}}}.
-#' At each time step the optimisation problem is solved using
+#' At each time step the optimization problem is solved using
 #' \code{stats::uniroot} (Brent's method.
 #'
 #'
@@ -42,8 +42,8 @@
 #' univariate functional case}) a list specifying the parameters required by
 #' the adjustment:
 #'  \itemize{
-#'  \item{"\code{N_trials}"}{: the number of repetitions of the adujustment
-#'  procedure based on the simulation of a gaussisan population of functional
+#'  \item{"\code{N_trials}"}{: the number of repetitions of the adjustment
+#'  procedure based on the simulation of a gaussian population of functional
 #'  data, each one producing an adjusted value of \eqn{F}, which will lead
 #'  to the averaged adjusted value \eqn{\bar{F}}. Default is 20;}
 #'  \item{"\code{trial_size}"}{: the number of elements in the gaussian
@@ -53,24 +53,24 @@
 #'  of observations in a dataset without amplitude outliers that have to be
 #'  considered outliers. Default is \code{2 * pnorm( 4 * qnorm( 0.25 ) )};}
 #'  \item{"\code{F_min}"}{: the minimum value of \eqn{F}, defining the left
-#'  boundary for the optimisation problem aimed at finding, for a given dataset
+#'  boundary for the optimization problem aimed at finding, for a given dataset
 #'  of simulated gaussian data associated to \code{Data}, the optimal value of
 #'  \eqn{F}. Default is 0.5;}
 #'  \item{"\code{F_max}"}{: the maximum value of \eqn{F}, defining the right
-#'  boundary for the optimisation problem aimed at finding, for a given dataset
+#'  boundary for the optimization problem aimed at finding, for a given dataset
 #'  of simulated gaussian data associated to \code{Data}, the optimal value of
 #'  \eqn{F}. Default is 5;}
-#'  \item{"\code{tol}"}{: the tolerance to be used in the optimisation problem
+#'  \item{"\code{tol}"}{: the tolerance to be used in the optimization problem
 #'  aimed at finding, for a given dataset of simulated gaussian data associated
 #'  to \code{Data}, the optimal value of \eqn{F}. Default is \code{1e-3};}
 #'  \item{"\code{maxiter}"}{: the maximum number of iterations to solve the
-#'  optimisation problem aimed at finding, for a given dataset of simulated
+#'  optimization problem aimed at finding, for a given dataset of simulated
 #'  gaussian data associated to \code{Data}, the optimal value of \eqn{F}.
 #'  Default is \code{100};}
 #'  \item{"\code{VERBOSE}"}{: a parameter controlling the verbosity of the
 #'  adjustment process;}
 #'  }
-#' @param display either a logical value indicating wether you want the
+#' @param display either a logical value indicating whether you want the
 #' outliergram to be displayed, or the number of the graphical device
 #' where you want the outliergram to be displayed.
 #' @param xlab the label to use on the x axis when displaying the functional
@@ -86,7 +86,7 @@
 #' returns a list of three elements: the first, \code{Depths}, contains the depths
 #' of each element of the functional dataset; the second, \code{Fvalue}, is the
 #' value of F used to obtain the outliers, and the third, \code{ID_out}, contains
-#' the vector of indices of dataset's elements flagged as outliers (if any).
+#' the vector of indices of dataset elements flagged as outliers (if any).
 #'
 #' @references
 #'
@@ -94,8 +94,9 @@
 #'	Sun, Y., & Genton, M. G. (2012). Functional boxplots. Journal of
 #'	Computational and Graphical Statistics.
 #'
-#'	Sun, Y., & Genton, M. G. (2012). Adjusted functional boxplots for spatio-
-#'	temporal data visualization and outlier detection. Environmetrics, 23(1), 54-64.
+#'	Sun, Y., & Genton, M. G. (2012). Adjusted functional boxplots for
+#'	spatio-temporal data visualization and outlier detection. Environmetrics,
+#'	23(1), 54-64.
 #'
 #' @examples
 #'
@@ -316,7 +317,7 @@ fbplot.fData = function( Data,
 
       if( VERBOSE > 0 )
       {
-        cat( ' * * * * beginning optimisation\n' )
+        cat( ' * * * * beginning optimization\n' )
       }
 
       opt = uniroot( cost_functional,
@@ -325,7 +326,7 @@ fbplot.fData = function( Data,
                      maxiter = maxiter )
       if( VERBOSE > 0 )
       {
-        cat( ' * * * * optimisation finished.\n')
+        cat( ' * * * * optimization finished.\n')
       }
 
       Fvalues[ iTrial ] = opt$root

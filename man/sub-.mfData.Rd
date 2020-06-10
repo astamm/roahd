@@ -3,7 +3,7 @@
 \name{sub-.mfData}
 \alias{sub-.mfData}
 \alias{[.mfData}
-\title{Operator \code{sub-.mfData} to subset \code{mfData} obejcts}
+\title{Operator \code{sub-.mfData} to subset \code{mfData} objects}
 \usage{
 \method{[}{mfData}(mfD, i, j)
 }

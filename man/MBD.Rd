@@ -38,7 +38,7 @@ other elements of the dataset, i.e.:
 \tilde{\lambda}\big( {t : \min( X_{i_1}(t), X_{i_2}(t) ) \leq X(t) \leq
 \max( X_{i_1}(t), X_{i_2}(t) ) } \big), }
 
-where \eqn{\tilde{\lambda}(\cdot)} is the normalised Lebesgue measure over
+where \eqn{\tilde{\lambda}(\cdot)} is the normalized Lebesgue measure over
 \eqn{I=[a,b]}, that is \eqn{\tilde{\lambda(A)} = \lambda( A ) / ( b - a )}.
 
 See the References section for more details.

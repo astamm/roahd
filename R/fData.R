@@ -17,7 +17,7 @@
 #' @param grid the evenly spaced grid over which the functional observations are
 #' measured. It must be a numeric vector of length \code{P}.
 #' @param values the values of the observations in the functional dataset,
-#' prodived in form of a 2D data structure (e.g. matrix or array) having as
+#' provided in form of a 2D data structure (e.g. matrix or array) having as
 #' rows the observations and as columns their measurements over the 1D grid of
 #' length \code{P} specified in \code{grid}.
 #'
@@ -128,11 +128,11 @@ append_fData = function(fD1, fD2)
   return(fData(grid, values = rbind(fD1$values, fD2$values)))
 }
 
-#' Specialised method to plot \code{fData} objects
+#' Specialized method to plot \code{fData} objects
 #'
 #' This function performs the plot of a functional univariate dataset stored in
 #' an object of class \code{fData}. It is able to accept all the usual
-#' customisable graphical parameters, otherwise it will use the default ones.
+#' customizable graphical parameters, otherwise it will use the default ones.
 #'
 #' @param x the univariate functional dataset in form of \code{fData} object.
 #' @param ... additional graphical parameters to be used in plotting functions
@@ -212,7 +212,7 @@ plot.fData = function( x, ... )
 #'  \item{"\code{t0}"}{: the starting point of the 1D grid;}
 #'  \item{"\code{tP}"}{: the ending point of the 1D grid;}
 #'  \item{"\code{fDList}"}{: the list of \code{fData} objects representing the
-#'  \code{L} components as corresponding unviariate functional datasets.}
+#'  \code{L} components as corresponding univariate functional datasets.}
 #' }
 #'
 #' @seealso \code{\link{fData}}, \code{\link{generate_gauss_fdata}},
@@ -339,11 +339,11 @@ append_mfData = function(mfD1, mfD2)
                           function(id) append_fData(mfD1$fDList[[id]], mfD2$fDList[[id]]))))
 }
 
-#' Specialised method to plot \code{mfData} objects
+#' Specialized method to plot \code{mfData} objects
 #'
 #' This function performs the plot of a functional multivariate dataset stored
 #' in an object of class \code{mfData}. It is able to accept all the usual
-#' customisable graphical parameters, otherwise it will use the default ones.
+#' customizable graphical parameters, otherwise it will use the default ones.
 #'
 #' The current active graphical device is split into a number of sub-figures,
 #' each one meant to contain the plot of the corresponding dimension of the
@@ -848,7 +848,7 @@ mean.mfData = function( x, ... )
 #' the cross-covariance function of the two datasets is returned;}
 #' \item{if \code{X} is of class \code{mfData} and \code{Y} is \code{NULL},
 #' the upper-triangular blocks of the covariance function of \code{X}
-#' are returned (in form of list and by row, i.e. in the squence 1_1, 1_2, ...,
+#' are returned (in form of list and by row, i.e. in the sequence 1_1, 1_2, ...,
 #' 1_L, 2_2, ... - have a look at the labels of the list with \code{str});}
 #' \item{if \code{X} is of class \code{mfData} and \code{Y} is of
 #' class \code{fData},
@@ -858,7 +858,7 @@ mean.mfData = function( x, ... )
 #' class \code{mfData},
 #' the upper-triangular blocks of the cross-covariance of \code{X}'s and
 #' \code{Y}'s components are returned (in form of list and by row, i.e. in the
-#' squence 1_1, 1_2, ..., 1_L, 2_2, ... - have a look at the labels
+#' sequence 1_1, 1_2, ..., 1_L, 2_2, ... - have a look at the labels
 #' of the list with \code{str}));}}
 #'
 #' In any case, the return type is either an instance of the \code{S3} class \code{Cov}
@@ -1062,10 +1062,10 @@ cov_fun.mfData = function( X, Y = NULL )
   }
 }
 
-#' Specialised method to plot \code{Cov} objects
+#' Specialized method to plot \code{Cov} objects
 #'
 #' This function performs the plot of an object of class \code{Cov}, i.e. a
-#' covariance or cross-covaraince function.
+#' covariance or cross-covariance function.
 #'
 #' @details
 #' It builds above the function \code{graphics::image}, therefore any additional
@@ -1232,7 +1232,7 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
                           which.max( Depths ), ) ) )
 }
 
-#' Operator \code{sub-.fData} to subset \code{fData} obejcts
+#' Operator \code{sub-.fData} to subset \code{fData} objects
 #'
 #' This method provides an easy and natural way to subset a functional dataset
 #' stored in a \code{fData} object, without having to deal with the inner
@@ -1338,7 +1338,7 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
   }
 }
 
-#' Operator \code{sub-.mfData} to subset \code{mfData} obejcts
+#' Operator \code{sub-.mfData} to subset \code{mfData} objects
 #'
 #' This method provides an easy and natural way to subset a multivariate
 #' functional dataset stored in a \code{mfData} object, without having to
@@ -1450,11 +1450,11 @@ toListOfValues = function( mfData )
 #' This function operates on a univariate functional dataset and transforms its
 #' observations unfolding their values and turning them into monotone functions.
 #'
-#' Each function of the \code{fData} object is transformed into a nonmonotone
+#' Each function of the \code{fData} object is transformed into a non-monotone
 #' function into a monotone function by ``unfolding'' it at any of its maxima.
 #' For more details about the definition of the transform, see the reference.
 #'
-#' @param fData the unvariate functional dataset in form of \code{fData} object.
+#' @param fData the univariate functional dataset in form of \code{fData} object.
 #'
 #' @return The function returns an \code{fData} object whose observations are
 #' the unfolded version of the corresponding observations in the argument

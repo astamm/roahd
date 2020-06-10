@@ -32,14 +32,14 @@ without the diagonal.}
 
 \item{listCov}{a list containing the \eqn{L} covariance operators (provided
 in form of a \eqn{P \times P}{P x P} matrix), one for each component of the
-multivariate functional random vairable, that have to be used in the
+multivariate functional random variable, that have to be used in the
 generation of the processes \eqn{\epsilon_1(t), \ldots, \epsilon_L(t)}.
 At least one argument between \code{listCov} and \code{listCholCov} must be
 different from \code{NULL}.}
 
 \item{listCholCov}{the Cholesky factor of the \eqn{L} covariance operators
 (in \eqn{P \times P}{P x P} matrix form), one for each component of the
-multivariate functional random vairable, that have to be used in the
+multivariate functional random variable, that have to be used in the
 generation of the processes \eqn{\epsilon_1(t), \ldots, \epsilon_L(t)}.
 At least one argument between \code{listCov} and \code{listCholCov} must be
 different from \code{NULL}.}

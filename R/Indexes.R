@@ -95,7 +95,7 @@ EI.default = function( Data )
 #' \deqn{MEI( X(t) ) = \frac{1}{N} \sum_{i=1}^N \tilde{\lambda}( X(t) \leq
 #' X_i(t) ), }
 #'
-#' where \eqn{\tilde{\lambda}(\cdot)} is the normalised Lebesgue measure over
+#' where \eqn{\tilde{\lambda}(\cdot)} is the normalized Lebesgue measure over
 #' \eqn{I=[a,b]}, that is \eqn{\tilde{\lambda(A)} = \lambda( A ) / ( b - a )}.
 #'
 #' @param Data either an \code{fData} object or a matrix-like dataset of
@@ -277,7 +277,7 @@ HI.default = function( Data )
 #' \deqn{MHI( X(t) ) = \frac{1}{N} \sum_{i=1}^N \tilde{\lambda}( X(t) \geq
 #' X_i(t) ), }
 #'
-#' where \eqn{\tilde{\lambda}(\cdot)} is the normalised Lebesgue measure over
+#' where \eqn{\tilde{\lambda}(\cdot)} is the normalized Lebesgue measure over
 #' \eqn{I=[a,b]}, that is \eqn{\tilde{\lambda(A)} = \lambda( A ) / ( b - a )}.
 #'
 #' @param Data either an \code{fData} object or a matrix-like dataset of

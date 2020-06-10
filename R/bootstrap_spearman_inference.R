@@ -241,7 +241,7 @@ BCIntervalSpearmanMultivariate = function(mfD,
 #' be compatible with \code{mfD1}.
 #' @param bootstrap_iterations is the number of bootstrap iterations to be performed.
 #' @param ordering is the kind of ordering to be used in the computation of Spearman's correlation
-#' coefficeint (default is \code{MEI}).
+#' coefficient (default is \code{MEI}).
 #' @param normtype is the norm to be used when comparing the Spearman correlation matrices of the two
 #' functional datasets (default is Frobenius, allowed values are the same as for parameter \code{type} in
 #' the base function \code{norm}).

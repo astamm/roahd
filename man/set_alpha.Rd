@@ -2,17 +2,17 @@
 % Please edit documentation in R/utils.R
 \name{set_alpha}
 \alias{set_alpha}
-\title{Function to setup alpha value for a set of colours}
+\title{Function to setup alpha value for a set of colors}
 \usage{
 set_alpha(col, alpha)
 }
 \arguments{
-\item{col}{a vector of colours}
+\item{col}{a vector of colors}
 
 \item{alpha}{the value(s) of alpha for (each of) the colors.}
 }
 \description{
-\code{set_alpha} manipulates a vector of colour representations in order
+\code{set_alpha} manipulates a vector of color representations in order
 to setup the alpha value, and get the desired transparency level.
 }
 \examples{
@@ -31,14 +31,14 @@ plot( seq_along( original_col ),
       col = original_col,
       pch = 16,
       cex = 2,
-      main = 'Original colours' )
+      main = 'Original colors' )
 
 plot( seq_along( alpha_col ),
       seq_along( alpha_col ),
       col = alpha_col,
       pch = 16,
       cex = 2,
-      main = 'Alpha colours' )
+      main = 'Alpha colors' )
 
 }
 \seealso{

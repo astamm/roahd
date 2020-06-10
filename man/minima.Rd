@@ -24,7 +24,7 @@ If \code{which = FALSE}, the function returns a vector containing the
 }
 \description{
 This function computes computes the minimum value of each element of a
-univariate functional dataset, optionally returing also the value of the grid
+univariate functional dataset, optionally returning also the value of the grid
 where they are fulfilled.
 }
 \examples{

@@ -29,7 +29,7 @@ estimation progress.}
 a list of three elements: \code{mean}, the mean of the matrix of
   correlation coefficients; \code{bias}, a matrix containing the estimated
   bias (mean - point estimate of correlation coefficients); \code{sd}, a
-  matrix containing the estiated standard deviation of the coefficients'
+  matrix containing the estimated standard deviation of the coefficients'
   matrix. In case the multivariate functional dataset has only two
   components, the return type is scalar and not matrix.
 }
@@ -41,8 +41,8 @@ the Spearman's correlation coefficient for a multivariate functional dataset.
 Given a multivariate functional dataset \eqn{X_1^(i), \ldots, X_n^(i)},
 \eqn{i=0, \ldots, L} defined over the grid \eqn{I = t_0, \ldots, t_P}, having
 components \eqn{i=1, \ldots, L}, and a chosen ordering strategy (MEI or MHI),
-the function computes the matrix of Speraman's correlation indexes of the
-dataset's components, as well as their bias and standard deviation estimates
+the function computes the matrix of Spearman's correlation indices of the
+dataset components, as well as their bias and standard deviation estimates
 through a specified number of bootstrap iterations (bias and standard error
 are updated with on-line formulas).
 }

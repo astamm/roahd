@@ -49,7 +49,7 @@ maxima = function( fData, ..., which = FALSE )
 #' Minima of a univariate functional dataset
 #'
 #' This function computes computes the minimum value of each element of a
-#' univariate functional dataset, optionally returing also the value of the grid
+#' univariate functional dataset, optionally returning also the value of the grid
 #' where they are fulfilled.
 #'
 #' @param fData the functional dataset containing elements whose minima have to
@@ -427,7 +427,7 @@ cor_kendall = function( mfD, ordering = 'max' )
 #'
 #' This function computes the Spearman's correlation coefficient for a
 #' multivariate functional dataset, with either a Modified Epigraph Index (MEI)
-#' or Modified Hypograph Index (MHI) ranking of univariate elments of data
+#' or Modified Hypograph Index (MHI) ranking of univariate elements of data
 #' components.
 #'
 #' Given a multivariate functional dataset, with first components \eqn{X^1_1(t),
@@ -540,8 +540,8 @@ cor_spearman = function( mfD, ordering = 'MEI' )
 #' Given a multivariate functional dataset \eqn{X_1^(i), \ldots, X_n^(i)},
 #' \eqn{i=0, \ldots, L} defined over the grid \eqn{I = t_0, \ldots, t_P}, having
 #' components \eqn{i=1, \ldots, L}, and a chosen ordering strategy (MEI or MHI),
-#' the function computes the matrix of Speraman's correlation indexes of the
-#' dataset's components, as well as their bias and standard deviation estimates
+#' the function computes the matrix of Spearman's correlation indices of the
+#' dataset components, as well as their bias and standard deviation estimates
 #' through a specified number of bootstrap iterations (bias and standard error
 #' are updated with on-line formulas).
 #'
@@ -558,7 +558,7 @@ cor_spearman = function( mfD, ordering = 'MEI' )
 #' @return a list of three elements: \code{mean}, the mean of the matrix of
 #'   correlation coefficients; \code{bias}, a matrix containing the estimated
 #'   bias (mean - point estimate of correlation coefficients); \code{sd}, a
-#'   matrix containing the estiated standard deviation of the coefficients'
+#'   matrix containing the estimated standard deviation of the coefficients'
 #'   matrix. In case the multivariate functional dataset has only two
 #'   components, the return type is scalar and not matrix.
 #'

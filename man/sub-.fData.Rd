@@ -3,7 +3,7 @@
 \name{sub-.fData}
 \alias{sub-.fData}
 \alias{[.fData}
-\title{Operator \code{sub-.fData} to subset \code{fData} obejcts}
+\title{Operator \code{sub-.fData} to subset \code{fData} objects}
 \usage{
 \method{[}{fData}(fD, i, j, as_fData = TRUE)
 }

@@ -45,7 +45,7 @@ elements of the former with respect to elements of the latter, i.e.:
 \max( Y_{i_1}(t), Y_{i_2}(t) ) } \big),}
 
 \eqn{\forall i = 1, \ldots, N}, where \eqn{\tilde{\lambda}(\cdot)} is the
-normalised Lebesgue measure over \eqn{I=[a,b]}, that is
+normalized Lebesgue measure over \eqn{I=[a,b]}, that is
 \eqn{\tilde{\lambda(A)} = \lambda( A ) / ( b - a )}.
 }
 \examples{

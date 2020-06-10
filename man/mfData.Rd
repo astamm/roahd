@@ -26,7 +26,7 @@ the following elements:
  \item{"\code{t0}"}{: the starting point of the 1D grid;}
  \item{"\code{tP}"}{: the ending point of the 1D grid;}
  \item{"\code{fDList}"}{: the list of \code{fData} objects representing the
- \code{L} components as corresponding unviariate functional datasets.}
+ \code{L} components as corresponding univariate functional datasets.}
 }
 }
 \description{

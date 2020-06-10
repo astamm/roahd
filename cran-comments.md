@@ -11,8 +11,10 @@ There were no ERRORs.
 There was 1 WARNING when running `R CMD check` locally because I have not
 installed **qpdf** on my machine:
 
+```
 * checking data for ASCII and uncompressed saves ... OK
    WARNING
   ‘qpdf’ is needed for checks on size reduction of PDFs
+```
 
 There were no NOTEs.

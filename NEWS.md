@@ -46,7 +46,7 @@ datasets with more than two components.
 * Added bootstrap-based computation of Spearman's correlation coefficient bias
 and standard deviation.
 * Added methods to provide bootstrap-based confidence intervals on Spearman's
-coefficients for two univariate functional datasets or a multivairate functional
+coefficients for two univariate functional datasets or a multivariate functional
 dataset.
 * Added a bootstrap-based test on Spearman's correlation coefficient for two
 multivariate functional datasets.
@@ -65,7 +65,7 @@ representation `mfData`.
 
 ### Major fixes
 
-* Fixed bug in `cor_spearman()` function. Now the standard spearman correlation
+* Fixed bug in `cor_spearman()` function. Now the standard Spearman correlation
 is not computed on ranks of MHI/MEI, but on MHI/MEI itself. The difference is
 very small, but allows for full reproducibility of the results in the original
 paper.
@@ -73,7 +73,7 @@ paper.
 ### Minor fixes
 
 * Fixed typos in doc.
-* Standardised formulas for the application of F inflations in outliergram and
+* Standardized formulas for the application of F inflations in outliergram and
 boxplot.
 
 # roahd 1.2
@@ -113,10 +113,10 @@ max(diff(unique(diff(grid)))) / diff(range(grid)) < 1e-13
 
 which is much more robust in practical cases.
 
-* Extended README.md.
+* Extended `README.md`.
 * Added `cov_fun` method to compute covariance and cross-covariance functions
 for either univariate or multivariate functional data. Implemented the `S3` class
-`Cov` and plotting specialisation `plot.Cov`, wrapping `graphics::image`.
+`Cov` and plotting specialization `plot.Cov`, wrapping `graphics::image`.
 
 ### Minor fixes 
 

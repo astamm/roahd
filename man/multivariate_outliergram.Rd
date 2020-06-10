@@ -41,7 +41,7 @@ Default is \code{1.5};}
 \item{shift}{whether to apply the shifting algorithm to properly manage observations having low
 or high MEI. Default is TRUE.}
 
-\item{display}{either a logical value indicating wether you want the
+\item{display}{either a logical value indicating whether you want the
 outliergram to be displayed, or the number of the graphical device
 where you want the outliergram to be displayed;}
 
