@@ -4,3 +4,5 @@
 codecov.yml
 vignettes/Roahd.html
 ^\.github$
+^revdep$
+^cran-comments\.md$
