@@ -53,3 +53,4 @@ VignetteBuilder: knitr
 RoxygenNote: 7.1.0
 URL: https://astamm.github.io/roahd/, https://github.com/astamm/roahd
 BugReports: https://github.com/astamm/roahd/issues
+Language: en-US
