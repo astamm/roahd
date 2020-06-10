@@ -5,9 +5,9 @@
 #'
 #' @section Adjustment:
 #'
-#' In the \bold{univariate functional case}, when the adjustment option is selected,
-#' the value of \eqn{F} is optimized for the univariate functional dataset
-#' provided with \code{Data}.
+#' In the \bold{univariate functional case}, when the adjustment option is
+#' selected, the value of \eqn{F} is optimized for the univariate functional
+#' dataset provided with \code{Data}.
 #'
 #' In practice, a number \code{adjust$N_trials} of times a synthetic population
 #' (of size \code{adjust$tiral_size} with the same covariance (robustly
@@ -15,88 +15,87 @@
 #' outliers and each time an optimized value \eqn{F_i} is computed so that a
 #' given proportion (\code{adjust$TPR}) of observations is flagged as outliers.
 #' The final value of \code{F} for the functional boxplot is determined as an
-#' average of \eqn{F_1, F_2, \ldots, F_{N_{trials}}}.
-#' At each time step the optimization problem is solved using
-#' \code{stats::uniroot} (Brent's method.
+#' average of \eqn{F_1, F_2, \dots, F_{N_{trials}}}. At each time step the
+#' optimization problem is solved using \code{stats::uniroot} (Brent's method).
 #'
-#'
-#' @param Data the univariate or multivariate functional dataset whose functional
-#' boxplot must be determined, in form of \code{fData} or \code{mfData} object.
+#' @param Data the univariate or multivariate functional dataset whose
+#'   functional boxplot must be determined, in form of \code{fData} or
+#'   \code{mfData} object.
 #' @param Depths either a vector containing the depths for each element of the
-#' dataset, or:
-#' \itemize{
-#' \item{"\emph{univariate case}"}{: a string containing the name of the method
-#' you want to use to compute it. The default is \code{'MBD'}};
-#' \item{"\emph{multivariate case}"}{: a list with elements \code{def},
-#' containing the name of the depth notion to be used to compute depths
-#' (\code{BD} or \code{MBD}), and \code{weights}, containing the value
-#' of parameter \code{weights} to be passed to the depth function. Default is
-#' \code{list( def = 'MBD', weights = 'uniform' ) }. }
-#' }
+#'   dataset, or:
+#'
+#'   * \emph{univariate case}: a string containing the name of the method you
+#'   want to use to compute it. The default is \code{'MBD'}.
+#'   * \emph{multivariate case}: a list with elements \code{def}, containing the
+#'   name of the depth notion to be used to compute depths (\code{BD} or
+#'   \code{MBD}), and \code{weights}, containing the value of parameter
+#'   \code{weights} to be passed to the depth function. Default is
+#'   \code{list(def = 'MBD', weights = 'uniform')}.
+#'
 #' In both cases the name of the functions to compute depths must be available
 #' in the caller's environment.
-#' @param Fvalue the value of the inflation factor \eqn{F}, default is
-#' \code{F = 1.5}.
+#' @param Fvalue the value of the inflation factor \eqn{F}, default is \code{F =
+#'   1.5}.
 #' @param adjust either \code{FALSE} if you would like the default value for the
-#' inflation factor, \eqn{F = 1.5}, to be used, or (for now \bold{only in the
-#' univariate functional case}) a list specifying the parameters required by
-#' the adjustment:
-#'  \itemize{
-#'  \item{"\code{N_trials}"}{: the number of repetitions of the adjustment
-#'  procedure based on the simulation of a gaussian population of functional
-#'  data, each one producing an adjusted value of \eqn{F}, which will lead
-#'  to the averaged adjusted value \eqn{\bar{F}}. Default is 20;}
-#'  \item{"\code{trial_size}"}{: the number of elements in the gaussian
-#'  population of functional data that will be simulated at each repetition of
-#'  the adjustment procedure. Default is 8 * \code{Data$N};}
-#'  \item{"\code{TPR}"}{: the True Positive Rate of outliers, i.e. the proportion
-#'  of observations in a dataset without amplitude outliers that have to be
-#'  considered outliers. Default is \code{2 * pnorm( 4 * qnorm( 0.25 ) )};}
-#'  \item{"\code{F_min}"}{: the minimum value of \eqn{F}, defining the left
-#'  boundary for the optimization problem aimed at finding, for a given dataset
-#'  of simulated gaussian data associated to \code{Data}, the optimal value of
-#'  \eqn{F}. Default is 0.5;}
-#'  \item{"\code{F_max}"}{: the maximum value of \eqn{F}, defining the right
-#'  boundary for the optimization problem aimed at finding, for a given dataset
-#'  of simulated gaussian data associated to \code{Data}, the optimal value of
-#'  \eqn{F}. Default is 5;}
-#'  \item{"\code{tol}"}{: the tolerance to be used in the optimization problem
-#'  aimed at finding, for a given dataset of simulated gaussian data associated
-#'  to \code{Data}, the optimal value of \eqn{F}. Default is \code{1e-3};}
-#'  \item{"\code{maxiter}"}{: the maximum number of iterations to solve the
-#'  optimization problem aimed at finding, for a given dataset of simulated
-#'  gaussian data associated to \code{Data}, the optimal value of \eqn{F}.
-#'  Default is \code{100};}
-#'  \item{"\code{VERBOSE}"}{: a parameter controlling the verbosity of the
-#'  adjustment process;}
-#'  }
+#'   inflation factor, \eqn{F = 1.5}, to be used, or (for now \bold{only in the
+#'   univariate functional case}) a list specifying the parameters required by
+#'   the adjustment:
+#'
+#'   * \code{N_trials}: the number of repetitions of the adjustment procedure
+#'   based on the simulation of a gaussian population of functional data, each
+#'   one producing an adjusted value of \eqn{F}, which will lead to the averaged
+#'   adjusted value \eqn{\bar{F}}. Default is 20.
+#'   * \code{trial_size}: the number of elements in the gaussian population of
+#'   functional data that will be simulated at each repetition of the adjustment
+#'   procedure. Default is 8 * \code{Data$N}.
+#'   * \code{TPR}: the True Positive Rate of outliers, i.e. the proportion of
+#'   observations in a dataset without amplitude outliers that have to be
+#'   considered outliers. Default is \code{2 * pnorm(4 * qnorm(0.25))}.
+#'   * \code{F_min}: the minimum value of \eqn{F}, defining the left boundary
+#'   for the optimization problem aimed at finding, for a given dataset of
+#'   simulated gaussian data associated to \code{Data}, the optimal value of
+#'   \eqn{F}. Default is 0.5.
+#'   * \code{F_max}: the maximum value of \eqn{F}, defining the right boundary
+#'   for the optimization problem aimed at finding, for a given dataset of
+#'   simulated gaussian data associated to \code{Data}, the optimal value of
+#'   \eqn{F}. Default is 5.
+#'   * \code{tol}: the tolerance to be used in the optimization problem aimed at
+#'   finding, for a given dataset of simulated gaussian data associated to
+#'   \code{Data}, the optimal value of \eqn{F}. Default is \code{1e-3}.
+#'   * \code{maxiter}: the maximum number of iterations to solve the
+#'   optimization problem aimed at finding, for a given dataset of simulated
+#'   gaussian data associated to \code{Data}, the optimal value of \eqn{F}.
+#'   Default is \code{100}.
+#'   * \code{VERBOSE}: a parameter controlling the verbosity of the adjustment
+#'   process.
+#'
 #' @param display either a logical value indicating whether you want the
-#' outliergram to be displayed, or the number of the graphical device
-#' where you want the outliergram to be displayed.
+#'   functional boxplot to be displayed, or the number of the graphical device
+#'   where you want the functional boxplot to be displayed.
 #' @param xlab the label to use on the x axis when displaying the functional
-#' boxplot.
-#' @param ylab the label (or list of labels for the multivariate functional case)
-#' to use on the y axis when displaying the functional boxplot.
+#'   boxplot.
+#' @param ylab the label (or list of labels for the multivariate functional
+#'   case) to use on the y axis when displaying the functional boxplot.
 #' @param main the main title (or list of titles for the multivariate functional
-#' case) to be used when displaying the functional boxplot.
+#'   case) to be used when displaying the functional boxplot.
 #' @param ... additional graphical parameters to be used in plotting functions.
 #'
-#' @return
-#' Even when used in graphical way to plot the functional boxplot, the function
-#' returns a list of three elements: the first, \code{Depths}, contains the depths
-#' of each element of the functional dataset; the second, \code{Fvalue}, is the
-#' value of F used to obtain the outliers, and the third, \code{ID_out}, contains
-#' the vector of indices of dataset elements flagged as outliers (if any).
+#' @return Even when used in graphical way to plot the functional boxplot, the
+#'   function returns a list of three elements:
+#'
+#'   * \code{Depths}: contains the depths of each element of the functional
+#'   dataset.
+#'   * \code{Fvalue}: is the value of F used to obtain the outliers.
+#'   * \code{ID_out}: contains the vector of indices of dataset elements flagged
+#'   as outliers (if any).
 #'
 #' @references
 #'
-#'
-#'	Sun, Y., & Genton, M. G. (2012). Functional boxplots. Journal of
-#'	Computational and Graphical Statistics.
-#'
-#'	Sun, Y., & Genton, M. G. (2012). Adjusted functional boxplots for
-#'	spatio-temporal data visualization and outlier detection. Environmetrics,
-#'	23(1), 54-64.
+#'   1. Sun, Y., & Genton, M. G. (2012). Functional boxplots. Journal of
+#'   Computational and Graphical Statistics.
+#'   1. Sun, Y., & Genton, M. G. (2012). Adjusted functional boxplots for
+#'   spatio-temporal data visualization and outlier detection. Environmetrics,
+#'   23(1), 54-64.
 #'
 #' @examples
 #'
@@ -189,7 +188,6 @@
 #' \code{\link{mfData}}, \code{\link{multiMBD}}, \code{\link{multiBD}}
 #'
 #' @export
-#'
 fbplot = function( Data,
                    Depths = 'MBD',
                    Fvalue = 1.5,
@@ -222,7 +220,7 @@ fbplot.fData = function( Data,
   # Checking if depths have already been provided or must be computed
   if( is.character( Depths ) )
   {
-    # Nice trick to encapsulate the information on the desired definiton of
+    # Nice trick to encapsulate the information on the desired definition of
     # depth inside the vector that supposedly should contain depth values
     Depths_spec = Depths
 
