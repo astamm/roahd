@@ -6,3 +6,5 @@ vignettes/Roahd.html
 ^\.github$
 ^revdep$
 ^cran-comments\.md$
+^CRAN-RELEASE$
+^README\.Rmd$
