@@ -18,7 +18,7 @@ vignette: >
 
 Package **roahd** (**RO**bust **A**nalysis of **H**igh dimensional **D**ata) is 
 an `R` package meant to gather recently proposed statistical methods to deal 
-with the robust analysis of functional data.
+with the robust analysis of functional data [@Ieva2019].
 
 The package contains an implementation of quantitative methods, based on
 functional depths and indices, on top of which are built some graphical methods
