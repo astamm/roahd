@@ -1,0 +1,17 @@
+citHeader("To cite roahd in publications use:")
+
+citEntry(
+  entry    = "Article",
+  title    = "{roahd Package: Robust Analysis of High Dimensional Data}",
+  author   = "Francesca Ieva and Anna Maria Paganoni and Juan Romo and
+          Nicholas Tarabelloni",
+  journal  = "{The R Journal}",
+  year     = "2019",
+  volume   = "11",
+  number   = "2",
+  pages    = "291--307",
+  url      = "https://doi.org/10.32614/RJ-2019-032",
+  textVersion = paste(
+      "Ieva, F., Paganoni, A. M., Romo, J., & Tarabelloni, N. (2019). roahd Package: Robust Analysis of High Dimensional Data. The R Journal, 11(2), pp. 291-307."
+  )
+)
