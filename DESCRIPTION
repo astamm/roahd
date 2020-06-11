@@ -2,7 +2,6 @@ Package: roahd
 Type: Package
 Title: Robust Analysis of High Dimensional Data
 Version: 1.4.2
-Date: 2018-08-18
 Authors@R: c( 
     person(given = "Nicholas", 
            family = "Tarabelloni", 
@@ -35,7 +34,9 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-8725-3654")))
 Description: A collection of methods for the robust analysis of univariate and
     multivariate functional data, possibly in high-dimensional cases, and hence
-    with attention to computational efficiency and simplicity of use.
+    with attention to computational efficiency and simplicity of use. See the R 
+    Journal publication of Ieva et al. (2019) <doi:10.32614/RJ-2019-032> for an 
+    in-depth presentation of the roahd package.
 Depends: R (>= 2.10)
 License: GPL-3
 Encoding: UTF-8
