@@ -723,7 +723,7 @@ provided in the multivariate version of the functional boxplot' )
   fence_upper = ( max_envelope_central - min_envelope_central ) * Fvalue + max_envelope_central
   fence_lower = ( min_envelope_central - max_envelope_central ) * Fvalue + min_envelope_central
 
-  ID_outlying = unique( unlist( sapply( 1 : L, function( iL ) ( which(
+  ID_outlying = unique( unlist( lapply( 1 : L, function( iL ) ( which(
     apply( listOfValues[[ iL ]], 1,
            function( x ) ( any( x > as.numeric( fence_upper[ iL, ] ) ) |
                              any( x < as.numeric( fence_lower[ iL, ] ) ) ) ) )
