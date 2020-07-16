@@ -25,6 +25,7 @@ report to both the [Github page](https://github.com/astamm/roahd) and
 ### Minor fixes
 
 * Fixed typos in doc, vignette and README.
+* Fixed bug in `fbplot()` display.
 
 # roahd 1.4.1
 
