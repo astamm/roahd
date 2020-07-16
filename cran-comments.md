@@ -1,3 +1,21 @@
+## Resubmission
+
+This is a resubmission. In this version I have:
+
+* Removed the `Date` field from the DESCRIPTION file.
+
+* Added reference to the R journal paper about **roahd** in 
+
+  + the `Description` field of the DESCRIPTION file, 
+  + a CITATION file for use with the `citation()` function,
+  + the `Citation` section of the README file,
+  + the vignette.
+
+* Auto-generated README from R markdown.
+
+* Corrected a bug in the visualization of amplitude outliers for multivariate
+functional data in `fbplot()`.
+
 ## Test environments
 
 * I use the Github Action script
@@ -36,7 +54,15 @@ workflow runs `R CMD check` via the **rcmdcheck** package on the three major OSs
   ‘qpdf’ is needed for checks on size reduction of PDFs
 ```
 
-* There were no NOTEs.
+* There were 1 NOTE:
+
+```
+* checking installed package size ... NOTE
+    installed size is  5.1Mb
+    sub-directories of 1Mb or more:
+      data   2.9Mb
+      doc    1.7Mb
+```
 
 ### R-hub results
 
@@ -44,9 +70,7 @@ workflow runs `R CMD check` via the **rcmdcheck** package on the three major OSs
 
 * There were no WARNINGs.
 
-* There was 1 NOTE because the package was previously on CRAN but has been
-removed automatically due to incompatibility with new R-release 4.0 and because
-of a change in maintainer:
+* There was 3 NOTEs:
 
 ```
 * checking CRAN incoming feasibility ... NOTE
@@ -56,11 +80,40 @@ New submission
 
 Package was archived on CRAN
 
-The Date field is over a month old.
+Possibly mis-spelled words in DESCRIPTION:
+  Ieva (38:28)
+  al (38:36)
+  et (38:33)
+  roahd (39:34)
+* checking installed package size ... NOTE
+  installed size is  5.1Mb
+  sub-directories of 1Mb or more:
+    data   2.9Mb
+    doc    1.7Mb
+* checking examples ... NOTE
+Examples with CPU (user + system) or elapsed time > 5s
+              user system elapsed
+mfData       1.508  0.817   8.049
+cor_spearman 1.876  0.028   6.593
 ```
 
 ### win-builder results
 
 * There were no ERRORs.
 * There were no WARNINGs.
-* There were no NOTEs.
+* There were 1 NOTE:
+
+```
+* checking CRAN incoming feasibility ... NOTE
+Maintainer: 'Aymeric Stamm <aymeric.stamm@math.cnrs.fr>'
+
+New submission
+
+Package was archived on CRAN
+
+Possibly mis-spelled words in DESCRIPTION:
+  Ieva (38:28)
+  al (38:36)
+  et (38:33)
+  roahd (39:34)
+```
