@@ -36,7 +36,7 @@ Description: A collection of methods for the robust analysis of univariate and
     multivariate functional data, possibly in high-dimensional cases, and hence
     with attention to computational efficiency and simplicity of use. See the R 
     Journal publication of Ieva et al. (2019) <doi:10.32614/RJ-2019-032> for an 
-    in-depth presentation of the roahd package.
+    in-depth presentation of the 'roahd' package.
 Depends: R (>= 2.10)
 License: GPL-3
 Encoding: UTF-8

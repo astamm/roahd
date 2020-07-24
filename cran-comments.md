@@ -1,4 +1,10 @@
-## Resubmission
+## Second resubmission
+
+This is a resubmission. In this version I have:
+
+* Single quote software names such as 'roahd' in the Description field.
+
+## First resubmission
 
 This is a resubmission. In this version I have:
 
