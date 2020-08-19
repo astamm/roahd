@@ -24,7 +24,8 @@ alpha_col = set_alpha( original_col, 0.5 )
 alpha_col = set_alpha( original_col, c(0.5, 0.5, 0.2, 0.1 ) )
 
 dev.new()
-par( mfrow = c( 1, 2 ) )
+oldpar <- par()
+par(mfrow = c(1, 2))
 
 plot( seq_along( original_col ),
       seq_along( original_col ),
@@ -39,6 +40,8 @@ plot( seq_along( alpha_col ),
       pch = 16,
       cex = 2,
       main = 'Alpha colors' )
+
+par(oldpar)
 
 }
 \seealso{

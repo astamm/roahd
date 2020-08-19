@@ -325,7 +325,9 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
     }
 
     dev.cur()
-    par( mfrow = c( 1, 2 ) )
+    oldpar <- par()
+    on.exit(par(oldpar))
+    par(mfrow = c(1, 2))
 
     # Plotting functional data
     if( length( out$ID_SO ) > 0 )

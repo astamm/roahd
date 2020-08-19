@@ -168,13 +168,17 @@ D = D + rexp(N, rate = 0.05)
 fD = fData( grid, D )
 
 dev.new()
-par( mfrow = c(1,3) )
+oldpar <- par()
+par(mfrow = c(1, 3))
+
 plot( fD, lwd = 2, main = 'Functional dataset',
       xlab = 'time', ylab = 'values' )
 
 fbplot( fD, main = 'Functional boxplot', xlab = 'time', ylab = 'values', Fvalue = 1.5 )
 
 boxplot(fD$values[,1], ylim = range(fD$values), main = 'Boxplot of functional dataset at t_0 ' )
+
+par(oldpar)
 
 # UNIVARIATE FUNCTIONAL BOXPLOT - WITH ADJUSTMENT
 

@@ -166,9 +166,11 @@ fD[ 2, 10 : 20, as_fData = FALSE ]
 fD[ , 10, as_fData = FALSE ]
 
 # As default behavior the subset is returned in fData form
-par( mfrow = c(1,2) )
-plot( fD, main = 'Original dataset', lwd = 2 )
-plot( fD[ , 1 : 20 ], main = 'Zooming in', lwd = 2 )
+oldpar <- par()
+par(mfrow = c(1, 2))
+plot(fD, main = "Original dataset", lwd = 2)
+plot(fD[, 1:20], main = "Zooming in", lwd = 2)
+par(oldpar)
 ```
 
 ## Algebra
@@ -352,12 +354,16 @@ the dots arguments).
   median_fData( fD, type = 'MBD' )
   median_fData( fD, type = 'MHRD' )
 
-  par( mfrow = c(1,2) )
-  plot( fD, main = 'Mean', lwd = 2 )
-  plot( mean( fD ), add = TRUE, lwd = 2, col = 'black', lty = 2 )
+  oldpar <- par()
+  par(mfrow = c(1, 2))
   
-  plot( fD, main = 'Median', lwd = 2 )
-  plot( median_fData( fD, type = 'MBD' ), add = TRUE, lwd = 2, lty = 2, col = 'black' )
+  plot(fD, main = "Mean", lwd = 2)
+  plot(mean(fD), add = TRUE, lwd = 2, col = "black", lty = 2)
+  
+  plot(fD, main = "Median", lwd = 2)
+  plot(median_fData(fD, type = "MBD"), add = TRUE, lwd = 2, lty = 2, col = "black")
+  
+  par(oldpar)
 ```
 
 ## Covariance and cross-covariance functions

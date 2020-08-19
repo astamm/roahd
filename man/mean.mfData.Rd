@@ -48,14 +48,23 @@ mfD = mfData( grid,
 )
 
 # Graphical representation of the mean
-par( mfrow = c( 1, 3 ) )
+oldpar <- par()
+par(mfrow = c(1, L))
 
-for( iL in 1 : L )
+for(iL in 1:L)
 {
-  plot( mfD$fDList[[ 1 ]] )
-  plot( mean( mfD )$fDList[[ 1 ]], col = 'black',
-        lwd = 2, lty = 2, add = TRUE )
+  plot(mfD$fDList[[iL]])
+  plot(
+    mean(mfD)$fDList[[iL]],
+    col = 'black',
+    lwd = 2,
+    lty = 2,
+    add = TRUE
+  )
 }
+
+par(oldpar)
+
 }
 \seealso{
 \code{\link{mfData}}

@@ -72,7 +72,8 @@ toRowMatrixForm = function( D )
 #' alpha_col = set_alpha( original_col, c(0.5, 0.5, 0.2, 0.1 ) )
 #'
 #' dev.new()
-#' par( mfrow = c( 1, 2 ) )
+#' oldpar <- par()
+#' par(mfrow = c(1, 2))
 #'
 #' plot( seq_along( original_col ),
 #'       seq_along( original_col ),
@@ -87,6 +88,8 @@ toRowMatrixForm = function( D )
 #'       pch = 16,
 #'       cex = 2,
 #'       main = 'Alpha colors' )
+#'
+#' par(oldpar)
 #'
 #' @importFrom grDevices col2rgb rgb
 #'

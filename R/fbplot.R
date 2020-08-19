@@ -119,13 +119,17 @@
 #' fD = fData( grid, D )
 #'
 #' dev.new()
-#' par( mfrow = c(1,3) )
+#' oldpar <- par()
+#' par(mfrow = c(1, 3))
+#'
 #' plot( fD, lwd = 2, main = 'Functional dataset',
 #'       xlab = 'time', ylab = 'values' )
 #'
 #' fbplot( fD, main = 'Functional boxplot', xlab = 'time', ylab = 'values', Fvalue = 1.5 )
 #'
 #' boxplot(fD$values[,1], ylim = range(fD$values), main = 'Boxplot of functional dataset at t_0 ' )
+#'
+#' par(oldpar)
 #'
 #' # UNIVARIATE FUNCTIONAL BOXPLOT - WITH ADJUSTMENT
 #'
@@ -566,7 +570,9 @@ provided in the multivariate version of the functional boxplot' )
     mfrow_rows = ceiling( Data$L / 2 )
     mfrow_cols = 2
 
-    par( mfrow = c( mfrow_rows, mfrow_cols ) )
+    oldpar <- par()
+    on.exit(par(oldpar))
+    par(mfrow = c(mfrow_rows, mfrow_cols))
 
     # Creating color palettes
     col_non_outlying = scales::hue_pal( h = c( 180, 270 ),

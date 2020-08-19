@@ -406,13 +406,14 @@ plot.mfData = function( x, ... )
                          xlab = NULL, ylab = NULL, main = NULL,
                          add = FALSE, ... )
 {
-
-  if( add == FALSE )
+  if (add == FALSE)
   {
-    mfrow_rows = floor( sqrt( x$L ) )
-    mfrow_cols = ceiling( x$L / floor( sqrt( x$L ) ) )
+    mfrow_rows <- floor(sqrt(x$L))
+    mfrow_cols <- ceiling(x$L / floor(sqrt(x$L)))
 
-    par( mfrow = c( mfrow_rows, mfrow_cols ) )
+    oldpar <- par()
+    on.exit(par(oldpar))
+    par(mfrow = c(mfrow_rows, mfrow_cols))
   }
 
   if( ! is.null( ylab ) )
@@ -779,14 +780,23 @@ mean.fData = function( x, ... )
 #' )
 #'
 #' # Graphical representation of the mean
-#' par( mfrow = c( 1, 3 ) )
+#' oldpar <- par()
+#' par(mfrow = c(1, L))
 #'
-#' for( iL in 1 : L )
+#' for(iL in 1:L)
 #' {
-#'   plot( mfD$fDList[[ 1 ]] )
-#'   plot( mean( mfD )$fDList[[ 1 ]], col = 'black',
-#'         lwd = 2, lty = 2, add = TRUE )
+#'   plot(mfD$fDList[[iL]])
+#'   plot(
+#'     mean(mfD)$fDList[[iL]],
+#'     col = 'black',
+#'     lwd = 2,
+#'     lty = 2,
+#'     add = TRUE
+#'   )
 #' }
+#'
+#' par(oldpar)
+#'
 #' @export
 mean.mfData = function( x, ... )
 {
@@ -1213,14 +1223,23 @@ median_fData = function( fData, type = 'MBD', ... )
 #' med_mfD = median_mfData( mfD, type = 'multiMBD', weights = 'uniform' )
 #'
 #' # Graphical representation of the mean
-#' par( mfrow = c( 1, 3 ) )
+#' oldpar <- par()
+#' par(mfrow = c(1, L))
 #'
-#' for( iL in 1 : L )
+#' for(iL in 1:L)
 #' {
-#'   plot( mfD$fDList[[ 1 ]] )
-#'   plot( med_mfD$fDList[[ 1 ]], col = 'black',
-#'         lwd = 2, lty = 2, add = TRUE )
+#'   plot(mfD$fDList[[iL]])
+#'   plot(
+#'     med_mfD$fDList[[iL]],
+#'     col = 'black',
+#'     lwd = 2,
+#'     lty = 2,
+#'     add = TRUE
+#'   )
 #' }
+#'
+#' par(oldpar)
+#'
 #' @export
 median_mfData = function( mfData, type = 'multiMBD', ... )
 {
@@ -1276,22 +1295,25 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
 #'                                   Cov = C ) )
 #'
 #' dev.new()
-#' par( mfrow = c( 2, 2 ) )
+#' oldpar <- par()
+#' par(mfrow = c(2, 2))
 #'
 #' # Original data
-#' plot( fD )
+#' plot(fD)
 #'
 #' # Subsetting observations
-#' plot( fD[ c(1,2,3), , as_fData = TRUE ] )
+#' plot(fD[c(1, 2, 3), , as_fData = TRUE])
 #'
 #' # Subsetting measurements
-#' plot( fD[ , 1 : 30 ] )
+#' plot(fD[, 1:30])
 #'
 #' # Subsetting both observations and measurements
-#' plot( fD[ 1 : 10, 50 : P ] )
+#' plot(fD[1:10, 50:P])
+#'
+#' par(oldpar)
 #'
 #' # Subsetting both observations and measurements but returning a matrix
-#' fD[ 1 : 10, 50 : P, as_fData = FALSE ]
+#' fD[1:10, 50:P, as_fData = FALSE]
 #'
 #' @export
 "[.fData" = function( fD, i, j, as_fData = TRUE )
@@ -1482,9 +1504,13 @@ toListOfValues = function( mfData )
 #' fD_unfold = unfold( fD )
 #'
 #' dev.new()
-#' par( mfrow = c( 1, 2 ) )
-#' plot( fD, main = 'Original data' )
-#' plot( fD_unfold, main = 'Unfolded data' )
+#' oldpar <- par()
+#' par(mfrow = c(1, 2))
+#'
+#' plot(fD, main = 'Original data')
+#' plot(fD_unfold, main = 'Unfolded data')
+#'
+#' par(oldpar)
 #'
 #' @export
 unfold = function( fData )
@@ -1558,7 +1584,9 @@ unfold = function( fData )
 #' fD_warped = warp( fD, wfD )
 #'
 #' dev.new()
-#' par( mfrow = c( 1, 3 ) )
+#' oldpar <- par()
+#' par(mfrow = c(1, 3))
+#'
 #' plot( fD,
 #'      main = 'Unregistered functions', xlab = 'actual grid', ylab = 'values'  )
 #' plot( wfD,
@@ -1567,6 +1595,8 @@ unfold = function( fData )
 #' plot( fD_warped,
 #'      main = 'Warped functions', xlab = 'registered grid',
 #'      ylab = 'values' )
+#'
+#' par(oldpar)
 #'
 #' @importFrom stats approx
 #'

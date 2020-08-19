@@ -51,22 +51,25 @@ fD = fData( grid,
                                   Cov = C ) )
 
 dev.new()
-par( mfrow = c( 2, 2 ) )
+oldpar <- par()
+par(mfrow = c(2, 2))
 
 # Original data
-plot( fD )
+plot(fD)
 
 # Subsetting observations
-plot( fD[ c(1,2,3), , as_fData = TRUE ] )
+plot(fD[c(1, 2, 3), , as_fData = TRUE])
 
 # Subsetting measurements
-plot( fD[ , 1 : 30 ] )
+plot(fD[, 1:30])
 
 # Subsetting both observations and measurements
-plot( fD[ 1 : 10, 50 : P ] )
+plot(fD[1:10, 50:P])
+
+par(oldpar)
 
 # Subsetting both observations and measurements but returning a matrix
-fD[ 1 : 10, 50 : P, as_fData = FALSE ]
+fD[1:10, 50:P, as_fData = FALSE]
 
 }
 \seealso{

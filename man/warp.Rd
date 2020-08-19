@@ -67,7 +67,9 @@ wfD = fData( time_grid, warpings )
 fD_warped = warp( fD, wfD )
 
 dev.new()
-par( mfrow = c( 1, 3 ) )
+oldpar <- par()
+par(mfrow = c(1, 3))
+
 plot( fD,
      main = 'Unregistered functions', xlab = 'actual grid', ylab = 'values'  )
 plot( wfD,
@@ -76,6 +78,8 @@ plot( wfD,
 plot( fD_warped,
      main = 'Warped functions', xlab = 'registered grid',
      ylab = 'values' )
+
+par(oldpar)
 
 }
 \seealso{

@@ -40,9 +40,13 @@ fD = fData( time_grid, D )
 fD_unfold = unfold( fD )
 
 dev.new()
-par( mfrow = c( 1, 2 ) )
-plot( fD, main = 'Original data' )
-plot( fD_unfold, main = 'Unfolded data' )
+oldpar <- par()
+par(mfrow = c(1, 2))
+
+plot(fD, main = 'Original data')
+plot(fD_unfold, main = 'Unfolded data')
+
+par(oldpar)
 
 }
 \references{
