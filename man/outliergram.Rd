@@ -117,53 +117,70 @@ problem is solved using \code{stats::uniroot} (Brent's method).
 }
 
 \examples{
+set.seed(1618)
 
+N <- 200
+P <- 200
+N_extra <- 4
 
-set.seed( 1618 )
+grid <- seq(0, 1, length.out = P)
 
-N = 200
-P = 200
-N_extra = 4
+Cov <- exp_cov_function(grid, alpha = 0.2, beta = 0.8)
 
-grid = seq( 0, 1, length.out = P )
+Data <- generate_gauss_fdata(
+  N = N,
+  centerline = sin(4 * pi * grid),
+  Cov = Cov
+)
 
-Cov = exp_cov_function( grid, alpha = 0.2, beta = 0.8 )
+Data_extra <- array(0, dim = c(N_extra, P))
 
-Data = generate_gauss_fdata( N,
-                             centerline = sin( 4 * pi * grid ),
-                             Cov = Cov )
+Data_extra[1, ] <- generate_gauss_fdata(
+  N = 1,
+  centerline = sin(4 * pi * grid + pi / 2),
+  Cov = Cov
+)
 
-Data_extra = array( 0, dim = c( N_extra, P ) )
+Data_extra[2, ] <- generate_gauss_fdata(
+  N = 1,
+  centerline = sin(4 * pi * grid - pi / 2),
+  Cov = Cov
+)
 
-Data_extra[ 1, ] = generate_gauss_fdata( 1,
-                                         sin( 4 * pi * grid + pi / 2 ),
-                                         Cov = Cov )
+Data_extra[3, ] <- generate_gauss_fdata(
+  N = 1,
+  centerline = sin(4 * pi * grid + pi / 3),
+  Cov = Cov
+)
 
-Data_extra[ 2, ] = generate_gauss_fdata( 1,
-                                         sin( 4 * pi * grid - pi / 2 ),
-                                         Cov = Cov )
+Data_extra[4, ] <- generate_gauss_fdata(
+  N = 1,
+  centerline = sin(4 * pi * grid - pi / 3),
+  Cov = Cov
+)
 
-Data_extra[ 3, ] = generate_gauss_fdata( 1,
-                                         sin( 4 * pi * grid + pi/ 3 ),
-                                         Cov = Cov )
+Data <- rbind(Data, Data_extra)
 
-Data_extra[ 4, ] = generate_gauss_fdata( 1,
-                                         sin( 4 * pi * grid - pi / 3),
-                                         Cov = Cov )
-Data = rbind( Data, Data_extra )
+fD <- fData(grid, Data)
 
-fD = fData( grid, Data )
+# Outliergram with default Fvalue = 1.5
+outliergram(fD, display = TRUE)
 
-outliergram( fD, display = TRUE )
+# Outliergram with Fvalue enforced to 2.5
+outliergram(fD, Fvalue = 2.5, display = TRUE)
 
-outliergram( fD, Fvalue = 2.5, display = TRUE )
-\dontrun{
-outliergram( fD,
-             adjust = list( N_trials = 10,
-                            trial_size = 5 * nrow( Data ),
-                            TPR = 0.01,
-                            VERBOSE = FALSE ),
-             display = TRUE )
+\donttest{
+# Outliergram with estimated Fvalue to ensure TPR of 1\%
+outliergram(
+  fData = fD,
+  adjust = list(
+    N_trials = 10,
+    trial_size = 5 * nrow(Data),
+    TPR = 0.01,
+    VERBOSE = FALSE
+  ),
+  display = TRUE
+)
 }
 
 }

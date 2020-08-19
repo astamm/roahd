@@ -565,24 +565,35 @@ cor_spearman = function( mfD, ordering = 'MEI' )
 #' @seealso \code{\link{cor_spearman}}, \code{\link{mfData}}
 #'
 #' @examples
-#' N = 2e2
-#' P = 1e2
-#' grid = seq( 0, 1, length.out = P )
+#' N <- 200
+#' P <- 100
 #'
-#' # Creating an exponential covariance function to simulate guassian data
-#' Cov = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+#' grid <- seq(0, 1, length.out = P)
 #'
-#' # Simulating (independent) gaussian functional data with given center and covariance function
+#' # Creating an exponential covariance function to simulate Gaussian data
+#' Cov <- exp_cov_function(grid, alpha = 0.3, beta = 0.4)
 #'
-#' Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
-#' Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
+#' # Simulating (independent) Gaussian functional data with given center and covariance function
+#'
+#' Data_1 <- generate_gauss_fdata(
+#'   N = N,
+#'   centerline = sin(2 * pi * grid),
+#'   Cov = Cov
+#' )
+#'
+#' Data_2 <- generate_gauss_fdata(
+#'   N = N,
+#'   centerline = sin(2 * pi * grid),
+#'   Cov = Cov
+#' )
 #'
 #' # Using the simulated data as (independent) components of a bivariate functional dataset
-#' mfD = mfData( grid, list( Data_1, Data_2 ) )
+#' mfD <- mfData(grid, list(Data_1, Data_2))
 #'
-#' \dontrun{
-#'   cor_spearman_accuracy(mfD, ordering='MEI')
-#'   cor_spearman_accuracy(mfD, ordering='MHI')
+#' \donttest{
+#' # Computes bootstrap estimate of Spearman correlation
+#' cor_spearman_accuracy(mfD, ordering = "MEI")
+#' cor_spearman_accuracy(mfD, ordering = "MHI")
 #' }
 #'
 #' @export

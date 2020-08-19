@@ -23,33 +23,35 @@
 #' \code{\link{mfData}}, \code{\link{BCIntervalSpearmanMultivariate}}
 #'
 #' @examples
-#'
 #' set.seed(1)
 #'
-#' N = 2e2
-#' P = 1e2
-#' grid = seq( 0, 1, length.out = P )
+#' N <- 200
+#' P <- 100
 #'
-#' # Creating an exponential covariance function to simulate guassian data
-#' Cov = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+#' grid <- seq(0, 1, length.out = P)
 #'
-#' # Simulating (independent) gaussian functional data with given center and
-#' # covariance function
-#' Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
-#' Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
+#' # Creating an exponential covariance function to simulate Gaussian data
+#' Cov <- exp_cov_function(grid, alpha = 0.3, beta = 0.4)
 #'
-#' # Using the simulated data as (independent) components of a bivariate functional
-#' # dataset
-#' mfD = mfData( grid, list( Data_1, Data_2 ) )
-#'\dontrun{
-#' BCIntervalSpearman(mfD$fDList[[1]], mfD$fDList[[2]], ordering = 'MEI')
+#' # Simulating (independent) Gaussian functional data with given center and covariance function
+#' Data_1 <- generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
+#' Data_2 <- generate_gauss_fdata(
+#'   N = N,
+#'   centerline = sin(2 * pi * grid),
+#'   Cov = Cov
+#' )
 #'
-#' BCIntervalSpearman(mfD$fDList[[1]], mfD$fDList[[2]], ordering = 'MHI')
-#'}
+#' # Using the simulated data as (independent) components of a bivariate functional dataset
+#' mfD <- mfData(grid, list(Data_1, Data_2))
+#'
+#' \donttest{
+#' BCIntervalSpearman(mfD$fDList[[1]], mfD$fDList[[2]], ordering = "MEI")
+#' BCIntervalSpearman(mfD$fDList[[1]], mfD$fDList[[2]], ordering = "MHI")
+#' }
+#'
 #' # BC intervals contain zero since the functional samples are uncorrelated.
 #'
 #' @export
-#'
 BCIntervalSpearman = function( fD1, fD2, ordering='MEI', bootstrap_iterations=1000, alpha=0.05,
                        verbose=FALSE ){
 
@@ -145,38 +147,47 @@ BCIntervalSpearman = function( fD1, fD2, ordering='MEI', bootstrap_iterations=10
 #' \code{\link{mfData}}, \code{\link{BCIntervalSpearman}}
 #'
 #' @examples
-#'
 #' set.seed(1)
 #'
-#' N = 2e2
-#' P = 1e2
-#' grid = seq( 0, 1, length.out = P )
+#' N <- 200
+#' P <- 100
+#' grid <- seq(0, 1, length.out = P)
 #'
-#' # Creating an exponential covariance function to simulate guassian data
-#' Cov = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+#' # Creating an exponential covariance function to simulate Gaussian data
+#' Cov <- exp_cov_function(grid, alpha = 0.3, beta = 0.4)
 #'
-#' # Simulating (independent) gaussian functional data with given center and
-#' # covariance function
-#' Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
-#' Data_2 = generate_gauss_fdata( N, centerline = sin( 4 * pi * grid ), Cov = Cov )
-#' Data_3 = generate_gauss_fdata( N, centerline = sin( 6 * pi * grid ), Cov = Cov )
+#' # Simulating (independent) Gaussian functional data with given center and covariance function
+#' Data_1 <- generate_gauss_fdata(
+#'   N = N,
+#'   centerline = sin(2 * pi * grid),
+#'   Cov = Cov
+#' )
+#' Data_2 <- generate_gauss_fdata(
+#'   N = N,
+#'   centerline = sin(4 * pi * grid),
+#'   Cov = Cov
+#' )
+#' Data_3 <- generate_gauss_fdata(
+#'   N = N,
+#'   centerline = sin(6 * pi * grid),
+#'   Cov = Cov
+#' )
 #'
-#' # Using the simulated data as (independent) components of a multivariate functional
-#' # dataset
-#' mfD = mfData( grid, list( Data_1, Data_2, Data_3 ) )
+#' # Using the simulated data as (independent) components of a multivariate functional dataset
+#' mfD <- mfData(grid, list(Data_1, Data_2, Data_3))
 #'
-#'\dontrun{
-#' BCIntervalSpearmanMultivariate(mfD, ordering = 'MEI')
-#'}
+#' \donttest{
+#' BCIntervalSpearmanMultivariate(mfD, ordering = "MEI")
+#' }
+#'
 #' # BC intervals contain zero since the functional samples are uncorrelated.
 #'
 #' @export
-#'
 BCIntervalSpearmanMultivariate = function(mfD,
-                                          ordering='MEI',
-                                          bootstrap_iterations=1000,
-                                          alpha=0.05,
-                                          verbose=FALSE)
+                                          ordering = 'MEI',
+                                          bootstrap_iterations = 1000,
+                                          alpha = 0.05,
+                                          verbose = FALSE)
 {
 
   lower = matrix(0, nrow=mfD$L, ncol=mfD$L)
@@ -251,46 +262,69 @@ BCIntervalSpearmanMultivariate = function(mfD,
 #' The function returns the estimates of the test's p-value and statistics.
 #'
 #' @seealso \code{\link{BCIntervalSpearman}}, \code{\link{BCIntervalSpearmanMultivariate}}, \code{\link{mfData}}
+#'
 #' @examples
-#'
 #' set.seed(1)
-#' N = 2e2
-#' P = 1e2
-#' L = 2
-#' grid = seq( 0, 1, length.out = P )
-#' # Creating an exponential covariance function to simulate guassian data
-#' Cov = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
 #'
+#' N  <- 200
+#' P <- 100
+#' L <- 2
 #'
+#' grid <- seq(0, 1, length.out = P)
+#'
+#' # Creating an exponential covariance function to simulate Gaussian data
+#' Cov <- exp_cov_function(grid, alpha = 0.3, beta = 0.4)
 #'
 #' # Simulating two populations of bivariate functional data
 #' #
 #' # The first population has very high correlation between first and second component
-#' centerline_1 = matrix(rep(sin(2 * pi * grid)), nrow = 2, ncol=P, byrow=TRUE)
-#' values1 = generate_gauss_mfdata( N, L, correlations = 0.9,
-#'                                  centerline = centerline_1, listCov = list(Cov, Cov)  )
-#' mfD1 = mfData(grid, values1)
+#' centerline_1 <- matrix(
+#'   data = rep(sin(2 * pi * grid)),
+#'   nrow = L,
+#'   ncol = P,
+#'   byrow = TRUE
+#' )
+#' values1 <- generate_gauss_mfdata(
+#'   N = N,
+#'   L = L,
+#'   correlations = 0.9,
+#'   centerline = centerline_1,
+#'   listCov = list(Cov, Cov)
+#' )
+#' mfD1 <- mfData(grid, values1)
 #'
 #' # Pointwise estimate
 #' cor_spearman(mfD1)
 #'
 #' # The second population has zero correlation between first and second component
-#' centerline_2 = matrix(rep(cos(2 * pi * grid)), nrow = 2, ncol=P, byrow=TRUE)
-#' values2 = generate_gauss_mfdata( N, L, correlations = 0,
-#'                                  centerline = centerline_1, listCov = list(Cov, Cov)  )
-#' mfD2 = mfData(grid, values2)
+#' centerline_2 <- matrix(
+#'   data = rep(cos(2 * pi * grid)),
+#'   nrow = L,
+#'   ncol = P,
+#'   byrow = TRUE
+#' )
+#' values2 <- generate_gauss_mfdata(
+#'   N = N,
+#'   L = L,
+#'   correlations = 0,
+#'   centerline = centerline_2,
+#'   listCov = list(Cov, Cov)
+#' )
+#' mfD2 <- mfData(grid, values2)
 #'
 #' # Pointwise estimate
 #' cor_spearman(mfD2)
 #'
 #' # Applying the test
-#' \dontrun{
+#' \donttest{
 #' BTestSpearman(mfD1, mfD2)
 #' }
 #' @export
-#'
-BTestSpearman = function( mfD1, mfD2, bootstrap_iterations=1000, ordering='MEI', normtype='f',
-                          verbose=FALSE)
+BTestSpearman = function(mfD1, mfD2,
+                         bootstrap_iterations = 1000,
+                         ordering = "MEI",
+                         normtype = "f",
+                         verbose = FALSE)
 {
   stopifnot((mfD1$P == mfD2$P) & (mfD1$t0 == mfD2$t0) & (mfD1$tP == mfD2$tP)
             & (mfD1$fDList[[1]]$h == mfD2$fDList[[1]]$h) & (mfD1$L == mfD2$L))

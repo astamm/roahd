@@ -194,7 +194,7 @@ Data = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ),
 fD = fData( grid, Data )
 
 dev.new()
-\dontrun{
+\donttest{
 fbplot( fD, adjust = list( N_trials = 10,
                            trial_size = 5 * N,
                            VERBOSE = TRUE ),
