@@ -72,7 +72,7 @@ toRowMatrixForm = function( D )
 #' alpha_col = set_alpha( original_col, c(0.5, 0.5, 0.2, 0.1 ) )
 #'
 #' dev.new()
-#' oldpar <- par()
+#' oldpar <- par(mfrow = c(1, 1))
 #' par(mfrow = c(1, 2))
 #'
 #' plot( seq_along( original_col ),

@@ -411,7 +411,7 @@ plot.mfData = function( x, ... )
     mfrow_rows <- floor(sqrt(x$L))
     mfrow_cols <- ceiling(x$L / floor(sqrt(x$L)))
 
-    oldpar <- par()
+    oldpar <- par(mfrow = c(1, 1))
     on.exit(par(oldpar))
     par(mfrow = c(mfrow_rows, mfrow_cols))
   }
@@ -780,7 +780,7 @@ mean.fData = function( x, ... )
 #' )
 #'
 #' # Graphical representation of the mean
-#' oldpar <- par()
+#' oldpar <- par(mfrow = c(1, 1))
 #' par(mfrow = c(1, L))
 #'
 #' for(iL in 1:L)
@@ -1223,7 +1223,7 @@ median_fData = function( fData, type = 'MBD', ... )
 #' med_mfD = median_mfData( mfD, type = 'multiMBD', weights = 'uniform' )
 #'
 #' # Graphical representation of the mean
-#' oldpar <- par()
+#' oldpar <- par(mfrow = c(1, 1))
 #' par(mfrow = c(1, L))
 #'
 #' for(iL in 1:L)
@@ -1295,7 +1295,7 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
 #'                                   Cov = C ) )
 #'
 #' dev.new()
-#' oldpar <- par()
+#' oldpar <- par(mfrow = c(1, 1))
 #' par(mfrow = c(2, 2))
 #'
 #' # Original data
@@ -1504,7 +1504,7 @@ toListOfValues = function( mfData )
 #' fD_unfold = unfold( fD )
 #'
 #' dev.new()
-#' oldpar <- par()
+#' oldpar <- par(mfrow = c(1, 1))
 #' par(mfrow = c(1, 2))
 #'
 #' plot(fD, main = 'Original data')
@@ -1584,7 +1584,7 @@ unfold = function( fData )
 #' fD_warped = warp( fD, wfD )
 #'
 #' dev.new()
-#' oldpar <- par()
+#' oldpar <- par(mfrow = c(1, 1))
 #' par(mfrow = c(1, 3))
 #'
 #' plot( fD,

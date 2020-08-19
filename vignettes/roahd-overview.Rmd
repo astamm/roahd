@@ -166,7 +166,7 @@ fD[ 2, 10 : 20, as_fData = FALSE ]
 fD[ , 10, as_fData = FALSE ]
 
 # As default behavior the subset is returned in fData form
-oldpar <- par()
+oldpar <- par(mfrow = c(1, 1))
 par(mfrow = c(1, 2))
 plot(fD, main = "Original dataset", lwd = 2)
 plot(fD[, 1:20], main = "Zooming in", lwd = 2)
@@ -354,7 +354,7 @@ the dots arguments).
   median_fData( fD, type = 'MBD' )
   median_fData( fD, type = 'MHRD' )
 
-  oldpar <- par()
+  oldpar <- par(mfrow = c(1, 1))
   par(mfrow = c(1, 2))
   
   plot(fD, main = "Mean", lwd = 2)

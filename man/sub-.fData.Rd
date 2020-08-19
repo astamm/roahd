@@ -51,7 +51,7 @@ fD = fData( grid,
                                   Cov = C ) )
 
 dev.new()
-oldpar <- par()
+oldpar <- par(mfrow = c(1, 1))
 par(mfrow = c(2, 2))
 
 # Original data

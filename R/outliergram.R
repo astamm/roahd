@@ -325,7 +325,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
     }
 
     dev.cur()
-    oldpar <- par()
+    oldpar <- par(mfrow = c(1, 1))
     on.exit(par(oldpar))
     par(mfrow = c(1, 2))
 

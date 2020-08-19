@@ -60,7 +60,7 @@ mfD = mfData( grid,
 med_mfD = median_mfData( mfD, type = 'multiMBD', weights = 'uniform' )
 
 # Graphical representation of the mean
-oldpar <- par()
+oldpar <- par(mfrow = c(1, 1))
 par(mfrow = c(1, L))
 
 for(iL in 1:L)

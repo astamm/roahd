@@ -119,7 +119,7 @@
 #' fD = fData( grid, D )
 #'
 #' dev.new()
-#' oldpar <- par()
+#' oldpar <- par(mfrow = c(1, 1))
 #' par(mfrow = c(1, 3))
 #'
 #' plot( fD, lwd = 2, main = 'Functional dataset',
@@ -570,7 +570,7 @@ provided in the multivariate version of the functional boxplot' )
     mfrow_rows = ceiling( Data$L / 2 )
     mfrow_cols = 2
 
-    oldpar <- par()
+    oldpar <- par(mfrow = c(1, 1))
     on.exit(par(oldpar))
     par(mfrow = c(mfrow_rows, mfrow_cols))
 

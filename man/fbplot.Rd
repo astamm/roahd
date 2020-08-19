@@ -168,7 +168,7 @@ D = D + rexp(N, rate = 0.05)
 fD = fData( grid, D )
 
 dev.new()
-oldpar <- par()
+oldpar <- par(mfrow = c(1, 1))
 par(mfrow = c(1, 3))
 
 plot( fD, lwd = 2, main = 'Functional dataset',

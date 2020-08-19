@@ -67,7 +67,7 @@ wfD = fData( time_grid, warpings )
 fD_warped = warp( fD, wfD )
 
 dev.new()
-oldpar <- par()
+oldpar <- par(mfrow = c(1, 1))
 par(mfrow = c(1, 3))
 
 plot( fD,

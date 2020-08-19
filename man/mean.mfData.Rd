@@ -48,7 +48,7 @@ mfD = mfData( grid,
 )
 
 # Graphical representation of the mean
-oldpar <- par()
+oldpar <- par(mfrow = c(1, 1))
 par(mfrow = c(1, L))
 
 for(iL in 1:L)
