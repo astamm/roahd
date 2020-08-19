@@ -1,8 +1,18 @@
+## Third resubmission
+
+This is a resubmission. In this version, I have:
+
+* Removed all `\dontrun{}` occurrences or replaced them when execution time exceeded 5 seconds.
+
+* Made sure to reset to user's `options()`, working directory or `par()` after changing them in functions with appropriate `on.exit()` calls.
+
+* Made sure to reset to user's `options()`, working directory or `par()` after changing them in examples and vignettes and demos.
+
 ## Second resubmission
 
-This is a resubmission. In this version I have:
+This is a resubmission. In this version, I have:
 
-* Single quote software names such as 'roahd' in the Description field.
+* Single-quoted software names such as 'roahd' in the Description field.
 
 ## First resubmission
 
