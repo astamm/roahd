@@ -33,7 +33,7 @@ efficiency, so that they can be profitably used also for the analysis of
 high-dimensional datasets.
 
 For a full-featured description of the package, please take a look at the
-[roahd](https://astamm.github.io/roahd/articles/roahd-overview.html) vignette.
+[roahd](https://astamm.github.io/roahd/articles/roahd.html) vignette.
 
 ## Installation
 
