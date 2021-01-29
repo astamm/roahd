@@ -1,8 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-.travis.yml
 codecov.yml
-vignettes/Roahd.html
 ^\.github$
 ^revdep$
 ^cran-comments\.md$
