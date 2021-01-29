@@ -8,3 +8,6 @@ vignettes/Roahd.html
 ^cran-comments\.md$
 ^CRAN-RELEASE$
 ^README\.Rmd$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
