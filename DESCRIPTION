@@ -49,7 +49,10 @@ Imports:
     scales,
     robustbase,
     magrittr,
-    dplyr
+    dplyr,
+    ggplot2,
+    gridExtra,
+    plotly
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
