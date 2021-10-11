@@ -6,7 +6,6 @@
 #' @param limits if TRUE the empirical limits for outlier detection are drawn. Default is FALSE.
 #' @param ids labels for data points.
 #' @param print if TRUE the graphical output is optimized for printed version. Default is FALSE.
-#' @param plotly if TRUE the graphical output is displayed as an interactive plotly object. Default is FALSE.
 #' @param plot.title character with the main title for plot.
 #' @param shorten If labels must be shorten to 15 characters. Default is TRUE.
 #' @param col colors for the plot. Default is NULL.
@@ -27,9 +26,6 @@
 #'
 #' @export
 #'
-#' @import gridExtra ggplot2
-#' @importFrom plotly subplot layout
-#' @importFrom grDevices hcl
 #'
 #' @examples
 #'
@@ -44,7 +40,7 @@
 #' names <- paste0("id_", 1:nrow(Data[[1]]))
 #' DG <- depthGram(Data, marg.out=TRUE, ids=names)
 #' depthGramPlot(DG)
-depthGramPlot <- function(DG, limits=F, ids=NULL, print=F, plotly=F, plot.title="", shorten=T, col = NULL, pch=19, sp=2, st=4, sa=10, text.labels=""){
+depthGramPlot <- function(DG, limits=F, ids=NULL, print=F, plot.title="", shorten=T, col = NULL, pch=19, sp=2, st=4, sa=10, text.labels=""){
 
   n=length(DG$mei.mbd.d)
 
@@ -60,7 +56,7 @@ depthGramPlot <- function(DG, limits=F, ids=NULL, print=F, plotly=F, plot.title=
 
   if(is.null(col)){
     hues = seq(15, 375, length=n+1)
-    color <- grDevices::hcl(h=hues, l=65, c=100)[1:n]
+    color <- hcl(h=hues, l=65, c=100)[1:n]
   }else{
     color=col
   }
@@ -79,13 +75,13 @@ depthGramPlot <- function(DG, limits=F, ids=NULL, print=F, plotly=F, plot.title=
     pch=rep(1,n) #empty circle
     pch[out]=19 #solid circle
     text.labels=rep("",n)
-    if (!plotly){
-      if (shorten){ #shorten text labels
-        text.labels[out]=sapply(ids[out],function(x) substr(x,1,min(15,nchar(x))))
-      }else{
-        text.labels[out]=ids[out]
-      }
+
+    if(shorten){ #shorten text labels
+      text.labels[out]=sapply(ids[out],function(x) substr(x,1,min(15,nchar(x))))
+    }else{
+      text.labels[out]=ids[out]
     }
+
     if(is.null(col)){
       hues = seq(15, 375, length=length(out)+1)
       color.out <- hcl(h=hues, l=65, c=100)[1:length(out)]
@@ -106,45 +102,35 @@ depthGramPlot <- function(DG, limits=F, ids=NULL, print=F, plotly=F, plot.title=
 
     dat=DG[which(DG$type==type[i]),]
 
-    plots[[i]]<- ggplot2::ggplot(dat, aes(x=1-.data$mei.mbd, y=.data$mbd.mei)) +
-      ggplot2::geom_point(aes(x=1-.data$mei.mbd, y=.data$mbd.mei, group=.data$ID),color=color,size=sp,shape=pch) +
-      ggplot2::geom_text(aes(x=1-.data$mei.mbd, y=.data$mbd.mei),label=text.labels,color=color,hjust=-0.15, vjust=-0.15,size=st)+
-      ggplot2::xlim(c(0,1.005))+
-      ggplot2::ylim(c(0,0.525)) +
-      ggplot2::theme_minimal()+
-      ggplot2::theme(axis.title= element_text(size=sa),axis.text= element_text(size=sa-2),title=element_text(size=sa))
+    plots[[i]]<- ggplot(dat, aes(x=1-.data$mei.mbd, y=.data$mbd.mei)) +
+      geom_point(aes(x=1-.data$mei.mbd, y=.data$mbd.mei, group=.data$ID),color=color,size=sp,shape=pch) +
+      geom_text(aes(x=1-.data$mei.mbd, y=.data$mbd.mei),label=text.labels,color=color,hjust=-0.15, vjust=-0.15,size=st)+
+      xlim(c(0,1.005))+
+      ylim(c(0,0.525)) +
+      theme_minimal()+
+      theme(axis.title= element_text(size=sa),axis.text= element_text(size=sa-2),title=element_text(size=sa))
 
     if(limits==TRUE){
-      plots[[i]]<- plots[[i]] + ggplot2::geom_line(aes(x=.data$meis, y=.data$par),col=1,na.rm=T)+
-        ggplot2::geom_line(aes(x=.data$meis, y=.data$par2),col=1,lty=2,na.rm=T)
+      plots[[i]]<- plots[[i]] + geom_line(aes(x=.data$meis, y=.data$par),col=1,na.rm=T)+
+        geom_line(aes(x=.data$meis, y=.data$par2),col=1,lty=2,na.rm=T)
     }
 
     if (i==1){pt<-plot.title}else{pt<-""}
 
-    if (plotly){
-      plots[[i]]<-plots[[i]]+ggplot2::facet_wrap(~.data$type)+ggplot2::ggtitle(pt)
-    }else{
-      if(i<=2){
+    if(i<=2){
         plots[[i]]<-plots[[i]]+
-          ggplot2::labs(title=pt,subtitle=type[i],
+          labs(title=pt,subtitle=type[i],
                         x=expression("1-MEI("~paste(bold('MBD'[d])~")")),
                         y=expression("MBD("~paste(bold('MEI'[d])~")")))
       }else{
         plots[[i]]<-plots[[i]] +
-          ggplot2::labs(title=pt,subtitle=type[i], x=expression("1-MEI("~paste(bold(widetilde(MBD)[t])~")")),
+          labs(title=pt,subtitle=type[i], x=expression("1-MEI("~paste(bold(widetilde(MBD)[t])~")")),
                                       y=expression("MBD("~paste(bold(widetilde(MEI)[t])~")")))
-      }
     }
-
   }
 
-  if(plotly){
-    p<-plotly::subplot(plots,shareY = TRUE,shareX =TRUE)%>%
-       plotly::layout(title = plot.title, yaxis = list(title="MBD(MEI)"), xaxis = list(title="1-MEI(MBD)"))
-    print(p)
-  }else{
-    p<-do.call(gridExtra::grid.arrange, c(plots,nrow=1))
-  }
+
+  p<-do.call(gridExtra::grid.arrange, c(plots,nrow=1))
 
   return(list(p=list(dimDG = plots[[1]], timeDG = plots[[2]], corrDG = plots[[3]], fullDG = p), out=out, color=color))
 }
