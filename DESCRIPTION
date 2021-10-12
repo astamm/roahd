@@ -51,9 +51,9 @@ Imports:
     magrittr,
     dplyr,
     ggplot2,
-    gridExtra
+    plotly
 VignetteBuilder: knitr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
 URL: https://astamm.github.io/roahd/, https://github.com/astamm/roahd
 BugReports: https://github.com/astamm/roahd/issues
