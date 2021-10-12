@@ -8,5 +8,8 @@
 #'
 #' @docType package
 #' @name roahd
+#'
+#' @import ggplot2
+#'
 NULL
 #> NULL

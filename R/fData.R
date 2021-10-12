@@ -1,4 +1,3 @@
-
 #' \code{S3} Class for univariate functional datasets.
 #'
 #'  This function implements a constructor for elements of \code{S3} class
