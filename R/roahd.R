@@ -10,7 +10,6 @@
 #' @name roahd
 #'
 #' @import ggplot2
-#' @importFrom plotly subplot layout
 #'
 NULL
 #> NULL
