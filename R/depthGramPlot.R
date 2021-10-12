@@ -17,7 +17,7 @@
 #'
 #' @return A list with the following items:
 #' \itemize{
-#' \item p - list with all the depthGram plots.
+#' \item p - list with all the interactive (plotly) depthGram plots.
 #' \item out - outliers detected.
 #' \item colors - used colors for plotting.
 #' }
@@ -25,7 +25,6 @@
 #' @references Aleman-Gomez, Y., Arribas-Gil, A., Desco, M. Elias-Fernandez, A., and Romo, J. (2021). "Depthgram: Visualizing Outliers in High Dimensional Functional Data with application to Task fMRI data exploration". <arXiv:2103.08874>
 #'
 #' @export
-#'
 #'
 #' @examples
 #'
@@ -56,7 +55,7 @@ depthGramPlot <- function(DG, limits=F, ids=NULL, print=F, plot.title="", shorte
 
   if(is.null(col)){
     hues = seq(15, 375, length=n+1)
-    color <- hcl(h=hues, l=65, c=100)[1:n]
+    color <- grDevices::hcl(h=hues, l=65, c=100)[1:n]
   }else{
     color=col
   }
@@ -75,20 +74,15 @@ depthGramPlot <- function(DG, limits=F, ids=NULL, print=F, plot.title="", shorte
     pch=rep(1,n) #empty circle
     pch[out]=19 #solid circle
     text.labels=rep("",n)
-
-    if(shorten){ #shorten text labels
-      text.labels[out]=sapply(ids[out],function(x) substr(x,1,min(15,nchar(x))))
-    }else{
-      text.labels[out]=ids[out]
-    }
+    text.labels[out]=ids[out]
 
     if(is.null(col)){
       hues = seq(15, 375, length=length(out)+1)
-      color.out <- hcl(h=hues, l=65, c=100)[1:length(out)]
+      color.out <- grDevices::hcl(h=hues, l=65, c=100)[1:length(out)]
       color<-rep(8,n)
       color[out]<-color.out
+      }
     }
-  }
 
   if(print){
     sp=3
@@ -116,21 +110,14 @@ depthGramPlot <- function(DG, limits=F, ids=NULL, print=F, plot.title="", shorte
     }
 
     if (i==1){pt<-plot.title}else{pt<-""}
+    plots[[i]]<-plots[[i]]+facet_wrap(~.data$type)+ggtitle(pt)
 
-    if(i<=2){
-        plots[[i]]<-plots[[i]]+
-          labs(title=pt,subtitle=type[i],
-                        x=expression("1-MEI("~paste(bold('MBD'[d])~")")),
-                        y=expression("MBD("~paste(bold('MEI'[d])~")")))
-      }else{
-        plots[[i]]<-plots[[i]] +
-          labs(title=pt,subtitle=type[i], x=expression("1-MEI("~paste(bold(widetilde(MBD)[t])~")")),
-                                      y=expression("MBD("~paste(bold(widetilde(MEI)[t])~")")))
-    }
   }
 
+  p<-plotly::subplot(plots,shareY = TRUE,shareX =TRUE)%>%
+     plotly::layout(title = plot.title, yaxis = list(title="MBD(MEI)"), xaxis = list(title="1-MEI(MBD)"))
 
-  p<-do.call(gridExtra::grid.arrange, c(plots,nrow=1))
+  print(p)
 
   return(list(p=list(dimDG = plots[[1]], timeDG = plots[[2]], corrDG = plots[[3]], fullDG = p), out=out, color=color))
 }

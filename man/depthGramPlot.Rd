@@ -9,7 +9,6 @@ depthGramPlot(
   limits = F,
   ids = NULL,
   print = F,
-  plotly = F,
   plot.title = "",
   shorten = T,
   col = NULL,
@@ -28,8 +27,6 @@ depthGramPlot(
 \item{ids}{labels for data points.}
 
 \item{print}{if TRUE the graphical output is optimized for printed version. Default is FALSE.}
-
-\item{plotly}{if TRUE the graphical output is displayed as an interactive plotly object. Default is FALSE.}
 
 \item{plot.title}{character with the main title for plot.}
 
@@ -50,7 +47,7 @@ depthGramPlot(
 \value{
 A list with the following items:
 \itemize{
-\item p - list with all the depthGram plots.
+\item p - list with all the interactive (plotly) depthGram plots.
 \item out - outliers detected.
 \item colors - used colors for plotting.
 }
