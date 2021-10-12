@@ -118,8 +118,8 @@ depthGram<- function(Data,marg.out=FALSE,FB=1.5,FO=1.5,ids=NULL){
 
   ##### MEI of MBD and MBD of MEI across dimensions
 
-  mei.mbd.d<-roahd::MEI(mbd.d) #managing ties
-  mbd.mei.d<-roahd::MBD(mei.d)
+  mei.mbd.d<-MEI(mbd.d) #managing ties
+  mbd.mei.d<-MBD(mei.d)
 
   ########################
   # Time-wise
@@ -154,10 +154,10 @@ depthGram<- function(Data,marg.out=FALSE,FB=1.5,FO=1.5,ids=NULL){
   }
 
   ##### MEI of MBD and MBD of MEI across time-points (original and corrected data sets)
-  mei.mbd.t<-roahd::MEI(mbd.t)
-  mei.mbd.t2<-roahd::MEI(mbd.t2)
-  mbd.mei.t<-roahd::MBD(mei.t)
-  mbd.mei.t2<-roahd::MBD(mei.t2)
+  mei.mbd.t<-MEI(mbd.t)
+  mei.mbd.t2<-MEI(mbd.t2)
+  mbd.mei.t<-MBD(mei.t)
+  mbd.mei.t2<-MBD(mei.t2)
 
   ##### RETURN
   list.return<- list(mbd.mei.d=mbd.mei.d,mei.mbd.d=mei.mbd.d,
