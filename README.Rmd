@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
 [![codecov](https://codecov.io/gh/astamm/roahd/branch/master/graph/badge.svg)](https://codecov.io/gh/astamm/roahd)
 [![pkgdown](https://github.com/astamm/roahd/workflows/pkgdown/badge.svg)](https://github.com/astamm/roahd/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/roahd)](https://CRAN.R-project.org/package=roahd)
+[![downloads](https://cranlogs.r-pkg.org/badges/roahd)](https://cran.r-project.org/package=roahd)
 <!-- badges: end -->
 
 The __roahd__ (_Robust Analysis of High-dimensional Data_) package allows to use

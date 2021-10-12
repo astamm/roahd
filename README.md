@@ -11,6 +11,7 @@
 [![pkgdown](https://github.com/astamm/roahd/workflows/pkgdown/badge.svg)](https://github.com/astamm/roahd/actions)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/roahd)](https://CRAN.R-project.org/package=roahd)
+[![downloads](https://cranlogs.r-pkg.org/badges/roahd)](https://cran.r-project.org/package=roahd)
 <!-- badges: end -->
 
 The **roahd** (*Robust Analysis of High-dimensional Data*) package
@@ -140,7 +141,7 @@ corresponding R Journal article:
       Package: Robust Analysis of High Dimensional Data. The R Journal,
       11(2), pp. 291-307.
 
-    A BibTeX entry for LaTeX users is
+    Une entrée BibTeX pour les utilisateurs LaTeX est
 
       @Article{,
         title = {{roahd Package: Robust Analysis of High Dimensional Data}},
