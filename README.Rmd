@@ -13,12 +13,12 @@ knitr::opts_chunk$set(
 )
 ```
 
-# roahd <a href='https://astamm.github.io/roahd'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# roahd <a href='https://astamm.github.io/roahd/'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 [![check-standard](https://github.com/astamm/roahd/workflows/R-CMD-check/badge.svg)](https://github.com/astamm/roahd/actions)
 [![test-coverage](https://github.com/astamm/roahd/workflows/test-coverage/badge.svg)](https://github.com/astamm/roahd/actions)
-[![codecov](https://codecov.io/gh/astamm/roahd/branch/master/graph/badge.svg)](https://codecov.io/gh/astamm/roahd)
+[![codecov](https://codecov.io/gh/astamm/roahd/branch/master/graph/badge.svg)](https://app.codecov.io/gh/astamm/roahd)
 [![pkgdown](https://github.com/astamm/roahd/workflows/pkgdown/badge.svg)](https://github.com/astamm/roahd/actions)
 [![CRAN status](https://www.r-pkg.org/badges/version/roahd)](https://CRAN.R-project.org/package=roahd)
 [![downloads](https://cranlogs.r-pkg.org/badges/roahd)](https://cran.r-project.org/package=roahd)

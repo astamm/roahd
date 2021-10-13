@@ -2,7 +2,7 @@
 % Please edit documentation in R/outliergram.R
 \name{outliergram}
 \alias{outliergram}
-\title{Outliergram for univariate functional datasets}
+\title{Outliergram for univariate functional data sets}
 \usage{
 outliergram(
   fData,
@@ -97,7 +97,7 @@ list containing:
 \item{\code{ID_outliers}}{: the vector of observations id corresponding to outliers.}}
 }
 \description{
-This function performs the outliergram of a univariate functional dataset,
+This function performs the outliergram of a univariate functional data set,
 possibly with an adjustment of the true positive rate of outliers discovered
 under assumption of gaussianity.
 }

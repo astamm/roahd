@@ -1,13 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# roahd <a href='https://astamm.github.io/roahd'><img src='man/figures/logo.png' align="right" height="139" /></a>
+# roahd <a href='https://astamm.github.io/roahd/'><img src='man/figures/logo.png' align="right" height="139" /></a>
 
 <!-- badges: start -->
 
 [![check-standard](https://github.com/astamm/roahd/workflows/R-CMD-check/badge.svg)](https://github.com/astamm/roahd/actions)
 [![test-coverage](https://github.com/astamm/roahd/workflows/test-coverage/badge.svg)](https://github.com/astamm/roahd/actions)
-[![codecov](https://codecov.io/gh/astamm/roahd/branch/master/graph/badge.svg)](https://codecov.io/gh/astamm/roahd)
+[![codecov](https://codecov.io/gh/astamm/roahd/branch/master/graph/badge.svg)](https://app.codecov.io/gh/astamm/roahd)
 [![pkgdown](https://github.com/astamm/roahd/workflows/pkgdown/badge.svg)](https://github.com/astamm/roahd/actions)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/roahd)](https://CRAN.R-project.org/package=roahd)
@@ -141,7 +141,7 @@ corresponding R Journal article:
       Package: Robust Analysis of High Dimensional Data. The R Journal,
       11(2), pp. 291-307.
 
-    Une entrée BibTeX pour les utilisateurs LaTeX est
+    A BibTeX entry for LaTeX users is
 
       @Article{,
         title = {{roahd Package: Robust Analysis of High Dimensional Data}},

@@ -1,7 +1,7 @@
 Package: roahd
 Type: Package
 Title: Robust Analysis of High Dimensional Data
-Version: 1.4.2.9000
+Version: 1.4.3
 Authors@R: c( 
     person(given = "Nicholas", 
            family = "Tarabelloni", 
@@ -31,12 +31,16 @@ Authors@R: c(
            family = "Stamm",
            role = c("ctb", "cre"), 
            email = "aymeric.stamm@math.cnrs.fr",
-           comment = c(ORCID = "0000-0002-8725-3654")))
+           comment = c(ORCID = "0000-0002-8725-3654")),
+    person(given = "Antonio",
+           family = "Elias-Fernandez",
+           role = "ctb"))
 Description: A collection of methods for the robust analysis of univariate and
     multivariate functional data, possibly in high-dimensional cases, and hence
     with attention to computational efficiency and simplicity of use. See the R 
     Journal publication of Ieva et al. (2019) <doi:10.32614/RJ-2019-032> for an 
-    in-depth presentation of the 'roahd' package.
+    in-depth presentation of the 'roahd' package. See Aleman-Gomez et al. (2021) 
+    <arXiv:2103.08874> for details about the concept of depthgram.
 Depends: R (>= 2.10)
 License: GPL-3
 Encoding: UTF-8

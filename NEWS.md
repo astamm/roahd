@@ -11,7 +11,7 @@
 release and the development version of R.
 * Setup automatic deployment of a [website](https://astamm.github.io/roahd/) for
 the package that references a package introduction, its help and all vignettes.
-* Setup automatic computation of [test coverage](https://codecov.io) and
+* Setup automatic computation of [test coverage](https://about.codecov.io/) and
 report to both the [Github page](https://github.com/astamm/roahd) and
 [website](https://astamm.github.io/roahd/) of the package.
 * Added CRAN status badge to `README`.
@@ -126,7 +126,7 @@ for either univariate or multivariate functional data. Implemented the `S3` clas
 * Fixed typos in documentation.
 * Fixed typos in vignette.
 * Added [Travis](https://travis-ci.org/ntarabelloni/roahd) and
-[Codecov](https://codecov.io/gh/ntarabelloni/roahd) support.
+[Codecov](https://app.codecov.io/gh/ntarabelloni/roahd) support.
 * Modified the default parameter value for `trial_size` in `fbplot` from
 `Data$N` to `8 * Data$N`.
 * Added check to `fbplot` and `outliergram` that raises warnings when parameters

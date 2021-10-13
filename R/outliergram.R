@@ -1,6 +1,6 @@
-#' Outliergram for univariate functional datasets
+#' Outliergram for univariate functional data sets
 #'
-#' This function performs the outliergram of a univariate functional dataset,
+#' This function performs the outliergram of a univariate functional data set,
 #' possibly with an adjustment of the true positive rate of outliers discovered
 #' under assumption of gaussianity.
 #'
