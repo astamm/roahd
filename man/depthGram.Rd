@@ -2,6 +2,9 @@
 % Please edit documentation in R/depthgram.R
 \name{depthgram}
 \alias{depthgram}
+\alias{depthgram.default}
+\alias{depthgram.fData}
+\alias{depthgram.mfData}
 \title{Depthgram for univariate and multivariate functional data sets}
 \usage{
 depthgram(
@@ -11,10 +14,36 @@ depthgram(
   outliergram_factor = 1.5,
   ids = NULL
 )
+
+\method{depthgram}{default}(
+  Data,
+  marginal_outliers = FALSE,
+  boxplot_factor = 1.5,
+  outliergram_factor = 1.5,
+  ids = NULL
+)
+
+\method{depthgram}{fData}(
+  Data,
+  marginal_outliers = FALSE,
+  boxplot_factor = 1.5,
+  outliergram_factor = 1.5,
+  ids = NULL
+)
+
+\method{depthgram}{mfData}(
+  Data,
+  marginal_outliers = FALSE,
+  boxplot_factor = 1.5,
+  outliergram_factor = 1.5,
+  ids = NULL
+)
 }
 \arguments{
-\item{Data}{A \code{\link[base]{list}} of length \code{p} (number of coordinates).
-Each element is an \verb{n x N} matrix with \code{n} individuals and \code{N} time points.}
+\item{Data}{A \code{\link[base]{list}} of length \code{L} (number of components)
+in which each element is an \verb{N x P} matrix with \code{N} individuals and \code{P}
+time points. Alternatively, it can also be an object of class
+\code{\link{fData}} or of class \code{\link{mfData}}.}
 
 \item{marginal_outliers}{A boolean specifying whether the function should
 return shape and amplitude outliers over each dimension. Defaults to
@@ -73,12 +102,16 @@ Data[[2]] <- generate_gauss_fdata(
 )
 names <- paste0("id_", 1:nrow(Data[[1]]))
 
-DG <- depthgram(Data, marginal_outliers = TRUE, ids = names)
+DG1 <- depthgram(Data, marginal_outliers = TRUE, ids = names)
+
+fD <- fData(grid, Data[[1]])
+DG2 <- depthgram(fD, marginal_outliers = TRUE, ids = names)
+
+mfD <- mfData(grid, Data)
+DG3 <- depthgram(mfD, marginal_outliers = TRUE, ids = names)
 }
 \references{
-\itemize{
-\item Aleman-Gomez, Y., Arribas-Gil, A., Desco, M. Elias-Fernandez, A., and Romo,
+Aleman-Gomez, Y., Arribas-Gil, A., Desco, M. Elias-Fernandez, A., and Romo,
 J. (2021). "Depthgram: Visualizing Outliers in High Dimensional Functional
 Data with application to Task fMRI data exploration".
-}
 }

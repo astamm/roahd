@@ -98,9 +98,7 @@ DG <- depthgram(Data, marginal_outliers = TRUE, ids = names)
 plot(DG)
 }
 \references{
-\itemize{
-\item Aleman-Gomez, Y., Arribas-Gil, A., Desco, M. Elias-Fernandez, A., and Romo,
+Aleman-Gomez, Y., Arribas-Gil, A., Desco, M. Elias-Fernandez, A., and Romo,
 J. (2021). "Depthgram: Visualizing Outliers in High Dimensional Functional
 Data with application to Task fMRI data exploration".
-}
 }

@@ -3,8 +3,10 @@
 #' This function computes the three 'DepthGram' representations from a p-variate
 #' functional data set.
 #'
-#' @param Data A \code{\link[base]{list}} of length `p` (number of coordinates).
-#'   Each element is an `n x N` matrix with `n` individuals and `N` time points.
+#' @param Data A \code{\link[base]{list}} of length `L` (number of components)
+#'   in which each element is an `N x P` matrix with `N` individuals and `P`
+#'   time points. Alternatively, it can also be an object of class
+#'   \code{\link{fData}} or of class \code{\link{mfData}}.
 #' @param marginal_outliers A boolean specifying whether the function should
 #'   return shape and amplitude outliers over each dimension. Defaults to
 #'   `FALSE`.
@@ -36,7 +38,7 @@
 #' - `mei.t2`: matrix `n x p` of MBD time/correlation-wise.
 #'
 #' @references
-#' - Aleman-Gomez, Y., Arribas-Gil, A., Desco, M. Elias-Fernandez, A., and Romo,
+#' Aleman-Gomez, Y., Arribas-Gil, A., Desco, M. Elias-Fernandez, A., and Romo,
 #' J. (2021). "Depthgram: Visualizing Outliers in High Dimensional Functional
 #' Data with application to Task fMRI data exploration".
 #'
@@ -61,12 +63,28 @@
 #' )
 #' names <- paste0("id_", 1:nrow(Data[[1]]))
 #'
-#' DG <- depthgram(Data, marginal_outliers = TRUE, ids = names)
+#' DG1 <- depthgram(Data, marginal_outliers = TRUE, ids = names)
+#'
+#' fD <- fData(grid, Data[[1]])
+#' DG2 <- depthgram(fD, marginal_outliers = TRUE, ids = names)
+#'
+#' mfD <- mfData(grid, Data)
+#' DG3 <- depthgram(mfD, marginal_outliers = TRUE, ids = names)
 depthgram <- function(Data,
                       marginal_outliers = FALSE,
                       boxplot_factor = 1.5,
                       outliergram_factor = 1.5,
                       ids = NULL) {
+  UseMethod("depthgram", Data)
+}
+
+#' @rdname depthgram
+#' @export
+depthgram.default <- function(Data,
+                              marginal_outliers = FALSE,
+                              boxplot_factor = 1.5,
+                              outliergram_factor = 1.5,
+                              ids = NULL) {
   p <- length(Data)
   n <- nrow(Data[[1]])
   N <- ncol(Data[[1]])
@@ -112,7 +130,8 @@ depthgram <- function(Data,
     mei.d[, i] <- rowSums(up + 1) / (n * N)
     # MEI correlation between i and i-1 dimensions
     if (i > 1)
-      corr.mei[i] <- corr.mei[i-1] * sign(cor(mei.d[, i], mei.d[, i - 1]))
+      corr.mei[i] <- corr.mei[i - 1] * sign(cor(mei.d[, i], mei.d[, i - 1]))
+
     if (corr.mei[i] == -1)
       wp <- c(wp, i)
 
@@ -161,6 +180,8 @@ depthgram <- function(Data,
   for (i in 1:N) { ### Over time points
     # Getting observation ranks at time-point i
     rmat <- rmat.mat[, i, ]
+    if (is.null(dim(rmat)))
+      rmat <- matrix(rmat, ncol = 1)
     # MBD and MEI computation on time-point i
     down <- rmat - 1
     up <- n - rmat
@@ -223,6 +244,38 @@ depthgram <- function(Data,
   res
 }
 
+#' @rdname depthgram
+#' @export
+depthgram.fData <- function(Data,
+                            marginal_outliers = FALSE,
+                            boxplot_factor = 1.5,
+                            outliergram_factor = 1.5,
+                            ids = NULL) {
+  depthgram(
+    Data = list(Data$values),
+    marginal_outliers = marginal_outliers,
+    boxplot_factor = boxplot_factor,
+    outliergram_factor = outliergram_factor,
+    ids = ids
+  )
+}
+
+#' @rdname depthgram
+#' @export
+depthgram.mfData <- function(Data,
+                             marginal_outliers = FALSE,
+                             boxplot_factor = 1.5,
+                             outliergram_factor = 1.5,
+                             ids = NULL) {
+  depthgram(
+    Data = toListOfValues(Data),
+    marginal_outliers = marginal_outliers,
+    boxplot_factor = boxplot_factor,
+    outliergram_factor = outliergram_factor,
+    ids = ids
+  )
+}
+
 #' Specialized method to plot 'depthgram' objects
 #'
 #' This function plots the three 'DepthGram' representations from the output of
@@ -266,7 +319,7 @@ depthgram <- function(Data,
 #' - `colors`: used colors for plotting.
 #'
 #' @references
-#' - Aleman-Gomez, Y., Arribas-Gil, A., Desco, M. Elias-Fernandez, A., and Romo,
+#' Aleman-Gomez, Y., Arribas-Gil, A., Desco, M. Elias-Fernandez, A., and Romo,
 #' J. (2021). "Depthgram: Visualizing Outliers in High Dimensional Functional
 #' Data with application to Task fMRI data exploration".
 #'
@@ -306,7 +359,8 @@ plot.depthgram <- function(x,
 
   type <- c(
     "Dimensions DepthGram",
-    "Time DepthGram", "Time/Correlation DepthGram"
+    "Time DepthGram",
+    "Time/Correlation DepthGram"
   )
 
   if (is.null(ids)) ids <- as.character(1:n)
@@ -332,7 +386,7 @@ plot.depthgram <- function(x,
       a2 <- -n / (2 * (n - 1))
       a0 + x + a2*x^2
     }
-    meis <- seq(0,1, n)
+    meis <- seq(0, 1, n)
     x$meis <- rep(meis, 3)
     x$par <- P2(x$meis, n)
     distp <- x$mbd.mei - P2(1 - x$mei.mbd, n)
@@ -391,7 +445,7 @@ plot.depthgram <- function(x,
     if (i == 1)
       pt <- plot_title
     else
-      pt <-""
+      pt <- ""
 
     plots[[i]] <- plots[[i]] +
       facet_wrap(~ .data$type) +
