@@ -101,8 +101,6 @@ exp_cov_function = function( grid, alpha, beta )
 #'
 #' invisible(generate_gauss_fdata( N, centerline, CholCov = CholC ))
 #'
-#' @importFrom stats rnorm
-#'
 #' @export
 generate_gauss_fdata = function( N, centerline,
                                  Cov = NULL, CholCov = NULL )
@@ -134,7 +132,7 @@ to generate_gauss_fdata\n')
       CholCov = chol( Cov )
       }
 
-  return( t( t( matrix( rnorm( N * P ),
+  return( t( t( matrix( stats::rnorm( N * P ),
                   nrow = N,
                   ncol = P ) %*% CholCov ) + centerline ) )
 }
@@ -295,7 +293,7 @@ matrices to generate_gauss_mfdata')
   R_chol = chol( R )
 
   # Generating gaussian data with correlations among dimensions
-  Data = matrix( rnorm( N * L * P ), ncol = L, nrow = N * P )
+  Data = matrix( stats::rnorm( N * L * P ), ncol = L, nrow = N * P )
 
   Data = Data %*% R_chol
 

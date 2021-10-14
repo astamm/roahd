@@ -91,16 +91,14 @@ toRowMatrixForm = function( D )
 #'
 #' par(oldpar)
 #'
-#' @importFrom grDevices col2rgb rgb
-#'
 #' @export
 set_alpha = function( col, alpha )
 {
   alpha = alpha * 255
 
-  rgb_colors = rbind( col2rgb( col ), alpha = alpha )
+  rgb_colors = rbind( grDevices::col2rgb( col ), alpha = alpha )
 
-  return( apply( rgb_colors, 2, function( x )( rgb( x[ 1 ],
+  return( apply( rgb_colors, 2, function( x )( grDevices::rgb( x[ 1 ],
                                                     x[ 2 ],
                                                     x[ 3 ],
                                                     x[ 4 ],

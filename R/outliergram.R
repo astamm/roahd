@@ -160,12 +160,6 @@
 #' )
 #' }
 #'
-#' @importFrom grDevices dev.set dev.cur
-#' @importFrom stats cor pnorm rnorm qnorm uniroot
-#' @importFrom graphics text lines polygon plot points matplot par
-#' @importFrom dplyr filter group_by summarize
-#' @importFrom magrittr %>%
-#'
 #' @export
 outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
                         Fvalue = 1.5,
@@ -210,7 +204,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
                          adjust$trial_size )
 
     TPR = ifelse( is.null( adjust$TPR ),
-                  2 * pnorm( 4 * qnorm( 0.25 ) ),
+                  2 * stats::pnorm( 4 * stats::qnorm( 0.25 ) ),
                   adjust$TPR )
 
     F_min = ifelse( is.null( adjust$F_min ),
@@ -270,10 +264,12 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
         cat( ' * * * * beginning optimization\n' )
       }
 
-      opt = uniroot( obj_function,
-                     interval = c( F_min, F_max ),
-                     tol = tol,
-                     maxiter = maxiter )
+      opt = stats::uniroot(
+        obj_function,
+        interval = c( F_min, F_max ),
+        tol = tol,
+        maxiter = maxiter
+      )
 
       Fvalues[ iTrial ] = opt$root
     }
@@ -324,26 +320,26 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 
     }
 
-    dev.cur()
-    oldpar <- par(mfrow = c(1, 1))
-    on.exit(par(oldpar))
-    par(mfrow = c(1, 2))
+    grDevices::dev.cur()
+    oldpar <- graphics::par(mfrow = c(1, 1))
+    on.exit(graphics::par(oldpar))
+    graphics::par(mfrow = c(1, 2))
 
     # Plotting functional data
     if( length( out$ID_SO ) > 0 )
     {
-      matplot( grid, t( fData$values[ - out$ID_SO, ] ), type = 'l', lty = 1,
+      graphics::matplot( grid, t( fData$values[ - out$ID_SO, ] ), type = 'l', lty = 1,
                ylim = range( fData$values ),
                col = col_non_outlying,
                xlab = xlab[[1]],
                ylab = ylab[[1]],
                main = main[[1]],
                ... )
-      matplot( grid, t( toRowMatrixForm( fData$values[ out$ID_SO, ] ) ),
+      graphics::matplot( grid, t( toRowMatrixForm( fData$values[ out$ID_SO, ] ) ),
                type = 'l', lty = 1, lwd = 3, ylim = range( fData$values ),
                col = col_outlying, add = TRUE )
     } else {
-      matplot( grid, t( fData$values ), type = 'l', lty = 1,
+      graphics::matplot( grid, t( fData$values ), type = 'l', lty = 1,
                ylim = range( fData$values ),
                col = col_non_outlying,
                xlab = xlab[[1]],
@@ -358,7 +354,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 
     for( iOut in seq_along( out$ID_SO ) )
     {
-      text( grid[ 1 ] + ( 2 * iOut - 1 ) * w_spacing,
+      graphics::text( grid[ 1 ] + ( 2 * iOut - 1 ) * w_spacing,
             fData$values[ out$ID_SO[ iOut ],
                   which.min( abs( grid - grid[ 1 ] -
                                     ( 2 * iOut - 1 ) * w_spacing ) ) ] +
@@ -372,7 +368,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
     # Upper parabolic limit
     grid_1D = seq( 0, 1, length.out = 100 )
 
-    plot( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2,
+    graphics::plot( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2,
           lty = 2, type = 'l', col = 'darkblue', lwd = 2,
           ylim = c( 0, a_0_2 + a_1 / 2 + a_0_2 * N^2/4 ),
           xlab = xlab[[2]],
@@ -381,24 +377,24 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 
     if( length( out$ID_SO ) > 0 )
     {
-      points( out$MEI_data[ - out$ID_SO ], out$MBD_data[ - out$ID_SO ],
+      graphics::points( out$MEI_data[ - out$ID_SO ], out$MBD_data[ - out$ID_SO ],
               pch = 16, col = col_non_outlying )
-      points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ],
+      graphics::points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ],
               pch = 16, cex = 1.5, col = col_outlying )
       for( idOut in out$ID_SO )
       {
-        text( out$MEI_data[ idOut ],
+        graphics::text( out$MEI_data[ idOut ],
               out$MBD_data[ idOut ] + 0.5 / 30,
               idOut,
               col = col_outlying[ match( idOut, out$ID_SO ) ] )
       }
     } else {
-      points( out$MEI_data, out$MBD_data,
+      graphics::points( out$MEI_data, out$MBD_data,
               pch = 16, col = col_non_outlying )
     }
 
     # lower parabolic limit
-    lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
+    graphics::lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
              out$Q_d3 - Fvalue * out$IQR_d,
            lty = 2, lwd = 2, col = 'lightblue' )
   }
@@ -432,7 +428,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 
   d = a_0_2 + a_1 * MEI_data + N^2 * a_0_2 * MEI_data^2 - MBD_data
 
-  Q = quantile( d )
+  Q = stats::quantile( d )
 
   Q_d3 = Q[ 4 ]
 
@@ -451,13 +447,13 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
     # Low MEI curves will be checked for upward shift
       ID_non_outlying_Low_MEI = ID_non_outlying[
         which( MEI_data[ - ID_shape_outlier ] <=
-                 quantile( MEI_data,
+                 stats::quantile( MEI_data,
                            probs = p_check ) ) ]
 
       # High MEI curves will be checked for downward shift
       ID_non_outlying_High_MEI = ID_non_outlying[
         which( MEI_data[ - ID_shape_outlier ] >=
-                 quantile( MEI_data, probs = 1 - p_check ) ) ]
+                 stats::quantile( MEI_data, probs = 1 - p_check ) ) ]
 
 
       # Manage high MEI data
@@ -592,9 +588,6 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 #' dev.new()
 #' plot(mfD, col=colors, lwd=lwd)
 #'
-#' @importFrom dplyr filter group_by summarize
-#' @importFrom magrittr %>%
-#'
 #' @export
 multivariate_outliergram = function( mfData,
                                      MBD_data = NULL,
@@ -651,12 +644,12 @@ multivariate_outliergram = function( mfData,
                                       c = 150 )( 1 )
     }
 
-    dev.cur()
+    grDevices::dev.cur()
     # Plotting outliergram
     ## Upper parabolic limit
     grid_1D = seq( 0, 1, length.out = 100 )
 
-    plot( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2,
+    graphics::plot( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2,
           lty = 2, type = 'l', col = 'darkblue', lwd = 2,
           ylim = c( 0, a_0_2 + a_1 / 2 + a_0_2 * N^2/4 ),
           xlab = xlab,
@@ -665,24 +658,24 @@ multivariate_outliergram = function( mfData,
 
     if( length( out$ID_SO ) > 0 )
     {
-      points( out$MEI_data[ - out$ID_SO ], out$MBD_data[ - out$ID_SO ],
+      graphics::points( out$MEI_data[ - out$ID_SO ], out$MBD_data[ - out$ID_SO ],
               pch = 16, col = col_non_outlying )
-      points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ],
+      graphics::points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ],
               pch = 16, cex = 1.5, col = col_outlying )
       for( idOut in out$ID_SO )
       {
-        text( out$MEI_data[ idOut ],
+        graphics::text( out$MEI_data[ idOut ],
               out$MBD_data[ idOut ] + 0.5 / 30,
               idOut,
               col = col_outlying[ match( idOut, out$ID_SO ) ] )
       }
     } else {
-      points( out$MEI_data, out$MBD_data,
+      graphics::points( out$MEI_data, out$MBD_data,
               pch = 16, col = col_non_outlying )
     }
 
     # lower parabolic limit
-      lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
+    graphics::lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
                out$Q_d3 - Fvalue * out$IQR_d,
              lty = 2, lwd = 2, col = 'lightblue' )
   }
@@ -713,7 +706,7 @@ multivariate_outliergram = function( mfData,
 
   d = a_0_2 + a_1 * MEI_data + N^2 * a_0_2 * MEI_data^2 - MBD_data
 
-  Q = quantile( d )
+  Q = stats::quantile( d )
 
   Q_d3 = Q[ 4 ]
 
@@ -734,13 +727,13 @@ multivariate_outliergram = function( mfData,
       # Low MEI curves will be checked for upward shift
       ID_non_outlying_Low_MEI = ID_non_outlying[
         which( MEI_data[ - ID_shape_outlier ] <=
-                 quantile( MEI_data,
+                 stats::quantile( MEI_data,
                            probs = p_check ) ) ]
 
       # High MEI curves will be checked for downward shift
       ID_non_outlying_High_MEI = ID_non_outlying[
         which( MEI_data[ - ID_shape_outlier ] >=
-                 quantile( MEI_data, probs = 1 - p_check ) ) ]
+                 stats::quantile( MEI_data, probs = 1 - p_check ) ) ]
 
 
       # Manage high MEI data

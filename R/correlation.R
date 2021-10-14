@@ -521,7 +521,7 @@ cor_spearman = function( mfD, ordering = 'MEI' )
     # rk_2 = MHI( mfD$fDList[[ 2 ]]$values )
   }
 
-  cor_output = cor(rks, method='pearson')
+  cor_output = stats::cor(rks, method='pearson')
 
   if( mfD$L == 2 )
   {

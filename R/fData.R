@@ -175,7 +175,7 @@ plot.fData = function( x, ... )
                         xlab = '', ylab = '', main = '',
                         ... )
 {
-  matplot( seq( x$t0, x$tP, length.out = x$P ),
+  graphics::matplot( seq( x$t0, x$tP, length.out = x$P ),
            t( x$values ), type = type, lty = lty,
            col = col, xlab = xlab, ylab = ylab, main = main, ... )
 }
@@ -410,9 +410,9 @@ plot.mfData = function( x, ... )
     mfrow_rows <- floor(sqrt(x$L))
     mfrow_cols <- ceiling(x$L / floor(sqrt(x$L)))
 
-    oldpar <- par(mfrow = c(1, 1))
-    on.exit(par(oldpar))
-    par(mfrow = c(mfrow_rows, mfrow_cols))
+    oldpar <- graphics::par(mfrow = c(1, 1))
+    on.exit(graphics::par(oldpar))
+    graphics::par(mfrow = c(mfrow_rows, mfrow_cols))
   }
 
   if( ! is.null( ylab ) )
@@ -944,8 +944,6 @@ cov_fun = function( X, Y = NULL )
 }
 
 #' @rdname cov_fun
-#'
-#' @importFrom stats cov
 #' @export
 cov_fun.fData = function( X, Y = NULL )
 {
@@ -1107,7 +1105,6 @@ cov_fun.mfData = function( X, Y = NULL )
 #'
 #' plot( cov_fun( fD1 ), main = 'Covariance function', xlab = 'time', ylab = 'time' )
 #'
-#' @importFrom graphics image
 #' @export
 plot.Cov = function( x, ... )
 {
@@ -1597,8 +1594,6 @@ unfold = function( fData )
 #'
 #' par(oldpar)
 #'
-#' @importFrom stats approx
-#'
 #' @export
 warp = function( fData, warpings )
 {
@@ -1627,11 +1622,13 @@ observations' )
                       length.out = warpings$P ),
                  t( sapply( 1 : fData$N,
                             function( i )(
-                              approx( time_grid,
-                                      fData$values[ i, ],
-                                      xout = warpings$values[ i, ],
-                                      yright = fData$values[ i, fData$P ],
-                                      yleft = fData$values[ i, 1 ] )$y ) ) ) ) )
+                              stats::approx(
+                                time_grid,
+                                fData$values[i,],
+                                xout = warpings$values[i,],
+                                yright = fData$values[i, fData$P],
+                                yleft = fData$values[i, 1]
+                              )$y ) ) ) ) )
 }
 
 

@@ -206,11 +206,7 @@ fbplot = function( Data,
 }
 
 #' @rdname fbplot
-#'
-#' @importFrom stats quantile
-#'
 #' @export
-#'
 fbplot.fData = function( Data,
                          Depths = 'MBD',
                          Fvalue = 1.5,
@@ -267,7 +263,7 @@ fbplot.fData = function( Data,
                          adjust$trial_size )
 
     TPR = ifelse( is.null( adjust$TPR ),
-                  2 * pnorm( 4 * qnorm( 0.25 ) ),
+                  2 * stats::pnorm( 4 * stats::qnorm( 0.25 ) ),
                   adjust$TPR )
 
     F_min = ifelse( is.null( adjust$F_min ),
@@ -322,7 +318,7 @@ fbplot.fData = function( Data,
         cat( ' * * * * beginning optimization\n' )
       }
 
-      opt = uniroot( cost_functional,
+      opt = stats::uniroot( cost_functional,
                      interval = c( F_min, F_max ),
                      tol = tol,
                      maxiter = maxiter )
@@ -344,7 +340,7 @@ fbplot.fData = function( Data,
   # Plotting part
   if( is.numeric( display ) )
   {
-    dev.set( display )
+    grDevices::dev.set( display )
   }
 
   if( ! display == FALSE )
@@ -377,7 +373,7 @@ fbplot.fData = function( Data,
     if( length( ID_out ) > 0 )
     {
       # Plotting non-outlying data
-      matplot( time_grid,
+      graphics::matplot( time_grid,
                t( Data$values[ - ID_out, ] ), lty = 1, type = 'l',
                col = col_non_outlying,
                ylim = range( Data$values ),
@@ -388,7 +384,7 @@ fbplot.fData = function( Data,
       min_envelope_limit = apply( Data$values[ - ID_out, ], 2, min )
     } else {
       # Plotting all data
-      matplot( time_grid,
+      graphics::matplot( time_grid,
                t( Data$values ), lty = 1, type = 'l',
                col = col_non_outlying,
                ylim = range( Data$values ),
@@ -402,29 +398,29 @@ fbplot.fData = function( Data,
 
     # Filling in the central envelope
 
-    polygon( c(time_grid, rev( time_grid) ),
+    graphics::polygon( c(time_grid, rev( time_grid) ),
              c( out$min_envelope_central, rev( out$max_envelope_central ) ),
              col = col_envelope, border = NA)
-    lines( time_grid, out$max_envelope_central, lty = 1, col = col_envelope, lwd = 3 )
-    lines( time_grid, out$min_envelope_central, lty = 1, col = col_envelope, lwd = 3 )
+    graphics::lines( time_grid, out$max_envelope_central, lty = 1, col = col_envelope, lwd = 3 )
+    graphics::lines( time_grid, out$min_envelope_central, lty = 1, col = col_envelope, lwd = 3 )
 
     # Plotting the sample median
-    lines( time_grid, Data$values[ which.max( Depths ), ], lty = 1, type = 'l',
+    graphics::lines( time_grid, Data$values[ which.max( Depths ), ], lty = 1, type = 'l',
            col = col_center, lwd = 3)
 
-    lines( time_grid, max_envelope_limit, lty = 1,
+    graphics::lines( time_grid, max_envelope_limit, lty = 1,
     col = col_fence_structure, lwd = 3 )
-    lines( time_grid, min_envelope_limit, lty = 1,
+    graphics::lines( time_grid, min_envelope_limit, lty = 1,
     col = col_fence_structure, lwd = 3 )
 
     # Plotting vertical whiskers
     half.time_grid = which.min( abs( time_grid - 0.5 ) )
-    lines( c( time_grid[ half.time_grid ], time_grid[ half.time_grid ] ),
+    graphics::lines( c( time_grid[ half.time_grid ], time_grid[ half.time_grid ] ),
            c( out$max_envelope_central[ half.time_grid ],
               max_envelope_limit[ half.time_grid ] ),
            lty = 1, col = col_fence_structure, lwd = 3 )
 
-    lines( c( time_grid[ half.time_grid ], time_grid[ half.time_grid ] ),
+    graphics::lines( c( time_grid[ half.time_grid ], time_grid[ half.time_grid ] ),
            c( out$min_envelope_central[ half.time_grid ],
               min_envelope_limit[ half.time_grid ] ),
            lty = 1, col = col_fence_structure, lwd = 3 )
@@ -432,7 +428,7 @@ fbplot.fData = function( Data,
     # Plotting outlying data
     if( length( ID_out ) > 0 )
     {
-      matplot( time_grid, t( toRowMatrixForm( Data$values[ ID_out, ] ) ),
+      graphics::matplot( time_grid, t( toRowMatrixForm( Data$values[ ID_out, ] ) ),
                lty = 1, type = 'l', col = col_outlying, lwd = 3, add = T )
     }
   }
@@ -460,7 +456,7 @@ fbplot.fData = function( Data,
 
   Data_center = Data[ which.max( Depths ), ]
 
-  id_central_region = which( Depths >= quantile( Depths, prob = 0.5 ) )
+  id_central_region = which( Depths >= stats::quantile( Depths, prob = 0.5 ) )
 
   max_envelope_central = apply( Data[ id_central_region, ], 2, max )
   min_envelope_central = apply( Data[ id_central_region, ], 2, min )
@@ -533,7 +529,7 @@ provided in the multivariate version of the functional boxplot' )
 
   if( is.numeric( display ) )
   {
-    dev.set( display )
+    grDevices::dev.set( display )
   }
 
   if( ! display == FALSE )
@@ -570,9 +566,9 @@ provided in the multivariate version of the functional boxplot' )
     mfrow_rows = ceiling( Data$L / 2 )
     mfrow_cols = 2
 
-    oldpar <- par(mfrow = c(1, 1))
-    on.exit(par(oldpar))
-    par(mfrow = c(mfrow_rows, mfrow_cols))
+    oldpar <- graphics::par(mfrow = c(1, 1))
+    on.exit(graphics::par(oldpar))
+    graphics::par(mfrow = c(mfrow_rows, mfrow_cols))
 
     # Creating color palettes
     col_non_outlying = scales::hue_pal( h = c( 180, 270 ),
@@ -604,7 +600,7 @@ provided in the multivariate version of the functional boxplot' )
       if( length( ID_out ) > 0 )
       {
         # Plotting non-outlying data
-        matplot( time_grid,
+        graphics::matplot( time_grid,
                  t( Data_curr[ - ID_out, ] ), lty = 1, type = 'l',
                  col = col_non_outlying,
                  ylim = range( Data_curr ),
@@ -617,7 +613,7 @@ provided in the multivariate version of the functional boxplot' )
         min_envelope_limit = apply( Data_curr[ - ID_out, ], 2, min )
       } else {
         # Plotting all data
-        matplot( time_grid,
+        graphics::matplot( time_grid,
                  t( Data_curr ), lty = 1, type = 'l',
                  col = col_non_outlying,
                  ylim = range( Data_curr ),
@@ -630,32 +626,32 @@ provided in the multivariate version of the functional boxplot' )
 
       # Filling in the central envelope
 
-      polygon( c(time_grid, rev( time_grid) ),
+      graphics::polygon( c(time_grid, rev( time_grid) ),
                c( as.numeric( out$min_envelope_central[ iL, ] ),
                   rev( as.numeric( out$max_envelope_central[ iL, ] ) ) ),
                col = col_envelope, border = NA)
-      lines( time_grid, as.numeric( out$max_envelope_central[ iL, ] ),
+      graphics::lines( time_grid, as.numeric( out$max_envelope_central[ iL, ] ),
              lty = 1, col = col_envelope, lwd = 3 )
-      lines( time_grid, as.numeric( out$min_envelope_central[ iL, ] ),
+      graphics::lines( time_grid, as.numeric( out$min_envelope_central[ iL, ] ),
              lty = 1, col = col_envelope, lwd = 3 )
 
       # Plotting the sample median
-      lines( time_grid, Data_curr[ which.max( Depths ), ], lty = 1, type = 'l',
+      graphics::lines( time_grid, Data_curr[ which.max( Depths ), ], lty = 1, type = 'l',
              col = col_center, lwd = 3)
 
-      lines( time_grid, max_envelope_limit, lty = 1,
+      graphics::lines( time_grid, max_envelope_limit, lty = 1,
              col = col_fence_structure, lwd = 3 )
-      lines( time_grid, min_envelope_limit, lty = 1,
+      graphics::lines( time_grid, min_envelope_limit, lty = 1,
              col = col_fence_structure, lwd = 3 )
 
       # Plotting vertical whiskers
       half.time_grid = which.min( abs( time_grid - 0.5 ) )
-      lines( c( time_grid[ half.time_grid ], time_grid[ half.time_grid ] ),
+      graphics::lines( c( time_grid[ half.time_grid ], time_grid[ half.time_grid ] ),
              c( out$max_envelope_central[ iL, half.time_grid ],
                 max_envelope_limit[ half.time_grid ] ),
              lty = 1, col = col_fence_structure, lwd = 3 )
 
-      lines( c( time_grid[ half.time_grid ], time_grid[ half.time_grid ] ),
+      graphics::lines( c( time_grid[ half.time_grid ], time_grid[ half.time_grid ] ),
              c( out$min_envelope_central[ iL, half.time_grid ],
                 min_envelope_limit[ half.time_grid ] ),
              lty = 1, col = col_fence_structure, lwd = 3 )
@@ -664,7 +660,7 @@ provided in the multivariate version of the functional boxplot' )
       # Plotting outlying data
       if( length( ID_out ) > 0 )
       {
-        matplot( time_grid, t( toRowMatrixForm( Data_curr[ ID_out, ] ) ),
+        graphics::matplot( time_grid, t( toRowMatrixForm( Data_curr[ ID_out, ] ) ),
                  lty = 1, type = 'l', col = col_outlying, lwd = 3, add = T )
       }
     }
@@ -718,7 +714,7 @@ provided in the multivariate version of the functional boxplot' )
   # concatenate the result into a row-major matrix
   Data_center = t( sapply( listOfValues, `[`,  which.max( Depths ), 1 : P ) )
 
-  id_central_region = which( Depths >= quantile( Depths, prob = 0.5 ) )
+  id_central_region = which( Depths >= stats::quantile( Depths, prob = 0.5 ) )
 
   max_envelope_central = t( sapply( 1 : L, function( i ) (
     apply( listOfValues[[ i ]][ id_central_region, ], 2, max ) ) ) )

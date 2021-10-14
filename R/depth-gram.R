@@ -130,7 +130,7 @@ depthgram.default <- function(Data,
     mei.d[, i] <- rowSums(up + 1) / (n * N)
     # MEI correlation between i and i-1 dimensions
     if (i > 1)
-      corr.mei[i] <- corr.mei[i - 1] * sign(cor(mei.d[, i], mei.d[, i - 1]))
+      corr.mei[i] <- corr.mei[i - 1] * sign(stats::cor(mei.d[, i], mei.d[, i - 1]))
 
     if (corr.mei[i] == -1)
       wp <- c(wp, i)
@@ -148,7 +148,7 @@ depthgram.default <- function(Data,
       lower <- inf - dist
       mag.out.det[[i]] <- which(colSums((t(x) <= lower) + (t(x) >= upper)) > 0)
       dist <- (a0 + a1 * mei.d[, i] + a2 * n^2 * mei.d[, i]^2) - mbd.d[, i]
-      q <- quantile(dist, probs = c(0.25, 0.75))
+      q <- stats::quantile(dist, probs = c(0.25, 0.75))
       lim <- outliergram_factor * (q[2] - q[1]) + q[2]
       shp.out.det[[i]] <- which(dist > lim)
       rm(index, center, inf, sup, dist, upper, lower, q, lim)
@@ -390,8 +390,8 @@ plot.depthgram <- function(x,
     x$meis <- rep(meis, 3)
     x$par <- P2(x$meis, n)
     distp <- x$mbd.mei - P2(1 - x$mei.mbd, n)
-    q3 <- quantile(distp, 0.75)
-    q1 <- quantile(distp, 0.25)
+    q3 <- stats::quantile(distp, 0.75)
+    q1 <- stats::quantile(distp, 0.25)
     x$par2 <- x$par + q3 + 1.5 * (q3 - q1)
     out <- unique(which(distp > q3 + 1.5 * (q3 - q1)) %% n)
     pch <- rep(1, n) # empty circle

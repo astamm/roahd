@@ -78,7 +78,7 @@ BCIntervalSpearman = function( fD1, fD2, ordering='MEI', bootstrap_iterations=10
 
   # bias-correction
   pz0 = sum( v < cor_spearman( as.mfData(list(fD1, fD2)), ordering=ordering ) ) / bootstrap_iterations
-  z0 = qnorm( pz0, mean=0, sd=1 )
+  z0 = stats::qnorm( pz0, mean=0, sd=1 )
 
   # vector of jackknife cor_spearman values
   theta_i = matrix(0, nrow=1, ncol=N)
@@ -93,11 +93,11 @@ BCIntervalSpearman = function( fD1, fD2, ordering='MEI', bootstrap_iterations=10
   a = sum( ( theta_hat - theta_i )^3 )/( 6 * sum( ( theta_hat - theta_i )^2 )^( 1.5 ) )
 
   # first percentile
-  alpha1 = pnorm( z0 +  (z0 + qnorm( alpha/2, mean=0, sd = 1 ) )/
-                    ( 1 - a*( z0 + qnorm( alpha/2, mean = 0, sd = 1 ) ) ), mean = 0, sd = 1)
+  alpha1 = stats::pnorm( z0 +  (z0 + stats::qnorm( alpha/2, mean=0, sd = 1 ) )/
+                    ( 1 - a*( z0 + stats::qnorm( alpha/2, mean = 0, sd = 1 ) ) ), mean = 0, sd = 1)
   # second percentile
-  alpha2 = pnorm( z0 + (z0 + qnorm( 1-alpha/2, mean = 0,sd = 1 ) )/
-                    ( 1 - a*( z0 + qnorm( 1 - alpha/2, mean = 0, sd = 1 ) ) ), mean = 0, sd = 1)
+  alpha2 = stats::pnorm( z0 + (z0 + stats::qnorm( 1-alpha/2, mean = 0,sd = 1 ) )/
+                    ( 1 - a*( z0 + stats::qnorm( 1 - alpha/2, mean = 0, sd = 1 ) ) ), mean = 0, sd = 1)
   v = sort( v )
 
   # it's the case in which alpha1 * bootstrap_iterations is an integer
