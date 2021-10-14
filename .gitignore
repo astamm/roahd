@@ -3,3 +3,4 @@
 .RData
 Rplots.pdf
 docs
+*.DS_Store
