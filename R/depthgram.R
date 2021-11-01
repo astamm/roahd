@@ -43,6 +43,7 @@
 #' Data with application to Task fMRI data exploration".
 #'
 #' @export
+#' @name depthgram
 #'
 #' @examples
 #' N <- 2e2
