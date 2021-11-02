@@ -104,8 +104,6 @@ test_that("statistical summaries work as expected on `mfData` objects", {
   expect_error(cov_fun(mfD, fD[, 1:10]))
 })
 
-# TESTING ALGEBRAIC OPERATIONS --------------------------------------------
-
 test_that("Algebraic operations work as expected on `fData` objects", {
   fD <- fData(
     grid = seq(0, 1, length.out = 10),
@@ -113,7 +111,7 @@ test_that("Algebraic operations work as expected on `fData` objects", {
   )
   fD.2 <- fData(
     grid = seq(0, 1, length.out = 11),
-    values = matrix( seq( 1, 11 ), nrow = 21, ncol = 11, byrow = TRUE)
+    values = matrix(seq(1, 11), nrow = 21, ncol = 11, byrow = TRUE)
   )
 
   expect_equal(
@@ -249,8 +247,6 @@ test_that("Subsetting operations work as expected on `mfData` objects", {
   expect_error(mfD[ , c(1:5, 7:8)])
 })
 
-# TESTING MFDATA ----------------------------------------------------------
-
 test_that("`mfData() correctly creates `mfData` objects", {
   withr::local_seed(1234)
   N <- 100
@@ -321,6 +317,7 @@ test_that("`unfold()` works as expected", {
 })
 
 test_that("`warp()` works as expected", {
+  withr::local_seed(1234)
   N <- 30
   P <- 1001
   t0 <- 0
@@ -328,7 +325,7 @@ test_that("`warp()` works as expected", {
   time_grid <- seq(t0, t1, length.out = P)
   means <- round(runif(N, t0 + (t1 - t0) / 8, t1 - (t1 - t0) / 8), 3)
   Data <- matrix(
-    sapply(means, function(m) dnorm( time_grid, mean = m, sd = 0.05)),
+    sapply(means, function(m) dnorm(time_grid, mean = m, sd = 0.05)),
     ncol = P, nrow = N, byrow = TRUE
   )
   fD <- fData(time_grid, Data)
