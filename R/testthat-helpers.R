@@ -18,6 +18,7 @@ expect_snapshot_plot <- function(name, code) {
   # skip_on_os("windows")
   # You'll need to carefully think about and experiment with these skips
   skip_on_covr()
+  skip_on_ci()
 
   name <- paste0(name, ".png")
 
