@@ -17,12 +17,13 @@ test_that("`fData() correctly creates `fData` objects", {
   }
 
   expect_snapshot(fData(time_grid, Data))
-  expect_snapshot_file(save_png(plot(
+  expect_snapshot(fData(time_grid, 1:P))
+
+  expect_snapshot_plot("plot_fData", plot(
     fD,
     xlab = 'time', ylab = 'values',
     main = 'A functional dataset'
-  )), "plot_fData.png")
-  expect_snapshot(fData(time_grid, 1:P))
+  ))
 })
 
 test_that("statistical summaries work as expected on `fData` objects", {
@@ -270,15 +271,17 @@ test_that("`mfData() correctly creates `mfData` objects", {
 
   expect_snapshot(mfData(time_grid, list(Data_1, Data_2)))
   expect_snapshot(mfData(time_grid, list(1:P, 1:P)))
-  expect_snapshot_file(save_png(plot(
+
+  expect_snapshot_plot("plot_mfData", plot(
     mfData(time_grid, list(Data_1, Data_2)),
     xlab = 'time', ylab = list('values', 'values'),
     main = list('First Component', 'Second Component')
-  )), "plot_mfData.png")
+  ))
 
   mfD <- mfData(time_grid, list(Data_1, Data_2))
 
-  expect_snapshot_file(save_png(plot(mfD$fDList[[1]])), "plot_mfData_sub.png")
+  expect_snapshot_plot("plot_mfData_sub", plot(mfD$fDList[[1]]))
+
   expect_snapshot(as.mfData(list(
     fData(time_grid, Data_1),
     fData(time_grid, Data_2)
