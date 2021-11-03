@@ -7,23 +7,17 @@ test_that("`fData() correctly creates `fData` objects", {
   Data <- generate_gauss_fdata(N, centerline = sin(2 * pi * time_grid), Cov = Cov)
   fD <- fData(time_grid, Data)
 
-  save_png <- function(code, width = 400, height = 400) {
-    path <- tempfile(fileext = ".png")
-    png(path, width = width, height = height)
-    on.exit(dev.off())
-    code
-
-    path
-  }
-
   expect_snapshot_value(fData(time_grid, Data), style = "serialize")
   expect_snapshot_value(fData(time_grid, 1:P), style = "serialize")
 
-  expect_snapshot_plot("plot_fData", plot(
-    fD,
-    xlab = 'time', ylab = 'values',
-    main = 'A functional dataset'
-  ))
+  vdiffr::expect_doppelganger(
+    "S3 Plot Method for fData objects",
+    plot(
+      fD,
+      xlab = 'time', ylab = 'values',
+      main = 'A functional dataset'
+    )
+  )
 })
 
 test_that("statistical summaries work as expected on `fData` objects", {
@@ -256,27 +250,24 @@ test_that("`mfData() correctly creates `mfData` objects", {
   Data_1 <- generate_gauss_fdata(N, centerline = sin(2 * pi * time_grid), Cov = Cov)
   Data_2 <- generate_gauss_fdata(N, centerline = sin(2 * pi * time_grid), Cov = Cov)
 
-  save_png <- function(code, width = 400, height = 400) {
-    path <- tempfile(fileext = ".png")
-    png(path, width = width, height = height)
-    on.exit(dev.off())
-    code
-
-    path
-  }
-
   expect_snapshot_value(mfData(time_grid, list(Data_1, Data_2)), style = "serialize")
   expect_snapshot_value(mfData(time_grid, list(1:P, 1:P)), style = "serialize")
 
-  expect_snapshot_plot("plot_mfData", plot(
-    mfData(time_grid, list(Data_1, Data_2)),
-    xlab = 'time', ylab = list('values', 'values'),
-    main = list('First Component', 'Second Component')
-  ))
+  vdiffr::expect_doppelganger(
+    "S3 Plot Method for mfData objects",
+    plot(
+      mfData(time_grid, list(Data_1, Data_2)),
+      xlab = 'time', ylab = list('values', 'values'),
+      main = list('First Component', 'Second Component')
+    )
+  )
 
   mfD <- mfData(time_grid, list(Data_1, Data_2))
 
-  expect_snapshot_plot("plot_mfData_sub", plot(mfD$fDList[[1]]))
+  vdiffr::expect_doppelganger(
+    "S3 Plot Method for fData object subsetted from mfData object",
+    plot(mfD$fDList[[1]])
+  )
 
   expect_snapshot_value(as.mfData(list(
     fData(time_grid, Data_1),

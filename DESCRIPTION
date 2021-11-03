@@ -48,15 +48,16 @@ LazyData: yes
 Suggests:
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    withr,
+    vdiffr
 Imports:
     scales,
     robustbase,
     magrittr,
     dplyr,
     ggplot2,
-    plotly,
-    withr
+    plotly
 VignetteBuilder: knitr
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
