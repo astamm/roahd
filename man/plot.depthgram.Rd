@@ -77,8 +77,8 @@ This function plots the three 'DepthGram' representations from the output of
 the \code{\link{depthgram}} function.
 }
 \examples{
-N <- 1e2
-P <- 1e2
+N <- 50
+P <- 50
 grid <- seq(0, 1, length.out = P)
 Cov <- exp_cov_function(grid, alpha = 0.3, beta = 0.4)
 

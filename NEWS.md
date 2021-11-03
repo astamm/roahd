@@ -1,8 +1,15 @@
-# roahd 1.4.2.9000
+# roahd 1.4.3
+
+## New feature
+
+* Added tools for manipulating and visualizing depthgrams (#1, @aefdz). This mathematical constructs aim at facilitating the visualization of outliers in high dimensional functional data sets. The [`depthgram()`](https://astamm.github.io/roahd/reference/depthGram.html) function computes a number of depthgrams from the functional data set. An S3 specialized method for [`plot()`](https://astamm.github.io/roahd/reference/plot.depthgram.html) makes it possible to visualize the depthgrams and proceed with a visual inspection at outliers.
+
+## Minor updates
+
+* Improved unit testing: Refactoring of unit tests using [**testthat**](https://testthat.r-lib.org) 3e edition and in particular snapshot tests for plots and complex objects.
+* Added an hexsticker.
 
 # roahd 1.4.2
-
-## Upgrades
 
 ## Minor updates
 

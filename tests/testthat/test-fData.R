@@ -1,7 +1,7 @@
 test_that("`fData() correctly creates `fData` objects", {
   withr::local_seed(1234)
   N <- 100
-  P <- 1000
+  P <- 100
   time_grid <- seq(0, 1, length.out = P)
   Cov <- exp_cov_function(time_grid, alpha = 0.3, beta = 0.4)
   Data <- generate_gauss_fdata(N, centerline = sin(2 * pi * time_grid), Cov = Cov)
@@ -23,7 +23,7 @@ test_that("`fData() correctly creates `fData` objects", {
 test_that("statistical summaries work as expected on `fData` objects", {
   withr::local_seed(1234)
   N <- 100
-  P <- 1000
+  P <- 100
   time_grid <- seq(0, 1, length.out = P)
   Cov <- exp_cov_function(time_grid, alpha = 0.3, beta = 0.4)
   Data <- generate_gauss_fdata(N, centerline = sin(2 * pi * time_grid), Cov = Cov)
@@ -244,7 +244,7 @@ test_that("Subsetting operations work as expected on `mfData` objects", {
 test_that("`mfData() correctly creates `mfData` objects", {
   withr::local_seed(1234)
   N <- 100
-  P <- 1000
+  P <- 100
   time_grid <- seq(0, 1, length.out = P)
   Cov <- exp_cov_function(time_grid, alpha = 0.3, beta = 0.4)
   Data_1 <- generate_gauss_fdata(N, centerline = sin(2 * pi * time_grid), Cov = Cov)
@@ -281,7 +281,7 @@ test_that("`mfData() correctly creates `mfData` objects", {
 })
 
 test_that("`unfold()` works as expected", {
-  P <- 1000
+  P <- 100
   time_grid <- seq(0, 1, length.out = P)
   D <- matrix(c(
     sin(2 * pi * time_grid),
@@ -310,7 +310,7 @@ test_that("`unfold()` works as expected", {
 test_that("`warp()` works as expected", {
   withr::local_seed(1234)
   N <- 30
-  P <- 1001
+  P <- 101
   t0 <- 0
   t1 <- 1
   time_grid <- seq(t0, t1, length.out = P)
