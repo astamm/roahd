@@ -17,6 +17,7 @@ expect_snapshot_plot <- function(name, code) {
   # Or maybe the output is different on some operation systems
   # skip_on_os("windows")
   # You'll need to carefully think about and experiment with these skips
+  # skip_on_ci()
 
   name <- paste0(name, ".png")
 
