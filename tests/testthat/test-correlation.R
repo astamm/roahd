@@ -214,19 +214,19 @@ test_that("cor_kendall() and cor_spearman() work as expected", {
     centerline = sin(2 * pi * time_grid),
     Cov = Cov
   )
-  mfD<- mfData(time_grid, list( Data_1, Data_2))
+  mfD <- mfData(time_grid, list(Data_1, Data_2))
 
   # Act
-  actual_kendall_max <- cor_kendall(mfD, ordering = 'max')
+  actual_kendall_max  <- cor_kendall(mfD, ordering = 'max')
   actual_kendall_area <- cor_kendall(mfD, ordering = 'area')
   actual_spearman_mei <- cor_spearman(mfD, ordering = 'MEI')
   actual_spearman_mhi <- cor_spearman(mfD, ordering = 'MHI')
 
   # Assert
-  expect_snapshot(actual_kendall_max)
-  expect_snapshot(actual_kendall_area)
-  expect_snapshot(actual_spearman_mei)
-  expect_snapshot(actual_spearman_mhi)
+  expect_snapshot_value(actual_kendall_max,  style = "serialize")
+  expect_snapshot_value(actual_kendall_area, style = "serialize")
+  expect_snapshot_value(actual_spearman_mei, style = "serialize")
+  expect_snapshot_value(actual_spearman_mhi, style = "serialize")
 })
 
 # Case studies from Dalia Valencia, Rosa Lillo, Juan Romo -----------------
@@ -249,10 +249,10 @@ test_that("cor_kendall() & cor_spearman() work on Case Study 1 from Dalia Valenc
 
   mfD <- mfData(time_grid, list(X, Y))
 
-  expect_snapshot(cor_kendall(mfD, ordering = 'max'))
-  expect_snapshot(cor_kendall(mfD, ordering = 'area'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MEI'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MHI'))
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'max'), style = "serialize")
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'area'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MEI'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MHI'), style = "serialize")
 })
 
 test_that("cor_kendall() & cor_spearman() work on Case Study 2 from Dalia Valencia, Rosa Lillo, Juan Romo.", {
@@ -269,10 +269,10 @@ test_that("cor_kendall() & cor_spearman() work on Case Study 2 from Dalia Valenc
 
   mfD <- mfData(time_grid, list(X, Y))
 
-  expect_snapshot(cor_kendall(mfD, ordering = 'max'))
-  expect_snapshot(cor_kendall(mfD, ordering = 'area'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MEI'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MHI'))
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'max'), style = "serialize")
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'area'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MEI'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MHI'), style = "serialize")
 })
 
 test_that("cor_kendall() & cor_spearman() work on Case Study 3 from Dalia Valencia, Rosa Lillo, Juan Romo.", {
@@ -359,10 +359,10 @@ test_that("cor_kendall() & cor_spearman() work on Case Study 6 from Dalia Valenc
 
   mfD <- mfData(time_grid, list(X, Y))
 
-  expect_snapshot(cor_kendall(mfD, ordering = 'max'))
-  expect_snapshot(cor_kendall(mfD, ordering = 'area'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MEI'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MHI'))
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'max'), style = "serialize")
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'area'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MEI'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MHI'), style = "serialize")
 })
 
 test_that("cor_kendall() & cor_spearman() work on Case Study 7 from Dalia Valencia, Rosa Lillo, Juan Romo.", {
@@ -379,10 +379,10 @@ test_that("cor_kendall() & cor_spearman() work on Case Study 7 from Dalia Valenc
 
   mfD <- mfData(time_grid, list(X, Y))
 
-  expect_snapshot(cor_kendall(mfD, ordering = 'max'))
-  expect_snapshot(cor_kendall(mfD, ordering = 'area'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MEI'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MHI'))
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'max'), style = "serialize")
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'area'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MEI'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MHI'), style = "serialize")
 })
 
 test_that("cor_kendall() & cor_spearman() work on Case Study 8 from Dalia Valencia, Rosa Lillo, Juan Romo.", {
@@ -399,10 +399,10 @@ test_that("cor_kendall() & cor_spearman() work on Case Study 8 from Dalia Valenc
 
   mfD <- mfData(time_grid, list(X, Y))
 
-  expect_snapshot(cor_kendall(mfD, ordering = 'max'))
-  expect_snapshot(cor_kendall(mfD, ordering = 'area'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MEI'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MHI'))
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'max'), style = "serialize")
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'area'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MEI'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MHI'), style = "serialize")
 })
 
 test_that("cor_kendall() & cor_spearman() work on Case Study 9 from Dalia Valencia, Rosa Lillo, Juan Romo.", {
@@ -420,10 +420,10 @@ test_that("cor_kendall() & cor_spearman() work on Case Study 9 from Dalia Valenc
 
   mfD <- mfData(time_grid, list(X, Y))
 
-  expect_snapshot(cor_kendall(mfD, ordering = 'max'))
-  expect_snapshot(cor_kendall(mfD, ordering = 'area'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MEI'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MHI'))
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'max'), style = "serialize")
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'area'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MEI'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MHI'), style = "serialize")
 })
 
 test_that("cor_kendall() & cor_spearman() work on Case Study 10 from Dalia Valencia, Rosa Lillo, Juan Romo.", {
@@ -442,17 +442,17 @@ test_that("cor_kendall() & cor_spearman() work on Case Study 10 from Dalia Valen
 
   mfD <- mfData(time_grid, list(X, Y))
 
-  expect_snapshot(cor_kendall(mfD, ordering = 'max'))
-  expect_snapshot(cor_kendall(mfD, ordering = 'area'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MEI'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MHI'))
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'max'), style = "serialize")
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'area'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MEI'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MHI'), style = "serialize")
 })
 
 test_that("cor_kendall() & cor_spearman() work on Case Study 11 from Dalia Valencia, Rosa Lillo, Juan Romo.", {
   withr::local_seed(1234)
   N <- 50
   P <- 50
-  time_grid<- seq(0, 1, length.out = P)
+  time_grid <- seq(0, 1, length.out = P)
 
   sigma_12 <- 0.
   R <- matrix(c(1, sigma_12, sigma_12, 1), ncol = 2, nrow = 2)
@@ -462,8 +462,8 @@ test_that("cor_kendall() & cor_spearman() work on Case Study 11 from Dalia Valen
 
   mfD <- mfData(time_grid, list(X, Y))
 
-  expect_snapshot(cor_kendall(mfD, ordering = 'max'))
-  expect_snapshot(cor_kendall(mfD, ordering = 'area'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MEI'))
-  expect_snapshot(cor_spearman(mfD, ordering = 'MHI'))
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'max'), style = "serialize")
+  expect_snapshot_value(cor_kendall(mfD, ordering = 'area'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MEI'), style = "serialize")
+  expect_snapshot_value(cor_spearman(mfD, ordering = 'MHI'), style = "serialize")
 })

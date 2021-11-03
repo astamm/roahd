@@ -1,252 +1,144 @@
 # cor_kendall() and cor_spearman() work as expected
 
-    Code
-      actual_kendall_max
-    Output
-      [1] 0.04844221
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT+ozWrgdOlA
 
 ---
 
-    Code
-      actual_kendall_area
-    Output
-      [1] 0.03155779
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT+gKFeu5z/A
 
 ---
 
-    Code
-      actual_spearman_mei
-    Output
-      [1] 0.04434487
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT+mtF7yKlcf
 
 ---
 
-    Code
-      actual_spearman_mhi
-    Output
-      [1] 0.04434487
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT+mtF7yKlcd
 
 # cor_kendall() & cor_spearman() work on Case Study 1 from Dalia Valencia, Rosa Lillo, Juan Romo.
 
-    Code
-      cor_kendall(mfD, ordering = "max")
-    Output
-      [1] 0.3306122
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/VKMBC35uw
 
 ---
 
-    Code
-      cor_kendall(mfD, ordering = "area")
-    Output
-      [1] 0.3306122
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/VKMBC35uw
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MEI")
-    Output
-      [1] 0.4670494
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/d5CMdG0wK
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MHI")
-    Output
-      [1] 0.4670494
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/d5CMdG0wK
 
 # cor_kendall() & cor_spearman() work on Case Study 2 from Dalia Valencia, Rosa Lillo, Juan Romo.
 
-    Code
-      cor_kendall(mfD, ordering = "max")
-    Output
-      [1] 0.3012245
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/TR0MVG2BY
 
 ---
 
-    Code
-      cor_kendall(mfD, ordering = "area")
-    Output
-      [1] 0.2963265
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/S9wONeqvI
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MEI")
-    Output
-      [1] 0.466581
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/d3HZeA1/2
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MHI")
-    Output
-      [1] 0.466581
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/d3HZeA1/4
 
 # cor_kendall() & cor_spearman() work on Case Study 6 from Dalia Valencia, Rosa Lillo, Juan Romo.
 
-    Code
-      cor_kendall(mfD, ordering = "max")
-    Output
-      [1] 0.3012245
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/TR0MVG2BY
 
 ---
 
-    Code
-      cor_kendall(mfD, ordering = "area")
-    Output
-      [1] 0.3012245
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/TR0MVG2BY
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MEI")
-    Output
-      [1] 0.4346218
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/b0NgonaT2
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MHI")
-    Output
-      [1] 0.4346218
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/b0NgonaT2
 
 # cor_kendall() & cor_spearman() work on Case Study 7 from Dalia Valencia, Rosa Lillo, Juan Romo.
 
-    Code
-      cor_kendall(mfD, ordering = "max")
-    Output
-      [1] 0.3779592
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/YMHu3Rm0Y
 
 ---
 
-    Code
-      cor_kendall(mfD, ordering = "area")
-    Output
-      [1] 0.3681633
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/Xj/yoBQP4
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MEI")
-    Output
-      [1] 0.540892
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/hTvy3ulRM
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MHI")
-    Output
-      [1] 0.540892
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/hTvy3ulRM
 
 # cor_kendall() & cor_spearman() work on Case Study 8 from Dalia Valencia, Rosa Lillo, Juan Romo.
 
-    Code
-      cor_kendall(mfD, ordering = "max")
-    Output
-      [1] -0.04163265
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAb+lUOAGr/YA
 
 ---
 
-    Code
-      cor_kendall(mfD, ordering = "area")
-    Output
-      [1] -0.04653061
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAb+n0txDtZpw
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MEI")
-    Output
-      [1] -0.03719466
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAb+jCy3H0XEo
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MHI")
-    Output
-      [1] -0.03719466
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAb+jCy3H0XEq
 
 # cor_kendall() & cor_spearman() work on Case Study 9 from Dalia Valencia, Rosa Lillo, Juan Romo.
 
-    Code
-      cor_kendall(mfD, ordering = "max")
-    Output
-      [1] -0.3632653
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAb/XP70gZE9q
 
 ---
 
-    Code
-      cor_kendall(mfD, ordering = "area")
-    Output
-      [1] -0.9297959
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAb/twONeqvIA
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MEI")
-    Output
-      [1] -0.902703
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAb/s4vFcRFBa
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MHI")
-    Output
-      [1] -0.902703
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAb/s4vFcRFBa
 
 # cor_kendall() & cor_spearman() work on Case Study 10 from Dalia Valencia, Rosa Lillo, Juan Romo.
 
-    Code
-      cor_kendall(mfD, ordering = "max")
-    Output
-      [1] 0.06938776
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT+xw2Va5/eg
 
 ---
 
-    Code
-      cor_kendall(mfD, ordering = "area")
-    Output
-      [1] 0.4220408
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/bArd77MYc
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MEI")
-    Output
-      [1] 0.5799954
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/ij1JuCyaD
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MHI")
-    Output
-      [1] 0.5799954
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAT/ij1JuCyaD
 
 # cor_kendall() & cor_spearman() work on Case Study 11 from Dalia Valencia, Rosa Lillo, Juan Romo.
 
-    Code
-      cor_kendall(mfD, ordering = "max")
-    Output
-      [1] -0.008979592
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAb+CY+RqKWDA
 
 ---
 
-    Code
-      cor_kendall(mfD, ordering = "area")
-    Output
-      [1] -0.0155102
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAb+Pw9BaR3iA
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MEI")
-    Output
-      [1] -0.01233647
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAb+JQ90YD4Ej
 
 ---
 
-    Code
-      cor_spearman(mfD, ordering = "MHI")
-    Output
-      [1] -0.01233647
+    WAoAAAACAAQBAgACAwAAAAAOAAAAAb+JQ90YD4El
 

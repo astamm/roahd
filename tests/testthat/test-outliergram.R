@@ -1,18 +1,18 @@
 test_that("`outliergram()` works as expected", {
-  expect_snapshot(outliergram(fDout, display = FALSE))
+  expect_snapshot_value(outliergram(fDout, display = FALSE))
 })
 
 test_that("`outliergram()` correctly identifies outliers with Fvalue = 1.5)", {
-  expect_snapshot(outliergram(fDout, display = FALSE)$ID_outliers)
+  expect_snapshot_value(outliergram(fDout, display = FALSE)$ID_outliers)
 })
 
 test_that("`outliergram()` correctly identifies outliers with Fvalue = 2.5)", {
-  expect_snapshot(outliergram(fDout, Fvalue = 2.5, display = FALSE)$ID_outliers)
+  expect_snapshot_value(outliergram(fDout, Fvalue = 2.5, display = FALSE)$ID_outliers)
 })
 
 test_that("`outliergram()` correctly identifies outliers with auto-adjusted Fvalue", {
   skip_on_cran()
-  expect_snapshot(
+  expect_snapshot_value(
     outliergram(
       fDout,
       adjust = list(

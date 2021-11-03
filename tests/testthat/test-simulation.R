@@ -1,16 +1,16 @@
 test_that("`generate_gauss_fdata()` works as expected using `Cov` argument", {
   withr::local_seed(1234)
-  expect_snapshot(generate_gauss_fdata(N, centerline, Cov = C1))
+  expect_snapshot_value(generate_gauss_fdata(N, centerline, Cov = C1))
 })
 
 test_that("`generate_gauss_fdata()` works as expected using `CholCov` argument", {
   withr::local_seed(1234)
-  expect_snapshot(generate_gauss_fdata(N, centerline, CholCov = CholC1))
+  expect_snapshot_value(generate_gauss_fdata(N, centerline, CholCov = CholC1))
 })
 
 test_that("`generate_gauss_mfdata()` works as expected using `listCov` argument", {
   withr::local_seed(1234)
-  expect_snapshot(generate_gauss_mfdata(
+  expect_snapshot_value(generate_gauss_mfdata(
     N, L,
     centerlines,
     correlations = c(0.5, 0.5, 0.5),
@@ -20,7 +20,7 @@ test_that("`generate_gauss_mfdata()` works as expected using `listCov` argument"
 
 test_that("`generate_gauss_mfdata()` works as expected using `listCholCov` argument", {
   withr::local_seed(1234)
-  expect_snapshot(generate_gauss_mfdata(
+  expect_snapshot_value(generate_gauss_mfdata(
     N, L,
     centerlines,
     correlations = c(0.5, 0.5, 0.5),

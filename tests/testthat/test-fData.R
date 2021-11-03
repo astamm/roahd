@@ -16,8 +16,8 @@ test_that("`fData() correctly creates `fData` objects", {
     path
   }
 
-  expect_snapshot(fData(time_grid, Data))
-  expect_snapshot(fData(time_grid, 1:P))
+  expect_snapshot_value(fData(time_grid, Data))
+  expect_snapshot_value(fData(time_grid, 1:P))
 
   expect_snapshot_plot("plot_fData", plot(
     fD,
@@ -269,8 +269,8 @@ test_that("`mfData() correctly creates `mfData` objects", {
     path
   }
 
-  expect_snapshot(mfData(time_grid, list(Data_1, Data_2)))
-  expect_snapshot(mfData(time_grid, list(1:P, 1:P)))
+  expect_snapshot_value(mfData(time_grid, list(Data_1, Data_2)))
+  expect_snapshot_value(mfData(time_grid, list(1:P, 1:P)))
 
   expect_snapshot_plot("plot_mfData", plot(
     mfData(time_grid, list(Data_1, Data_2)),
@@ -282,7 +282,7 @@ test_that("`mfData() correctly creates `mfData` objects", {
 
   expect_snapshot_plot("plot_mfData_sub", plot(mfD$fDList[[1]]))
 
-  expect_snapshot(as.mfData(list(
+  expect_snapshot_value(as.mfData(list(
     fData(time_grid, Data_1),
     fData(time_grid, Data_2)
   )))

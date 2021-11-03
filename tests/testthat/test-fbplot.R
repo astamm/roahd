@@ -27,8 +27,8 @@ test_that("fbplot() works as expected for univariate data", {
   ), nrow = 21, ncol = length(time_grid), byrow = TRUE)
   fD <- fData(time_grid, D)
 
-  expect_snapshot(fbplot(fD, Fvalue = 10, display = FALSE))
-  expect_snapshot(fbplot(
+  expect_snapshot_value(fbplot(fD, Fvalue = 10, display = FALSE))
+  expect_snapshot_value(fbplot(
     fD,
     display = FALSE,
     xlab = 'time',
@@ -57,7 +57,7 @@ test_that("`fbplot()` with adjustment works as expected for univariate data", {
   )))
 
   skip_on_cran()
-  expect_snapshot(fbplot(
+  expect_snapshot_value(fbplot(
     fD,
     adjust = list(N_trials = 10, trial_size = N, VERBOSE = FALSE),
     display = FALSE,
@@ -96,7 +96,7 @@ test_that("`fbplot()` works as expected for multivariate data", {
   ), nrow = 21, ncol = length(time_grid), byrow = TRUE)
   mfD <- mfData(time_grid, list(D, D * abs(1:21 - 11) / 5))
 
-  expect_snapshot(fbplot(mfD, Fvalue = 3, display = FALSE))
+  expect_snapshot_value(fbplot(mfD, Fvalue = 3, display = FALSE))
   expect_error(fbplot(mfD, adjust = list(N_trials = 2), display = FALSE))
 })
 
@@ -117,5 +117,5 @@ test_that("`fbplot()` works for randomly generated multivariate data", {
   )
   mfD <- mfData(time_grid, Data)
 
-  expect_snapshot(fbplot(mfD, Fvalue = 2.5, display = FALSE))
+  expect_snapshot_value(fbplot(mfD, Fvalue = 2.5, display = FALSE))
 })

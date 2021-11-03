@@ -27,7 +27,7 @@ test_that("`depthgram()` works as expected for all supported input types", {
   actual_mfData <- depthgram(mfD, marginal_outliers = TRUE, ids = names)
 
   # Assert
-  expect_snapshot(actual_list)
-  expect_snapshot(actual_fData)
-  expect_snapshot(actual_mfData)
+  expect_snapshot_value(actual_list)
+  expect_snapshot_value(actual_fData)
+  expect_snapshot_value(actual_mfData)
 })
