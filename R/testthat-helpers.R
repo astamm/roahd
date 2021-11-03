@@ -2,8 +2,8 @@
 # a helper function that creates a file from your code, returning a path
 save_png <- function(code, width = 400, height = 400) {
   path <- tempfile(fileext = ".png")
-  png(path, width = width, height = height)
-  on.exit(dev.off())
+  grDevices::png(path, width = width, height = height)
+  on.exit(grDevices::dev.off())
   code
 
   path
@@ -24,8 +24,8 @@ expect_snapshot_plot <- function(name, code) {
   # Announce the file before touching `code`. This way, if `code`
   # unexpectedly fails or skips, testthat will not auto-delete the
   # corresponding snapshot file.
-  announce_snapshot_file(name = name)
+  testthat::announce_snapshot_file(name = name)
 
   path <- save_png(code)
-  expect_snapshot_file(path, name)
+  testthat::expect_snapshot_file(path, name)
 }

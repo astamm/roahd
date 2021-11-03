@@ -27,14 +27,14 @@ test_that("fbplot() works as expected for univariate data", {
   ), nrow = 21, ncol = length(time_grid), byrow = TRUE)
   fD <- fData(time_grid, D)
 
-  expect_snapshot_value(fbplot(fD, Fvalue = 10, display = FALSE))
+  expect_snapshot_value(fbplot(fD, Fvalue = 10, display = FALSE), style = "json2")
   expect_snapshot_value(fbplot(
     fD,
     display = FALSE,
     xlab = 'time',
     ylab = 'value',
     main = 'My Functional Boxplot'
-  ))
+  ), style = "json2")
 })
 
 # Adjusted functional boxplot for univariate data -------------------------
@@ -63,7 +63,7 @@ test_that("`fbplot()` with adjustment works as expected for univariate data", {
     display = FALSE,
     xlab = 'time', ylab = 'Values',
     main = 'My adjusted functional boxplot'
-  ))
+  ), style = "json2")
 
 })
 
@@ -96,7 +96,7 @@ test_that("`fbplot()` works as expected for multivariate data", {
   ), nrow = 21, ncol = length(time_grid), byrow = TRUE)
   mfD <- mfData(time_grid, list(D, D * abs(1:21 - 11) / 5))
 
-  expect_snapshot_value(fbplot(mfD, Fvalue = 3, display = FALSE))
+  expect_snapshot_value(fbplot(mfD, Fvalue = 3, display = FALSE), style = "json2")
   expect_error(fbplot(mfD, adjust = list(N_trials = 2), display = FALSE))
 })
 
@@ -117,5 +117,5 @@ test_that("`fbplot()` works for randomly generated multivariate data", {
   )
   mfD <- mfData(time_grid, Data)
 
-  expect_snapshot_value(fbplot(mfD, Fvalue = 2.5, display = FALSE))
+  expect_snapshot_value(fbplot(mfD, Fvalue = 2.5, display = FALSE), style = "json2")
 })

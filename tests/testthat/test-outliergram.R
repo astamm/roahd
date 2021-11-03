@@ -1,13 +1,19 @@
 test_that("`outliergram()` works as expected", {
-  expect_snapshot_value(outliergram(fDout, display = FALSE))
+  expect_snapshot_value(outliergram(fDout, display = FALSE), style = "serialize")
 })
 
 test_that("`outliergram()` correctly identifies outliers with Fvalue = 1.5)", {
-  expect_snapshot_value(outliergram(fDout, display = FALSE)$ID_outliers)
+  expect_snapshot_value(
+    outliergram(fDout, display = FALSE)$ID_outliers,
+    style = "json2"
+  )
 })
 
 test_that("`outliergram()` correctly identifies outliers with Fvalue = 2.5)", {
-  expect_snapshot_value(outliergram(fDout, Fvalue = 2.5, display = FALSE)$ID_outliers)
+  expect_snapshot_value(
+    outliergram(fDout, Fvalue = 2.5, display = FALSE)$ID_outliers,
+    style = "json2"
+  )
 })
 
 test_that("`outliergram()` correctly identifies outliers with auto-adjusted Fvalue", {
@@ -21,7 +27,8 @@ test_that("`outliergram()` correctly identifies outliers with auto-adjusted Fval
         TPR = 0.01,
         VERBOSE = FALSE
       ),
-      display = FALSE)$ID_outliers
+      display = FALSE)$ID_outliers,
+    style = "json2"
   )
 })
 
