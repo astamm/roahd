@@ -1,7 +1,7 @@
 Package: roahd
 Type: Package
 Title: Robust Analysis of High Dimensional Data
-Version: 1.4.3
+Version: 1.4.3.9000
 Authors@R: c( 
     person(given = "Nicholas", 
            family = "Tarabelloni", 
