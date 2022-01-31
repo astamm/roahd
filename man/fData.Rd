@@ -11,7 +11,7 @@ fData(grid, values)
 measured. It must be a numeric vector of length \code{P}.}
 
 \item{values}{the values of the observations in the functional dataset,
-prodived in form of a 2D data structure (e.g. matrix or array) having as
+provided in form of a 2D data structure (e.g. matrix or array) having as
 rows the observations and as columns their measurements over the 1D grid of
 length \code{P} specified in \code{grid}.}
 }
@@ -19,24 +19,24 @@ length \code{P} specified in \code{grid}.}
 The function returns a \code{S3} object of class \code{fData}, containing
 the following elements:
 \itemize{
- \item{"\code{N}"}{: the number of elements in the dataset;}
- \item{"\code{P}"}{: the number of points in the 1D grid over which elements
- are measured;}
- \item{"\code{t0}"}{: the starting point of the 1D grid;}
- \item{"\code{tP}"}{: the ending point of the 1D grid;}
- \item{"\code{values}"}{: the matrix of measurements of the functional
- observations on the 1D grid provided with \code{grid}.}
+\item{"\code{N}"}{: the number of elements in the dataset;}
+\item{"\code{P}"}{: the number of points in the 1D grid over which elements
+are measured;}
+\item{"\code{t0}"}{: the starting point of the 1D grid;}
+\item{"\code{tP}"}{: the ending point of the 1D grid;}
+\item{"\code{values}"}{: the matrix of measurements of the functional
+observations on the 1D grid provided with \code{grid}.}
 }
 }
 \description{
 This function implements a constructor for elements of \code{S3} class
- \code{fData}, aimed at implementing a representation of a functional
- dataset.
+\code{fData}, aimed at implementing a representation of a functional
+dataset.
 }
 \details{
 The functional dataset is represented as a collection of measurement of the
- observations on an evenly spaced, 1D grid of discrete points (representing,
- e.g. time), namely, for functional data defined over a grid \eqn{[t_0,
+observations on an evenly spaced, 1D grid of discrete points (representing,
+e.g. time), namely, for functional data defined over a grid \eqn{[t_0,
  t_1, \ldots, t_{P-1}]}:
 
 \deqn{ f_{i,j} = f_i( t_0 + j h ), \quad h =  \frac{t_P - t_0}{N},

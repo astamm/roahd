@@ -4,60 +4,80 @@
 \alias{cor_spearman_accuracy}
 \title{Bootstrap Spearman's correlation coefficient for multivariate functional data}
 \usage{
-cor_spearman_accuracy(mfD, ordering = "MEI", bootstrap_iterations = 1000,
-  verbose = FALSE)
+cor_spearman_accuracy(
+  mfD,
+  ordering = "MEI",
+  bootstrap_iterations = 1000,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{mfD}{a multivariate functional dataset whose Spearman's correlation
 coefficient must be computed, in form of multivariate \code{mfData} object.}
 
 \item{ordering}{the ordering relation to use on functional observations,
-either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is \code{"MEI"}).}
+either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is
+\code{"MEI"}).}
 
-\item{bootstrap_iterations}{the number of bootstrap iterations to be used for estimation of bias and
-standard error.}
+\item{bootstrap_iterations}{the number of bootstrap iterations to be used for
+estimation of bias and standard error.}
 
-\item{verbose}{a logical flag specifying whether to log information on the estimation progress.}
+\item{verbose}{a logical flag specifying whether to log information on the
+estimation progress.}
 }
 \value{
-a list of three elements: \code{mean}, the mean of the matrix of correlation coefficients;
-\code{bias}, a matrix containing the estimated bias (mean - point estimate of correlation coefficients);
-\code{sd}, a matrix containing the estiated standard deviation of the coefficients' matrix. In case
-the multivariate functional dataset has only two components, the return type is scalar and not matrix.
+a list of three elements: \code{mean}, the mean of the matrix of
+correlation coefficients; \code{bias}, a matrix containing the estimated
+bias (mean - point estimate of correlation coefficients); \code{sd}, a
+matrix containing the estimated standard deviation of the coefficients'
+matrix. In case the multivariate functional dataset has only two
+components, the return type is scalar and not matrix.
 }
 \description{
-This function computes the bootstrap estimates of standard error and bias of the Spearman's
-correlation coefficient for a multivariate functional dataset.
+This function computes the bootstrap estimates of standard error and bias of
+the Spearman's correlation coefficient for a multivariate functional dataset.
 }
 \details{
-Given a multivariate functional dataset \eqn{X_1^(i), \ldots, X_n^(i)}, \eqn{i=0, \ldots, L}
-defined over the grid \eqn{I = t_0, \ldots, t_P}, having components \eqn{i=1, \ldots, L}, and a
-chosen ordering strategy (MEI or MHI), the function computes the matrix of Speraman's correlation
-indexes of the dataset's components, as well as their bias and standard deviation estimates
-through a specified number of bootstrap iterations (bias and standard error are updated with
-on-line formulas).
+Given a multivariate functional dataset \eqn{X_1^(i), \ldots, X_n^(i)},
+\eqn{i=0, \ldots, L} defined over the grid \eqn{I = t_0, \ldots, t_P}, having
+components \eqn{i=1, \ldots, L}, and a chosen ordering strategy (MEI or MHI),
+the function computes the matrix of Spearman's correlation indices of the
+dataset components, as well as their bias and standard deviation estimates
+through a specified number of bootstrap iterations (bias and standard error
+are updated with on-line formulas).
 }
 \examples{
+N <- 200
+P <- 100
 
-N = 2e2
-P = 1e2
-grid = seq( 0, 1, length.out = P )
+grid <- seq(0, 1, length.out = P)
 
-# Creating an exponential covariance function to simulate guassian data
-Cov = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+# Creating an exponential covariance function to simulate Gaussian data
+Cov <- exp_cov_function(grid, alpha = 0.3, beta = 0.4)
 
-# Simulating (independent) gaussian functional data with given center and covariance function
+# Simulating (independent) Gaussian functional data with given center and covariance function
 
-Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
-Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
+Data_1 <- generate_gauss_fdata(
+  N = N,
+  centerline = sin(2 * pi * grid),
+  Cov = Cov
+)
+
+Data_2 <- generate_gauss_fdata(
+  N = N,
+  centerline = sin(2 * pi * grid),
+  Cov = Cov
+)
 
 # Using the simulated data as (independent) components of a bivariate functional dataset
-mfD = mfData( grid, list( Data_1, Data_2 ) )
-\dontrun{
-cor_spearman_accuracy(mfD, ordering='MEI')
+mfD <- mfData(grid, list(Data_1, Data_2))
 
-cor_spearman_accuracy(mfD, ordering='MHI')
+\donttest{
+# Computes bootstrap estimate of Spearman correlation
+cor_spearman_accuracy(mfD, ordering = "MEI")
+cor_spearman_accuracy(mfD, ordering = "MHI")
 }
+
 }
 \seealso{
 \code{\link{cor_spearman}}, \code{\link{mfData}}

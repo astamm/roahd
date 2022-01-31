@@ -1,6 +1,6 @@
 #' Exponential covariance function over a grid
 #'
-#' This function computes the discretisation of an exponential
+#' This function computes the discretization of an exponential
 #' covariance function of the form:
 #'  \deqn{C( s, t ) = \alpha e^{ - \beta | s - t | }}
 #' over a 1D grid \eqn{[t_0, t_1, \ldots, t_{P-1}]}, thus obtaining the
@@ -101,8 +101,6 @@ exp_cov_function = function( grid, alpha, beta )
 #'
 #' invisible(generate_gauss_fdata( N, centerline, CholCov = CholC ))
 #'
-#' @importFrom stats rnorm
-#'
 #' @export
 generate_gauss_fdata = function( N, centerline,
                                  Cov = NULL, CholCov = NULL )
@@ -118,7 +116,7 @@ generate_gauss_fdata = function( N, centerline,
     P = ncol( CholCov )
 
     if( length( centerline ) != nrow( CholCov ) | nrow( CholCov ) != P  ){
-      stop( 'Error: You provided mismatching centerline and covaraince matrix
+      stop( 'Error: You provided mismatching centerline and covariance matrix
             Cholesky factor to generate_gauss_fdata\n')
     }
     } else if( ! is.null( Cov ) ){
@@ -134,7 +132,7 @@ to generate_gauss_fdata\n')
       CholCov = chol( Cov )
       }
 
-  return( t( t( matrix( rnorm( N * P ),
+  return( t( t( matrix( stats::rnorm( N * P ),
                   nrow = N,
                   ncol = P ) %*% CholCov ) + centerline ) )
 }
@@ -187,13 +185,13 @@ to generate_gauss_fdata\n')
 #' without the diagonal.
 #' @param listCov a list containing the \eqn{L} covariance operators (provided
 #' in form of a \eqn{P \times P}{P x P} matrix), one for each component of the
-#' multivariate functional random vairable, that have to be used in the
+#' multivariate functional random variable, that have to be used in the
 #' generation of the processes \eqn{\epsilon_1(t), \ldots, \epsilon_L(t)}.
 #' At least one argument between \code{listCov} and \code{listCholCov} must be
 #' different from \code{NULL}.
 #' @param listCholCov the Cholesky factor of the \eqn{L} covariance operators
 #' (in \eqn{P \times P}{P x P} matrix form), one for each component of the
-#' multivariate functional random vairable, that have to be used in the
+#' multivariate functional random variable, that have to be used in the
 #' generation of the processes \eqn{\epsilon_1(t), \ldots, \epsilon_L(t)}.
 #' At least one argument between \code{listCov} and \code{listCholCov} must be
 #' different from \code{NULL}.
@@ -295,7 +293,7 @@ matrices to generate_gauss_mfdata')
   R_chol = chol( R )
 
   # Generating gaussian data with correlations among dimensions
-  Data = matrix( rnorm( N * L * P ), ncol = L, nrow = N * P )
+  Data = matrix( stats::rnorm( N * L * P ), ncol = L, nrow = N * P )
 
   Data = Data %*% R_chol
 

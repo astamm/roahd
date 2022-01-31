@@ -4,8 +4,14 @@
 \alias{BCIntervalSpearman}
 \title{Bootstrap Confidence Interval on Spearman's Correlation Coefficient between Univariate Functional Datasets}
 \usage{
-BCIntervalSpearman(fD1, fD2, ordering = "MEI", bootstrap_iterations = 1000,
-  alpha = 0.05, verbose = FALSE)
+BCIntervalSpearman(
+  fD1,
+  fD2,
+  ordering = "MEI",
+  bootstrap_iterations = 1000,
+  alpha = 0.05,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{fD1}{is the first univariate functional sample in form of an \code{fData} object.}
@@ -36,29 +42,32 @@ same grid and have same number of observations) and computes a bootstrap confide
 their Spearman correlation coefficient.
 }
 \examples{
-
 set.seed(1)
 
-N = 2e2
-P = 1e2
-grid = seq( 0, 1, length.out = P )
+N <- 200
+P <- 100
 
-# Creating an exponential covariance function to simulate guassian data
-Cov = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+grid <- seq(0, 1, length.out = P)
 
-# Simulating (independent) gaussian functional data with given center and
-# covariance function
-Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
-Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
+# Creating an exponential covariance function to simulate Gaussian data
+Cov <- exp_cov_function(grid, alpha = 0.3, beta = 0.4)
 
-# Using the simulated data as (independent) components of a bivariate functional
-# dataset
-mfD = mfData( grid, list( Data_1, Data_2 ) )
-\dontrun{
-BCIntervalSpearman(mfD$fDList[[1]], mfD$fDList[[2]], ordering = 'MEI')
+# Simulating (independent) Gaussian functional data with given center and covariance function
+Data_1 <- generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
+Data_2 <- generate_gauss_fdata(
+  N = N,
+  centerline = sin(2 * pi * grid),
+  Cov = Cov
+)
 
-BCIntervalSpearman(mfD$fDList[[1]], mfD$fDList[[2]], ordering = 'MHI')
+# Using the simulated data as (independent) components of a bivariate functional dataset
+mfD <- mfData(grid, list(Data_1, Data_2))
+
+\donttest{
+BCIntervalSpearman(mfD$fDList[[1]], mfD$fDList[[2]], ordering = "MEI")
+BCIntervalSpearman(mfD$fDList[[1]], mfD$fDList[[2]], ordering = "MHI")
 }
+
 # BC intervals contain zero since the functional samples are uncorrelated.
 
 }

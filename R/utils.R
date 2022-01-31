@@ -6,7 +6,7 @@
 #' type in order to obtain a matrix representation.
 #' For 1D data structures and column/row arrays and matrices the output is
 #' turned in a matrix format with just one row.
-#' If the input structure is rectangualar, instead, it is only converted in
+#' If the input structure is rectangular, instead, it is only converted in
 #' matrix format.
 #'
 #' @section Warning:
@@ -53,12 +53,12 @@ toRowMatrixForm = function( D )
   return( D )
 }
 
-#' Function to setup alpha value for a set of colours
+#' Function to setup alpha value for a set of colors
 #'
-#' \code{set_alpha} manipulates a vector of colour representations in order
+#' \code{set_alpha} manipulates a vector of color representations in order
 #' to setup the alpha value, and get the desired transparency level.
 #'
-#' @param col a vector of colours
+#' @param col a vector of colors
 #' @param alpha the value(s) of alpha for (each of) the colors.
 #'
 #' @seealso \code{\link{fDColorPalette}}
@@ -72,32 +72,33 @@ toRowMatrixForm = function( D )
 #' alpha_col = set_alpha( original_col, c(0.5, 0.5, 0.2, 0.1 ) )
 #'
 #' dev.new()
-#' par( mfrow = c( 1, 2 ) )
+#' oldpar <- par(mfrow = c(1, 1))
+#' par(mfrow = c(1, 2))
 #'
 #' plot( seq_along( original_col ),
 #'       seq_along( original_col ),
 #'       col = original_col,
 #'       pch = 16,
 #'       cex = 2,
-#'       main = 'Original colours' )
+#'       main = 'Original colors' )
 #'
 #' plot( seq_along( alpha_col ),
 #'       seq_along( alpha_col ),
 #'       col = alpha_col,
 #'       pch = 16,
 #'       cex = 2,
-#'       main = 'Alpha colours' )
+#'       main = 'Alpha colors' )
 #'
-#' @importFrom grDevices col2rgb rgb
+#' par(oldpar)
 #'
 #' @export
 set_alpha = function( col, alpha )
 {
   alpha = alpha * 255
 
-  rgb_colors = rbind( col2rgb( col ), alpha = alpha )
+  rgb_colors = rbind( grDevices::col2rgb( col ), alpha = alpha )
 
-  return( apply( rgb_colors, 2, function( x )( rgb( x[ 1 ],
+  return( apply( rgb_colors, 2, function( x )( grDevices::rgb( x[ 1 ],
                                                     x[ 2 ],
                                                     x[ 3 ],
                                                     x[ 4 ],

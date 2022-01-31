@@ -60,14 +60,23 @@ mfD = mfData( grid,
 med_mfD = median_mfData( mfD, type = 'multiMBD', weights = 'uniform' )
 
 # Graphical representation of the mean
-par( mfrow = c( 1, 3 ) )
+oldpar <- par(mfrow = c(1, 1))
+par(mfrow = c(1, L))
 
-for( iL in 1 : L )
+for(iL in 1:L)
 {
-  plot( mfD$fDList[[ 1 ]] )
-  plot( med_mfD$fDList[[ 1 ]], col = 'black',
-        lwd = 2, lty = 2, add = TRUE )
+  plot(mfD$fDList[[iL]])
+  plot(
+    med_mfD$fDList[[iL]],
+    col = 'black',
+    lwd = 2,
+    lty = 2,
+    add = TRUE
+  )
 }
+
+par(oldpar)
+
 }
 \seealso{
 \code{\link{mfData}}, \code{\link{mean.mfData}},

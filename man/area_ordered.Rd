@@ -14,27 +14,26 @@ be compared, in form of \code{fData} object.}
 be compared , in form of \code{fData} object.}
 }
 \value{
-The function returns a logical vector of length \eqn{\max(N,M)} containing the
-value of the predicate for all the corresponding elements.
+The function returns a logical vector of length \eqn{\max(N,M)}
+containing the value of the predicate for all the corresponding elements.
 }
 \description{
-This function implements an order relation between univariate functional
- data based on the area-under-curve relation, that is to say a pre-order
- relation obtained by comparing the area-under-curve of two
- different functional data.
+This function implements an order relation between univariate functional data
+based on the area-under-curve relation, that is to say a pre-order relation
+obtained by comparing the area-under-curve of two different functional data.
 }
 \details{
 Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)}
- and another functional dataset \eqn{Y_1(t),} \eqn{Y_2(t), \ldots, Y_M(t)}
- defined over the same compact interval \eqn{I=[a,b]}, the function computes
- the area-under-curve (namely, the integral) in both the datasets, and checks
- whether the first ones are lower or equal than the second ones.
+and another functional dataset \eqn{Y_1(t),} \eqn{Y_2(t), \ldots, Y_M(t)}
+defined over the same compact interval \eqn{I=[a,b]}, the function computes
+the area-under-curve (namely, the integral) in both the datasets, and checks
+whether the first ones are lower or equal than the second ones.
 
 By default the function tries to compare each \eqn{X_i(t)} with the
- corresponding \eqn{Y_i(t)}, thus assuming \eqn{N=M}, but when either \eqn{N=1}
- or \eqn{M=1}, the comparison is carried out cycling over the dataset with
- fewer elements. In all the other cases (\eqn{N\neq M,} and either
- \eqn{N \neq 1} or \eqn{M \neq 1}) the function stops.
+corresponding \eqn{Y_i(t)}, thus assuming \eqn{N=M}, but when either
+\eqn{N=1} or \eqn{M=1}, the comparison is carried out cycling over the
+dataset with fewer elements. In all the other cases (\eqn{N\neq M,} and
+either \eqn{N \neq 1} or \eqn{M \neq 1}) the function stops.
 }
 \examples{
 
@@ -63,8 +62,8 @@ area_ordered( fD_2, fD_3 )
 }
 \references{
 Valencia, D., Romo, J. and Lillo, R. (2015). A Kendall correlation
-coefficient for functional dependence,
-\emph{Universidad Carlos III de Madrid technical report},
+coefficient for functional dependence, \emph{Universidad Carlos III de Madrid
+technical report},
 \code{http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133228}.
 }
 \seealso{

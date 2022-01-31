@@ -4,8 +4,13 @@
 \alias{BCIntervalSpearmanMultivariate}
 \title{Bootstrap Confidence Interval on Spearman's Correlation Coefficient of a Multivariate Functional Dataset}
 \usage{
-BCIntervalSpearmanMultivariate(mfD, ordering = "MEI",
-  bootstrap_iterations = 1000, alpha = 0.05, verbose = FALSE)
+BCIntervalSpearmanMultivariate(
+  mfD,
+  ordering = "MEI",
+  bootstrap_iterations = 1000,
+  alpha = 0.05,
+  verbose = FALSE
+)
 }
 \arguments{
 \item{mfD}{is the multivariate functional sample in form of \code{mfData} object.}
@@ -34,29 +39,39 @@ The function takes a multivariate functional dataset and computes a matrix of bo
 intervals for its Spearman correlation coefficients.
 }
 \examples{
-
 set.seed(1)
 
-N = 2e2
-P = 1e2
-grid = seq( 0, 1, length.out = P )
+N <- 200
+P <- 100
+grid <- seq(0, 1, length.out = P)
 
-# Creating an exponential covariance function to simulate guassian data
-Cov = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+# Creating an exponential covariance function to simulate Gaussian data
+Cov <- exp_cov_function(grid, alpha = 0.3, beta = 0.4)
 
-# Simulating (independent) gaussian functional data with given center and
-# covariance function
-Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
-Data_2 = generate_gauss_fdata( N, centerline = sin( 4 * pi * grid ), Cov = Cov )
-Data_3 = generate_gauss_fdata( N, centerline = sin( 6 * pi * grid ), Cov = Cov )
+# Simulating (independent) Gaussian functional data with given center and covariance function
+Data_1 <- generate_gauss_fdata(
+  N = N,
+  centerline = sin(2 * pi * grid),
+  Cov = Cov
+)
+Data_2 <- generate_gauss_fdata(
+  N = N,
+  centerline = sin(4 * pi * grid),
+  Cov = Cov
+)
+Data_3 <- generate_gauss_fdata(
+  N = N,
+  centerline = sin(6 * pi * grid),
+  Cov = Cov
+)
 
-# Using the simulated data as (independent) components of a multivariate functional
-# dataset
-mfD = mfData( grid, list( Data_1, Data_2, Data_3 ) )
+# Using the simulated data as (independent) components of a multivariate functional dataset
+mfD <- mfData(grid, list(Data_1, Data_2, Data_3))
 
-\dontrun{
-BCIntervalSpearmanMultivariate(mfD, ordering = 'MEI')
+\donttest{
+BCIntervalSpearmanMultivariate(mfD, ordering = "MEI")
 }
+
 # BC intervals contain zero since the functional samples are uncorrelated.
 
 }

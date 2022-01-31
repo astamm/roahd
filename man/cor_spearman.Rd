@@ -11,27 +11,28 @@ cor_spearman(mfD, ordering = "MEI")
 coefficient must be computed, in form of multivariate \code{mfData} object.}
 
 \item{ordering}{the ordering relation to use on functional observations,
-either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is \code{"MEI"}).}
+either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is
+\code{"MEI"}).}
 }
 \value{
 If the original dataset is bivariate, the function returns only the
-scalar value of the correlation coefficient for the two components.
-When the number of components is L >2, it returns the whole matrix of
-Spearman's correlation coefficients for all the components.
+scalar value of the correlation coefficient for the two components. When
+the number of components is L >2, it returns the whole matrix of Spearman's
+correlation coefficients for all the components.
 }
 \description{
 This function computes the Spearman's correlation coefficient for a
-multivariate functional dataset, with either a Modified Epigraph Index (MEI) or
-Modified Hypograph Index (MHI) ranking of univariate elments of data
+multivariate functional dataset, with either a Modified Epigraph Index (MEI)
+or Modified Hypograph Index (MHI) ranking of univariate elements of data
 components.
 }
 \details{
 Given a multivariate functional dataset, with first components \eqn{X^1_1(t),
-X^1_2(t), \ldots, X^1_N(t)}, second components \eqn{X^2_1(t), X^2_2(t), \ldots,
-X^2_N(t)}, etc., the function exploits either the MEI or MHI to compute the matrix of
-Spearman's correlation coefficients. Such matrix is symmetrical and has ones on the
-diagonal. The entry (i, j) represents the Spearman correlation coefficient between
-curves of component i and j.
+X^1_2(t), \ldots, X^1_N(t)}, second components \eqn{X^2_1(t), X^2_2(t),
+\ldots, X^2_N(t)}, etc., the function exploits either the MEI or MHI to
+compute the matrix of Spearman's correlation coefficients. Such matrix is
+symmetrical and has ones on the diagonal. The entry (i, j) represents the
+Spearman correlation coefficient between curves of component i and j.
 
 See the references for more details.
 }

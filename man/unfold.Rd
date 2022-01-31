@@ -7,7 +7,7 @@
 unfold(fData)
 }
 \arguments{
-\item{fData}{the unvariate functional dataset in form of \code{fData} object.}
+\item{fData}{the univariate functional dataset in form of \code{fData} object.}
 }
 \value{
 The function returns an \code{fData} object whose observations are
@@ -19,7 +19,7 @@ This function operates on a univariate functional dataset and transforms its
 observations unfolding their values and turning them into monotone functions.
 }
 \details{
-Each function of the \code{fData} object is transformed into a nonmonotone
+Each function of the \code{fData} object is transformed into a non-monotone
 function into a monotone function by ``unfolding'' it at any of its maxima.
 For more details about the definition of the transform, see the reference.
 }
@@ -40,9 +40,13 @@ fD = fData( time_grid, D )
 fD_unfold = unfold( fD )
 
 dev.new()
-par( mfrow = c( 1, 2 ) )
-plot( fD, main = 'Original data' )
-plot( fD_unfold, main = 'Unfolded data' )
+oldpar <- par(mfrow = c(1, 1))
+par(mfrow = c(1, 2))
+
+plot(fD, main = 'Original data')
+plot(fD_unfold, main = 'Unfolded data')
+
+par(oldpar)
 
 }
 \references{

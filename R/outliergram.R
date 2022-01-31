@@ -1,20 +1,20 @@
-#' Outliergram for univariate functional datasets
+#' Outliergram for univariate functional data sets
 #'
-#' This function performs the outliergram of a univariate functional dataset,
+#' This function performs the outliergram of a univariate functional data set,
 #' possibly with an adjustment of the true positive rate of outliers discovered
 #' under assumption of gaussianity.
 #'
 #' @section Adjustment:
 #'
-#' When the adjustment option is selected, the value of \eqn{F} is optimised for
+#' When the adjustment option is selected, the value of \eqn{F} is optimized for
 #' the univariate functional dataset provided with \code{fData}. In practice,
 #' a number \code{adjust$N_trials} of times a synthetic population
 #' (of size \code{adjust$trial_size} with the same covariance (robustly
 #' estimated from data) and centerline as \code{fData} is simulated without
-#' outliers and each time an optimised value \eqn{F_i} is computed so that a
+#' outliers and each time an optimized value \eqn{F_i} is computed so that a
 #' given proportion (\code{adjust$TPR}) of observations is flagged as outliers.
 #' The final value of \code{F} for the outliergram is determined as an average
-#' of \eqn{F_1, F_2, \ldots, F_{N_{trials}}}. At each time step the optimisation
+#' of \eqn{F_1, F_2, \ldots, F_{N_{trials}}}. At each time step the optimization
 #' problem is solved using \code{stats::uniroot} (Brent's method).
 #'
 #' @param fData the univariate functional dataset whose outliergram has to be
@@ -35,35 +35,35 @@
 #' inflation factor, \eqn{F = 1.5}, to be used, or a list specifying the
 #' parameters required by the adjustment.
 #'  \itemize{
-#'  \item{"\code{N_trials}"}{: the number of repetitions of the adujustment
-#'  procedure based on the simulation of a gaussisan population of functional
+#'  \item{"\code{N_trials}"}{: the number of repetitions of the adjustment
+#'  procedure based on the simulation of a gaussian population of functional
 #'  data, each one producing an adjusted value of \eqn{F}, which will lead
 #'  to the averaged adjusted value \eqn{\bar{F}}. Default is 20;}
 #'  \item{"\code{trial_size}"}{: the number of elements in the gaussian
 #'  population of functional data that will be simulated at each repetition of
 #'  the adjustment procedure. Default is \code{5 * fData$N};}
-#'  \item{"\code{TPR}"}{: the True Positive Rate of outleirs, i.e. the proportion
+#'  \item{"\code{TPR}"}{: the True Positive Rate of outliers, i.e. the proportion
 #'  of observations in a dataset without shape outliers that have to be considered
 #'  outliers. Default is \code{2 * pnorm( 4 * qnorm( 0.25 ) )};}
 #'  \item{"\code{F_min}"}{: the minimum value of \eqn{F}, defining the left
-#'  boundary for the optimisation problem aimed at finding, for a given dataset
+#'  boundary for the optimization problem aimed at finding, for a given dataset
 #'  of simulated gaussian data associated to \code{fData}, the optimal value of
 #'  \eqn{F}. Default is 0.5;}
 #'  \item{"\code{F_max}"}{: the maximum value of \eqn{F}, defining the right
-#'  boundary for the optimisation problem aimed at finding, for a given dataset
+#'  boundary for the optimization problem aimed at finding, for a given dataset
 #'  of simulated gaussian data associated to \code{fData}, the optimal value of
 #'  \eqn{F}. Default is 20;}
-#'  \item{"\code{tol}"}{: the tolerance to be used in the optimisation problem
+#'  \item{"\code{tol}"}{: the tolerance to be used in the optimization problem
 #'  aimed at finding, for a given dataset of simulated gaussian data associated
 #'  to \code{fData}, the optimal value of \eqn{F}. Default is \code{1e-3};}
 #'  \item{"\code{maxiter}"}{: the maximum number of iterations to solve the
-#'  optimisation problem aimed at finding, for a given dataset of simulated
+#'  optimization problem aimed at finding, for a given dataset of simulated
 #'  gaussian data associated to \code{fData}, the optimal value of \eqn{F}.
 #'  Default is \code{100};}
 #'  \item{"\code{VERBOSE}"}{: a parameter controlling the verbosity of the
 #'  adjustment process;}
 #'  }
-#' @param display either a logical value indicating wether you want the
+#' @param display either a logical value indicating whether you want the
 #' outliergram to be displayed, or the number of the graphical device
 #' where you want the outliergram to be displayed.
 #' @param xlab a list of two labels to use on the x axis when displaying the
@@ -94,60 +94,71 @@
 #' \code{\link{fbplot}}
 #'
 #' @examples
+#' set.seed(1618)
 #'
+#' N <- 200
+#' P <- 200
+#' N_extra <- 4
 #'
-#' set.seed( 1618 )
+#' grid <- seq(0, 1, length.out = P)
 #'
-#' N = 200
-#' P = 200
-#' N_extra = 4
+#' Cov <- exp_cov_function(grid, alpha = 0.2, beta = 0.8)
 #'
-#' grid = seq( 0, 1, length.out = P )
+#' Data <- generate_gauss_fdata(
+#'   N = N,
+#'   centerline = sin(4 * pi * grid),
+#'   Cov = Cov
+#' )
 #'
-#' Cov = exp_cov_function( grid, alpha = 0.2, beta = 0.8 )
+#' Data_extra <- array(0, dim = c(N_extra, P))
 #'
-#' Data = generate_gauss_fdata( N,
-#'                              centerline = sin( 4 * pi * grid ),
-#'                              Cov = Cov )
+#' Data_extra[1, ] <- generate_gauss_fdata(
+#'   N = 1,
+#'   centerline = sin(4 * pi * grid + pi / 2),
+#'   Cov = Cov
+#' )
 #'
-#' Data_extra = array( 0, dim = c( N_extra, P ) )
+#' Data_extra[2, ] <- generate_gauss_fdata(
+#'   N = 1,
+#'   centerline = sin(4 * pi * grid - pi / 2),
+#'   Cov = Cov
+#' )
 #'
-#' Data_extra[ 1, ] = generate_gauss_fdata( 1,
-#'                                          sin( 4 * pi * grid + pi / 2 ),
-#'                                          Cov = Cov )
+#' Data_extra[3, ] <- generate_gauss_fdata(
+#'   N = 1,
+#'   centerline = sin(4 * pi * grid + pi / 3),
+#'   Cov = Cov
+#' )
 #'
-#' Data_extra[ 2, ] = generate_gauss_fdata( 1,
-#'                                          sin( 4 * pi * grid - pi / 2 ),
-#'                                          Cov = Cov )
+#' Data_extra[4, ] <- generate_gauss_fdata(
+#'   N = 1,
+#'   centerline = sin(4 * pi * grid - pi / 3),
+#'   Cov = Cov
+#' )
 #'
-#' Data_extra[ 3, ] = generate_gauss_fdata( 1,
-#'                                          sin( 4 * pi * grid + pi/ 3 ),
-#'                                          Cov = Cov )
+#' Data <- rbind(Data, Data_extra)
 #'
-#' Data_extra[ 4, ] = generate_gauss_fdata( 1,
-#'                                          sin( 4 * pi * grid - pi / 3),
-#'                                          Cov = Cov )
-#' Data = rbind( Data, Data_extra )
+#' fD <- fData(grid, Data)
 #'
-#' fD = fData( grid, Data )
+#' # Outliergram with default Fvalue = 1.5
+#' outliergram(fD, display = TRUE)
 #'
-#' outliergram( fD, display = TRUE )
+#' # Outliergram with Fvalue enforced to 2.5
+#' outliergram(fD, Fvalue = 2.5, display = TRUE)
 #'
-#' outliergram( fD, Fvalue = 2.5, display = TRUE )
-#' \dontrun{
-#' outliergram( fD,
-#'              adjust = list( N_trials = 10,
-#'                             trial_size = 5 * nrow( Data ),
-#'                             TPR = 0.01,
-#'                             VERBOSE = FALSE ),
-#'              display = TRUE )
+#' \donttest{
+#' # Outliergram with estimated Fvalue to ensure TPR of 1%
+#' outliergram(
+#'   fData = fD,
+#'   adjust = list(
+#'     N_trials = 10,
+#'     trial_size = 5 * nrow(Data),
+#'     TPR = 0.01,
+#'     VERBOSE = FALSE
+#'   ),
+#'   display = TRUE
+#' )
 #' }
-#'
-#' @importFrom grDevices dev.set dev.cur
-#' @importFrom stats cor pnorm rnorm qnorm uniroot
-#' @importFrom graphics text lines polygon plot points matplot par
-#' @importFrom dplyr filter group_by summarize
-#' @importFrom magrittr %>%
 #'
 #' @export
 outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
@@ -193,7 +204,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
                          adjust$trial_size )
 
     TPR = ifelse( is.null( adjust$TPR ),
-                  2 * pnorm( 4 * qnorm( 0.25 ) ),
+                  2 * stats::pnorm( 4 * stats::qnorm( 0.25 ) ),
                   adjust$TPR )
 
     F_min = ifelse( is.null( adjust$F_min ),
@@ -250,13 +261,15 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 
       if( VERBOSE > 0 )
       {
-        cat( ' * * * * beginning optimisation\n' )
+        cat( ' * * * * beginning optimization\n' )
       }
 
-      opt = uniroot( obj_function,
-                     interval = c( F_min, F_max ),
-                     tol = tol,
-                     maxiter = maxiter )
+      opt = stats::uniroot(
+        obj_function,
+        interval = c( F_min, F_max ),
+        tol = tol,
+        maxiter = maxiter
+      )
 
       Fvalues[ iTrial ] = opt$root
     }
@@ -307,24 +320,26 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 
     }
 
-    dev.cur()
-    par( mfrow = c( 1, 2 ) )
+    grDevices::dev.cur()
+    oldpar <- graphics::par(mfrow = c(1, 1))
+    on.exit(graphics::par(oldpar))
+    graphics::par(mfrow = c(1, 2))
 
     # Plotting functional data
     if( length( out$ID_SO ) > 0 )
     {
-      matplot( grid, t( fData$values[ - out$ID_SO, ] ), type = 'l', lty = 1,
+      graphics::matplot( grid, t( fData$values[ - out$ID_SO, ] ), type = 'l', lty = 1,
                ylim = range( fData$values ),
                col = col_non_outlying,
                xlab = xlab[[1]],
                ylab = ylab[[1]],
                main = main[[1]],
                ... )
-      matplot( grid, t( toRowMatrixForm( fData$values[ out$ID_SO, ] ) ),
+      graphics::matplot( grid, t( toRowMatrixForm( fData$values[ out$ID_SO, ] ) ),
                type = 'l', lty = 1, lwd = 3, ylim = range( fData$values ),
                col = col_outlying, add = TRUE )
     } else {
-      matplot( grid, t( fData$values ), type = 'l', lty = 1,
+      graphics::matplot( grid, t( fData$values ), type = 'l', lty = 1,
                ylim = range( fData$values ),
                col = col_non_outlying,
                xlab = xlab[[1]],
@@ -339,7 +354,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 
     for( iOut in seq_along( out$ID_SO ) )
     {
-      text( grid[ 1 ] + ( 2 * iOut - 1 ) * w_spacing,
+      graphics::text( grid[ 1 ] + ( 2 * iOut - 1 ) * w_spacing,
             fData$values[ out$ID_SO[ iOut ],
                   which.min( abs( grid - grid[ 1 ] -
                                     ( 2 * iOut - 1 ) * w_spacing ) ) ] +
@@ -353,7 +368,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
     # Upper parabolic limit
     grid_1D = seq( 0, 1, length.out = 100 )
 
-    plot( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2,
+    graphics::plot( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2,
           lty = 2, type = 'l', col = 'darkblue', lwd = 2,
           ylim = c( 0, a_0_2 + a_1 / 2 + a_0_2 * N^2/4 ),
           xlab = xlab[[2]],
@@ -362,24 +377,24 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 
     if( length( out$ID_SO ) > 0 )
     {
-      points( out$MEI_data[ - out$ID_SO ], out$MBD_data[ - out$ID_SO ],
+      graphics::points( out$MEI_data[ - out$ID_SO ], out$MBD_data[ - out$ID_SO ],
               pch = 16, col = col_non_outlying )
-      points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ],
+      graphics::points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ],
               pch = 16, cex = 1.5, col = col_outlying )
       for( idOut in out$ID_SO )
       {
-        text( out$MEI_data[ idOut ],
+        graphics::text( out$MEI_data[ idOut ],
               out$MBD_data[ idOut ] + 0.5 / 30,
               idOut,
               col = col_outlying[ match( idOut, out$ID_SO ) ] )
       }
     } else {
-      points( out$MEI_data, out$MBD_data,
+      graphics::points( out$MEI_data, out$MBD_data,
               pch = 16, col = col_non_outlying )
     }
 
     # lower parabolic limit
-    lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
+    graphics::lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
              out$Q_d3 - Fvalue * out$IQR_d,
            lty = 2, lwd = 2, col = 'lightblue' )
   }
@@ -413,7 +428,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 
   d = a_0_2 + a_1 * MEI_data + N^2 * a_0_2 * MEI_data^2 - MBD_data
 
-  Q = quantile( d )
+  Q = stats::quantile( d )
 
   Q_d3 = Q[ 4 ]
 
@@ -432,13 +447,13 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
     # Low MEI curves will be checked for upward shift
       ID_non_outlying_Low_MEI = ID_non_outlying[
         which( MEI_data[ - ID_shape_outlier ] <=
-                 quantile( MEI_data,
+                 stats::quantile( MEI_data,
                            probs = p_check ) ) ]
 
       # High MEI curves will be checked for downward shift
       ID_non_outlying_High_MEI = ID_non_outlying[
         which( MEI_data[ - ID_shape_outlier ] >=
-                 quantile( MEI_data, probs = 1 - p_check ) ) ]
+                 stats::quantile( MEI_data, probs = 1 - p_check ) ) ]
 
 
       # Manage high MEI data
@@ -512,7 +527,7 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 #' Default is \code{1.5};
 #' @param shift whether to apply the shifting algorithm to properly manage observations having low
 #' or high MEI. Default is TRUE.
-#' @param display either a logical value indicating wether you want the
+#' @param display either a logical value indicating whether you want the
 #' outliergram to be displayed, or the number of the graphical device
 #' where you want the outliergram to be displayed;
 #' @param xlab the label to use on the x axis in the outliergram plot;
@@ -573,9 +588,6 @@ outliergram = function( fData, MBD_data = NULL, MEI_data = NULL, p_check = 0.05,
 #' dev.new()
 #' plot(mfD, col=colors, lwd=lwd)
 #'
-#' @importFrom dplyr filter group_by summarize
-#' @importFrom magrittr %>%
-#'
 #' @export
 multivariate_outliergram = function( mfData,
                                      MBD_data = NULL,
@@ -632,12 +644,12 @@ multivariate_outliergram = function( mfData,
                                       c = 150 )( 1 )
     }
 
-    dev.cur()
+    grDevices::dev.cur()
     # Plotting outliergram
     ## Upper parabolic limit
     grid_1D = seq( 0, 1, length.out = 100 )
 
-    plot( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2,
+    graphics::plot( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2,
           lty = 2, type = 'l', col = 'darkblue', lwd = 2,
           ylim = c( 0, a_0_2 + a_1 / 2 + a_0_2 * N^2/4 ),
           xlab = xlab,
@@ -646,24 +658,24 @@ multivariate_outliergram = function( mfData,
 
     if( length( out$ID_SO ) > 0 )
     {
-      points( out$MEI_data[ - out$ID_SO ], out$MBD_data[ - out$ID_SO ],
+      graphics::points( out$MEI_data[ - out$ID_SO ], out$MBD_data[ - out$ID_SO ],
               pch = 16, col = col_non_outlying )
-      points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ],
+      graphics::points( out$MEI_data[ out$ID_SO ], out$MBD_data[ out$ID_SO ],
               pch = 16, cex = 1.5, col = col_outlying )
       for( idOut in out$ID_SO )
       {
-        text( out$MEI_data[ idOut ],
+        graphics::text( out$MEI_data[ idOut ],
               out$MBD_data[ idOut ] + 0.5 / 30,
               idOut,
               col = col_outlying[ match( idOut, out$ID_SO ) ] )
       }
     } else {
-      points( out$MEI_data, out$MBD_data,
+      graphics::points( out$MEI_data, out$MBD_data,
               pch = 16, col = col_non_outlying )
     }
 
     # lower parabolic limit
-      lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
+    graphics::lines( grid_1D, a_0_2 + a_1 * grid_1D + a_0_2 * N^2 * grid_1D^2 -
                out$Q_d3 - Fvalue * out$IQR_d,
              lty = 2, lwd = 2, col = 'lightblue' )
   }
@@ -694,7 +706,7 @@ multivariate_outliergram = function( mfData,
 
   d = a_0_2 + a_1 * MEI_data + N^2 * a_0_2 * MEI_data^2 - MBD_data
 
-  Q = quantile( d )
+  Q = stats::quantile( d )
 
   Q_d3 = Q[ 4 ]
 
@@ -715,13 +727,13 @@ multivariate_outliergram = function( mfData,
       # Low MEI curves will be checked for upward shift
       ID_non_outlying_Low_MEI = ID_non_outlying[
         which( MEI_data[ - ID_shape_outlier ] <=
-                 quantile( MEI_data,
+                 stats::quantile( MEI_data,
                            probs = p_check ) ) ]
 
       # High MEI curves will be checked for downward shift
       ID_non_outlying_High_MEI = ID_non_outlying[
         which( MEI_data[ - ID_shape_outlier ] >=
-                 quantile( MEI_data, probs = 1 - p_check ) ) ]
+                 stats::quantile( MEI_data, probs = 1 - p_check ) ) ]
 
 
       # Manage high MEI data

@@ -31,7 +31,7 @@ class \code{fData},
 the cross-covariance function of the two datasets is returned;}
 \item{if \code{X} is of class \code{mfData} and \code{Y} is \code{NULL},
 the upper-triangular blocks of the covariance function of \code{X}
-are returned (in form of list and by row, i.e. in the squence 1_1, 1_2, ...,
+are returned (in form of list and by row, i.e. in the sequence 1_1, 1_2, ...,
 1_L, 2_2, ... - have a look at the labels of the list with \code{str});}
 \item{if \code{X} is of class \code{mfData} and \code{Y} is of
 class \code{fData},
@@ -41,7 +41,7 @@ returned (in form of list);}
 class \code{mfData},
 the upper-triangular blocks of the cross-covariance of \code{X}'s and
 \code{Y}'s components are returned (in form of list and by row, i.e. in the
-squence 1_1, 1_2, ..., 1_L, 2_2, ... - have a look at the labels
+sequence 1_1, 1_2, ..., 1_L, 2_2, ... - have a look at the labels
 of the list with \code{str}));}}
 
 In any case, the return type is either an instance of the \code{S3} class \code{Cov}
@@ -73,8 +73,6 @@ of blocks:
 while the cross-covariance function is defined by the blocks:
 
 \deqn{C^{X,Y}_{i,j}(s,t) = Cov( X_i(s), Y_j(t))}
-
-
 
 The method \code{cov_fun} provides the sample estimator of the covariance or
 cross-covariance functions for univariate or multivariate functional datasets.

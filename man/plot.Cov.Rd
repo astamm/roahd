@@ -2,7 +2,7 @@
 % Please edit documentation in R/fData.R
 \name{plot.Cov}
 \alias{plot.Cov}
-\title{Specialised method to plot \code{Cov} objects}
+\title{Specialized method to plot \code{Cov} objects}
 \usage{
 \method{plot}{Cov}(x, ...)
 }
@@ -13,7 +13,7 @@
 }
 \description{
 This function performs the plot of an object of class \code{Cov}, i.e. a
-covariance or cross-covaraince function.
+covariance or cross-covariance function.
 }
 \details{
 It builds above the function \code{graphics::image}, therefore any additional

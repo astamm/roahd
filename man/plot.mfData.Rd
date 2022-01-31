@@ -2,7 +2,7 @@
 % Please edit documentation in R/fData.R
 \name{plot.mfData}
 \alias{plot.mfData}
-\title{Specialised method to plot \code{mfData} objects}
+\title{Specialized method to plot \code{mfData} objects}
 \usage{
 \method{plot}{mfData}(x, ...)
 }
@@ -15,7 +15,7 @@
 \description{
 This function performs the plot of a functional multivariate dataset stored
 in an object of class \code{mfData}. It is able to accept all the usual
-customisable graphical parameters, otherwise it will use the default ones.
+customizable graphical parameters, otherwise it will use the default ones.
 }
 \details{
 The current active graphical device is split into a number of sub-figures,

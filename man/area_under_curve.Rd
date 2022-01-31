@@ -12,11 +12,23 @@ curve have to be computed, in form of \code{fData} object.}
 }
 \value{
 The function returns a numeric vector containing the values of areas
-under the curve for all the elements of the functional dataset \code{fData}.
+under the curve for all the elements of the functional dataset
+\code{fData}.
 }
 \description{
 This method computes the (signed) area under the curve of elements of a
 univariate functional dataset, namely, their integral.
+}
+\details{
+Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
+defined over a compact interval \eqn{I=[a,b]} and observed on an evenly
+spaced 1D grid \eqn{[a = t_0, t_1, \ldots, t_{P-1} = b] \subset I}, the
+function computes:
+
+\deqn{ \sum_{i=1}^{P-2} \frac{X(t_{i+1}) - X(t_{i-1})}{2} h \approx \int_a^b
+X(t) dt,}
+
+where \eqn{h = t_1 - t_0}.
 }
 \examples{
 

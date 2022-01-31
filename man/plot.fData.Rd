@@ -2,7 +2,7 @@
 % Please edit documentation in R/fData.R
 \name{plot.fData}
 \alias{plot.fData}
-\title{Specialised method to plot \code{fData} objects}
+\title{Specialized method to plot \code{fData} objects}
 \usage{
 \method{plot}{fData}(x, ...)
 }
@@ -14,7 +14,7 @@
 \description{
 This function performs the plot of a functional univariate dataset stored in
 an object of class \code{fData}. It is able to accept all the usual
-customisable graphical parameters, otherwise it will use the default ones.
+customizable graphical parameters, otherwise it will use the default ones.
 }
 \examples{
 

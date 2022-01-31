@@ -1,23 +1,22 @@
 #' Maxima of a univariate functional dataset
 #'
-#' This function computes the maximum value of each element of a
-#' univariate functional dataset, optionally returing also the value of the
-#' grid where they are fulfilled.
+#' This function computes the maximum value of each element of a univariate
+#' functional dataset, optionally returning also the value of the grid where
+#' they are fulfilled.
 #'
 #' @param fData the functional dataset containing elements whose maxima have to
-#' be computed, in form of \code{fData} object.
+#'   be computed, in form of \code{fData} object.
 #' @param ... additional parameters.
 #' @param which logical flag specifying whether the grid values where maxima are
-#' fulfilled have to be returned too.
+#'   fulfilled have to be returned too.
 #'
 #' @return If \code{which = FALSE}, the function returns a vector containing the
-#' maxima for each element of the functional dataset; if \code{which = TRUE},
-#' the function returns a \code{data.frame} whose field \code{value} contains
-#' the values of maxima, and \code{grid} contains the grid points where maxima
-#' are reached.
+#'   maxima for each element of the functional dataset; if \code{which = TRUE},
+#'   the function returns a \code{data.frame} whose field \code{value} contains
+#'   the values of maxima, and \code{grid} contains the grid points where maxima
+#'   are reached.
 #'
 #' @examples
-#'
 #' P = 1e3
 #'
 #' grid = seq( 0, 1, length.out = P )
@@ -34,7 +33,6 @@
 #' @seealso \code{\link{minima}}
 #'
 #' @export
-#'
 maxima = function( fData, ..., which = FALSE )
 {
   if( which )
@@ -48,24 +46,23 @@ maxima = function( fData, ..., which = FALSE )
 
 }
 
-
 #' Minima of a univariate functional dataset
 #'
 #' This function computes computes the minimum value of each element of a
-#' univariate functional dataset, optionally returing also the value of the
-#' grid where they are fulfilled.
+#' univariate functional dataset, optionally returning also the value of the grid
+#' where they are fulfilled.
 #'
 #' @param fData the functional dataset containing elements whose minima have to
-#' be computed, in form of \code{fData} object.
+#'   be computed, in form of \code{fData} object.
 #' @param ... additional parameters.
 #' @param which logical flag specifying whether the grid values where minima are
-#' fulfilled have to be returned too.
+#'   fulfilled have to be returned too.
 #'
 #' @return If \code{which = FALSE}, the function returns a vector containing the
-#' minima for each element of the functional dataset; if \code{which = TRUE},
-#' the function returns a \code{data.frame} whose field \code{value} contains
-#' the values of minima, and \code{grid} contains the grid points where minima
-#' are reached.
+#'   minima for each element of the functional dataset; if \code{which = TRUE},
+#'   the function returns a \code{data.frame} whose field \code{value} contains
+#'   the values of minima, and \code{grid} contains the grid points where minima
+#'   are reached.
 #'
 #' @examples
 #'
@@ -85,7 +82,6 @@ maxima = function( fData, ..., which = FALSE )
 #' @seealso \code{\link{maxima}}
 #'
 #' @export
-#'
 minima = function( fData, ..., which = FALSE )
 {
   if( which )
@@ -98,45 +94,43 @@ minima = function( fData, ..., which = FALSE )
 
 }
 
-
-#'  Maximum order relation between univariate functional data
+#' Maximum order relation between univariate functional data
 #'
-#'  This function implements an order relation between univariate functional
-#'  data based on the maximum relation, that is to say a pre-order relation
-#'  obtained by comparing the maxima of two different functional data.
+#' This function implements an order relation between univariate functional data
+#' based on the maximum relation, that is to say a pre-order relation obtained
+#' by comparing the maxima of two different functional data.
 #'
-#'  Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)}
-#'  and another functional dataset \eqn{Y_1(t),} \eqn{Y_2(t), \ldots, Y_M(t)}
-#'  defined over the same compact interval \eqn{I=[a,b]}, the function computes
-#'  the maxima in both the datasets, and checks whether the first ones are lower
-#'  or equal than the second ones.
+#' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)}
+#' and another functional dataset \eqn{Y_1(t),} \eqn{Y_2(t), \ldots, Y_M(t)}
+#' defined over the same compact interval \eqn{I=[a,b]}, the function computes
+#' the maxima in both the datasets, and checks whether the first ones are lower
+#' or equal than the second ones.
 #'
-#'  By default the function tries to compare each \eqn{X_i(t)} with the
-#'  corresponding \eqn{Y_i(t)}, thus assuming \eqn{N=M}, but when either \eqn{N=1}
-#'  or \eqn{M=1}, the comparison is carried out cycling over the dataset with
-#'  fewer elements. In all the other cases (\eqn{N\neq M,} and either
-#'  \eqn{N \neq 1} or \eqn{M \neq 1}) the function stops.
+#' By default the function tries to compare each \eqn{X_i(t)} with the
+#' corresponding \eqn{Y_i(t)}, thus assuming \eqn{N=M}, but when either
+#' \eqn{N=1} or \eqn{M=1}, the comparison is carried out cycling over the
+#' dataset with fewer elements. In all the other cases (\eqn{N\neq M,} and
+#' either \eqn{N \neq 1} or \eqn{M \neq 1}) the function stops.
 #'
 #' @param fData the first univariate functional dataset containing elements to
-#' be compared, in form of \code{fData} object.
+#'   be compared, in form of \code{fData} object.
 #' @param gData the second univariate functional dataset containing elements to
-#' be compared, in form of \code{fData} object.
+#'   be compared, in form of \code{fData} object.
 #'
-#' @return
-#' The function returns a logical vector of length \eqn{\max(N,M)} containing the
-#' value of the predicate for all the corresponding elements.
+#' @return The function returns a logical vector of length \eqn{\max(N,M)}
+#' containing the value of the predicate for all the corresponding elements.
 #'
 #' @references
 #'
 #' Valencia, D., Romo, J. and Lillo, R. (2015). A Kendall correlation
-#' coefficient for functional dependence,
-#' \emph{Universidad Carlos III de Madrid technical report},
+#' coefficient for functional dependence, \emph{Universidad Carlos III de Madrid
+#' technical report},
 #' \code{http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133228}.
 #'
 #'
 #'
 #' @seealso \code{\link{maxima}}, \code{\link{minima}}, \code{\link{fData}},
-#' \code{\link{area_ordered}}
+#'   \code{\link{area_ordered}}
 #'
 #' @examples
 #'
@@ -183,27 +177,27 @@ max_ordered = function( fData, gData )
   return( maxima( fData ) - maxima( gData ) <= 0 )
 }
 
-#'
 #' Area under curve of elements of univariate functional data
 #'
 #' This method computes the (signed) area under the curve of elements of a
 #' univariate functional dataset, namely, their integral.
 #'
 #' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)},
-#' defined over a compact interval \eqn{I=[a,b]} and observed on an evenly sapced
-#' 1D grid \eqn{[a = t_0, t_1, \ldots, t_{P-1} = b \subset I}, the function
-#' computes:}
+#' defined over a compact interval \eqn{I=[a,b]} and observed on an evenly
+#' spaced 1D grid \eqn{[a = t_0, t_1, \ldots, t_{P-1} = b] \subset I}, the
+#' function computes:
 #'
-#' \deqn{ \sum_{i=1}^{P-2} \frac{X(t_{i+1}) - X(t_{i-1})}{2} h \approx
-#' \int_a^b X(t) dt,}
+#' \deqn{ \sum_{i=1}^{P-2} \frac{X(t_{i+1}) - X(t_{i-1})}{2} h \approx \int_a^b
+#' X(t) dt,}
 #'
 #' where \eqn{h = t_1 - t_0}.
 #'
 #' @param fData the functional dataset containing elements whose areas under the
-#' curve have to be computed, in form of \code{fData} object.
+#'   curve have to be computed, in form of \code{fData} object.
 #'
 #' @return The function returns a numeric vector containing the values of areas
-#' under the curve for all the elements of the functional dataset \code{fData}.
+#'   under the curve for all the elements of the functional dataset
+#'   \code{fData}.
 #'
 #' @seealso \code{\link{area_ordered}}, \code{\link{fData}}
 #'
@@ -222,7 +216,6 @@ max_ordered = function( fData, gData )
 #' area_under_curve( fD )
 #'
 #' @export
-#'
 area_under_curve = function( fData)
 {
   if( fData$N > 1 )
@@ -235,39 +228,37 @@ area_under_curve = function( fData)
   }
 }
 
-#'  Area-under-curve order relation between univariate functional data
+#' Area-under-curve order relation between univariate functional data
 #'
-#'  This function implements an order relation between univariate functional
-#'  data based on the area-under-curve relation, that is to say a pre-order
-#'  relation obtained by comparing the area-under-curve of two
-#'  different functional data.
+#' This function implements an order relation between univariate functional data
+#' based on the area-under-curve relation, that is to say a pre-order relation
+#' obtained by comparing the area-under-curve of two different functional data.
 #'
-#'  Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)}
-#'  and another functional dataset \eqn{Y_1(t),} \eqn{Y_2(t), \ldots, Y_M(t)}
-#'  defined over the same compact interval \eqn{I=[a,b]}, the function computes
-#'  the area-under-curve (namely, the integral) in both the datasets, and checks
-#'  whether the first ones are lower or equal than the second ones.
+#' Given a univariate functional dataset, \eqn{X_1(t), X_2(t), \ldots, X_N(t)}
+#' and another functional dataset \eqn{Y_1(t),} \eqn{Y_2(t), \ldots, Y_M(t)}
+#' defined over the same compact interval \eqn{I=[a,b]}, the function computes
+#' the area-under-curve (namely, the integral) in both the datasets, and checks
+#' whether the first ones are lower or equal than the second ones.
 #'
-#'  By default the function tries to compare each \eqn{X_i(t)} with the
-#'  corresponding \eqn{Y_i(t)}, thus assuming \eqn{N=M}, but when either \eqn{N=1}
-#'  or \eqn{M=1}, the comparison is carried out cycling over the dataset with
-#'  fewer elements. In all the other cases (\eqn{N\neq M,} and either
-#'  \eqn{N \neq 1} or \eqn{M \neq 1}) the function stops.
+#' By default the function tries to compare each \eqn{X_i(t)} with the
+#' corresponding \eqn{Y_i(t)}, thus assuming \eqn{N=M}, but when either
+#' \eqn{N=1} or \eqn{M=1}, the comparison is carried out cycling over the
+#' dataset with fewer elements. In all the other cases (\eqn{N\neq M,} and
+#' either \eqn{N \neq 1} or \eqn{M \neq 1}) the function stops.
 #'
 #' @param fData the first univariate functional dataset containing elements to
-#' be compared, in form of \code{fData} object.
+#'   be compared, in form of \code{fData} object.
 #' @param gData the second univariate functional dataset containing elements to
-#' be compared , in form of \code{fData} object.
+#'   be compared , in form of \code{fData} object.
 #'
-#' @return
-#' The function returns a logical vector of length \eqn{\max(N,M)} containing the
-#' value of the predicate for all the corresponding elements.
+#' @return The function returns a logical vector of length \eqn{\max(N,M)}
+#' containing the value of the predicate for all the corresponding elements.
 #'
 #' @references
 #'
 #' Valencia, D., Romo, J. and Lillo, R. (2015). A Kendall correlation
-#' coefficient for functional dependence,
-#' \emph{Universidad Carlos III de Madrid technical report},
+#' coefficient for functional dependence, \emph{Universidad Carlos III de Madrid
+#' technical report},
 #' \code{http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133228}.
 #'
 #'
@@ -325,37 +316,7 @@ area_ordered = function( fData, gData )
   }
 }
 
-# cor_kendall = function( mfD, ordering = 'max' )
-# {
-#   if( mfD$L != 2 )
-#   {
-#     stop( ' Error in cor_kendall: only bivariate data are supported for now.')
-#   }
-#
-#   N = mfD$N
-#
-#   if( ordering == 'area' )
-#   {
-#     count_concordances = function( iObs )( sum( area_ordered( mfD$fDList[[ 1 ]][ iObs, ],
-#                                                               mfD$fDList[[ 1 ]][ ( iObs + 1 ) : N, ] ) ==
-#                                                   area_ordered( mfD$fDList[[ 2 ]][ iObs, ],
-#                                                                 mfD$fDList[[ 2 ]][ ( iObs + 1 ) : N, ] ) ) )
-#   } else if ( ordering == 'max' )
-#   {
-#     count_concordances = function( iObs )( sum( max_ordered( mfD$fDList[[ 1 ]][ iObs, ],
-#                                                              mfD$fDList[[ 1 ]][ ( iObs + 1 ) : N, ] ) ==
-#                                                   max_ordered( mfD$fDList[[ 2 ]][ iObs, ],
-#                                                                mfD$fDList[[ 2 ]][ ( iObs + 1 ) : N, ] ) ) )
-#   }else
-#   {
-#     stop( ' Error in cor_kendall: unsupported ordering relation')
-#   }
-#
-#   return( ( 2 * sum( sapply( 1 : ( N - 1 ), count_concordances ) )  - ( N * ( N - 1 ) / 2 ) ) / ( N * ( N - 1 ) / 2 ) )
-# }
-
-
-#'  Kendall's tau correlation coefficient for bivariate functional data
+#' Kendall's tau correlation coefficient for bivariate functional data
 #'
 #' This function computes the Kendall's tau correlation coefficient for a
 #' bivariate functional dataset, with either a max or area-under-curve order
@@ -369,21 +330,21 @@ area_ordered = function( fData, gData )
 #'
 #' See the references for more details.
 #'
-#' @param mfD a bivariate functional dataset whose Kendall's tau
-#' coefficient must be computed, in form of bivariate \code{mfData} object
-#' (\code{mfD$L=2}).
+#' @param mfD a bivariate functional dataset whose Kendall's tau coefficient
+#'   must be computed, in form of bivariate \code{mfData} object
+#'   (\code{mfD$L=2}).
 #' @param ordering the ordering relation to use on functional observations,
-#' either \code{"max"} for the maximum relation or \code{"area"} for the
-#' area under the curve relation (default is \code{"max"}).
+#'   either \code{"max"} for the maximum relation or \code{"area"} for the area
+#'   under the curve relation (default is \code{"max"}).
 #'
 #' @return The function returns the Kendall's tau correlation coefficient for
-#' the bivariate dataset provided with \code{mfData}.
+#'   the bivariate dataset provided with \code{mfData}.
 #'
 #' @references
 #'
 #' Valencia, D., Romo, J. and Lillo, R. (2015). A Kendall correlation
-#' coefficient for functional dependence,
-#' \emph{Universidad Carlos III de Madrid technical report},
+#' coefficient for functional dependence, \emph{Universidad Carlos III de Madrid
+#' technical report},
 #' \code{http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133228}.
 #'
 #'
@@ -428,7 +389,7 @@ area_ordered = function( fData, gData )
 #' cor_kendall( mfD, ordering = 'area' )
 #'
 #' @seealso \code{\link{mfData}}, \code{\link{area_ordered}},
-#' \code{\link{max_ordered}}
+#'   \code{\link{max_ordered}}
 #'
 #' @export
 cor_kendall = function( mfD, ordering = 'max' )
@@ -465,28 +426,29 @@ cor_kendall = function( mfD, ordering = 'max' )
 #' Spearman's correlation coefficient for multivariate functional data
 #'
 #' This function computes the Spearman's correlation coefficient for a
-#' multivariate functional dataset, with either a Modified Epigraph Index (MEI) or
-#' Modified Hypograph Index (MHI) ranking of univariate elments of data
+#' multivariate functional dataset, with either a Modified Epigraph Index (MEI)
+#' or Modified Hypograph Index (MHI) ranking of univariate elements of data
 #' components.
 #'
 #' Given a multivariate functional dataset, with first components \eqn{X^1_1(t),
-#' X^1_2(t), \ldots, X^1_N(t)}, second components \eqn{X^2_1(t), X^2_2(t), \ldots,
-#' X^2_N(t)}, etc., the function exploits either the MEI or MHI to compute the matrix of
-#' Spearman's correlation coefficients. Such matrix is symmetrical and has ones on the
-#' diagonal. The entry (i, j) represents the Spearman correlation coefficient between
-#' curves of component i and j.
+#' X^1_2(t), \ldots, X^1_N(t)}, second components \eqn{X^2_1(t), X^2_2(t),
+#' \ldots, X^2_N(t)}, etc., the function exploits either the MEI or MHI to
+#' compute the matrix of Spearman's correlation coefficients. Such matrix is
+#' symmetrical and has ones on the diagonal. The entry (i, j) represents the
+#' Spearman correlation coefficient between curves of component i and j.
 #'
 #' See the references for more details.
 #'
 #' @param mfD a multivariate functional dataset whose Spearman's correlation
-#' coefficient must be computed, in form of multivariate \code{mfData} object.
+#'   coefficient must be computed, in form of multivariate \code{mfData} object.
 #' @param ordering the ordering relation to use on functional observations,
-#' either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is \code{"MEI"}).
+#'   either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is
+#'   \code{"MEI"}).
 #'
 #' @return If the original dataset is bivariate, the function returns only the
-#' scalar value of the correlation coefficient for the two components.
-#' When the number of components is L >2, it returns the whole matrix of
-#' Spearman's correlation coefficients for all the components.
+#'   scalar value of the correlation coefficient for the two components. When
+#'   the number of components is L >2, it returns the whole matrix of Spearman's
+#'   correlation coefficients for all the components.
 #'
 #' @references
 #'
@@ -559,7 +521,7 @@ cor_spearman = function( mfD, ordering = 'MEI' )
     # rk_2 = MHI( mfD$fDList[[ 2 ]]$values )
   }
 
-  cor_output = cor(rks, method='pearson')
+  cor_output = stats::cor(rks, method='pearson')
 
   if( mfD$L == 2 )
   {
@@ -572,54 +534,69 @@ cor_spearman = function( mfD, ordering = 'MEI' )
 
 #' Bootstrap Spearman's correlation coefficient for multivariate functional data
 #'
-#' This function computes the bootstrap estimates of standard error and bias of the Spearman's
-#' correlation coefficient for a multivariate functional dataset.
+#' This function computes the bootstrap estimates of standard error and bias of
+#' the Spearman's correlation coefficient for a multivariate functional dataset.
 #'
-#' Given a multivariate functional dataset \eqn{X_1^(i), \ldots, X_n^(i)}, \eqn{i=0, \ldots, L}
-#' defined over the grid \eqn{I = t_0, \ldots, t_P}, having components \eqn{i=1, \ldots, L}, and a
-#' chosen ordering strategy (MEI or MHI), the function computes the matrix of Speraman's correlation
-#' indexes of the dataset's components, as well as their bias and standard deviation estimates
-#' through a specified number of bootstrap iterations (bias and standard error are updated with
-#' on-line formulas).
+#' Given a multivariate functional dataset \eqn{X_1^(i), \ldots, X_n^(i)},
+#' \eqn{i=0, \ldots, L} defined over the grid \eqn{I = t_0, \ldots, t_P}, having
+#' components \eqn{i=1, \ldots, L}, and a chosen ordering strategy (MEI or MHI),
+#' the function computes the matrix of Spearman's correlation indices of the
+#' dataset components, as well as their bias and standard deviation estimates
+#' through a specified number of bootstrap iterations (bias and standard error
+#' are updated with on-line formulas).
 #'
 #' @param mfD a multivariate functional dataset whose Spearman's correlation
-#' coefficient must be computed, in form of multivariate \code{mfData} object.
+#'   coefficient must be computed, in form of multivariate \code{mfData} object.
 #' @param ordering the ordering relation to use on functional observations,
-#' either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is \code{"MEI"}).
-#' @param bootstrap_iterations the number of bootstrap iterations to be used for estimation of bias and
-#' standard error.
-#' @param verbose a logical flag specifying whether to log information on the estimation progress.
+#'   either \code{"MEI"} for MEI or \code{"MHI"} for MHI (default is
+#'   \code{"MEI"}).
+#' @param bootstrap_iterations the number of bootstrap iterations to be used for
+#'   estimation of bias and standard error.
+#' @param verbose a logical flag specifying whether to log information on the
+#'   estimation progress.
 #'
-#' @return a list of three elements: \code{mean}, the mean of the matrix of correlation coefficients;
-#' \code{bias}, a matrix containing the estimated bias (mean - point estimate of correlation coefficients);
-#' \code{sd}, a matrix containing the estiated standard deviation of the coefficients' matrix. In case
-#' the multivariate functional dataset has only two components, the return type is scalar and not matrix.
+#' @return a list of three elements: \code{mean}, the mean of the matrix of
+#'   correlation coefficients; \code{bias}, a matrix containing the estimated
+#'   bias (mean - point estimate of correlation coefficients); \code{sd}, a
+#'   matrix containing the estimated standard deviation of the coefficients'
+#'   matrix. In case the multivariate functional dataset has only two
+#'   components, the return type is scalar and not matrix.
 #'
 #' @seealso \code{\link{cor_spearman}}, \code{\link{mfData}}
 #'
 #' @examples
+#' N <- 200
+#' P <- 100
 #'
-#' N = 2e2
-#' P = 1e2
-#' grid = seq( 0, 1, length.out = P )
+#' grid <- seq(0, 1, length.out = P)
 #'
-#' # Creating an exponential covariance function to simulate guassian data
-#' Cov = exp_cov_function( grid, alpha = 0.3, beta = 0.4 )
+#' # Creating an exponential covariance function to simulate Gaussian data
+#' Cov <- exp_cov_function(grid, alpha = 0.3, beta = 0.4)
 #'
-#' # Simulating (independent) gaussian functional data with given center and covariance function
+#' # Simulating (independent) Gaussian functional data with given center and covariance function
 #'
-#' Data_1 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
-#' Data_2 = generate_gauss_fdata( N, centerline = sin( 2 * pi * grid ), Cov = Cov )
+#' Data_1 <- generate_gauss_fdata(
+#'   N = N,
+#'   centerline = sin(2 * pi * grid),
+#'   Cov = Cov
+#' )
+#'
+#' Data_2 <- generate_gauss_fdata(
+#'   N = N,
+#'   centerline = sin(2 * pi * grid),
+#'   Cov = Cov
+#' )
 #'
 #' # Using the simulated data as (independent) components of a bivariate functional dataset
-#' mfD = mfData( grid, list( Data_1, Data_2 ) )
-#'\dontrun{
-#' cor_spearman_accuracy(mfD, ordering='MEI')
+#' mfD <- mfData(grid, list(Data_1, Data_2))
 #'
-#' cor_spearman_accuracy(mfD, ordering='MHI')
-#'}
+#' \donttest{
+#' # Computes bootstrap estimate of Spearman correlation
+#' cor_spearman_accuracy(mfD, ordering = "MEI")
+#' cor_spearman_accuracy(mfD, ordering = "MHI")
+#' }
+#'
 #' @export
-#'
 cor_spearman_accuracy = function(mfD, ordering='MEI', bootstrap_iterations=1000,
                                  verbose=FALSE)
 {
@@ -659,4 +636,3 @@ cor_spearman_accuracy = function(mfD, ordering='MEI', bootstrap_iterations=1000,
                bias = cor_mean - cor_spearman(mfD, ordering = ordering),
                sd = sqrt(cor_sqd / ( bootstrap_iterations - 1 ))))
 }
-

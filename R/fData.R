@@ -1,4 +1,3 @@
-
 #' \code{S3} Class for univariate functional datasets.
 #'
 #'  This function implements a constructor for elements of \code{S3} class
@@ -17,7 +16,7 @@
 #' @param grid the evenly spaced grid over which the functional observations are
 #' measured. It must be a numeric vector of length \code{P}.
 #' @param values the values of the observations in the functional dataset,
-#' prodived in form of a 2D data structure (e.g. matrix or array) having as
+#' provided in form of a 2D data structure (e.g. matrix or array) having as
 #' rows the observations and as columns their measurements over the 1D grid of
 #' length \code{P} specified in \code{grid}.
 #'
@@ -128,11 +127,11 @@ append_fData = function(fD1, fD2)
   return(fData(grid, values = rbind(fD1$values, fD2$values)))
 }
 
-#' Specialised method to plot \code{fData} objects
+#' Specialized method to plot \code{fData} objects
 #'
 #' This function performs the plot of a functional univariate dataset stored in
 #' an object of class \code{fData}. It is able to accept all the usual
-#' customisable graphical parameters, otherwise it will use the default ones.
+#' customizable graphical parameters, otherwise it will use the default ones.
 #'
 #' @param x the univariate functional dataset in form of \code{fData} object.
 #' @param ... additional graphical parameters to be used in plotting functions
@@ -176,7 +175,7 @@ plot.fData = function( x, ... )
                         xlab = '', ylab = '', main = '',
                         ... )
 {
-  matplot( seq( x$t0, x$tP, length.out = x$P ),
+  graphics::matplot( seq( x$t0, x$tP, length.out = x$P ),
            t( x$values ), type = type, lty = lty,
            col = col, xlab = xlab, ylab = ylab, main = main, ... )
 }
@@ -212,7 +211,7 @@ plot.fData = function( x, ... )
 #'  \item{"\code{t0}"}{: the starting point of the 1D grid;}
 #'  \item{"\code{tP}"}{: the ending point of the 1D grid;}
 #'  \item{"\code{fDList}"}{: the list of \code{fData} objects representing the
-#'  \code{L} components as corresponding unviariate functional datasets.}
+#'  \code{L} components as corresponding univariate functional datasets.}
 #' }
 #'
 #' @seealso \code{\link{fData}}, \code{\link{generate_gauss_fdata}},
@@ -339,11 +338,11 @@ append_mfData = function(mfD1, mfD2)
                           function(id) append_fData(mfD1$fDList[[id]], mfD2$fDList[[id]]))))
 }
 
-#' Specialised method to plot \code{mfData} objects
+#' Specialized method to plot \code{mfData} objects
 #'
 #' This function performs the plot of a functional multivariate dataset stored
 #' in an object of class \code{mfData}. It is able to accept all the usual
-#' customisable graphical parameters, otherwise it will use the default ones.
+#' customizable graphical parameters, otherwise it will use the default ones.
 #'
 #' The current active graphical device is split into a number of sub-figures,
 #' each one meant to contain the plot of the corresponding dimension of the
@@ -406,13 +405,14 @@ plot.mfData = function( x, ... )
                          xlab = NULL, ylab = NULL, main = NULL,
                          add = FALSE, ... )
 {
-
-  if( add == FALSE )
+  if (add == FALSE)
   {
-    mfrow_rows = floor( sqrt( x$L ) )
-    mfrow_cols = ceiling( x$L / floor( sqrt( x$L ) ) )
+    mfrow_rows <- floor(sqrt(x$L))
+    mfrow_cols <- ceiling(x$L / floor(sqrt(x$L)))
 
-    par( mfrow = c( mfrow_rows, mfrow_cols ) )
+    oldpar <- graphics::par(mfrow = c(1, 1))
+    on.exit(graphics::par(oldpar))
+    graphics::par(mfrow = c(mfrow_rows, mfrow_cols))
   }
 
   if( ! is.null( ylab ) )
@@ -518,7 +518,7 @@ NULL
 #' @export
 "+.fData" = function( fD, A )
 {
-  if( class( A ) == 'fData' )
+  if( 'fData' %in% class( A ) )
   {
     if( fD$t0 != A$t0 || fD$tP != A$tP || fD$h != A$h || fD$P != A$P )
     {
@@ -574,7 +574,7 @@ NULL
 #'
 "-.fData" = function( fD, A )
 {
-  if( class( A ) == 'fData' )
+  if( 'fData' %in% class( A ) )
   {
     if( fD$t0 != A$t0 || fD$tP != A$tP || fD$h != A$h || fD$P != A$P )
     {
@@ -779,14 +779,23 @@ mean.fData = function( x, ... )
 #' )
 #'
 #' # Graphical representation of the mean
-#' par( mfrow = c( 1, 3 ) )
+#' oldpar <- par(mfrow = c(1, 1))
+#' par(mfrow = c(1, L))
 #'
-#' for( iL in 1 : L )
+#' for(iL in 1:L)
 #' {
-#'   plot( mfD$fDList[[ 1 ]] )
-#'   plot( mean( mfD )$fDList[[ 1 ]], col = 'black',
-#'         lwd = 2, lty = 2, add = TRUE )
+#'   plot(mfD$fDList[[iL]])
+#'   plot(
+#'     mean(mfD)$fDList[[iL]],
+#'     col = 'black',
+#'     lwd = 2,
+#'     lty = 2,
+#'     add = TRUE
+#'   )
 #' }
+#'
+#' par(oldpar)
+#'
 #' @export
 mean.mfData = function( x, ... )
 {
@@ -848,7 +857,7 @@ mean.mfData = function( x, ... )
 #' the cross-covariance function of the two datasets is returned;}
 #' \item{if \code{X} is of class \code{mfData} and \code{Y} is \code{NULL},
 #' the upper-triangular blocks of the covariance function of \code{X}
-#' are returned (in form of list and by row, i.e. in the squence 1_1, 1_2, ...,
+#' are returned (in form of list and by row, i.e. in the sequence 1_1, 1_2, ...,
 #' 1_L, 2_2, ... - have a look at the labels of the list with \code{str});}
 #' \item{if \code{X} is of class \code{mfData} and \code{Y} is of
 #' class \code{fData},
@@ -858,7 +867,7 @@ mean.mfData = function( x, ... )
 #' class \code{mfData},
 #' the upper-triangular blocks of the cross-covariance of \code{X}'s and
 #' \code{Y}'s components are returned (in form of list and by row, i.e. in the
-#' squence 1_1, 1_2, ..., 1_L, 2_2, ... - have a look at the labels
+#' sequence 1_1, 1_2, ..., 1_L, 2_2, ... - have a look at the labels
 #' of the list with \code{str}));}}
 #'
 #' In any case, the return type is either an instance of the \code{S3} class \code{Cov}
@@ -935,8 +944,6 @@ cov_fun = function( X, Y = NULL )
 }
 
 #' @rdname cov_fun
-#'
-#' @importFrom stats cov
 #' @export
 cov_fun.fData = function( X, Y = NULL )
 {
@@ -1062,10 +1069,10 @@ cov_fun.mfData = function( X, Y = NULL )
   }
 }
 
-#' Specialised method to plot \code{Cov} objects
+#' Specialized method to plot \code{Cov} objects
 #'
 #' This function performs the plot of an object of class \code{Cov}, i.e. a
-#' covariance or cross-covaraince function.
+#' covariance or cross-covariance function.
 #'
 #' @details
 #' It builds above the function \code{graphics::image}, therefore any additional
@@ -1098,7 +1105,6 @@ cov_fun.mfData = function( X, Y = NULL )
 #'
 #' plot( cov_fun( fD1 ), main = 'Covariance function', xlab = 'time', ylab = 'time' )
 #'
-#' @importFrom graphics image
 #' @export
 plot.Cov = function( x, ... )
 {
@@ -1213,14 +1219,23 @@ median_fData = function( fData, type = 'MBD', ... )
 #' med_mfD = median_mfData( mfD, type = 'multiMBD', weights = 'uniform' )
 #'
 #' # Graphical representation of the mean
-#' par( mfrow = c( 1, 3 ) )
+#' oldpar <- par(mfrow = c(1, 1))
+#' par(mfrow = c(1, L))
 #'
-#' for( iL in 1 : L )
+#' for(iL in 1:L)
 #' {
-#'   plot( mfD$fDList[[ 1 ]] )
-#'   plot( med_mfD$fDList[[ 1 ]], col = 'black',
-#'         lwd = 2, lty = 2, add = TRUE )
+#'   plot(mfD$fDList[[iL]])
+#'   plot(
+#'     med_mfD$fDList[[iL]],
+#'     col = 'black',
+#'     lwd = 2,
+#'     lty = 2,
+#'     add = TRUE
+#'   )
 #' }
+#'
+#' par(oldpar)
+#'
 #' @export
 median_mfData = function( mfData, type = 'multiMBD', ... )
 {
@@ -1232,7 +1247,7 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
                           which.max( Depths ), ) ) )
 }
 
-#' Operator \code{sub-.fData} to subset \code{fData} obejcts
+#' Operator \code{sub-.fData} to subset \code{fData} objects
 #'
 #' This method provides an easy and natural way to subset a functional dataset
 #' stored in a \code{fData} object, without having to deal with the inner
@@ -1276,22 +1291,25 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
 #'                                   Cov = C ) )
 #'
 #' dev.new()
-#' par( mfrow = c( 2, 2 ) )
+#' oldpar <- par(mfrow = c(1, 1))
+#' par(mfrow = c(2, 2))
 #'
 #' # Original data
-#' plot( fD )
+#' plot(fD)
 #'
 #' # Subsetting observations
-#' plot( fD[ c(1,2,3), , as_fData = TRUE ] )
+#' plot(fD[c(1, 2, 3), , as_fData = TRUE])
 #'
 #' # Subsetting measurements
-#' plot( fD[ , 1 : 30 ] )
+#' plot(fD[, 1:30])
 #'
 #' # Subsetting both observations and measurements
-#' plot( fD[ 1 : 10, 50 : P ] )
+#' plot(fD[1:10, 50:P])
+#'
+#' par(oldpar)
 #'
 #' # Subsetting both observations and measurements but returning a matrix
-#' fD[ 1 : 10, 50 : P, as_fData = FALSE ]
+#' fD[1:10, 50:P, as_fData = FALSE]
 #'
 #' @export
 "[.fData" = function( fD, i, j, as_fData = TRUE )
@@ -1338,7 +1356,7 @@ median_mfData = function( mfData, type = 'multiMBD', ... )
   }
 }
 
-#' Operator \code{sub-.mfData} to subset \code{mfData} obejcts
+#' Operator \code{sub-.mfData} to subset \code{mfData} objects
 #'
 #' This method provides an easy and natural way to subset a multivariate
 #' functional dataset stored in a \code{mfData} object, without having to
@@ -1450,11 +1468,11 @@ toListOfValues = function( mfData )
 #' This function operates on a univariate functional dataset and transforms its
 #' observations unfolding their values and turning them into monotone functions.
 #'
-#' Each function of the \code{fData} object is transformed into a nonmonotone
+#' Each function of the \code{fData} object is transformed into a non-monotone
 #' function into a monotone function by ``unfolding'' it at any of its maxima.
 #' For more details about the definition of the transform, see the reference.
 #'
-#' @param fData the unvariate functional dataset in form of \code{fData} object.
+#' @param fData the univariate functional dataset in form of \code{fData} object.
 #'
 #' @return The function returns an \code{fData} object whose observations are
 #' the unfolded version of the corresponding observations in the argument
@@ -1482,9 +1500,13 @@ toListOfValues = function( mfData )
 #' fD_unfold = unfold( fD )
 #'
 #' dev.new()
-#' par( mfrow = c( 1, 2 ) )
-#' plot( fD, main = 'Original data' )
-#' plot( fD_unfold, main = 'Unfolded data' )
+#' oldpar <- par(mfrow = c(1, 1))
+#' par(mfrow = c(1, 2))
+#'
+#' plot(fD, main = 'Original data')
+#' plot(fD_unfold, main = 'Unfolded data')
+#'
+#' par(oldpar)
 #'
 #' @export
 unfold = function( fData )
@@ -1558,7 +1580,9 @@ unfold = function( fData )
 #' fD_warped = warp( fD, wfD )
 #'
 #' dev.new()
-#' par( mfrow = c( 1, 3 ) )
+#' oldpar <- par(mfrow = c(1, 1))
+#' par(mfrow = c(1, 3))
+#'
 #' plot( fD,
 #'      main = 'Unregistered functions', xlab = 'actual grid', ylab = 'values'  )
 #' plot( wfD,
@@ -1568,7 +1592,7 @@ unfold = function( fData )
 #'      main = 'Warped functions', xlab = 'registered grid',
 #'      ylab = 'values' )
 #'
-#' @importFrom stats approx
+#' par(oldpar)
 #'
 #' @export
 warp = function( fData, warpings )
@@ -1598,11 +1622,13 @@ observations' )
                       length.out = warpings$P ),
                  t( sapply( 1 : fData$N,
                             function( i )(
-                              approx( time_grid,
-                                      fData$values[ i, ],
-                                      xout = warpings$values[ i, ],
-                                      yright = fData$values[ i, fData$P ],
-                                      yleft = fData$values[ i, 1 ] )$y ) ) ) ) )
+                              stats::approx(
+                                time_grid,
+                                fData$values[i,],
+                                xout = warpings$values[i,],
+                                yright = fData$values[i, fData$P],
+                                yleft = fData$values[i, 1]
+                              )$y ) ) ) ) )
 }
 
 
