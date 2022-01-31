@@ -1,9 +1,9 @@
-pandoc: 2.7.3
+pandoc: 2.14.2
 pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   roahd: roahd.html
-last_built: 2022-01-31T20:46Z
+last_built: 2022-01-31T21:19Z
 urls:
   reference: https://astamm.github.io/roahd/reference
   article: https://astamm.github.io/roahd/articles

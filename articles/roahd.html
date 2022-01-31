@@ -73,7 +73,7 @@
 
       
 
-      </header><script src="roahd_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>roahd</h1>
@@ -91,7 +91,7 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Package <strong>roahd</strong> (<strong>RO</strong>bust <strong>A</strong>nalysis of <strong>H</strong>igh dimensional <strong>D</strong>ata) is an <code>R</code> package meant to gather recently proposed statistical methods to deal with the robust analysis of functional data <span class="citation">(Ieva et al. 2019)</span>.</p>
+<p>Package <strong>roahd</strong> (<strong>RO</strong>bust <strong>A</strong>nalysis of <strong>H</strong>igh dimensional <strong>D</strong>ata) is an <code>R</code> package meant to gather recently proposed statistical methods to deal with the robust analysis of functional data <span class="citation">(Francesca Ieva et al. 2019)</span>.</p>
 <p>The package contains an implementation of quantitative methods, based on functional depths and indices, on top of which are built some graphical methods (functional boxplot and outliergram) useful to carry out an explorative analysis of a functional dataset and to robustify it by discarding shape and magnitude outliers.</p>
 <p>Both univariate and multivariate functional data are supported in the package, whose functions have been implemented with a particular emphasis on computational efficiency, in order to allow the processing of high-dimensional dataset.</p>
 </div>
@@ -182,7 +182,7 @@
 <span class="co">##   .. ..$ h     : num 0.0101</span>
 <span class="co">##   .. ..$ P     : int 100</span>
 <span class="co">##   .. ..$ N     : int 10</span>
-<span class="co">##   .. ..$ values: num [1:10, 1:100] 0.846 0.67 0.196 0.973 0.976 ...</span>
+<span class="co">##   .. ..$ values: num [1:10, 1:100] -0.431 0.565 0.65 0.247 0.834 ...</span>
 <span class="co">##   .. ..- attr(*, "class")= chr "fData"</span>
 <span class="co">##   ..$ :List of 6</span>
 <span class="co">##   .. ..$ t0    : num 0</span>
@@ -190,7 +190,7 @@
 <span class="co">##   .. ..$ h     : num 0.0101</span>
 <span class="co">##   .. ..$ P     : int 100</span>
 <span class="co">##   .. ..$ N     : int 10</span>
-<span class="co">##   .. ..$ values: num [1:10, 1:100] 1.106 0.985 1.18 0.8 -1.276 ...</span>
+<span class="co">##   .. ..$ values: num [1:10, 1:100] 1.333 0.877 0.968 1.346 -0.759 ...</span>
 <span class="co">##   .. ..- attr(*, "class")= chr "fData"</span>
 <span class="co">##  - attr(*, "class")= chr "mfData"</span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -291,7 +291,7 @@
 
 <span class="fu"><a href="../reference/MHRD.html">MHRD</a></span><span class="op">(</span> <span class="va">fD</span> <span class="op">)</span>
 <span class="fu"><a href="../reference/MHRD.html">MHRD</a></span><span class="op">(</span> <span class="va">fD</span><span class="op">$</span><span class="va">values</span> <span class="op">)</span></code></pre></div>
-<p>A generalization of MBD to multivariate functional data, implementing the ideas of <span class="citation">Ieva and Paganoni (2013)</span>, is also available through the functions <code>multiBD</code> and <code>multiMBD</code>. These functions accept either a <code>mfData</code> object, specifying the multivariate functional dataset whose depths have to be computed, or a list of matrices of data values (see example below).</p>
+<p>A generalization of MBD to multivariate functional data, implementing the ideas of <span class="citation">F. Ieva and Paganoni (2013)</span>, is also available through the functions <code>multiBD</code> and <code>multiMBD</code>. These functions accept either a <code>mfData</code> object, specifying the multivariate functional dataset whose depths have to be computed, or a list of matrices of data values (see example below).</p>
 <p>The function computes the BD or MBD for each component of the multivariate functional dataset and then averages them according to a set of weights. These can be specified in two ways: either with the flag <code>uniform</code>, that is turned into <code>rep( 1/L, L )</code> (where <code>L</code> stands for the number of components in the multivariate dataset), or by providing the actual set of weights to be used. The latter option allows to use ad-hoc set of weights, like in <span class="citation">(Tarabelloni et al. 2015)</span>.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R">  <span class="fu"><a href="../reference/multiMBD.html">multiBD</a></span><span class="op">(</span> <span class="va">mfD</span>, weights <span class="op">=</span> <span class="st">'uniform'</span> <span class="op">)</span>
@@ -701,44 +701,44 @@
 </div>
 </div>
 <div class="section level2">
-<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references">
-<div id="ref-arribasgil_romo_2014">
-<p>Arribas-Gil, A., and J. Romo. 2014. “Shape Outlier Detection and Visualization for Functional Data: The Outliergram.” <em>Biostatistics</em> 15 (4): 603–19.</p>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-arribasgil_romo_2014" class="csl-entry">
+Arribas-Gil, A., and J. Romo. 2014. <span>“Shape Outlier Detection and Visualization for Functional Data: The Outliergram.”</span> <em>Biostatistics</em> 15 (4): 603–19.
 </div>
-<div id="ref-ieva_paganoni_2013">
-<p>Ieva, F., and A. M. Paganoni. 2013. “Depth Measures for Multivariate Functional Data.” <em>Communication in Statistics - Theory and Methods</em> 42 (7): 1265–76.</p>
+<div id="ref-ieva_paganoni_2013" class="csl-entry">
+Ieva, F., and A. M. Paganoni. 2013. <span>“Depth Measures for Multivariate Functional Data.”</span> <em>Communication in Statistics - Theory and Methods</em> 42 (7): 1265–76.
 </div>
-<div id="ref-Ieva2019">
-<p>Ieva, Francesca, Anna Maria Paganoni, Juan Romo, and Nicholas Tarabelloni. 2019. “roahd Package: Robust Analysis of High Dimensional Data.” <em>The R Journal</em> 11 (2): 291–307. <a href="https://doi.org/10.32614/RJ-2019-032" class="external-link">https://doi.org/10.32614/RJ-2019-032</a>.</p>
+<div id="ref-Ieva2019" class="csl-entry">
+Ieva, Francesca, Anna Maria Paganoni, Juan Romo, and Nicholas Tarabelloni. 2019. <span>“<span class="nocase">roahd Package: Robust Analysis of High Dimensional Data</span>.”</span> <em><span>The R Journal</span></em> 11 (2): 291–307. <a href="https://doi.org/10.32614/RJ-2019-032" class="external-link">https://doi.org/10.32614/RJ-2019-032</a>.
 </div>
-<div id="ref-lopezpintado_romo_2007">
-<p>López-Pintado, S., and J. Romo. 2007. “Depth-Based Inference for Functional Data.” <em>Computational Statistics &amp; Data Analysis</em> 51 (10): 4957–68.</p>
+<div id="ref-lopezpintado_romo_2007" class="csl-entry">
+López-Pintado, S., and J. Romo. 2007. <span>“Depth-Based Inference for Functional Data.”</span> <em>Computational Statistics &amp; Data Analysis</em> 51 (10): 4957–68.
 </div>
-<div id="ref-lopezpintado_romo_2009">
-<p>———. 2009. “On the Concept of Depth for Functional Data.” <em>Journal of the American Statistical Association</em> 104 (486): 718–34.</p>
+<div id="ref-lopezpintado_romo_2009" class="csl-entry">
+———. 2009. <span>“On the Concept of Depth for Functional Data.”</span> <em>Journal of the American Statistical Association</em> 104 (486): 718–34.
 </div>
-<div id="ref-lopezpintado_romo_2011">
-<p>———. 2011. “A Half-Region Depth for Functional Data.” <em>Computational Statistics &amp; Data Analysis</em> 55 (4): 1679–95.</p>
+<div id="ref-lopezpintado_romo_2011" class="csl-entry">
+———. 2011. <span>“A Half-Region Depth for Functional Data.”</span> <em>Computational Statistics &amp; Data Analysis</em> 55 (4): 1679–95.
 </div>
-<div id="ref-Sun_Genton_2011">
-<p>Sun, Y., and M. G. Genton. 2011. “Functional Boxplots.” <em>Journal of Computational and Graphical Statistics</em> 20 (2): 316–34.</p>
+<div id="ref-Sun_Genton_2011" class="csl-entry">
+Sun, Y., and M. G. Genton. 2011. <span>“Functional Boxplots.”</span> <em>Journal of Computational and Graphical Statistics</em> 20 (2): 316–34.
 </div>
-<div id="ref-Sun_Genton_2012_boxplot">
-<p>———. 2012. “Adjusted Functional Boxplots for Spatio-Temporal Data Visualization and Outlier Detection.” <em>Environmetrics</em> 23 (1): 54–64.</p>
+<div id="ref-Sun_Genton_2012_boxplot" class="csl-entry">
+———. 2012. <span>“Adjusted Functional Boxplots for Spatio-Temporal Data Visualization and Outlier Detection.”</span> <em>Environmetrics</em> 23 (1): 54–64.
 </div>
-<div id="ref-Sun_Genton_2012">
-<p>Sun, Y., M. G. Genton, and D. W. Nychka. 2012. “Exact Fast Computation of Band Depth for Large Functional Datasets: How Quickly Can One Million Curves Be Ranked?” <em>Stat</em> 1 (1): 68–74.</p>
+<div id="ref-Sun_Genton_2012" class="csl-entry">
+Sun, Y., M. G. Genton, and D. W. Nychka. 2012. <span>“Exact Fast Computation of Band Depth for Large Functional Datasets: How Quickly Can One Million Curves Be Ranked?”</span> <em>Stat</em> 1 (1): 68–74.
 </div>
-<div id="ref-tarabelloni_ieva_etal_2015">
-<p>Tarabelloni, N., F. Ieva, R. Biasi, and A. M. Paganoni. 2015. “Use of Depth Measure for Multivariate Functional Data in Disease Prediction: An Application to Electrocardiograph Signals.” <em>The International Journal of Biostatistics</em> 11 (2): 189–201.</p>
+<div id="ref-tarabelloni_ieva_etal_2015" class="csl-entry">
+Tarabelloni, N., F. Ieva, R. Biasi, and A. M. Paganoni. 2015. <span>“Use of Depth Measure for Multivariate Functional Data in Disease Prediction: An Application to Electrocardiograph Signals.”</span> <em>The International Journal of Biostatistics</em> 11 (2): 189–201.
 </div>
-<div id="ref-kendall_2015">
-<p>Valencia, D., J. Romo, and R. Lillo. 2015a. “A Kendall Correlation Coefficient for Functional Dependence.” http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133228: Universidad Carlos III de Madrid.</p>
+<div id="ref-kendall_2015" class="csl-entry">
+Valencia, D., J. Romo, and R. Lillo. 2015a. <span>“A Kendall Correlation Coefficient for Functional Dependence.”</span> http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133228: Universidad Carlos III de Madrid.
 </div>
-<div id="ref-spearman_2015">
-<p>———. 2015b. “Spearman Coefficient for Functions.” http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133329: Universidad Carlos III de Madrid.</p>
+<div id="ref-spearman_2015" class="csl-entry">
+———. 2015b. <span>“Spearman Coefficient for Functions.”</span> http://EconPapers.repec.org/RePEc:cte:wsrepe:ws133329: Universidad Carlos III de Madrid.
 </div>
 </div>
 </div>
