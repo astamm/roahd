@@ -785,6 +785,13 @@ manage_high_MEI_data = function(fData,
                                 IQR_d,
                                 Fvalue=1.5)
 {
+  if (length(ID_non_outlying_High_MEI) == 0) {
+    return(list(
+      ID_shape_outlier = ID_shape_outlier,
+      ID_non_outlying = ID_non_outlying
+    ))
+  }
+
   N = fData$N
 
   a_0_2 = -2 / ( N * ( N - 1 ) )
@@ -844,6 +851,13 @@ manage_low_MEI_data = function(fData,
                                IQR_d,
                                Fvalue = 1.5)
 {
+  if (length(ID_non_outlying_Low_MEI) == 0) {
+    return(list(
+      ID_shape_outlier = ID_shape_outlier,
+      ID_non_outlying = ID_non_outlying
+    ))
+  }
+
   N = fData$N
 
   a_0_2 = -2 / ( N * ( N - 1 ) )
