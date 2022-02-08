@@ -3,7 +3,7 @@ pkgdown: 2.0.2
 pkgdown_sha: ~
 articles:
   roahd: roahd.html
-last_built: 2022-01-31T21:19Z
+last_built: 2022-02-08T09:45Z
 urls:
   reference: https://astamm.github.io/roahd/reference
   article: https://astamm.github.io/roahd/articles
