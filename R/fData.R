@@ -988,7 +988,7 @@ cov_fun.mfData = function( X, Y = NULL )
       stop( 'Error: you have to provide either an fData or mfData object')
     } else if( X$N != Y$N || X$t0 != Y$t0 || X$tP != Y$tP || X$P != Y$P )
     {
-      stop( 'Errror: you have to provide a Y dataset compliant to X')
+      stop( 'Error: you have to provide a Y dataset compliant to X')
     }
 
     if( class( Y ) == 'mfData' )
@@ -996,11 +996,11 @@ cov_fun.mfData = function( X, Y = NULL )
       if( X$L != Y$L )
         stop( 'You have to provide a Y dataset with same number of components as X')
 
-      list = NULL
+      values = NULL
 
       for( i in 1 : X$L )
       {
-        list = append( list,
+        values = append( values,
                        lapply( i : X$L,
                                function( j ) cov_fun( X$fDList[[ i ]],
                                                       Y$fDList[[ j ]] )  ) )
@@ -1026,22 +1026,20 @@ cov_fun.mfData = function( X, Y = NULL )
                                                         nmy[ j ],
                                                         sep = '' ) ) ) )
       }
-      names( list ) = nmlist
-
-      return( list )
+      names( values ) = nmlist
 
     } else if( class( Y ) == 'fData' )
     {
-      return( sapply( X = X$fDList, FUN = cov_fun, Y,
-                      simplify = FALSE, USE.NAMES = FALSE ) )
+      values <- sapply( X = X$fDList, FUN = cov_fun, Y,
+                      simplify = FALSE, USE.NAMES = FALSE )
     }
   } else {
 
-    list = NULL
+    values = NULL
 
     for( i in 1 : X$L )
     {
-      list = append( list,
+      values = append( values,
                      lapply( i : X$L,
                              function( j ) cov_fun( X$fDList[[ i ]],
                                                     X$fDList[[ j ]] )  ) )
@@ -1063,10 +1061,56 @@ cov_fun.mfData = function( X, Y = NULL )
                                                       nm[ j ],
                                                       sep = '' ) ) ) )
     }
-    names( list ) = nmlist
-
-    return( list )
+    names( values ) = nmlist
   }
+
+  res <- list(t0 = X$t0, tP = X$tP, P = X$P, L = X$L, values = values)
+  class(res) <- "mfCov"
+  res
+}
+
+Cov_data <- function(x) {
+  grid <- seq(x$t0, x$tP, length.out = x$P)
+  expand.grid(grid_x = grid, grid_y = grid) %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(value = c(x$values))
+}
+
+#' @importFrom ggplot2 autoplot ggplot aes
+#' @importFrom rlang .data
+autoplot.Cov <- function(object, ...) {
+  plot_data <- Cov_data(object)
+  ggplot2::ggplot(
+    data = plot_data,
+    mapping = ggplot2::aes(
+      x = .data$grid_x,
+      y = .data$grid_y,
+      fill = .data$value
+    )
+  ) +
+    ggplot2::geom_raster() +
+    ggplot2::coord_fixed() +
+    ggplot2::labs(
+      x = "",
+      y = "",
+      fill = "Covariance"
+    ) +
+    ggplot2::theme_void() +
+    ggplot2::scale_fill_viridis_c()
+}
+
+#' @export
+autoplot.mfCov <- function(object, ...) {
+  plots <- purrr::map(object$values, autoplot.Cov)
+  design <- patchwork::area(1, 1)
+  for (i in 1:object$L) {
+    for (j in i:object$L) {
+      if (i == 1 && i == j)
+        next
+      design <- c(design, patchwork::area(i, j))
+    }
+  }
+  patchwork::wrap_plots(plots, design = design)
 }
 
 #' Specialized method to plot \code{Cov} objects
@@ -1106,9 +1150,14 @@ cov_fun.mfData = function( X, Y = NULL )
 #' plot( cov_fun( fD1 ), main = 'Covariance function', xlab = 'time', ylab = 'time' )
 #'
 #' @export
-plot.Cov = function( x, ... )
-{
-  graphics::image( x$values, ...  )
+#' @importFrom graphics plot
+plot.Cov <- function(x, ...) {
+  print(autoplot(x, ...))
+}
+
+#' @export
+plot.mfCov <- function(x, ...) {
+  print(autoplot(x, ...))
 }
 
 #'

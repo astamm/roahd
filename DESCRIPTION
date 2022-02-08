@@ -57,7 +57,10 @@ Imports:
     magrittr,
     dplyr,
     ggplot2,
-    plotly
+    plotly,
+    tibble,
+    patchwork,
+    rlang
 VignetteBuilder: knitr
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)
