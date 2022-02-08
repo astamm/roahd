@@ -1076,11 +1076,11 @@ Cov_data <- function(x) {
     dplyr::mutate(value = c(x$values))
 }
 
-#' @importFrom ggplot2 autoplot ggplot aes
+#' @importFrom ggplot2 autoplot
 #' @importFrom rlang .data
-autoplot.Cov <- function(object, ...) {
+autoplot.Cov <- function(object, ..., add_color_scale = TRUE) {
   plot_data <- Cov_data(object)
-  ggplot2::ggplot(
+  p <- ggplot2::ggplot(
     data = plot_data,
     mapping = ggplot2::aes(
       x = .data$grid_x,
@@ -1095,22 +1095,43 @@ autoplot.Cov <- function(object, ...) {
       y = "",
       fill = "Covariance"
     ) +
-    ggplot2::theme_void() +
-    ggplot2::scale_fill_viridis_c()
+    ggplot2::theme_void()
+
+  if (add_color_scale)
+    p <- p + ggplot2::scale_fill_viridis_c()
+
+  p
 }
 
 #' @export
-autoplot.mfCov <- function(object, ...) {
-  plots <- purrr::map(object$values, autoplot.Cov)
+autoplot.mfCov <- function(object, ..., choices = 1:object$L) {
+  stopifnot(all(choices %in% 1:object$L))
+  choices <- unique(choices)
+  L <- length(choices)
+  indices <- object$values %>%
+    names() %>%
+    strsplit(split = "_") %>%
+    purrr::map(readr::parse_number) %>%
+    purrr::map_lgl(~ all(.x %in% choices))
+  values <- object$values[indices] %>%
+    purrr::map(Cov_data) %>%
+    purrr::map("value") %>%
+    purrr::reduce(c)
+  plots <- object$values[indices] %>%
+    purrr::map(autoplot.Cov, add_color_scale = FALSE) %>%
+    purrr::map(~ .x + ggplot2::scale_fill_viridis_c(
+      limits = c(min(values), max(values))
+    ))
   design <- patchwork::area(1, 1)
-  for (i in 1:object$L) {
-    for (j in i:object$L) {
+  for (i in 1:L) {
+    for (j in i:L) {
       if (i == 1 && i == j)
         next
       design <- c(design, patchwork::area(i, j))
     }
   }
-  patchwork::wrap_plots(plots, design = design)
+  patchwork::wrap_plots(plots, design = design) +
+    patchwork::plot_layout(guides = "collect")
 }
 
 #' Specialized method to plot \code{Cov} objects
