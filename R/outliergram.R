@@ -785,6 +785,13 @@ manage_high_MEI_data = function(fData,
                                 IQR_d,
                                 Fvalue=1.5)
 {
+  if (length(ID_non_outlying_High_MEI) == 0) {
+    return(list(
+      ID_shape_outlier = ID_shape_outlier,
+      ID_non_outlying = ID_non_outlying
+    ))
+  }
+
   N = fData$N
 
   a_0_2 = -2 / ( N * ( N - 1 ) )
@@ -798,7 +805,16 @@ manage_high_MEI_data = function(fData,
                     obs = apply(fData$values, 2, which.min))
 
   min_diff_min = mins %>%
-    dplyr::filter(obs %in% ID_non_outlying_High_MEI ) %>%
+    dplyr::filter(obs %in% ID_non_outlying_High_MEI )
+
+  if (nrow(min_diff_min) == 0) {
+    return(list(
+      ID_shape_outlier = ID_shape_outlier,
+      ID_non_outlying = ID_non_outlying
+    ))
+  }
+
+  min_diff_min = min_diff_min %>%
     dplyr::group_by(obs) %>%
     dplyr::summarize(min_diff_min = min(min_diffs))
 
@@ -844,6 +860,13 @@ manage_low_MEI_data = function(fData,
                                IQR_d,
                                Fvalue = 1.5)
 {
+  if (length(ID_non_outlying_Low_MEI) == 0) {
+    return(list(
+      ID_shape_outlier = ID_shape_outlier,
+      ID_non_outlying = ID_non_outlying
+    ))
+  }
+
   N = fData$N
 
   a_0_2 = -2 / ( N * ( N - 1 ) )
@@ -857,7 +880,16 @@ manage_low_MEI_data = function(fData,
                     obs = apply(fData$values, 2, which.max))
 
   max_diff_max = maxs %>%
-    dplyr::filter(obs %in% ID_non_outlying_Low_MEI ) %>%
+    dplyr::filter(obs %in% ID_non_outlying_Low_MEI )
+
+  if (nrow(max_diff_max) == 0) {
+    return(list(
+      ID_shape_outlier = ID_shape_outlier,
+      ID_non_outlying = ID_non_outlying
+    ))
+  }
+
+  max_diff_max = max_diff_max %>%
     dplyr::group_by(obs) %>%
     dplyr::summarize(max_diff_max = max(max_diffs))
 
