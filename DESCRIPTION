@@ -60,7 +60,9 @@ Imports:
     plotly,
     tibble,
     patchwork,
-    rlang
+    rlang,
+    cli,
+    corrr
 VignetteBuilder: knitr
 RoxygenNote: 7.1.2
 Roxygen: list(markdown = TRUE)

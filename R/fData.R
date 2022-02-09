@@ -1069,6 +1069,156 @@ cov_fun.mfData = function( X, Y = NULL )
   res
 }
 
+#' @importFrom corrr correlate
+#' @export
+correlate.fData <- function(x, y = NULL,
+                            use = "pairwise.complete.obs",
+                            method = "pearson",
+                            diagonal = NA,
+                            quiet = FALSE) {
+  if (!is.null(y)) {
+    if (class(y) != "fData")
+      cli::cli_abort("Error: you have to provide an fData object as y argument")
+
+    if (x$t0 != y$t0 || x$tP != y$tP || x$h != y$h || x$P != y$P || x$N != y$N)
+      cli::cli_abort("Error: you have to provide a pair of compliant fData objects")
+
+    res <- list(
+      t0 = x$t0,
+      tP = x$tP,
+      h = x$h,
+      P = x$P,
+      values = corrr::correlate(
+        x$values,
+        y$values,
+        use = use,
+        method = method,
+        diagonal = diagonal,
+        quiet = quiet
+      )
+    )
+  } else {
+    res <- list(
+      t0 = x$t0,
+      tP = x$tP,
+      h = x$h,
+      P = x$P,
+      values = corrr::correlate(
+        x$values,
+        use = use,
+        method = method,
+        diagonal = diagonal,
+        quiet = quiet
+      )
+    )
+  }
+  class(res) <- "fCor"
+  res
+}
+
+#' @export
+correlate.mfData <- function(x, y = NULL,
+                             use = "pairwise.complete.obs",
+                             method = "pearson",
+                             diagonal = NA,
+                             quiet = FALSE) {
+  if (!is.null(y)) {
+    if (!class(y) %in% c("fData", "mfData"))
+      cli::cli_abort("Error: you have to provide either an fData or mfData object")
+
+    if (x$N != y$N || x$t0 != y$t0 || x$tP != y$tP || x$P != y$P)
+      cli::cli_abort("Error: you have to provide a y dataset compliant to x")
+
+    if (class(y) == "fData")
+      y <- mfData(grid = seq(y$t0, y$tP, length.out = y$P, list(y$values)))
+
+    if (x$L != y$L)
+      cli::cli_abort("You have to provide a Y dataset with same number of components as X")
+
+    values_x <- purrr::reduce(x$fDList, ~ cbind(.x$values, .y$values))
+    values_y <- purrr::reduce(y$fDList, ~ cbind(.x$values, .y$values))
+    values_cor <- correlate(
+      values_x,
+      values_y,
+      use = use,
+      method = method,
+      diagonal = diagonal,
+      quiet = quiet
+    )
+    values_cor <- values_cor[, -1]
+
+    values <- NULL
+    for (i in 1:x$L) {
+      values <- append(
+        values,
+        lapply(i:x$L, function(j) {
+          subcor <- values_cor[(i-1) * x$P + 1:x$P, (j-1) * x$P + 1:x$P]
+          bind_cols(term = names(subcor), subcor)
+        })
+      )
+    }
+
+    # Setting up names for the covariances
+    if (!is.null(names(x$fDList)))
+      nmx <- names(x$fDList)
+    else
+      nmx <- 1:x$L
+
+    if (!is.null(names(y$fDList)))
+      nmy <- names(y$fDList)
+    else
+      nmy <- 1:y$L
+
+    nmlist <- NULL
+    for (i in 1:x$L) {
+      nmlist <- append(
+        nmlist,
+        sapply(i:x$L, function(j) paste(nmx[i], "_", nmy[j], sep = ""))
+      )
+    }
+  } else {
+    values_x <- purrr::reduce(x$fDList, ~ cbind(.x$values, .y$values))
+    values_cor <- correlate(
+      values_x,
+      use = use,
+      method = method,
+      diagonal = diagonal,
+      quiet = quiet
+    )
+    values_cor <- values_cor[, -1]
+
+    values <- NULL
+    for (i in 1:x$L) {
+      values <- append(
+        values,
+        lapply(i:x$L, function(j) {
+          subcor <- values_cor[(i-1) * x$P + 1:x$P, (j-1) * x$P + 1:x$P]
+          bind_cols(term = names(subcor), subcor)
+        })
+      )
+    }
+
+    # Setting up names for the covariances
+    if (!is.null(names(x$fDList)))
+      nm <- names(x$fDList)
+    else
+      nm <- 1:x$L
+
+    nmlist <- NULL
+    for (i in 1:x$L) {
+      nmlist <- append(
+        nmlist,
+        sapply(i:x$L, function(j) paste(nm[i], "_", nm[j], sep = ""))
+      )
+    }
+  }
+
+  names(values) <- nmlist
+  res <- list(t0 = x$t0, tP = x$tP, P = x$P, L = x$L, values = values)
+  class(res) <- "mfCor"
+  res
+}
+
 Cov_data <- function(x) {
   grid <- seq(x$t0, x$tP, length.out = x$P)
   expand.grid(grid_x = grid, grid_y = grid) %>%
@@ -1078,33 +1228,16 @@ Cov_data <- function(x) {
 
 #' @importFrom ggplot2 autoplot
 #' @importFrom rlang .data
-autoplot.Cov <- function(object, ..., add_color_scale = TRUE) {
-  plot_data <- Cov_data(object)
-  p <- ggplot2::ggplot(
-    data = plot_data,
-    mapping = ggplot2::aes(
-      x = .data$grid_x,
-      y = .data$grid_y,
-      fill = .data$value
-    )
-  ) +
-    ggplot2::geom_raster() +
-    ggplot2::coord_fixed() +
-    ggplot2::labs(
-      x = "",
-      y = "",
-      fill = "Covariance"
-    ) +
-    ggplot2::theme_void()
-
-  if (add_color_scale)
-    p <- p + ggplot2::scale_fill_viridis_c()
-
-  p
+#' @export
+autoplot.fCor <- function(object, ...) {
+  object$values %>%
+    corrr::rplot() +
+    coord_fixed() +
+    theme_void()
 }
 
 #' @export
-autoplot.mfCov <- function(object, ..., choices = 1:object$L) {
+autoplot.mfCor <- function(object, ..., choices = 1:object$L) {
   stopifnot(all(choices %in% 1:object$L))
   choices <- unique(choices)
   L <- length(choices)
@@ -1113,15 +1246,11 @@ autoplot.mfCov <- function(object, ..., choices = 1:object$L) {
     strsplit(split = "_") %>%
     purrr::map(readr::parse_number) %>%
     purrr::map_lgl(~ all(.x %in% choices))
-  values <- object$values[indices] %>%
-    purrr::map(Cov_data) %>%
-    purrr::map("value") %>%
-    purrr::reduce(c)
   plots <- object$values[indices] %>%
-    purrr::map(autoplot.Cov, add_color_scale = FALSE) %>%
-    purrr::map(~ .x + ggplot2::scale_fill_viridis_c(
-      limits = c(min(values), max(values))
-    ))
+    purrr::map(~ .x %>%
+                 corrr::rplot() +
+                 coord_fixed() +
+                 theme_void())
   design <- patchwork::area(1, 1)
   for (i in 1:L) {
     for (j in i:L) {
