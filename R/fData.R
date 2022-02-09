@@ -1301,12 +1301,12 @@ autoplot.mfCor <- function(object, ..., choices = 1:object$L) {
 #'
 #' @export
 #' @importFrom graphics plot
-plot.Cov <- function(x, ...) {
+plot.fCor <- function(x, ...) {
   print(autoplot(x, ...))
 }
 
 #' @export
-plot.mfCov <- function(x, ...) {
+plot.mfCor <- function(x, ...) {
   print(autoplot(x, ...))
 }
 
