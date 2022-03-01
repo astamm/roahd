@@ -1135,8 +1135,12 @@ correlate.mfData <- function(x, y = NULL,
     if (x$L != y$L)
       cli::cli_abort("You have to provide a Y dataset with same number of components as X")
 
-    values_x <- purrr::reduce(x$fDList, ~ cbind(.x$values, .y$values))
-    values_y <- purrr::reduce(y$fDList, ~ cbind(.x$values, .y$values))
+    values_x <- x$fDList %>%
+      purrr::map("values") %>%
+      purrr::reduce(cbind)
+    values_y <- y$fDList %>%
+      purrr::map("values") %>%
+      purrr::reduce(cbind)
     values_cor <- correlate(
       values_x,
       values_y,
@@ -1177,7 +1181,9 @@ correlate.mfData <- function(x, y = NULL,
       )
     }
   } else {
-    values_x <- purrr::reduce(x$fDList, ~ cbind(.x$values, .y$values))
+    values_x <- x$fDList %>%
+      purrr::map("values") %>%
+      purrr::reduce(cbind)
     values_cor <- correlate(
       values_x,
       use = use,
