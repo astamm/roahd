@@ -1077,7 +1077,7 @@ correlate.fData <- function(x, y = NULL,
                             diagonal = NA,
                             quiet = FALSE) {
   if (!is.null(y)) {
-    if (class(y) != "fData")
+    if (!inherits(y, "fData"))
       cli::cli_abort("Error: you have to provide an fData object as y argument")
 
     if (x$t0 != y$t0 || x$tP != y$tP || x$h != y$h || x$P != y$P || x$N != y$N)
@@ -1123,13 +1123,13 @@ correlate.mfData <- function(x, y = NULL,
                              diagonal = NA,
                              quiet = FALSE) {
   if (!is.null(y)) {
-    if (!class(y) %in% c("fData", "mfData"))
+    if (!inherits(y, "fData") && !inherits(y, "mfData"))
       cli::cli_abort("Error: you have to provide either an fData or mfData object")
 
     if (x$N != y$N || x$t0 != y$t0 || x$tP != y$tP || x$P != y$P)
       cli::cli_abort("Error: you have to provide a y dataset compliant to x")
 
-    if (class(y) == "fData")
+    if (inherits(y, "fData"))
       y <- mfData(grid = seq(y$t0, y$tP, length.out = y$P, list(y$values)))
 
     if (x$L != y$L)
@@ -1157,7 +1157,7 @@ correlate.mfData <- function(x, y = NULL,
         values,
         lapply(i:x$L, function(j) {
           subcor <- values_cor[(i-1) * x$P + 1:x$P, (j-1) * x$P + 1:x$P]
-          bind_cols(term = names(subcor), subcor)
+          dplyr::bind_cols(term = names(subcor), subcor)
         })
       )
     }
@@ -1199,7 +1199,7 @@ correlate.mfData <- function(x, y = NULL,
         values,
         lapply(i:x$L, function(j) {
           subcor <- values_cor[(i-1) * x$P + 1:x$P, (j-1) * x$P + 1:x$P]
-          bind_cols(term = names(subcor), subcor)
+          dplyr::bind_cols(term = names(subcor), subcor)
         })
       )
     }
@@ -1250,7 +1250,7 @@ autoplot.mfCor <- function(object, ..., choices = 1:object$L) {
   indices <- object$values %>%
     names() %>%
     strsplit(split = "_") %>%
-    purrr::map(readr::parse_number) %>%
+    purrr::map(parse_number) %>%
     purrr::map_lgl(~ all(.x %in% choices))
   plots <- object$values[indices] %>%
     purrr::map(~ .x %>%

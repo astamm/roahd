@@ -62,9 +62,10 @@ Imports:
     patchwork,
     rlang,
     cli,
-    corrr
+    corrr,
+    purrr
 VignetteBuilder: knitr
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
 URL: https://astamm.github.io/roahd/, https://github.com/astamm/roahd
 BugReports: https://github.com/astamm/roahd/issues

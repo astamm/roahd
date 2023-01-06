@@ -137,3 +137,8 @@ fDColorPalette = function( N, hue_range = c( 0, 360 ), alpha = 0.8, ... )
   return( set_alpha( scales::hue_pal( h = hue_range, ... )( N ),
                      alpha ) )
 }
+
+parse_number <- function(x) {
+  as.numeric(gsub("([0-9]+).*$", "\\1", x)
+             )
+}

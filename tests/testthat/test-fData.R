@@ -77,20 +77,20 @@ test_that("statistical summaries work as expected on `mfData` objects", {
   rhs <- lapply(1:(2 * mfD$L), function( i ) cov_fun(mfD$fDList[[1]]))
   names(rhs) <- c('comp1_1', 'comp1_2', 'comp1_3', 'comp2_2', 'comp2_3', 'comp3_3')
 
-  expect_equal(cov_fun(mfD, mfD2), rhs)
+  expect_equal(cov_fun(mfD, mfD2)$values, rhs)
   expect_equal(
-    cov_fun(mfD2, fD),
+    cov_fun(mfD2, fD)$values,
     lapply(1:mfD$L, function(i) cov_fun(mfD$fDList[[1]]))
   )
   expect_equal(
-    names(cov_fun(mfD)),
+    names(cov_fun(mfD)$values),
     c(
       'comp1_comp1', 'comp1_comp2', 'comp1_comp3',
       'comp2_comp2', 'comp2_comp3', 'comp3_comp3'
     )
   )
   expect_equal(
-    names(cov_fun(mfD2)),
+    names(cov_fun(mfD2)$values),
     c('1_1', '1_2', '1_3', '2_2', '2_3', '3_3')
   )
 
